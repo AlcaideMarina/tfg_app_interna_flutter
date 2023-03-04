@@ -18,6 +18,9 @@ class _LoginPageState extends State<LoginPage> {
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
 
+    
+    TextEditingController _inputFieldDateControler = new TextEditingController();
+
     return Scaffold(
       body: SafeArea(
         top: false,
@@ -25,31 +28,33 @@ class _LoginPageState extends State<LoginPage> {
             child: Container(
             margin: const EdgeInsets.fromLTRB(24.0, 0, 24.0, 24.0),
             width: double.infinity,
-            child: Column(
-              children: <Widget> [
-                const SizedBox(
-                  height: 96,
-                ),
-                Image.asset(ImageRoutes.getRoute("ic_logo"), width: 218, height: 287),
-                const SizedBox(
-                  height: 48,
-                ),
-                const HNComponentTextInput(labelText: "Usuario"),
-                const SizedBox(
-                  height: 24,
-                ),
-                const HNComponentTextInput(labelText: "Contraseña"),
-                const SizedBox(
-                  height: 24,
-                ),
-                const SizedBox(height: 56)
-              ],
+            child: Form(
+              child: Column(
+                children: <Widget> [
+                  const SizedBox(
+                    height: 96,
+                  ),
+                  Image.asset(ImageRoutes.getRoute("ic_logo"), width: 218, height: 287),
+                  const SizedBox(
+                    height: 48,
+                  ),
+                  const HNComponentTextInput(labelText: "Usuario"),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  const HNComponentTextInput(labelText: "Contraseña"),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  const SizedBox(height: 56)
+                ],
+              ),
             ),
           ),
         ),
       ),
       bottomSheet: Container(
-        child: HNButton(ButtonTypes.mainBoldRoundedButton).getTypedButton("ACCEDER", null, null, navigateToMainPage, () { }),
+        child: HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton("ACCEDER", null, null, navigateToMainPage, () { }),
         margin: const EdgeInsets.all(24),
       ) 
       /*ElevatedButton(

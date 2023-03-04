@@ -3,6 +3,7 @@ import 'package:hueveria_nieto_interna/component/component_clients.dart';
 import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
+import 'package:hueveria_nieto_interna/screens/users_and_clients/new_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
 class AllClientsPage extends StatefulWidget {
@@ -46,9 +47,9 @@ class _AllClientsPageState extends State<AllClientsPage> {
             ),
             child: Column(
               children: [
-                HNButton(ButtonTypes.mainBoldRoundedButton).getTypedButton("Nuevo", null, null, () { }, () { }),
+                HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton("Nuevo", null, null, navigateToNewClientPage, () { }),
                 const SizedBox(height: 8,),
-                HNButton(ButtonTypes.secondaryRoundedButton).getTypedButton("Cuentas eliminadas", null, null, () { }, () { })
+                HNButton(ButtonTypes.grayBlackRoundedButton).getTypedButton("Cuentas eliminadas", null, null, () { }, () { })
               ],
             ),
           ),
@@ -70,6 +71,14 @@ class _AllClientsPageState extends State<AllClientsPage> {
         ],
       ),
     );
+  }
+  
+  navigateToNewClientPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => NewClientPage(),
+      ));
   }
 
 }

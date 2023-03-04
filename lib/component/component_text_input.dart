@@ -16,6 +16,8 @@ class HNComponentTextInput extends StatelessWidget {
   final String? helperText;
   final IconData? suffixIcon;
   final IconData? icon;
+  final bool? isDense;
+  final EdgeInsetsGeometry? contentPadding;
 
   const HNComponentTextInput({
     Key? key, 
@@ -31,7 +33,9 @@ class HNComponentTextInput extends StatelessWidget {
     this.labelText, 
     this.helperText, 
     this.suffixIcon, 
-    this.icon
+    this.icon,
+    this.isDense,
+    this.contentPadding
   }) : super(key: key);
 
   @override
@@ -54,6 +58,8 @@ class HNComponentTextInput extends StatelessWidget {
       },
       autovalidateMode: autovalidateMode,
       decoration: InputDecoration(
+        isDense: isDense,
+        contentPadding: contentPadding,
         hintText: hintText,
         labelText: labelText,
         helperText: helperText,
