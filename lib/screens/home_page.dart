@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hueveria_nieto_interna/component/menu/lateral_menu.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
