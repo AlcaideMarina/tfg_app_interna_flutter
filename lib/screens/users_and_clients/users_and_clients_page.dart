@@ -3,6 +3,7 @@ import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/component/menu/lateral_menu.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
+import 'package:hueveria_nieto_interna/screens/users_and_clients/all_clientes_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
 class UsersAndClientsPage extends StatefulWidget {
@@ -46,7 +47,7 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
             const Text("Clientes", textAlign: TextAlign.start,),
             const SizedBox(height: 16,),
             Container(
-              child: HNButton(ButtonTypes.mainRoundedButton).getTypedButton("Ver clientes", null, null, () { }, () { }),
+              child: HNButton(ButtonTypes.mainRoundedButton).getTypedButton("Ver clientes", null, null, navigateToAllClientsPage, () { }),
             ),
             const SizedBox(height: 48,),
             const Text("Usuarios", textAlign: TextAlign.start,),
@@ -66,4 +67,11 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
     );
   }
 
+  navigateToAllClientsPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AllClientsPage(),
+      ));
+  }
 }
