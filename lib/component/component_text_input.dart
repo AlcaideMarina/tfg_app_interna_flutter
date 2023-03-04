@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 
-class ComponentTextInput extends StatelessWidget {
+class HNComponentTextInput extends StatelessWidget {
 
   final bool autofocus;
   final String? initialValue;
@@ -17,7 +17,7 @@ class ComponentTextInput extends StatelessWidget {
   final IconData? suffixIcon;
   final IconData? icon;
 
-  const ComponentTextInput({
+  const HNComponentTextInput({
     Key? key, 
     this.autofocus = false,
     this.initialValue, 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
-import 'package:hueveria_nieto_interna/login_page.dart';
+import 'package:hueveria_nieto_interna/screens/login_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
 void main() {

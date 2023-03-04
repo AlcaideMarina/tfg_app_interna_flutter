@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hueveria_nieto_interna/component/component_button.dart';
 import 'package:hueveria_nieto_interna/component/component_text_input.dart';
 import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/values/image_routes.dart';
 
-import 'custom/custom_colors.dart';
-
+import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -36,11 +34,11 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 48,
                 ),
-                const ComponentTextInput(labelText: "Usuario"),
+                const HNComponentTextInput(labelText: "Usuario"),
                 const SizedBox(
                   height: 24,
                 ),
-                const ComponentTextInput(labelText: "Contraseña"),
+                const HNComponentTextInput(labelText: "Contraseña"),
                 const SizedBox(
                   height: 24,
                 ),
@@ -51,8 +49,8 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
       bottomSheet: Container(
-        child: HNButton(ButtonTypes.mainBoldRoundedButton).getTypedButton("ACCEDER", null, null, () { }, () { }),
-        margin: EdgeInsets.all(24),
+        child: HNButton(ButtonTypes.mainBoldRoundedButton).getTypedButton("ACCEDER", null, null, navigateToMainPage, () { }),
+        margin: const EdgeInsets.all(24),
       ) 
       /*ElevatedButton(
         child: Row(
@@ -82,5 +80,13 @@ class _LoginPageState extends State<LoginPage> {
         ),
       )*/
     );
+  }
+
+  navigateToMainPage() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const HomePage(),
+      ));
   }
 }

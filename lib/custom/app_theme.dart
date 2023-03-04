@@ -12,7 +12,8 @@ class AppTheme {
     primaryColor: primary,
     appBarTheme: const AppBarTheme(
       elevation: 0,
-      backgroundColor: CustomColors.whiteColor
+      backgroundColor: CustomColors.whiteColor,
+      iconTheme: IconThemeData(color: CustomColors.redPrimaryColor)
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
@@ -25,7 +26,8 @@ class AppTheme {
     primaryColor: primary,
     appBarTheme: const AppBarTheme(
       color: primary,
-      elevation: 0
+      elevation: 0,
+      iconTheme: IconThemeData(color: CustomColors.redPrimaryColor)
     ),
     scaffoldBackgroundColor: CustomColors.blackColor,
     elevatedButtonTheme: ElevatedButtonThemeData(
