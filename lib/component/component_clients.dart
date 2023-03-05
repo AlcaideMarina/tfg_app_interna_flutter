@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 
+/// Component to use when listing all clients (e.g: AllClientsPage)
+
 class HNComponentClients extends StatelessWidget {
   
   final String id;
@@ -19,7 +21,6 @@ class HNComponentClients extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      //color: CustomColors.redGraySecondaryColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

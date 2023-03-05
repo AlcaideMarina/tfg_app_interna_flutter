@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/component/component_text_input.dart';
 import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/values/image_routes.dart';
-
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -57,33 +56,6 @@ class _LoginPageState extends State<LoginPage> {
         child: HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton("ACCEDER", null, null, navigateToMainPage, () { }),
         margin: const EdgeInsets.all(24),
       ) 
-      /*ElevatedButton(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(width: 24,),
-            Container(
-            margin: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Text("hola")
-          ),
-          ],
-        ),
-        autofocus: false,
-        onPressed: (){},   // TODO: y si va a nulo?
-        onLongPress: (){},   // TODO: y si va a nulo?
-        clipBehavior: Clip.none,
-        style: ElevatedButton.styleFrom(
-          primary: CustomColors.redGraySecondaryColor,
-          onPrimary: CustomColors.darkGrayColor,
-          elevation: 0,
-          padding: EdgeInsets.all(15),
-        // side: borderSide,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        // animationDuration: animationDuration,
-        ),
-      )*/
     );
   }
 

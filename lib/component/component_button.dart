@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 
+/// This is the custom button component. 
+/// It is called from HNButton, because there is where all the features are configured.
+/// Also, you can create a new button by calling directy to this section.
+
 class ComponentButton extends StatelessWidget {
 
   final String text;  // Style

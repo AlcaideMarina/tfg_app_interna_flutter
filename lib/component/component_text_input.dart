@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 
+/// Custom TextInput component
+
 class HNComponentTextInput extends StatelessWidget {
 
   final bool autofocus;

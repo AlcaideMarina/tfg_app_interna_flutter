@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'component_text_input.dart';
 
-/// Forms cell component (to use it in ComponentTableForm)
+/// Forms HNComponentTextInput component (to use it in HNComponentSimpleForm or HNComponentTableForm)
+/// This set the Container in which the HNComponentTextInput is wrapped. 
 
 class HNComponentCellTableForm extends StatelessWidget {
   final double height;

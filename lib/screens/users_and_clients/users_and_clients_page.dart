@@ -3,7 +3,7 @@ import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/component/menu/lateral_menu.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
-import 'package:hueveria_nieto_interna/screens/users_and_clients/all_clientes_page.dart';
+import 'package:hueveria_nieto_interna/screens/users_and_clients/all_clients_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
 class UsersAndClientsPage extends StatefulWidget {

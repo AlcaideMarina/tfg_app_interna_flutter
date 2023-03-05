@@ -3,6 +3,8 @@ import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 
 import '../component_button.dart';
 
+/// In this class, you will find all the types of buttons available in design.
+
 enum ButtonTypes {
   redWhiteRoundedButton,
   redWhiteBoldRoundedButton,
@@ -34,6 +36,9 @@ enum ButtonTypes {
   blackRedCricleButton,
   blackRedBoldCricleButton,
 }
+
+/// This is the class which implements the button features.
+/// It is setted by the button type, but can be modify
 
 class HNButton {
   final ButtonTypes type;
