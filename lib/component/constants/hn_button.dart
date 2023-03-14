@@ -84,134 +84,113 @@ class HNButton {
 
     switch (type) {
       case ButtonTypes.redWhiteRoundedButton:
-        {
-          radius = customRadius ?? roundedRadius;
-          backgroundColor =
-              customBackgroundColor ?? CustomColors.redPrimaryColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
-          break;
-        }
+        radius = customRadius ?? roundedRadius;
+        backgroundColor = customBackgroundColor ?? CustomColors.redPrimaryColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
+        break;
+
       case ButtonTypes.redWhiteBoldRoundedButton:
-        {
-          radius = customRadius ?? roundedRadius;
-          backgroundColor =
-              customBackgroundColor ?? CustomColors.redPrimaryColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
-          textStyle = customTextStyle ?? textStyle;
-          break;
-        }
+        radius = customRadius ?? roundedRadius;
+        backgroundColor = customBackgroundColor ?? CustomColors.redPrimaryColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
+        textStyle = customTextStyle ?? textStyle;
+        break;
+
       case ButtonTypes.grayBlackRoundedButton:
-        {
-          radius = customRadius ?? roundedRadius;
-          backgroundColor =
-              customBackgroundColor ?? CustomColors.redGraySecondaryColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-          break;
-        }
+        radius = customRadius ?? roundedRadius;
+        backgroundColor =
+            customBackgroundColor ?? CustomColors.redGraySecondaryColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
+        break;
+
       case ButtonTypes.grayBlackBoldRoundedButton:
-        {
-          radius = customRadius ?? roundedRadius;
-          backgroundColor =
-              customBackgroundColor ?? CustomColors.redGraySecondaryColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-          textStyle = customTextStyle ?? textStyle;
-          break;
-        }
+        radius = customRadius ?? roundedRadius;
+        backgroundColor =
+            customBackgroundColor ?? CustomColors.redGraySecondaryColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
+        textStyle = customTextStyle ?? textStyle;
+        break;
+
       case ButtonTypes.whiteRedRoundedButton:
-        {
-          radius = customRadius ?? roundedRadius;
-          backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
-          break;
-        }
+        radius = customRadius ?? roundedRadius;
+        backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
+        break;
+
       case ButtonTypes.whiteRedBoldRoundedButton:
-        {
-          radius = customRadius ?? roundedRadius;
-          backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
-          textStyle = customTextStyle ?? textStyle;
-          break;
-        }
+        radius = customRadius ?? roundedRadius;
+        backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
+        textStyle = customTextStyle ?? textStyle;
+        break;
+
       case ButtonTypes.whiteBlackRoundedButton:
-        {
-          radius = customRadius ?? roundedRadius;
-          backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-          break;
-        }
+        radius = customRadius ?? roundedRadius;
+        backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
+        break;
+
       case ButtonTypes.whiteBlackBoldRoundedButton:
-        {
-          radius = customRadius ?? roundedRadius;
-          backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-          textStyle = customTextStyle ?? textStyle;
-          break;
-        }
+        radius = customRadius ?? roundedRadius;
+        backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
+        textStyle = customTextStyle ?? textStyle;
+        break;
 
       case ButtonTypes.redWhiteCricleButton:
-        {
-          radius = customRadius ?? circleRadius;
-          backgroundColor =
-              customBackgroundColor ?? CustomColors.redPrimaryColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
-          break;
-        }
+        radius = customRadius ?? circleRadius;
+        backgroundColor = customBackgroundColor ?? CustomColors.redPrimaryColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
+        break;
+
       case ButtonTypes.redWhiteBoldCricleButton:
-        {
-          radius = customRadius ?? circleRadius;
-          backgroundColor =
-              customBackgroundColor ?? CustomColors.redPrimaryColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
-          textStyle = customTextStyle ?? textStyle;
-          break;
-        }
+        radius = customRadius ?? circleRadius;
+        backgroundColor = customBackgroundColor ?? CustomColors.redPrimaryColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.whiteColor;
+        textStyle = customTextStyle ?? textStyle;
+        break;
+
       case ButtonTypes.grayBlackCricleButton:
-        {
-          radius = customRadius ?? circleRadius;
-          backgroundColor =
-              customBackgroundColor ?? CustomColors.redGraySecondaryColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-          break;
-        }
+        radius = customRadius ?? circleRadius;
+        backgroundColor =
+            customBackgroundColor ?? CustomColors.redGraySecondaryColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
+        break;
+
       case ButtonTypes.grayBlackBoldCricleButton:
-        {
-          radius = customRadius ?? circleRadius;
-          backgroundColor =
-              customBackgroundColor ?? CustomColors.redGraySecondaryColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-          textStyle = customTextStyle ?? textStyle;
-          break;
-        }
+        radius = customRadius ?? circleRadius;
+        backgroundColor =
+            customBackgroundColor ?? CustomColors.redGraySecondaryColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
+        textStyle = customTextStyle ?? textStyle;
+        break;
+
       case ButtonTypes.whiteRedCricleButton:
-        {
-          radius = customRadius ?? circleRadius;
-          backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
-          break;
-        }
+        radius = customRadius ?? circleRadius;
+        backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
+        break;
+
       case ButtonTypes.whiteRedBoldCricleButton:
-        {
-          radius = customRadius ?? circleRadius;
-          backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
-          textStyle = customTextStyle ?? textStyle;
-          break;
-        }
+        radius = customRadius ?? circleRadius;
+        backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.redPrimaryColor;
+        textStyle = customTextStyle ?? textStyle;
+        break;
+
       case ButtonTypes.whiteBlackCricleButton:
-        {
-          radius = customRadius ?? circleRadius;
-          backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-          break;
-        }
+        radius = customRadius ?? circleRadius;
+        backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
+        break;
+
       case ButtonTypes.whiteBlackBoldCricleButton:
-        {
-          radius = customRadius ?? circleRadius;
-          backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
-          onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
-          textStyle = customTextStyle ?? textStyle;
-          break;
-        }
+        radius = customRadius ?? circleRadius;
+        backgroundColor = customBackgroundColor ?? CustomColors.whiteColor;
+        onPrimaryColor = customOnPrimaryColor ?? CustomColors.blackColor;
+        textStyle = customTextStyle ?? textStyle;
+        break;
+
       case ButtonTypes.blackGrayRoundedButton:
         radius = customRadius ?? roundedRadius;
         backgroundColor = customBackgroundColor ?? CustomColors.blackColor;
