@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class CustomColors {
 
-
   // Basic colors
   static const Color blackColor = Color(0xff212121);
   static const Color redPrimaryColor = Color(0xffCC1E1B);
