@@ -14,8 +14,8 @@ class LoginPage extends StatefulWidget {
 }
 
 bool isButtonEnabled = false;
-String user = "";
-String password = "";
+String user = '';
+String password = '';
 
 class _LoginPageState extends State<LoginPage> {
   @override
@@ -36,14 +36,14 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(
                       height: 96,
                     ),
-                    Image.asset(ImageRoutes.getRoute("ic_logo"),
+                    Image.asset(ImageRoutes.getRoute('ic_logo'),
                         width: 218, height: 287),
                     const SizedBox(
                       height: 48,
                     ),
                     // TODO: Esto será el usuario, no el correo
                     HNComponentTextInput(
-                      labelText: "Correo",
+                      labelText: 'Correo',
                       textInputType: TextInputType.emailAddress,
                       onChange: (text) {
                         user = text;
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 24,
                     ),
                     HNComponentTextInput(
-                      labelText: "Contraseña",
+                      labelText: 'Contraseña',
                       obscureText: true,
                       onChange: (text) {
                         password = text;
@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   bool getIsButtonEnabled() {
-    if (user != "" && password != "") {
+    if (user != '' && password != '') {
       return true;
     } else {
       return false;
@@ -102,15 +102,16 @@ class _LoginPageState extends State<LoginPage> {
     // TODO: añadir un Circular Progress Indicator
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: user.trim(), password: password.trim());
+          email: user.trim(), password: password);
+      // TODO: sacar el uid y pasárselo a la MainPage() - Cambiar también el constructor de la página
       navigateToMainPage();
-      return null;
     } on FirebaseAuthException catch (e) {
       String errorMessage =
-          FirebaseAuthConstants.genericError + " Código de error: " + e.code;
+          FirebaseAuthConstants.genericError + ' Código de error: ' + e.code;
       if (FirebaseAuthConstants.loginErrors.containsKey(e.code)) {
         errorMessage = FirebaseAuthConstants.loginErrors[e.code] ?? "";
       }
+
       showDialog(
           context: context,
           builder: (_) => AlertDialog(
@@ -120,7 +121,9 @@ class _LoginPageState extends State<LoginPage> {
                   TextButton(
                     child: const Text('De acuerdo.'),
                     onPressed: () {
-                      setState(() {});
+                      setState(() {
+                        // TODO: borrar contraseña
+                      });
                       Navigator.of(context).pop();
                     },
                   )
