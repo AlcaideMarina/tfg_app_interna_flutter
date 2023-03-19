@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       title: StringsTranslation.of(context)?.translate("hueveria_nieto") ?? "Huevería Nieto",
       theme: AppTheme.ligthTheme,
 
-      home: LoginPage(),
+      home: const LoginPage(),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/component/component_text_input.dart';
 import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
@@ -74,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
               "ACCEDER",
               null,
               null,
-              getIsButtonEnabled() ? navigateToMainPage : null,
+              getIsButtonEnabled() ? signIn : null,
               null),
           margin: const EdgeInsets.all(24),
         ));
@@ -94,5 +95,15 @@ class _LoginPageState extends State<LoginPage> {
         MaterialPageRoute(
           builder: (context) => const HomePage(),
         ));
+  }
+
+  Future signIn() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: user.trim(), password: password.trim());
+      navigateToMainPage();
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
+    }
   }
 }
