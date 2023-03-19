@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/component/component_text_input.dart';
 import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
+import 'package:hueveria_nieto_interna/values/firebase_auth_constants.dart';
 import 'package:hueveria_nieto_interna/values/image_routes.dart';
 import 'home_page.dart';
 
@@ -98,12 +99,33 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future signIn() async {
+    // TODO: añadir un Circular Progress Indicator
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: user.trim(), password: password.trim());
       navigateToMainPage();
+      return null;
     } on FirebaseAuthException catch (e) {
-      print(e.toString());
+      String errorMessage =
+          FirebaseAuthConstants.genericError + " Código de error: " + e.code;
+      if (FirebaseAuthConstants.loginErrors.containsKey(e.code)) {
+        errorMessage = FirebaseAuthConstants.loginErrors[e.code] ?? "";
+      }
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Vaya...'),
+                content: Text(errorMessage),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      setState(() {});
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
     }
   }
 }

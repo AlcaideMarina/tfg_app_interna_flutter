@@ -19,6 +19,7 @@ class HNComponentTextInput extends StatelessWidget {
   final IconData? icon;
   final bool? isDense;
   final EdgeInsetsGeometry? contentPadding;
+  final TextEditingController? textEditingController;
 
   const HNComponentTextInput(
       {Key? key,
@@ -36,7 +37,8 @@ class HNComponentTextInput extends StatelessWidget {
       this.suffixIcon,
       this.icon,
       this.isDense,
-      this.contentPadding})
+      this.contentPadding, 
+      this.textEditingController})
       : super(key: key);
 
   @override
@@ -47,6 +49,7 @@ class HNComponentTextInput extends StatelessWidget {
       textCapitalization: textCapitalization,
       keyboardType: textInputType,
       obscureText: obscureText,
+      controller: textEditingController,
       onChanged: (value) => onChange != null ? onChange!(value) : null,
       validator: (value) {
         if (value == null) {
