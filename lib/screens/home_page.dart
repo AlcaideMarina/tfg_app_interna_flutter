@@ -2,16 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/component/menu/lateral_menu.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
+import 'package:hueveria_nieto_interna/model/current_user.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage(this.currentUser, {Key? key}) : super(key: key);
+
+  final CurrentUser currentUser;
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+
+  late CurrentUser currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = widget.currentUser;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +39,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      drawer: const LateralMenu(),
+      drawer: LateralMenu(currentUser),
       appBar: AppBar(
         //leading: const Icon(Icons.menu_rounded, color: AppTheme.primary,),
         toolbarHeight: 56.0,

@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/component/component_text_input.dart';
 import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/values/firebase_auth_constants.dart';
 import 'package:hueveria_nieto_interna/values/image_routes.dart';
+import '../model/current_user.dart';
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -90,21 +92,84 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  navigateToMainPage() {
+  navigateToMainPage(CurrentUser currentUser) {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const HomePage(),
+          builder: (context) => HomePage(currentUser),
         ));
+  }
+
+  // TODO: Esto debería estar en una clase aparte
+  Future<CurrentUser?>? getUserInfo() async {
+    String? uid = FirebaseAuth.instance.currentUser?.uid;
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+        .collection('user_info')
+        .where('uid', isEqualTo: uid)
+        .get();
+    
+    String id = querySnapshot.docs[0].id;
+    DocumentSnapshot document =
+        await FirebaseFirestore.instance.collection('user_info').doc(id).get();
+
+    if (document.exists) {
+      final Map<String, dynamic>? userInfo = document.data() as Map<String, dynamic>?;
+      if (userInfo != null) {
+        // TODO: hacer un .fromMap
+        return CurrentUser(
+          uid ?? '', 
+          userInfo['id'], 
+          userInfo['name'], 
+          userInfo['surname'], 
+          userInfo['dni'], 
+          userInfo['phone'], 
+          userInfo['email'], 
+          userInfo['direction'], 
+          userInfo['city'], 
+          userInfo['province'], 
+          userInfo['postal_code'], 
+          userInfo['same_dni_direction'], 
+          userInfo['ss_number'], 
+          userInfo['bank_account'], 
+          userInfo['position'], 
+          userInfo['user'], 
+          userInfo['password']
+          // TODO: Faltan los permisos
+        );
+      } else {
+        return null;
+      }
+    } else {
+        return null;
+      }
   }
 
   Future signIn() async {
     // TODO: añadir un Circular Progress Indicator
+    // TODO: hacer un componente de pop-up
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: user.trim(), password: password);
-      // TODO: sacar el uid y pasárselo a la MainPage() - Cambiar también el constructor de la página
-      navigateToMainPage();
+      CurrentUser? currentUser = await getUserInfo();
+      if (currentUser != null) {
+        navigateToMainPage(currentUser);
+      } else {
+        showDialog(context: context, builder: (_) => AlertDialog(
+          title: const Text('Vaya...'),
+          content: const Text('Parece que ha habido un problema. Inténtalo de nuevo más tarde.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('De acuerdo.'),
+              onPressed: () {
+                setState(() {
+                  // TODO: borrar contraseña
+                });
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ));
+      }
     } on FirebaseAuthException catch (e) {
       String errorMessage =
           FirebaseAuthConstants.genericError + ' Código de error: ' + e.code;

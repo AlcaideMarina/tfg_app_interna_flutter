@@ -11,14 +11,14 @@ class HNComponentContainerBorderCheckTitle extends StatelessWidget {
   final EdgeInsets contentPadding;
   final VisualDensity visualDensity;
   final bool isDense;
-  bool value;
+  final bool value;
   // TODO: final VoidCallback onChange;
   final ListTileControlAffinity controlAffinity;
   final double leftPosition;
   final double rightPosition;
   final double topPosition;
 
-  HNComponentContainerBorderCheckTitle(this.title, this.container,
+  const HNComponentContainerBorderCheckTitle(this.title, this.container,
       // TODO: this.onChange,
       {Key? key,
       this.contentPadding = EdgeInsets.zero,

@@ -7,6 +7,7 @@ import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
+  // TODO: Check internet connection
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

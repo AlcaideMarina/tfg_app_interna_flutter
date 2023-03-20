@@ -3,17 +3,30 @@ import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/component/menu/lateral_menu.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
+import 'package:hueveria_nieto_interna/model/current_user.dart';
 import 'package:hueveria_nieto_interna/screens/users_and_clients/all_clients_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
 class UsersAndClientsPage extends StatefulWidget {
-  UsersAndClientsPage({Key? key}) : super(key: key);
+  UsersAndClientsPage(this.currentUser, {Key? key}) : super(key: key);
+
+  final CurrentUser currentUser;
 
   @override
   State<UsersAndClientsPage> createState() => _UsersAndClientsPageState();
 }
 
 class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
+
+  late CurrentUser currentUser;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    currentUser = widget.currentUser;
+  }
+
   @override
   Widget build(BuildContext context) {
     final double _width = MediaQuery.of(context).size.width;
@@ -29,7 +42,7 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      drawer: const LateralMenu(),
+      drawer: LateralMenu(currentUser),
       appBar: AppBar(
         toolbarHeight: 56.0,
         title: const Text("Usuarios y clientes", 
