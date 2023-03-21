@@ -21,6 +21,7 @@ class NewClientPage extends StatefulWidget {
 }
 
 class _NewClientPageState extends State<NewClientPage> {
+  // TODO: Refactorizar esto
   List<String> labelList = [
     "Empresa",
     "Dirección",
@@ -32,6 +33,18 @@ class _NewClientPageState extends State<NewClientPage> {
     "Teléfono",
     "Precio/ud.",
   ];
+  Map<String, TextInputType> labelInfo = {
+    "Empresa": TextInputType.name,
+    "Dirección": TextInputType.streetAddress,
+    "Ciudad": TextInputType.text,
+    "Provincia": TextInputType.text,
+    "Código postal": TextInputType.number,
+    "CIF": TextInputType.text,
+    "Correo": TextInputType.emailAddress,
+    "Teléfono": TextInputType.phone,
+    "Precio/ud.": TextInputType.number,
+  };
+
   List<String> eggTypes = [
     "Cajas XL",
     "Cajas L",
@@ -42,6 +55,7 @@ class _NewClientPageState extends State<NewClientPage> {
   List<String> userLabels = ["Usuario", "Correo"];
   int contCompany = 0;
   int contUser = 0;
+  bool checkValue = false;
 
   @override
   Widget build(BuildContext context) {
@@ -95,15 +109,31 @@ class _NewClientPageState extends State<NewClientPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('ID: '), // TODO: Falta el ID
-        getCompanyComponentSimpleForm(labelList[0]),
-        getCompanyComponentSimpleForm(labelList[1]),
-        getCompanyComponentSimpleForm(labelList[2]),
-        getCompanyComponentSimpleForm(labelList[3]),
-        getCompanyComponentSimpleForm(labelList[4]),
-        getCompanyComponentSimpleForm(labelList[5]),
-        getCompanyComponentSimpleForm(labelList[6]),
-        getComponentTableForm(labelList[7], getTelephoneTableRow()),
-        getComponentTableForm(labelList[8], getPricePerUnitTableRow(),
+        // TODO: Aquí hay que personalizar el campo
+        getCompanyComponentSimpleForm(
+            labelList[0], labelInfo[labelList[0]] ?? TextInputType.text),
+        getCompanyComponentSimpleForm(
+            labelList[1], labelInfo[labelList[1]] ?? TextInputType.text),
+        getCompanyComponentSimpleForm(
+            labelList[2], labelInfo[labelList[2]] ?? TextInputType.text),
+        getCompanyComponentSimpleForm(
+            labelList[3], labelInfo[labelList[3]] ?? TextInputType.text),
+        getCompanyComponentSimpleForm(
+            labelList[4], labelInfo[labelList[4]] ?? TextInputType.text),
+        getCompanyComponentSimpleForm(
+            labelList[5], labelInfo[labelList[5]] ?? TextInputType.text),
+        getCompanyComponentSimpleForm(
+            labelList[6], labelInfo[labelList[6]] ?? TextInputType.text),
+        getComponentTableForm(
+            labelList[7],
+            getTelephoneTableRow(
+              labelInfo[labelList[7]] ?? TextInputType.text,
+            )),
+        getComponentTableForm(
+            labelList[8],
+            getPricePerUnitTableRow(
+              labelInfo[labelList[8]] ?? TextInputType.text,
+            ),
             columnWidhts: {0: const IntrinsicColumnWidth()}),
         getClientUserContainerComponent(),
       ],
@@ -128,7 +158,8 @@ class _NewClientPageState extends State<NewClientPage> {
   }
 
   // TODO: hay que añadir elementos a todas las funciones
-  Widget getCompanyComponentSimpleForm(String label) {
+  Widget getCompanyComponentSimpleForm(
+      String label, TextInputType textInputType) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (contCompany == 0) {
@@ -143,8 +174,10 @@ class _NewClientPageState extends State<NewClientPage> {
         8,
         40,
         const EdgeInsets.symmetric(horizontal: 16),
-        const HNComponentTextInput(
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        HNComponentTextInput(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          textInputType: textInputType,
         ),
         EdgeInsets.only(top: topMargin, bottom: bottomMargin));
   }
@@ -170,17 +203,18 @@ class _NewClientPageState extends State<NewClientPage> {
     );
   }
 
-  List<TableRow> getTelephoneTableRow() {
+  List<TableRow> getTelephoneTableRow(TextInputType textInputType) {
     return [
-      const TableRow(children: [
+      TableRow(children: [
         HNComponentCellTableForm(
             40,
-            EdgeInsets.only(left: 16, right: 8, bottom: 8),
+            const EdgeInsets.only(left: 16, right: 8, bottom: 8),
             HNComponentTextInput(
+              textInputType: textInputType,
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             )),
-        HNComponentCellTableForm(
+        const HNComponentCellTableForm(
             40,
             EdgeInsets.only(left: 8, right: 16, bottom: 8),
             HNComponentTextInput(
@@ -207,7 +241,7 @@ class _NewClientPageState extends State<NewClientPage> {
     ];
   }
 
-  List<TableRow> getPricePerUnitTableRow() {
+  List<TableRow> getPricePerUnitTableRow(TextInputType textInputType) {
     List<TableRow> list = [];
     for (int i = 0; i < eggTypes.length; i++) {
       double bottomMargin = 8;
@@ -221,9 +255,10 @@ class _NewClientPageState extends State<NewClientPage> {
         Container(
           height: 40,
           margin: EdgeInsets.only(left: 8, right: 16, bottom: bottomMargin),
-          child: const HNComponentTextInput(
+          child: HNComponentTextInput(
             contentPadding:
-                EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: textInputType,
           ),
         ),
       ]));
@@ -253,9 +288,15 @@ class _NewClientPageState extends State<NewClientPage> {
           ],
         ),
       ),
+      (bool value) {
+        checkValue = value;
+        setState(() {});
+        print(checkValue.toString());
+      },
       leftPosition: 24,
       rightPosition: 56,
       topPosition: 0,
+      value: checkValue,
     );
   }
 

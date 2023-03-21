@@ -17,9 +17,10 @@ class HNComponentContainerBorderCheckTitle extends StatelessWidget {
   final double leftPosition;
   final double rightPosition;
   final double topPosition;
+  final Function(bool) onChange;
 
   const HNComponentContainerBorderCheckTitle(this.title, this.container,
-      // TODO: this.onChange,
+      this.onChange,
       {Key? key,
       this.contentPadding = EdgeInsets.zero,
       this.visualDensity = VisualDensity.compact,
@@ -53,7 +54,7 @@ class HNComponentContainerBorderCheckTitle extends StatelessWidget {
                 style: titleStyle,
               ),
               value: value,
-              onChanged: (newValue) {},
+              onChanged: (value) => onChange(value ?? false),
               controlAffinity: controlAffinity,
             ),
           ),
