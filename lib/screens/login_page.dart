@@ -7,6 +7,7 @@ import 'package:hueveria_nieto_interna/values/firebase_auth_constants.dart';
 import 'package:hueveria_nieto_interna/values/image_routes.dart';
 import '../model/current_user.dart';
 import 'home_page.dart';
+import 'dart:developer' as developer;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -145,12 +146,20 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future signIn() async {
-    // TODO: añadir un Circular Progress Indicator
+    // TODO: añadir un Circular Progress Indicator - que no se pueda quitar
     // TODO: hacer un componente de pop-up
     try {
+      showDialog(
+        context: context, 
+        builder: (_) => const Center(
+          child: CircularProgressIndicator()));
+      developer.log('Empieza la función signInWithEmailAndPassword()', name: 'Login');
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: user.trim(), password: password);
+      developer.log('Función signInWithEmailAndPassword() terminada', name: 'Login');
+      developer.log('Empieza la función getUserInfo()', name: 'Login');
       CurrentUser? currentUser = await getUserInfo();
+      developer.log('Función getUserInfo() terminada', name: 'Login');
       if (currentUser != null) {
         navigateToMainPage(currentUser);
       } else {
