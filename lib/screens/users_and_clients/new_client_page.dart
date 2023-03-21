@@ -166,7 +166,7 @@ class _NewClientPageState extends State<NewClientPage> {
             (value) {
               city = value;
             }
-        ),        
+        ),
         getCompanyComponentSimpleForm(
             'Provincia', 
             null,
@@ -174,7 +174,7 @@ class _NewClientPageState extends State<NewClientPage> {
             (value) {
               province = value;
             }
-        ),     
+        ),
         getCompanyComponentSimpleForm(
             'Código postal', 
             null,
@@ -182,7 +182,7 @@ class _NewClientPageState extends State<NewClientPage> {
             (value) {
               postalCode = int.parse(value);
             }
-        ),          
+        ),
         getCompanyComponentSimpleForm(
             'CIF', 
             null,
@@ -191,6 +191,15 @@ class _NewClientPageState extends State<NewClientPage> {
               cif = value;
             },
             textCapitalization: TextCapitalization.characters
+        ),
+        getCompanyComponentSimpleForm(
+            'Email', 
+            null,
+            TextInputType.emailAddress,
+            (value) {
+              email = value;
+            },
+            textCapitalization: TextCapitalization.none
         ),
         getComponentTableForm(
             'Teléfono',
