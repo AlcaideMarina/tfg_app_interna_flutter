@@ -59,6 +59,7 @@ class _NewClientPageState extends State<NewClientPage> {
     "Código postal",
     "CIF",
     "Correo",
+    'Confirmación del email'
     "Teléfono",
     "Precio/ud.",
   ];
@@ -82,9 +83,12 @@ class _NewClientPageState extends State<NewClientPage> {
     's': "Cajas S",
     'cartoned': "Estuchados"
   };
-  List<String> userLabels = ["Usuario", "Correo"];
+  List<String> userLabels = ["Usuario", "Correo", 'Confirmación del correo'];
   int contCompany = 0;
   int contUser = 0;
+
+  bool isEmailConfirmated = false;
+  bool isEmailAccountConfirmated = false;
 
   @override
   Widget build(BuildContext context) {
@@ -193,11 +197,20 @@ class _NewClientPageState extends State<NewClientPage> {
             textCapitalization: TextCapitalization.characters
         ),
         getCompanyComponentSimpleForm(
-            'Email', 
+            'Correo', 
             null,
             TextInputType.emailAddress,
             (value) {
               email = value;
+            },
+            textCapitalization: TextCapitalization.none
+        ),
+        getCompanyComponentSimpleForm(
+            'Confirmación del correo', 
+            null,
+            TextInputType.emailAddress,
+            (value) {
+              isEmailConfirmated = (value == email);
             },
             textCapitalization: TextCapitalization.none
         ),
@@ -404,8 +417,13 @@ class _NewClientPageState extends State<NewClientPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            getClientComponentSimpleForm(userLabels[0], TextInputType.text),
-            getClientComponentSimpleForm(userLabels[1], TextInputType.emailAddress),
+            getClientComponentSimpleForm(userLabels[0], TextInputType.text, (value) {user = value;}),
+            getClientComponentSimpleForm(userLabels[1], TextInputType.emailAddress, (value) {
+              emailAccount = value;
+            }),
+            getClientComponentSimpleForm(userLabels[2], TextInputType.emailAddress, (value) {
+              isEmailAccountConfirmated = (value == emailAccount);
+            }),
             const Text(
                 "Se le mandará a esta dirección de correo un mensaje con la información para terminar de crear la cuenta."),
           ],
@@ -422,7 +440,7 @@ class _NewClientPageState extends State<NewClientPage> {
     );
   }
 
-  Widget getClientComponentSimpleForm(String label, TextInputType textInputType) {
+  Widget getClientComponentSimpleForm(String label, TextInputType textInputType, Function(String)? onChange) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (contUser == 0) {
@@ -441,6 +459,7 @@ class _NewClientPageState extends State<NewClientPage> {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         textCapitalization: TextCapitalization.none,
         textInputType: textInputType,
+        onChange: onChange,
       ),
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       textMargin: const EdgeInsets.only(left: 24),
