@@ -1,4 +1,4 @@
-class CurrentUser {
+class CurrentUserModel {
   final String uid;
   final String visibleID;
   final String name;
@@ -19,7 +19,7 @@ class CurrentUser {
   // Lista de permisos app interna
   // Lista de permisos app repartos
 
-  const CurrentUser(
+  const CurrentUserModel(
     this.uid,
     this.visibleID,
     this.name,
