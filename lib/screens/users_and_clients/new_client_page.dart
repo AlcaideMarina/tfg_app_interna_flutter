@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/component/component_cell_table_form.dart';
 import 'package:hueveria_nieto_interna/component/component_container_border_check_title.dart';
@@ -8,6 +9,7 @@ import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
+import 'package:hueveria_nieto_interna/model/client_model.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
 // TODO: Cuidado - todo esta clase está hardcodeada
@@ -20,8 +22,35 @@ class NewClientPage extends StatefulWidget {
   State<NewClientPage> createState() => _NewClientPageState();
 }
 
+// TODO: Faltan todas las validaciones
 class _NewClientPageState extends State<NewClientPage> {
-  // TODO: Refactorizar esto
+
+  late String id;
+  late String company;
+  late String direction;
+  late String city;
+  late String province;
+  late int postalCode;
+  late String cif;
+  late String email;
+  late int phone1;
+  late int phone2;
+  late String namePhone1;
+  late String namePhone2;
+  Map<String, double> prices = {'xl': 0.0, 'l': 0.0, 'm': 0.0, 's': 0.0, 'cartoned': 0.0};
+  // TODO: Borrar estas variables - Ahora se usa el mapa anterior
+  late double priceXl;
+  late double priceL;
+  late double priceM;
+  late double priceS;
+  late double cartoned;
+  //
+  bool hasAccount = false;
+  // TODO: Mirar otra forma de contar - ¿mapas?
+  late String user;
+  late String emailAccount;
+
+  // TODO: Refactorizar esto - ¿se puede borrar?
   List<String> labelList = [
     "Empresa",
     "Dirección",
@@ -34,8 +63,8 @@ class _NewClientPageState extends State<NewClientPage> {
     "Precio/ud.",
   ];
   Map<String, TextInputType> labelInfo = {
-    "Empresa": TextInputType.name,
-    "Dirección": TextInputType.streetAddress,
+    "Empresa": TextInputType.text,
+    "Dirección": TextInputType.text,
     "Ciudad": TextInputType.text,
     "Provincia": TextInputType.text,
     "Código postal": TextInputType.number,
@@ -44,23 +73,26 @@ class _NewClientPageState extends State<NewClientPage> {
     "Teléfono": TextInputType.phone,
     "Precio/ud.": TextInputType.number,
   };
+  //
 
-  List<String> eggTypes = [
-    "Cajas XL",
-    "Cajas L",
-    "Cajas M",
-    "Cajas S",
-    "Estuchados"
-  ];
+  Map<String, String> eggTypes = {
+    'xl': "Cajas XL",
+    'l': "Cajas L",
+    'm': "Cajas M",
+    's': "Cajas S",
+    'cartoned': "Estuchados"
+  };
   List<String> userLabels = ["Usuario", "Correo"];
   int contCompany = 0;
   int contUser = 0;
-  bool checkValue = false;
 
   @override
   Widget build(BuildContext context) {
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
+
+    // TODO: Calcular ID
+    id = '000001';
 
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     if (StringsTranslation.of(context) == null) {
@@ -108,32 +140,65 @@ class _NewClientPageState extends State<NewClientPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('ID: '), // TODO: Falta el ID
+        Text('ID: ' + id), // TODO: Falta el ID
         // TODO: Aquí hay que personalizar el campo
         getCompanyComponentSimpleForm(
-            labelList[0], labelInfo[labelList[0]] ?? TextInputType.text),
+          'Empresa',
+          null,
+          TextInputType.text,
+          (value) {
+            company = value;
+            // TODO: format user
+          }
+        ),
         getCompanyComponentSimpleForm(
-            labelList[1], labelInfo[labelList[1]] ?? TextInputType.text),
+            'Dirección', 
+            null,
+            TextInputType.text,
+            (value) {
+              direction = value;
+            }
+        ),
         getCompanyComponentSimpleForm(
-            labelList[2], labelInfo[labelList[2]] ?? TextInputType.text),
+            'Ciudad', 
+            null,
+            TextInputType.text,
+            (value) {
+              city = value;
+            }
+        ),        
         getCompanyComponentSimpleForm(
-            labelList[3], labelInfo[labelList[3]] ?? TextInputType.text),
+            'Provincia', 
+            null,
+            TextInputType.text,
+            (value) {
+              province = value;
+            }
+        ),     
         getCompanyComponentSimpleForm(
-            labelList[4], labelInfo[labelList[4]] ?? TextInputType.text),
+            'Código postal', 
+            null,
+            TextInputType.number,
+            (value) {
+              postalCode = int.parse(value);
+            }
+        ),          
         getCompanyComponentSimpleForm(
-            labelList[5], labelInfo[labelList[5]] ?? TextInputType.text),
-        getCompanyComponentSimpleForm(
-            labelList[6], labelInfo[labelList[6]] ?? TextInputType.text),
+            'CIF', 
+            null,
+            TextInputType.text,
+            (value) {
+              cif = value;
+            },
+            textCapitalization: TextCapitalization.characters
+        ),
         getComponentTableForm(
-            labelList[7],
-            getTelephoneTableRow(
-              labelInfo[labelList[7]] ?? TextInputType.text,
-            )),
+            'Teléfono',
+            getTelephoneTableRow()
+        ),
         getComponentTableForm(
-            labelList[8],
-            getPricePerUnitTableRow(
-              labelInfo[labelList[8]] ?? TextInputType.text,
-            ),
+            'Precio/ud.',
+            getPricePerUnitTableRow(),
             columnWidhts: {0: const IntrinsicColumnWidth()}),
         getClientUserContainerComponent(),
       ],
@@ -146,20 +211,19 @@ class _NewClientPageState extends State<NewClientPage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton("Guardar", null, null, () {}, () {}),
+              .getTypedButton("Guardar", null, null, saveClient, () {}),
           const SizedBox(
             height: 8,
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton("Cancelar", null, null, () {}, () {}),
+              .getTypedButton("Cancelar", null, null, goBack, () {}),
         ],
       ),
     );
   }
 
-  // TODO: hay que añadir elementos a todas las funciones
   Widget getCompanyComponentSimpleForm(
-      String label, TextInputType textInputType) {
+      String label, String? labelInputText, TextInputType textInputType, Function(String)? onChange, {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (contCompany == 0) {
@@ -175,9 +239,12 @@ class _NewClientPageState extends State<NewClientPage> {
         40,
         const EdgeInsets.symmetric(horizontal: 16),
         HNComponentTextInput(
+          textCapitalization: textCapitalization,
+          labelText: labelInputText,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           textInputType: textInputType,
+          onChange: onChange,
         ),
         EdgeInsets.only(top: topMargin, bottom: bottomMargin));
   }
@@ -203,47 +270,93 @@ class _NewClientPageState extends State<NewClientPage> {
     );
   }
 
-  List<TableRow> getTelephoneTableRow(TextInputType textInputType) {
+  List<TableRow> getTelephoneTableRow() {
     return [
       TableRow(children: [
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 16, right: 8, bottom: 8),
             HNComponentTextInput(
-              textInputType: textInputType,
+              labelText: 'Teléfono',
+              textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              onChange: (value) {
+                phone1 = int.parse(value);
+              },
             )),
-        const HNComponentCellTableForm(
+        HNComponentCellTableForm(
             40,
-            EdgeInsets.only(left: 8, right: 16, bottom: 8),
+            const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             HNComponentTextInput(
+              labelText: 'Nombre contacto',
+              textCapitalization: TextCapitalization.words,
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              onChange: (value) {
+                namePhone1 = value;
+              },
             )),
       ]),
-      const TableRow(children: [
+      TableRow(children: [
         HNComponentCellTableForm(
             40,
-            EdgeInsets.only(left: 16, right: 8),
+            const EdgeInsets.only(left: 16, right: 8),
             HNComponentTextInput(
+              labelText: 'Teléfono',
+              textInputType: TextInputType.number,
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              onChange: (value) {
+                phone2 = int.parse(value);
+              },
             )),
         HNComponentCellTableForm(
             40,
-            EdgeInsets.only(left: 8, right: 16),
+            const EdgeInsets.only(left: 8, right: 16),
             HNComponentTextInput(
+              labelText: 'Nombre contacto',
+              textCapitalization: TextCapitalization.words,
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              onChange: (value) {
+                namePhone2 = value;
+              },
             )),
       ]),
     ];
   }
 
-  List<TableRow> getPricePerUnitTableRow(TextInputType textInputType) {
+  List<TableRow> getPricePerUnitTableRow() {
     List<TableRow> list = [];
-    for (int i = 0; i < eggTypes.length; i++) {
+    int cont = 0;
+    for (var key in eggTypes.keys) {
+      double bottomMargin = 8;
+      if (cont == eggTypes.length) {
+        bottomMargin = 0;
+      }
+
+      list.add(TableRow(children: [
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text(eggTypes[key] ?? 'error - ' + key)),
+        Container(
+          height: 40,
+          margin: EdgeInsets.only(left: 8, right: 16, bottom: bottomMargin),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            onChange: (value) {
+              prices[key] = double.parse(value);
+            },
+          ),
+        ),
+      ]));
+
+      cont ++;
+    }
+    /*for (int i = 0; i < eggTypes.length; i++) {
       double bottomMargin = 8;
       if (i == eggTypes.length) {
         bottomMargin = 0;
@@ -259,10 +372,11 @@ class _NewClientPageState extends State<NewClientPage> {
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             textInputType: textInputType,
+            onChange: onChange,
           ),
         ),
       ]));
-    }
+    }*/
     return list;
   }
 
@@ -281,26 +395,25 @@ class _NewClientPageState extends State<NewClientPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            getClientComponentSimpleForm(userLabels[0]),
-            getClientComponentSimpleForm(userLabels[1]),
+            getClientComponentSimpleForm(userLabels[0], TextInputType.text),
+            getClientComponentSimpleForm(userLabels[1], TextInputType.emailAddress),
             const Text(
                 "Se le mandará a esta dirección de correo un mensaje con la información para terminar de crear la cuenta."),
           ],
         ),
       ),
       (bool value) {
-        checkValue = value;
+        hasAccount = value;
         setState(() {});
-        print(checkValue.toString());
       },
       leftPosition: 24,
       rightPosition: 56,
       topPosition: 0,
-      value: checkValue,
+      value: hasAccount,
     );
   }
 
-  Widget getClientComponentSimpleForm(String label) {
+  Widget getClientComponentSimpleForm(String label, TextInputType textInputType) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (contUser == 0) {
@@ -315,11 +428,62 @@ class _NewClientPageState extends State<NewClientPage> {
       8,
       40,
       const EdgeInsets.only(left: 0),
-      const HNComponentTextInput(
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      HNComponentTextInput(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textCapitalization: TextCapitalization.none,
+        textInputType: textInputType,
       ),
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       textMargin: const EdgeInsets.only(left: 24),
     );
+  }
+
+  saveClient() async {
+    try {
+      // TODO: Hay que sacar los datos del cliente
+      const client = ClientModel(
+        '000001', 'Bar Augusto', 'Plaza Pontevedra 3', 'A Coruña', 'A Coruña', 28003, 'B34534534', 'prueba@email.com', [{'Lucía Monte Rey': 678678678}, {'Fernanda Gómez Gómez': 634634634}], {'xl': 27, 'l': 26, 'm': 25, 's': 24, 'cartoned': 23}, false, null, null);
+      // TODO: Mandar los datos a Firestore
+      await FirebaseFirestore.instance.collection('client_info').add({
+        'id': client.id,
+        'company': client.company,
+        'direction': client.direction,
+        'city': client.city,
+        'province': client.province,
+        'postal_code': client.postalCode,
+        'cif': client.cif,
+        'email': client.email,
+        'phone': client.phone,
+        'price': client.price,
+        'has_account': client.hasAccount,
+        'user': client.user,
+        'email_account': client.emailAccount
+      });
+      // TODO: si hasAccount == true y email_account no es nulo, hay que hacer llamada también a Firebase Auth
+
+      // TODO: Hacer una comprobación - búsquda por el id - mostrar pop-up diciendo si ha ido todo bien
+
+    } catch (e) {
+      print(e.toString());
+      showDialog(
+        context: context, 
+        builder: (_) => AlertDialog(
+          title: const Text('Vaya...'), 
+          content: const Text('Se ha producido un error'),actions: <Widget>[
+            TextButton(
+              child: const Text('De acuerdo.'),
+              onPressed: () {
+                //setState(() {});
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        )
+      );
+    }
+  }
+
+  goBack() {
+    Navigator.of(context).pop();
   }
 }

@@ -25,7 +25,7 @@ class HNComponentTextInput extends StatelessWidget {
       {Key? key,
       this.autofocus = false,
       this.initialValue,
-      this.textCapitalization = TextCapitalization.none,
+      this.textCapitalization = TextCapitalization.sentences,
       this.obscureText = false,
       this.textInputType,
       this.onChange,

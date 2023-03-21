@@ -94,6 +94,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   navigateToMainPage(CurrentUserModel currentUser) {
+    // TODO: Evitar que al dar al botón de atrás, vuelva aquí
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
