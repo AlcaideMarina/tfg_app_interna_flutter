@@ -11,9 +11,12 @@ import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/model/client_model.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
+import 'package:provider/provider.dart';
 import 'dart:developer' as developer;
 
 import '../../model/current_user_model.dart';
+import '../../services/products_services.dart';
+import '../loading_page.dart';
 
 // TODO: Cuidado - todo esta clase está hardcodeada
 // TODO: Intentar reducir código
@@ -90,6 +93,11 @@ class _NewClientPageState extends State<NewClientPage> {
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
 
+    final productsService = Provider.of<ProductsService>(context);
+
+    if (productsService.isLoading) return const LoadingPage();
+
+    prices = productsService.products;
     // TODO: Calcular ID
     id = '000001';
 
@@ -216,7 +224,7 @@ class _NewClientPageState extends State<NewClientPage> {
         getComponentTableForm(
             'Precio/ud.',
             getPricePerUnitTableRow(),
-            columnWidhts: {0: const IntrinsicColumnWidth()}),
+            columnWidhts: {0: const IntrinsicColumnWidth(), 2: const IntrinsicColumnWidth()}),
         getClientUserContainerComponent(),
       ],
     );
@@ -361,6 +369,7 @@ class _NewClientPageState extends State<NewClientPage> {
           height: 40,
           margin: EdgeInsets.only(left: 8, right: 16, bottom: bottomMargin),
           child: HNComponentTextInput(
+            initialValue: prices[key] != null ? prices[key].toString() : '0.0',
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             textInputType: const TextInputType.numberWithOptions(),
@@ -369,6 +378,9 @@ class _NewClientPageState extends State<NewClientPage> {
             },
           ),
         ),
+        Container(
+          margin: const EdgeInsets.only(right: 16),
+          child: const Text('€'),)
       ]));
 
       cont ++;
