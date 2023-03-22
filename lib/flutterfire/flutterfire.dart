@@ -1,25 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
-const defaultConstantsName = 'default_constants';
-const defaultConstantsConstantName = 'constant_name';
-
-enum DefaultConstantsEnum {
-  eggTypes,
-}
-
-Map<DefaultConstantsEnum, String> defaultConstantsMap = {
-  DefaultConstantsEnum.eggTypes: 'egg_types',
-};
+import '../values/firebase_constants.dart';
 
 Future<Map<String, double>?> getEggTypes() async {
   try {
-final databaseReference = FirebaseFirestore.instance;
+    final databaseReference = FirebaseFirestore.instance;
     dynamic document = await databaseReference
-        .collection(defaultConstantsName)
+        .collection(FirebaseConstants.defaultConstantsName)
         .where(
-          defaultConstantsConstantName, 
-          isEqualTo: defaultConstantsMap[DefaultConstantsEnum.eggTypes])
+          FirebaseConstants.defaultConstantsConstantName, 
+          isEqualTo: FirebaseConstants.defaultConstantsMap[DefaultConstantsEnum.eggTypes])
         .get();
 
     if (document.docs.isEmpty) {
