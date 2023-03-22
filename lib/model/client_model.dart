@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 class ClientModel {
   // TODO: Igual hay que mirar que el id sea nulable, porque incialmente no va a vernir en el map - o se 
@@ -43,24 +44,49 @@ class ClientModel {
 
   String toJson() => jsonEncode(toMap());
 
-  factory ClientModel.fromMap(Map<String, dynamic> json) => ClientModel(
-    json['id'],
-    json['company'],
-    json['direction'],
-    json['city'],
-    json['province'],
-    json['postal_code'],
-    json['cif'],
-    json['email'],
-    json['phone'],
-    json['price'],
-    json['has_account'],
-    json['user'],
-    json['email_account'],
-    json['creation_datetime'],
-    json['created_by'],
-    json['uid']
-  );
+  factory ClientModel.fromMap(Map<String, dynamic> json) {
+
+    List<Map<String, int>> phoneMap = [];
+    (json['phone'] as List<dynamic>).forEach((element) {
+      try {
+        (element as Map<String, dynamic>).forEach((key, value) {
+          phoneMap.add({key: element[key]});
+        });
+      } catch (e) {
+        phoneMap.add({'no-info': 0});
+        developer.log('Error - ClientModel - ClientModel.fromMap() - phones: ' + e.toString());
+      }
+    });
+
+    Map<String, double> priceMap = {};
+    (json['price'] as Map<String, dynamic>).forEach((key, value) {
+      try {
+        priceMap[key] = value.toDouble();
+      } catch (e) {
+        priceMap[key] = 0.0;
+        developer.log('Error - ClientModel - ClientModel.fromMap() - prices: ' + e.toString());
+      }
+    },);
+
+    return ClientModel(
+      json['id'],
+      json['company'],
+      json['direction'],
+      json['city'],
+      json['province'],
+      json['postal_code'],
+      json['cif'],
+      json['email'],
+      phoneMap,
+      priceMap,
+      json['has_account'],
+      json['user'],
+      json['email_account'],
+      json['creation_datetime'],
+      json['created_by'],
+      json['uid']
+    );
+  }
 
   Map<String, dynamic> toMap() => {
     // TODO: ¿deberíamos añadir id? Entiendo que no porque no se guarda en bbdd como tal

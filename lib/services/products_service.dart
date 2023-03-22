@@ -10,7 +10,6 @@ class ProductsService extends ChangeNotifier {
   ProductsService() {
     loadEggTypes();
   }
-  // TODO: Hacer fetch de products
 
   Future<Map<String, double>?> loadEggTypes() async {
     isLoading = true;

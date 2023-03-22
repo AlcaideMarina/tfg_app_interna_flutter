@@ -2,11 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/screens/login_page.dart';
-import 'package:hueveria_nieto_interna/services/products_services.dart';
+import 'package:hueveria_nieto_interna/services/products_service.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
+
+import 'services/id_service.dart';
 
 
 Future<void> main() async {
@@ -25,7 +27,8 @@ class AppState extends StatelessWidget {
     // TODO: implement build
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ProductsService())
+        ChangeNotifierProvider(create: (_) => ProductsService()),
+        ChangeNotifierProvider(create: (_) => IDService())
       ],
       child: MyApp(),
     );

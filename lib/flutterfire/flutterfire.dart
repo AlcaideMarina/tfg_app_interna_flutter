@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hueveria_nieto_interna/model/client_model.dart';
 import 'package:hueveria_nieto_interna/model/products_model.dart';
 import 'dart:developer' as developer;
 
@@ -6,8 +7,7 @@ import '../values/firebase_constants.dart';
 
 Future<Map<String, double>?> getEggTypes() async {
   try {
-    final databaseReference = FirebaseFirestore.instance;
-    QuerySnapshot query = await databaseReference
+    QuerySnapshot query = await FirebaseFirestore.instance
         .collection(FirebaseConstants.defaultConstantsName)
         .where(
           FirebaseConstants.defaultConstantsConstantName, 
@@ -27,4 +27,28 @@ Future<Map<String, double>?> getEggTypes() async {
     return null;
   }
   
+}
+
+Future<String?> getNextUserId() async {
+  try {
+    QuerySnapshot query = await FirebaseFirestore.instance
+      .collection('client_info')
+      .orderBy('id')
+      .get();
+    
+    if (query.docs.isEmpty || !query.docs[query.docs.length - 1].exists) {
+      return null;
+    } else {
+      Map<String, dynamic> lastDocument = query.docs[query.docs.length - 1].data() as Map<String, dynamic>;
+      ClientModel clientModel = ClientModel.fromMap(lastDocument);
+      String newId = (int.parse(clientModel.id) + 1).toString();
+      while (newId.length < 10) {
+        newId = '0' + newId;
+      }
+      return newId;
+    }
+  } catch (e) {
+    developer.log('Error - FlutterFire - getNextUserId(): ' + e.toString());
+    return null;
+  }
 }

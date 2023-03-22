@@ -10,12 +10,13 @@ import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/model/client_model.dart';
+import 'package:hueveria_nieto_interna/services/id_service.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer' as developer;
 
 import '../../model/current_user_model.dart';
-import '../../services/products_services.dart';
+import '../../services/products_service.dart';
 import '../loading_page.dart';
 
 // TODO: Cuidado - todo esta clase está hardcodeada
@@ -96,12 +97,12 @@ class _NewClientPageState extends State<NewClientPage> {
     final double _height = MediaQuery.of(context).size.height;
 
     final productsService = Provider.of<ProductsService>(context);
-
-    if (productsService.isLoading) return const LoadingPage();
+    final idService = Provider.of<IDService>(context);
+    if (productsService.isLoading || idService.isLoading) return const LoadingPage();
 
     prices = productsService.products;
-    // TODO: Calcular ID
-    id = '000001';
+    // TODO: Esto debería refrescarse cada vez - ¿Igual hacere un stream? ¿o un bloc?
+    id = idService.newId;
 
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     if (StringsTranslation.of(context) == null) {
