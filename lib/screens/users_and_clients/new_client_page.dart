@@ -31,9 +31,7 @@ class NewClientPage extends StatefulWidget {
 }
 
 // TODO: Faltan todas las validaciones
-// TODO: Faltan mostrar valores por defecto
 class _NewClientPageState extends State<NewClientPage> {
-
   late CurrentUserModel currentUser;
 
   @override
@@ -61,26 +59,26 @@ class _NewClientPageState extends State<NewClientPage> {
   String? emailAccount;
 
   List<String> labelList = [
-    "Empresa",
-    "Dirección",
-    "Ciudad",
-    "Provincia",
-    "Código postal",
-    "CIF",
-    "Correo",
-    'Confirmación del email'
-    "Teléfono",
-    "Precio/ud.",
+    'Empresa',
+    'Dirección',
+    'Ciudad',
+    'Provincia',
+    'Código postal',
+    'CIF',
+    'Correo',
+    'Confirmación del email',
+    'Teléfono',
+    'Precio/ud.',
   ];
 
   Map<String, String> eggTypes = {
-    'xl': "Cajas XL",
-    'l': "Cajas L",
-    'm': "Cajas M",
-    's': "Cajas S",
-    'cartoned': "Estuchados"
+    'xl': 'Cajas XL',
+    'l': 'Cajas L',
+    'm': 'Cajas M',
+    's': 'Cajas S',
+    'cartoned': 'Estuchados'
   };
-  List<String> userLabels = ["Usuario", "Correo", 'Confirmación del correo'];
+  List<String> userLabels = ['Usuario', 'Correo', 'Confirmación del correo'];
   int contCompany = 0;
   int contUser = 0;
 
@@ -107,9 +105,9 @@ class _NewClientPageState extends State<NewClientPage> {
 
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     if (StringsTranslation.of(context) == null) {
-      print("NULO");
+      print('NULO');
     } else {
-      print("NO NULO");
+      print('NO NULO');
     }
     contCompany = 0;
     contUser = 0;
@@ -119,7 +117,7 @@ class _NewClientPageState extends State<NewClientPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Nuevo cliente",
+              'Nuevo cliente',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
@@ -153,84 +151,48 @@ class _NewClientPageState extends State<NewClientPage> {
       children: [
         Text('ID: ' + id), // TODO: Falta el ID
         // TODO: Aquí hay que personalizar el campo
-        getCompanyComponentSimpleForm(
-          'Empresa',
-          null,
-          TextInputType.text,
-          (value) {
-            company = value;
-            // format user
-            companyUserName = value.toLowerCase().replaceAll(RegExp(' '), '_');
-            userController.text = companyUserName + '_' + phone1NameUserName + '_' + phone1UserName;
-          }
-        ),
-        getCompanyComponentSimpleForm(
-            'Dirección', 
-            null,
-            TextInputType.text,
+        getCompanyComponentSimpleForm('Empresa', null, TextInputType.text,
             (value) {
-              direction = value;
-            }
-        ),
-        getCompanyComponentSimpleForm(
-            'Ciudad', 
-            null,
-            TextInputType.text,
+          company = value;
+          // format user
+          companyUserName = value.toLowerCase().replaceAll(RegExp(' '), '_');
+          userController.text =
+              companyUserName + '_' + phone1NameUserName + '_' + phone1UserName;
+        }),
+        getCompanyComponentSimpleForm('Dirección', null, TextInputType.text,
             (value) {
-              city = value;
-            }
-        ),
-        getCompanyComponentSimpleForm(
-            'Provincia', 
-            null,
-            TextInputType.text,
+          direction = value;
+        }),
+        getCompanyComponentSimpleForm('Ciudad', null, TextInputType.text,
             (value) {
-              province = value;
-            }
-        ),
-        getCompanyComponentSimpleForm(
-            'Código postal', 
-            null,
-            TextInputType.number,
+          city = value;
+        }),
+        getCompanyComponentSimpleForm('Provincia', null, TextInputType.text,
             (value) {
-              postalCode = int.parse(value);
-            }
-        ),
+          province = value;
+        }),
         getCompanyComponentSimpleForm(
-            'CIF', 
-            null,
-            TextInputType.text,
-            (value) {
-              cif = value;
-            },
-            textCapitalization: TextCapitalization.characters
-        ),
+            'Código postal', null, TextInputType.number, (value) {
+          postalCode = int.parse(value);
+        }),
+        getCompanyComponentSimpleForm('CIF', null, TextInputType.text, (value) {
+          cif = value;
+        }, textCapitalization: TextCapitalization.characters),
         getCompanyComponentSimpleForm(
-            'Correo', 
-            null,
-            TextInputType.emailAddress,
-            (value) {
-              email = value;
-            },
-            textCapitalization: TextCapitalization.none
-        ),
+            'Correo', null, TextInputType.emailAddress, (value) {
+          email = value;
+        }, textCapitalization: TextCapitalization.none),
         getCompanyComponentSimpleForm(
-            'Confirmación del correo', 
-            null,
-            TextInputType.emailAddress,
+            'Confirmación del correo', null, TextInputType.emailAddress,
             (value) {
-              isEmailConfirmated = (value == email);
-            },
-            textCapitalization: TextCapitalization.none
-        ),
-        getComponentTableForm(
-            'Teléfono',
-            getTelephoneTableRow()
-        ),
-        getComponentTableForm(
-            'Precio/ud.',
-            getPricePerUnitTableRow(),
-            columnWidhts: {0: const IntrinsicColumnWidth(), 2: const IntrinsicColumnWidth()}),
+          isEmailConfirmated = (value == email);
+        }, textCapitalization: TextCapitalization.none),
+        getComponentTableForm('Teléfono', getTelephoneTableRow()),
+        getComponentTableForm('Precio/ud.', getPricePerUnitTableRow(),
+            columnWidhts: {
+              0: const IntrinsicColumnWidth(),
+              2: const IntrinsicColumnWidth()
+            }),
         getClientUserContainerComponent(),
       ],
     );
@@ -242,19 +204,20 @@ class _NewClientPageState extends State<NewClientPage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton("Guardar", null, null, saveClient, () {}),
+              .getTypedButton('Guardar', null, null, saveClient, () {}),
           const SizedBox(
             height: 8,
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton("Cancelar", null, null, goBack, () {}),
+              .getTypedButton('Cancelar', null, null, goBack, () {}),
         ],
       ),
     );
   }
 
-  Widget getCompanyComponentSimpleForm(
-      String label, String? labelInputText, TextInputType textInputType, Function(String)? onChange, {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
+  Widget getCompanyComponentSimpleForm(String label, String? labelInputText,
+      TextInputType textInputType, Function(String)? onChange,
+      {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (contCompany == 0) {
@@ -265,7 +228,7 @@ class _NewClientPageState extends State<NewClientPage> {
     contCompany++;
 
     return HNComponentSimpleForm(
-        label + ":",
+        label + ':',
         8,
         40,
         const EdgeInsets.symmetric(horizontal: 16),
@@ -320,7 +283,11 @@ class _NewClientPageState extends State<NewClientPage> {
                 } else {
                   phone1UserName = '';
                 }
-                userController.text = companyUserName + '_' + phone1NameUserName + '_' + phone1UserName;
+                userController.text = companyUserName +
+                    '_' +
+                    phone1NameUserName +
+                    '_' +
+                    phone1UserName;
               },
             )),
         HNComponentCellTableForm(
@@ -337,9 +304,14 @@ class _NewClientPageState extends State<NewClientPage> {
                 phone1NameUserName = '';
                 final list = namePhone1.split(' ');
                 for (String word in list) {
-                  if (word.isNotEmpty) phone1NameUserName += word.toLowerCase().substring(0, 1);
+                  if (word.isNotEmpty)
+                    phone1NameUserName += word.toLowerCase().substring(0, 1);
                 }
-                userController.text = companyUserName + '_' + phone1NameUserName + '_' + phone1UserName;
+                userController.text = companyUserName +
+                    '_' +
+                    phone1NameUserName +
+                    '_' +
+                    phone1UserName;
               },
             )),
       ]),
@@ -400,17 +372,18 @@ class _NewClientPageState extends State<NewClientPage> {
         ),
         Container(
           margin: const EdgeInsets.only(right: 16),
-          child: const Text('€'),)
+          child: const Text('€'),
+        )
       ]));
 
-      cont ++;
+      cont++;
     }
     return list;
   }
 
   Widget getClientUserContainerComponent() {
     return HNComponentContainerBorderCheckTitle(
-      "Crear usuario para la app cliente",
+      'Crear usuario para la app cliente',
       Container(
         width: double.infinity,
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 19),
@@ -423,15 +396,20 @@ class _NewClientPageState extends State<NewClientPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            getClientComponentSimpleForm(userLabels[0], TextInputType.text, (value) {user = value;}, controller: userController),
-            getClientComponentSimpleForm(userLabels[1], TextInputType.emailAddress, (value) {
+            getClientComponentSimpleForm(userLabels[0], TextInputType.text,
+                (value) {
+              user = value;
+            }, controller: userController),
+            getClientComponentSimpleForm(
+                userLabels[1], TextInputType.emailAddress, (value) {
               emailAccount = value;
             }),
-            getClientComponentSimpleForm(userLabels[2], TextInputType.emailAddress, (value) {
+            getClientComponentSimpleForm(
+                userLabels[2], TextInputType.emailAddress, (value) {
               isEmailAccountConfirmated = (value == emailAccount);
             }),
             const Text(
-                "Se le mandará a esta dirección de correo un mensaje con la información para terminar de crear la cuenta."),
+                'Se le mandará a esta dirección de correo un mensaje con la información para terminar de crear la cuenta.'),
           ],
         ),
       ),
@@ -446,7 +424,9 @@ class _NewClientPageState extends State<NewClientPage> {
     );
   }
 
-  Widget getClientComponentSimpleForm(String label, TextInputType textInputType, Function(String)? onChange, {TextEditingController? controller}) {
+  Widget getClientComponentSimpleForm(
+      String label, TextInputType textInputType, Function(String)? onChange,
+      {TextEditingController? controller}) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (contUser == 0) {
@@ -457,7 +437,7 @@ class _NewClientPageState extends State<NewClientPage> {
     contUser++;
 
     return HNComponentSimpleForm(
-      label + ":",
+      label + ':',
       8,
       40,
       const EdgeInsets.only(left: 0),
@@ -478,28 +458,31 @@ class _NewClientPageState extends State<NewClientPage> {
       // TODO: si hasAccount == true y email_account no es nulo, hay que hacer llamada también a Firebase Auth
       if (hasAccount && emailAccount != null) {
         // Pendiente de desarrollo de app cliente - ¿creo contraseña que aparezca en el correo y luego que se modifique?
-      } 
+      }
 
       // TODO: Comprobar que el Id no se repita
       final client = ClientModel(
-        id, 
-        company, 
-        direction, 
-        city, 
-        province, 
-        postalCode, 
-        cif, 
-        email, 
-        [{namePhone1: phone1}, {namePhone2: phone2}], 
-        prices, 
-        hasAccount, 
-        user, 
-        emailAccount,
-        DateTime.now(),
-        currentUser.documentId,
-        null    // TODO: Pendiente del UID que devuelva la parte de authentication
-      );
-      
+          id,
+          company,
+          direction,
+          city,
+          province,
+          postalCode,
+          cif,
+          email,
+          [
+            {namePhone1: phone1},
+            {namePhone2: phone2}
+          ],
+          prices,
+          hasAccount,
+          user,
+          emailAccount,
+          DateTime.now(),
+          currentUser.documentId,
+          null // TODO: Pendiente del UID que devuelva la parte de authentication
+          );
+
       await FirebaseFirestore.instance.collection('client_info').add({
         'id': client.id,
         'company': client.company,
@@ -520,36 +503,38 @@ class _NewClientPageState extends State<NewClientPage> {
       });
 
       showDialog(
-        context: context, 
-        builder: (_) => AlertDialog(
-            title: const Text('Cliente guardado'),
-            content: const Text('La información del cliente se ha guardado correctamente'),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('De acuerdo.'),
-                onPressed: () {
-                  Navigator.of(context)..pop()..pop();
-                },
-              )
-            ],
-          )
-      );
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Cliente guardado'),
+                content: const Text(
+                    'La información del cliente se ha guardado correctamente'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context)
+                        ..pop()
+                        ..pop();
+                    },
+                  )
+                ],
+              ));
     } catch (e) {
       developer.log(e.toString(), name: 'Error - NewPageDart');
       showDialog(
-        context: context, 
-        builder: (_) => AlertDialog(
-          title: const Text('Vaya...'), 
-          content: const Text('Se ha producido un error'),actions: <Widget>[
-            TextButton(
-              child: const Text('De acuerdo.'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        )
-      );
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Vaya...'),
+                content: const Text('Se ha producido un error'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
     }
   }
 
