@@ -135,8 +135,7 @@ class _LoginPageState extends State<LoginPage> {
           userInfo['ss_number'], 
           userInfo['bank_account'], 
           userInfo['position'], 
-          userInfo['user'], 
-          userInfo['password']
+          userInfo['user'],
           // TODO: Faltan los permisos
         );
       } else {
