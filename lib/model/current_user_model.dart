@@ -1,4 +1,5 @@
 class CurrentUserModel {
+  final String documentId;
   final String uid;
   final String visibleID;
   final String name;
@@ -20,6 +21,7 @@ class CurrentUserModel {
   // Lista de permisos app repartos
 
   const CurrentUserModel(
+    this.documentId,
     this.uid,
     this.visibleID,
     this.name,

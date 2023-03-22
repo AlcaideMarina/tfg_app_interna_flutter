@@ -12,6 +12,9 @@ class ClientModel {
   final bool hasAccount;
   final String? user;
   final String? emailAccount;
+  final DateTime? creationDatetime;
+  final String? createdBy;
+  final String? uid;
 
   const ClientModel(
     this.id,
@@ -26,6 +29,9 @@ class ClientModel {
     this.price,
     this.hasAccount,
     this.user,
-    this.emailAccount
+    this.emailAccount,
+    this.creationDatetime,
+    this.createdBy,
+    this.uid
   );
 }

@@ -119,6 +119,7 @@ class _LoginPageState extends State<LoginPage> {
       if (userInfo != null) {
         // TODO: hacer un .fromMap
         return CurrentUserModel(
+          document.id,
           uid ?? '', 
           userInfo['id'], 
           userInfo['name'], 

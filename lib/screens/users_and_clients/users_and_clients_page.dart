@@ -8,7 +8,7 @@ import 'package:hueveria_nieto_interna/screens/users_and_clients/all_clients_pag
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
 class UsersAndClientsPage extends StatefulWidget {
-  UsersAndClientsPage(this.currentUser, {Key? key}) : super(key: key);
+  const UsersAndClientsPage(this.currentUser, {Key? key}) : super(key: key);
 
   final CurrentUserModel currentUser;
 
@@ -22,7 +22,6 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     currentUser = widget.currentUser;
   }
@@ -84,7 +83,7 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AllClientsPage(),
+        builder: (context) => AllClientsPage(currentUser),
       ));
   }
 }

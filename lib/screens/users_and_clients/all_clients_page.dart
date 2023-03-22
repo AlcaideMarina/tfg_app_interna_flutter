@@ -3,17 +3,29 @@ import 'package:hueveria_nieto_interna/component/component_clients.dart';
 import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
+import 'package:hueveria_nieto_interna/model/current_user_model.dart';
 import 'package:hueveria_nieto_interna/screens/users_and_clients/new_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
 class AllClientsPage extends StatefulWidget {
-  AllClientsPage({Key? key}) : super(key: key);
+  AllClientsPage(this.currentUser, {Key? key}) : super(key: key);
+
+  final CurrentUserModel currentUser;
 
   @override
   State<AllClientsPage> createState() => _AllClientsPageState();
 }
 
 class _AllClientsPageState extends State<AllClientsPage> {
+  
+  late CurrentUserModel currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = widget.currentUser;
+  }
+
   @override
   Widget build(BuildContext context) {
     final double _width = MediaQuery.of(context).size.width;
@@ -77,7 +89,7 @@ class _AllClientsPageState extends State<AllClientsPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => NewClientPage(),
+        builder: (context) => NewClientPage(currentUser),
       ));
   }
 

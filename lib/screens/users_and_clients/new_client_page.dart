@@ -12,11 +12,15 @@ import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/model/client_model.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
+import '../../model/current_user_model.dart';
+
 // TODO: Cuidado - todo esta clase está hardcodeada
 // TODO: Intentar reducir código
 
 class NewClientPage extends StatefulWidget {
-  NewClientPage({Key? key}) : super(key: key);
+  const NewClientPage(this.currentUser, {Key? key}) : super(key: key);
+
+  final CurrentUserModel currentUser;
 
   @override
   State<NewClientPage> createState() => _NewClientPageState();
@@ -24,6 +28,14 @@ class NewClientPage extends StatefulWidget {
 
 // TODO: Faltan todas las validaciones
 class _NewClientPageState extends State<NewClientPage> {
+
+  late CurrentUserModel currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = widget.currentUser;
+  }
 
   late String id;
   late String company;
@@ -47,8 +59,8 @@ class _NewClientPageState extends State<NewClientPage> {
   //
   bool hasAccount = false;
   // TODO: Mirar otra forma de contar - ¿mapas?
-  late String user;
-  late String emailAccount;
+  String? user;
+  String? emailAccount;
 
   // TODO: Refactorizar esto - ¿se puede borrar?
   List<String> labelList = [
@@ -468,10 +480,32 @@ class _NewClientPageState extends State<NewClientPage> {
 
   saveClient() async {
     try {
+      // TODO: si hasAccount == true y email_account no es nulo, hay que hacer llamada también a Firebase Auth
+      if (hasAccount && emailAccount != null) {
+        // Pendiente de desarrollo de app cliente - ¿creo contraseña que aparezca en el correo y luego que se modifique?
+      } 
+
       // TODO: Hay que sacar los datos del cliente
-      const client = ClientModel(
-        '000001', 'Bar Augusto', 'Plaza Pontevedra 3', 'A Coruña', 'A Coruña', 28003, 'B34534534', 'prueba@email.com', [{'Lucía Monte Rey': 678678678}, {'Fernanda Gómez Gómez': 634634634}], {'xl': 27, 'l': 26, 'm': 25, 's': 24, 'cartoned': 23}, false, null, null);
-      // TODO: Mandar los datos a Firestore
+      final client = ClientModel(
+        id, 
+        company, 
+        direction, 
+        city, 
+        province, 
+        postalCode, 
+        cif, 
+        email, 
+        [{namePhone1: phone1}, {namePhone2: phone2}], 
+        prices, 
+        hasAccount, 
+        user, 
+        emailAccount,
+        DateTime.now(),
+        currentUser.documentId,
+        null    // TODO: Pendiente del UID que devuelva la parte de authentication
+      );
+      
+      // TODO: Comprobar que el Id no se repita
       await FirebaseFirestore.instance.collection('client_info').add({
         'id': client.id,
         'company': client.company,
@@ -485,12 +519,27 @@ class _NewClientPageState extends State<NewClientPage> {
         'price': client.price,
         'has_account': client.hasAccount,
         'user': client.user,
-        'email_account': client.emailAccount
+        'email_account': client.emailAccount,
+        'creation_datetime': client.creationDatetime,
+        'created_by': client.createdBy,
+        'uid': null
       });
-      // TODO: si hasAccount == true y email_account no es nulo, hay que hacer llamada también a Firebase Auth
 
       // TODO: Hacer una comprobación - búsquda por el id - mostrar pop-up diciendo si ha ido todo bien
-
+      showDialog(
+        context: context, 
+        builder: (_) => AlertDialog(
+            title: const Text('Cliente guardado'),
+            content: const Text('La información del cliente se ha guardado correctamente'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('De acuerdo.'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ));
     } catch (e) {
       print(e.toString());
       showDialog(
