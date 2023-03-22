@@ -535,7 +535,7 @@ class _NewClientPageState extends State<NewClientPage> {
               TextButton(
                 child: const Text('De acuerdo.'),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context)..pop()..pop();
                 },
               )
             ],
