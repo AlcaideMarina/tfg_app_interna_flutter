@@ -8,7 +8,7 @@ import 'package:hueveria_nieto_interna/screens/users_and_clients/new_client_page
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
 class AllClientsPage extends StatefulWidget {
-  AllClientsPage(this.currentUser, {Key? key}) : super(key: key);
+  const AllClientsPage(this.currentUser, {Key? key}) : super(key: key);
 
   final CurrentUserModel currentUser;
 

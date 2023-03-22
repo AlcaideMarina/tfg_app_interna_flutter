@@ -54,8 +54,7 @@ class _NewClientPageState extends State<NewClientPage> {
   late int phone2;
   late String namePhone1;
   late String namePhone2;
-  // TODO: Que esto venga de BBDD
-  Map<String, double> prices = {'xl': 0.0, 'l': 0.0, 'm': 0.0, 's': 0.0, 'cartoned': 0.0};
+  Map<String, double> prices = {};
   bool hasAccount = false;
   // TODO: Mirar otra forma de contar - ¿mapas?
   String? user;
@@ -87,6 +86,11 @@ class _NewClientPageState extends State<NewClientPage> {
 
   bool isEmailConfirmated = false;
   bool isEmailAccountConfirmated = false;
+
+  final TextEditingController userController = TextEditingController();
+  String companyUserName = '';
+  String phone1UserName = '';
+  String phone1NameUserName = '';
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +159,9 @@ class _NewClientPageState extends State<NewClientPage> {
           TextInputType.text,
           (value) {
             company = value;
-            // TODO: format user
+            // format user
+            companyUserName = value.toLowerCase().replaceAll(RegExp(' '), '_');
+            userController.text = companyUserName + '_' + phone1NameUserName + '_' + phone1UserName;
           }
         ),
         getCompanyComponentSimpleForm(
@@ -308,6 +314,13 @@ class _NewClientPageState extends State<NewClientPage> {
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               onChange: (value) {
                 phone1 = int.parse(value);
+                // format user
+                if (value.length > 2) {
+                  phone1UserName = value.substring(value.length - 2);
+                } else {
+                  phone1UserName = '';
+                }
+                userController.text = companyUserName + '_' + phone1NameUserName + '_' + phone1UserName;
               },
             )),
         HNComponentCellTableForm(
@@ -320,6 +333,13 @@ class _NewClientPageState extends State<NewClientPage> {
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               onChange: (value) {
                 namePhone1 = value;
+                // format user
+                phone1NameUserName = '';
+                final list = namePhone1.split(' ');
+                for (String word in list) {
+                  if (word.isNotEmpty) phone1NameUserName += word.toLowerCase().substring(0, 1);
+                }
+                userController.text = companyUserName + '_' + phone1NameUserName + '_' + phone1UserName;
               },
             )),
       ]),
@@ -403,7 +423,7 @@ class _NewClientPageState extends State<NewClientPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            getClientComponentSimpleForm(userLabels[0], TextInputType.text, (value) {user = value;}),
+            getClientComponentSimpleForm(userLabels[0], TextInputType.text, (value) {user = value;}, controller: userController),
             getClientComponentSimpleForm(userLabels[1], TextInputType.emailAddress, (value) {
               emailAccount = value;
             }),
@@ -426,7 +446,7 @@ class _NewClientPageState extends State<NewClientPage> {
     );
   }
 
-  Widget getClientComponentSimpleForm(String label, TextInputType textInputType, Function(String)? onChange) {
+  Widget getClientComponentSimpleForm(String label, TextInputType textInputType, Function(String)? onChange, {TextEditingController? controller}) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (contUser == 0) {
@@ -446,6 +466,7 @@ class _NewClientPageState extends State<NewClientPage> {
         textCapitalization: TextCapitalization.none,
         textInputType: textInputType,
         onChange: onChange,
+        textEditingController: controller,
       ),
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       textMargin: const EdgeInsets.only(left: 24),

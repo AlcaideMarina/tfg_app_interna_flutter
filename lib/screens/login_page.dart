@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   navigateToMainPage(CurrentUserModel currentUser) {
-    // TODO: Evitar que al dar al botón de atrás, vuelva aquí
+    // TODO: Evitar que al dar al botón de atrás, vuelva aquí - investigar
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -155,6 +155,7 @@ class _LoginPageState extends State<LoginPage> {
         builder: (_) => const Center(
           child: CircularProgressIndicator()));
       developer.log('Empieza la función signInWithEmailAndPassword()', name: 'Login');
+      // TODO: Esto va muy lento - investigar
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: user.trim(), password: password);
       developer.log('Función signInWithEmailAndPassword() terminada', name: 'Login');
