@@ -476,8 +476,8 @@ class _NewClientPageState extends State<NewClientPage> {
           ],
           prices,
           hasAccount,
-          user,
-          emailAccount,
+          hasAccount ? user : null,
+          hasAccount ? emailAccount : null,
           DateTime.now(),
           currentUser.documentId,
           null // TODO: Pendiente del UID que devuelva la parte de authentication
