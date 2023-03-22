@@ -28,6 +28,7 @@ class NewClientPage extends StatefulWidget {
 }
 
 // TODO: Faltan todas las validaciones
+// TODO: Faltan mostrar valores por defecto
 class _NewClientPageState extends State<NewClientPage> {
 
   late CurrentUserModel currentUser;
@@ -50,6 +51,7 @@ class _NewClientPageState extends State<NewClientPage> {
   late int phone2;
   late String namePhone1;
   late String namePhone2;
+  // TODO: Que esto venga de BBDD
   Map<String, double> prices = {'xl': 0.0, 'l': 0.0, 'm': 0.0, 's': 0.0, 'cartoned': 0.0};
   bool hasAccount = false;
   // TODO: Mirar otra forma de contar - ¿mapas?
@@ -500,7 +502,7 @@ class _NewClientPageState extends State<NewClientPage> {
           )
       );
     } catch (e) {
-      developer.log(e.toString(), name: 'Error - NewPageDart' )
+      developer.log(e.toString(), name: 'Error - NewPageDart');
       showDialog(
         context: context, 
         builder: (_) => AlertDialog(
