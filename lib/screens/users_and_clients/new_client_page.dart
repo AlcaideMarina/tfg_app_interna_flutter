@@ -11,6 +11,7 @@ import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/model/client_model.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
+import 'dart:developer' as developer;
 
 import '../../model/current_user_model.dart';
 
@@ -50,19 +51,11 @@ class _NewClientPageState extends State<NewClientPage> {
   late String namePhone1;
   late String namePhone2;
   Map<String, double> prices = {'xl': 0.0, 'l': 0.0, 'm': 0.0, 's': 0.0, 'cartoned': 0.0};
-  // TODO: Borrar estas variables - Ahora se usa el mapa anterior
-  late double priceXl;
-  late double priceL;
-  late double priceM;
-  late double priceS;
-  late double cartoned;
-  //
   bool hasAccount = false;
   // TODO: Mirar otra forma de contar - ¿mapas?
   String? user;
   String? emailAccount;
 
-  // TODO: Refactorizar esto - ¿se puede borrar?
   List<String> labelList = [
     "Empresa",
     "Dirección",
@@ -75,18 +68,6 @@ class _NewClientPageState extends State<NewClientPage> {
     "Teléfono",
     "Precio/ud.",
   ];
-  Map<String, TextInputType> labelInfo = {
-    "Empresa": TextInputType.text,
-    "Dirección": TextInputType.text,
-    "Ciudad": TextInputType.text,
-    "Provincia": TextInputType.text,
-    "Código postal": TextInputType.number,
-    "CIF": TextInputType.text,
-    "Correo": TextInputType.emailAddress,
-    "Teléfono": TextInputType.phone,
-    "Precio/ud.": TextInputType.number,
-  };
-  //
 
   Map<String, String> eggTypes = {
     'xl': "Cajas XL",
@@ -390,27 +371,6 @@ class _NewClientPageState extends State<NewClientPage> {
 
       cont ++;
     }
-    /*for (int i = 0; i < eggTypes.length; i++) {
-      double bottomMargin = 8;
-      if (i == eggTypes.length) {
-        bottomMargin = 0;
-      }
-      list.add(TableRow(children: [
-        Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text(eggTypes[i])),
-        Container(
-          height: 40,
-          margin: EdgeInsets.only(left: 8, right: 16, bottom: bottomMargin),
-          child: HNComponentTextInput(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            textInputType: textInputType,
-            onChange: onChange,
-          ),
-        ),
-      ]));
-    }*/
     return list;
   }
 
@@ -485,7 +445,7 @@ class _NewClientPageState extends State<NewClientPage> {
         // Pendiente de desarrollo de app cliente - ¿creo contraseña que aparezca en el correo y luego que se modifique?
       } 
 
-      // TODO: Hay que sacar los datos del cliente
+      // TODO: Comprobar que el Id no se repita
       final client = ClientModel(
         id, 
         company, 
@@ -505,7 +465,6 @@ class _NewClientPageState extends State<NewClientPage> {
         null    // TODO: Pendiente del UID que devuelva la parte de authentication
       );
       
-      // TODO: Comprobar que el Id no se repita
       await FirebaseFirestore.instance.collection('client_info').add({
         'id': client.id,
         'company': client.company,
@@ -525,7 +484,6 @@ class _NewClientPageState extends State<NewClientPage> {
         'uid': null
       });
 
-      // TODO: Hacer una comprobación - búsquda por el id - mostrar pop-up diciendo si ha ido todo bien
       showDialog(
         context: context, 
         builder: (_) => AlertDialog(
@@ -539,9 +497,10 @@ class _NewClientPageState extends State<NewClientPage> {
                 },
               )
             ],
-          ));
+          )
+      );
     } catch (e) {
-      print(e.toString());
+      developer.log(e.toString(), name: 'Error - NewPageDart' )
       showDialog(
         context: context, 
         builder: (_) => AlertDialog(
@@ -550,7 +509,6 @@ class _NewClientPageState extends State<NewClientPage> {
             TextButton(
               child: const Text('De acuerdo.'),
               onPressed: () {
-                //setState(() {});
                 Navigator.of(context).pop();
               },
             )
