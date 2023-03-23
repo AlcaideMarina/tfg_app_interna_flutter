@@ -481,7 +481,8 @@ class _NewClientPageState extends State<NewClientPage> {
           hasAccount ? emailAccount : null,
           DateTime.now(),
           currentUser.documentId,
-          null // TODO: Pendiente del UID que devuelva la parte de authentication
+          null, // TODO: Pendiente del UID que devuelva la parte de authentication
+          false
           );
 
       await FirebaseFirestore.instance.collection('client_info').add({

@@ -20,6 +20,7 @@ class ClientModel {
   final DateTime? creationDatetime;
   final String? createdBy;
   final String? uid;
+  final bool deleted;
 
   const ClientModel(
     this.id,
@@ -37,7 +38,8 @@ class ClientModel {
     this.emailAccount,
     this.creationDatetime,
     this.createdBy,
-    this.uid
+    this.uid,
+    this.deleted
   );
 
   factory ClientModel.fromJson(String str) => ClientModel.fromMap(jsonDecode(str));
@@ -84,7 +86,8 @@ class ClientModel {
       json['email_account'],
       json['creation_datetime'],
       json['created_by'],
-      json['uid']
+      json['uid'],
+      json['deleted']
     );
   }
 
@@ -104,6 +107,7 @@ class ClientModel {
     'email_account': emailAccount,
     'creation_datetime': creationDatetime,
     'created_by': createdBy,
-    'uid': uid
+    'uid': uid,
+    'deleted': deleted
   };
 }
