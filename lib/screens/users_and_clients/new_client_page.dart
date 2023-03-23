@@ -10,14 +10,13 @@ import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/model/client_model.dart';
-import 'package:hueveria_nieto_interna/services/id_service.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer' as developer;
 
+import '../../flutterfire/flutterfire.dart';
 import '../../model/current_user_model.dart';
 import '../../services/products_service.dart';
-import '../loading_page.dart';
 
 // TODO: Cuidado - todo esta clase está hardcodeada
 // TODO: Intentar reducir código
@@ -97,12 +96,9 @@ class _NewClientPageState extends State<NewClientPage> {
     final double _height = MediaQuery.of(context).size.height;
 
     final productsService = Provider.of<ProductsService>(context);
-    final idService = Provider.of<IDService>(context);
-    if (productsService.isLoading || idService.isLoading) return const LoadingPage();
 
-    prices = productsService.products;
-    // TODO: Esto debería refrescarse cada vez - ¿Igual hacere un stream? ¿o un bloc?
-    id = idService.newId;
+    prices = productsService
+        .products; // TODO: Fix - cuando abres por primera vez viene todo a 0.0
 
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     if (StringsTranslation.of(context) == null) {
@@ -150,8 +146,6 @@ class _NewClientPageState extends State<NewClientPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('ID: ' + id), // TODO: Falta el ID
-        // TODO: Aquí hay que personalizar el campo
         getCompanyComponentSimpleForm('Empresa', null, TextInputType.text,
             (value) {
           company = value;
@@ -305,8 +299,9 @@ class _NewClientPageState extends State<NewClientPage> {
                 phone1NameUserName = '';
                 final list = namePhone1.split(' ');
                 for (String word in list) {
-                  if (word.isNotEmpty)
+                  if (word.isNotEmpty) {
                     phone1NameUserName += word.toLowerCase().substring(0, 1);
+                  }
                 }
                 userController.text = companyUserName +
                     '_' +
@@ -367,6 +362,7 @@ class _NewClientPageState extends State<NewClientPage> {
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             textInputType: const TextInputType.numberWithOptions(),
             onChange: (value) {
+              // TODO: Fix - Aquí hay que meter una validación para comprobar que el input se pueda pasar a double
               prices[key] = double.parse(value);
             },
           ),
@@ -456,12 +452,16 @@ class _NewClientPageState extends State<NewClientPage> {
 
   saveClient() async {
     try {
+      // TODO: Cerrar el teclado
+      // TODO: CircularProgressIndicator()
+
+      // TODO: Conseguir el valor del id
+      id = await getNextUserId();
       // TODO: si hasAccount == true y email_account no es nulo, hay que hacer llamada también a Firebase Auth
       if (hasAccount && emailAccount != null) {
         // Pendiente de desarrollo de app cliente - ¿creo contraseña que aparezca en el correo y luego que se modifique?
       }
 
-      // TODO: Comprobar que el Id no se repita
       final client = ClientModel(
           id,
           company,
@@ -479,11 +479,10 @@ class _NewClientPageState extends State<NewClientPage> {
           hasAccount,
           hasAccount ? user : null,
           hasAccount ? emailAccount : null,
-          DateTime.now(),
+          Timestamp.now(),
           currentUser.documentId,
           null, // TODO: Pendiente del UID que devuelva la parte de authentication
-          false
-          );
+          false);
 
       await FirebaseFirestore.instance.collection('client_info').add({
         'id': client.id,
@@ -501,8 +500,11 @@ class _NewClientPageState extends State<NewClientPage> {
         'email_account': client.emailAccount,
         'creation_datetime': client.creationDatetime,
         'created_by': client.createdBy,
-        'uid': null
+        'uid': client.uid,
+        'deleted': client.deleted
       });
+
+      // TODO: Cerrar CircularProgressIndicator()
 
       showDialog(
           context: context,

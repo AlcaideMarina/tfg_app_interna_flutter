@@ -15,7 +15,7 @@ class IDService extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    newId = await getNextUserId() ?? '';
+    newId = await getNextUserId();
 
     isLoading = false;
     notifyListeners();
