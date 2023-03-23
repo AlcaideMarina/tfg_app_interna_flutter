@@ -9,9 +9,9 @@ Future<Map<String, double>?> getEggTypes() async {
   try {
     QuerySnapshot query = await FirebaseFirestore.instance
         .collection(FirebaseConstants.defaultConstantsName)
-        .where(
-          FirebaseConstants.defaultConstantsConstantName, 
-          isEqualTo: FirebaseConstants.defaultConstantsMap[DefaultConstantsEnum.eggTypes])
+        .where(FirebaseConstants.defaultConstantsConstantName,
+            isEqualTo: FirebaseConstants
+                .defaultConstantsMap[DefaultConstantsEnum.eggTypes])
         .get();
 
     if (query.docs.isEmpty || !query.docs[0].exists) {
@@ -26,20 +26,20 @@ Future<Map<String, double>?> getEggTypes() async {
     developer.log('Error - FlutterFire - getEggTypes(): ' + e.toString());
     return null;
   }
-  
 }
 
-Future<String?> getNextUserId() async {
+Future<String> getNextUserId() async {
   try {
     QuerySnapshot query = await FirebaseFirestore.instance
-      .collection('client_info')
-      .orderBy('id')
-      .get();
-    
+        .collection('client_info')
+        .orderBy('id')
+        .get();
+
     if (query.docs.isEmpty || !query.docs[query.docs.length - 1].exists) {
-      return null;
+      return '0000000000';
     } else {
-      Map<String, dynamic> lastDocument = query.docs[query.docs.length - 1].data() as Map<String, dynamic>;
+      Map<String, dynamic> lastDocument =
+          query.docs[query.docs.length - 1].data() as Map<String, dynamic>;
       ClientModel clientModel = ClientModel.fromMap(lastDocument);
       String newId = (int.parse(clientModel.id) + 1).toString();
       while (newId.length < 10) {
@@ -49,6 +49,17 @@ Future<String?> getNextUserId() async {
     }
   } catch (e) {
     developer.log('Error - FlutterFire - getNextUserId(): ' + e.toString());
-    return null;
+    return 'error-id-$e';
   }
+}
+
+Stream<QuerySnapshot<Map<String, dynamic>>> getAllClients() {
+  return FirebaseFirestore.instance.collection('client_info').snapshots();
+}
+
+Stream<QuerySnapshot<Map<String, dynamic>>> getActiveClients() {
+  return FirebaseFirestore.instance
+      .collection('client_info')
+      .where('deleted', isEqualTo: false)
+      .snapshots();
 }

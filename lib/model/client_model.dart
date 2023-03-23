@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ClientModel {
-  // TODO: Igual hay que mirar que el id sea nulable, porque incialmente no va a vernir en el map - o se 
+  // TODO: Igual hay que mirar que el id sea nulable, porque incialmente no va a vernir en el map - o se
   //      añade en el map antes de pasarlo a esta clase o se deja como nulable y se añade después
   final String id;
   final String company;
@@ -17,37 +19,36 @@ class ClientModel {
   final bool hasAccount;
   final String? user;
   final String? emailAccount;
-  final DateTime? creationDatetime;
+  final Timestamp? creationDatetime;
   final String? createdBy;
   final String? uid;
   final bool deleted;
 
   const ClientModel(
-    this.id,
-    this.company,
-    this.direction,
-    this.city,
-    this.province,
-    this.postalCode,
-    this.cif,
-    this.email,
-    this.phone, 
-    this.price,
-    this.hasAccount,
-    this.user,
-    this.emailAccount,
-    this.creationDatetime,
-    this.createdBy,
-    this.uid,
-    this.deleted
-  );
+      this.id,
+      this.company,
+      this.direction,
+      this.city,
+      this.province,
+      this.postalCode,
+      this.cif,
+      this.email,
+      this.phone,
+      this.price,
+      this.hasAccount,
+      this.user,
+      this.emailAccount,
+      this.creationDatetime,
+      this.createdBy,
+      this.uid,
+      this.deleted);
 
-  factory ClientModel.fromJson(String str) => ClientModel.fromMap(jsonDecode(str));
+  factory ClientModel.fromJson(String str) =>
+      ClientModel.fromMap(jsonDecode(str));
 
   String toJson() => jsonEncode(toMap());
 
   factory ClientModel.fromMap(Map<String, dynamic> json) {
-
     List<Map<String, int>> phoneMap = [];
     (json['phone'] as List<dynamic>).forEach((element) {
       try {
@@ -56,58 +57,62 @@ class ClientModel {
         });
       } catch (e) {
         phoneMap.add({'no-info': 0});
-        developer.log('Error - ClientModel - ClientModel.fromMap() - phones: ' + e.toString());
+        developer.log('Error - ClientModel - ClientModel.fromMap() - phones: ' +
+            e.toString());
       }
     });
 
     Map<String, double> priceMap = {};
-    (json['price'] as Map<String, dynamic>).forEach((key, value) {
-      try {
-        priceMap[key] = value.toDouble();
-      } catch (e) {
-        priceMap[key] = 0.0;
-        developer.log('Error - ClientModel - ClientModel.fromMap() - prices: ' + e.toString());
-      }
-    },);
+    (json['price'] as Map<String, dynamic>).forEach(
+      (key, value) {
+        try {
+          priceMap[key] = value.toDouble();
+        } catch (e) {
+          priceMap[key] = 0.0;
+          developer.log(
+              'Error - ClientModel - ClientModel.fromMap() - prices: ' +
+                  e.toString());
+        }
+      },
+    );
 
     return ClientModel(
-      json['id'],
-      json['company'],
-      json['direction'],
-      json['city'],
-      json['province'],
-      json['postal_code'],
-      json['cif'],
-      json['email'],
-      phoneMap,
-      priceMap,
-      json['has_account'],
-      json['user'],
-      json['email_account'],
-      json['creation_datetime'],
-      json['created_by'],
-      json['uid'],
-      json['deleted']
-    );
+        json['id'],
+        json['company'],
+        json['direction'],
+        json['city'],
+        json['province'],
+        json['postal_code'],
+        json['cif'],
+        json['email'],
+        phoneMap,
+        priceMap,
+        json['has_account'],
+        json['user'],
+        json['email_account'],
+        json['creation_datetime'],
+        json['created_by'],
+        json['uid'],
+        json['deleted']);
   }
 
   Map<String, dynamic> toMap() => {
-    // TODO: ¿deberíamos añadir id? Entiendo que no porque no se guarda en bbdd como tal
-    'company': company,
-    'direction': direction,
-    'city': city,
-    'province': province,
-    'postal_code': postalCode,
-    'cif': cif,
-    'email': email,
-    'phone': phone,
-    'price': price,
-    'has_account': hasAccount,
-    'user': user,
-    'email_account': emailAccount,
-    'creation_datetime': creationDatetime,
-    'created_by': createdBy,
-    'uid': uid,
-    'deleted': deleted
-  };
+        // TODO: ¿deberíamos añadir id? Entiendo que no porque no se guarda en bbdd como tal
+        'company': company,
+        'direction': direction,
+        'city': city,
+        'province': province,
+        'postal_code': postalCode,
+        'cif': cif,
+        'email': email,
+        'phone': phone,
+        'price': price,
+        'has_account': hasAccount,
+        'user': user,
+        'email_account': emailAccount,
+        'creation_datetime': creationDatetime,
+        'created_by': createdBy,
+        'uid': uid,
+        'deleted': deleted
+      };
 }
