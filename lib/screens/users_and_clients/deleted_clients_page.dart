@@ -71,8 +71,8 @@ class _DeletedClientsPageState extends State<DeletedClientsPage> {
                                 scrollDirection: Axis.vertical,
                                 itemCount: clientList.length,
                                 itemBuilder: (context, i) {
-                                  final ClientModel client = ClientModel.fromMap(
-                                      clientList[i].data()
+                                  final ClientModel client =
+                                      ClientModel.fromMap(clientList[i].data()
                                           as Map<String, dynamic>);
                                   return Container(
                                     margin: const EdgeInsets.symmetric(
@@ -89,25 +89,27 @@ class _DeletedClientsPageState extends State<DeletedClientsPage> {
                             margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                             child: const HNComponentPanel(
                               title: 'No hay clientes',
-                              text: "No hay registro de clientes eliminados en la base de datos.",
+                              text:
+                                  "No hay registro de clientes eliminados en la base de datos.",
                             ));
                       }
                     } else if (snapshot.hasError) {
-                        return Container(
-                            margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                            child: const HNComponentPanel(
-                              title: 'Ha ocurrido un error',
-                              text: "Lo sentimos, pero ha habido un error al intentar recuperar los datos. Por favor, inténtelo de nuevo más tarde.",
-                            ));
+                      return Container(
+                          margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                          child: const HNComponentPanel(
+                            title: 'Ha ocurrido un error',
+                            text:
+                                "Lo sentimos, pero ha habido un error al intentar recuperar los datos. Por favor, inténtelo de nuevo más tarde.",
+                          ));
                     } else {
-                        return Container(
-                            margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                            child: const HNComponentPanel(
-                              title: 'No hay clientes',
-                              text: "No hay registro de clientes eliminados en la base de datos.",
-                            ));
+                      return Container(
+                          margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                          child: const HNComponentPanel(
+                            title: 'No hay clientes',
+                            text:
+                                "No hay registro de clientes eliminados en la base de datos.",
+                          ));
                     }
-                    
                   } else {
                     return const CircularProgressIndicator(
                       color: CustomColors.redPrimaryColor,
@@ -115,17 +117,6 @@ class _DeletedClientsPageState extends State<DeletedClientsPage> {
                   }
                 }),
           ],
-        )
-    );
-  }
-
-  navigateToNewClientPage() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => NewClientPage(currentUser),
         ));
   }
-
-  navigateToDeletedClientsPage() {}
 }

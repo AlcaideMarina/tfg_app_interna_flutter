@@ -17,7 +17,6 @@ class UsersAndClientsPage extends StatefulWidget {
 }
 
 class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
-
   late CurrentUserModel currentUser;
 
   @override
@@ -43,35 +42,48 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
       backgroundColor: Colors.white,
       drawer: LateralMenu(currentUser),
       appBar: AppBar(
-        toolbarHeight: 56.0,
-        title: const Text("Usuarios y clientes", 
-          style: TextStyle(
-            color: AppTheme.primary,
-            fontSize: CustomSizes.textSize24
-          ),
-        )
-      ),
+          toolbarHeight: 56.0,
+          title: const Text(
+            "Usuarios y clientes",
+            style: TextStyle(
+                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+          )),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Clientes", textAlign: TextAlign.start,),
-            const SizedBox(height: 16,),
-            Container(
-              child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton("Ver clientes", null, null, navigateToAllClientsPage, () { }),
+            const Text(
+              "Clientes",
+              textAlign: TextAlign.start,
             ),
-            const SizedBox(height: 48,),
-            const Text("Usuarios", textAlign: TextAlign.start,),
-            const SizedBox(height: 16,),
+            const SizedBox(
+              height: 16,
+            ),
             Container(
-              child: Column(
-                children: [
-                  HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton("Usuarios internos", null, null, () { }, () { }),
-                  const SizedBox(height: 16,),
-                  HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton("Usuarios externos", null, null, () { }, () { })
-                ]
-              ),
+              child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
+                  "Ver clientes", null, null, navigateToAllClientsPage, () {}),
+            ),
+            const SizedBox(
+              height: 48,
+            ),
+            const Text(
+              "Usuarios",
+              textAlign: TextAlign.start,
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Container(
+              child: Column(children: [
+                HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
+                    "Usuarios internos", null, null, () {}, () {}),
+                const SizedBox(
+                  height: 16,
+                ),
+                HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
+                    "Usuarios externos", null, null, () {}, () {})
+              ]),
             ),
           ],
         ),
@@ -81,9 +93,9 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
 
   navigateToAllClientsPage() {
     Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AllClientsPage(currentUser),
-      ));
+        context,
+        MaterialPageRoute(
+          builder: (context) => AllClientsPage(currentUser),
+        ));
   }
 }

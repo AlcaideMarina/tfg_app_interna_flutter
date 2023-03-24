@@ -69,7 +69,11 @@ class _AllClientsPageState extends State<AllClientsPage> {
                     height: 8,
                   ),
                   HNButton(ButtonTypes.grayBlackRoundedButton).getTypedButton(
-                      "Cuentas eliminadas", null, null, navigateToDeletedClientsPage, () {})
+                      "Cuentas eliminadas",
+                      null,
+                      null,
+                      navigateToDeletedClientsPage,
+                      () {})
                 ],
               ),
             ),
@@ -87,46 +91,49 @@ class _AllClientsPageState extends State<AllClientsPage> {
                       // TODO: Si clientList.length = 0 hay que mostrar el panel
                       if (clientList.isNotEmpty) {
                         return Expanded(
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: clientList.length,
-                              itemBuilder: (context, i) {
-                                final ClientModel client = ClientModel.fromMap(
-                                    clientList[i].data()
-                                        as Map<String, dynamic>);
-                                return Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 32, vertical: 8),
-                                  child: HNComponentClients(
-                                      client.id,
-                                      client.company,
-                                      client.cif,
-                                      "TODO"), // TODO: Falta por hacer la parte de pedidos
-                                );
-                              }));
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: clientList.length,
+                                itemBuilder: (context, i) {
+                                  final ClientModel client =
+                                      ClientModel.fromMap(clientList[i].data()
+                                          as Map<String, dynamic>);
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 32, vertical: 8),
+                                    child: HNComponentClients(
+                                        client.id,
+                                        client.company,
+                                        client.cif,
+                                        "TODO"), // TODO: Falta por hacer la parte de pedidos
+                                  );
+                                }));
                       } else {
                         return Container(
                             margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                             child: const HNComponentPanel(
                               title: 'No hay clientes',
-                              text: "No hay registro de clientes eliminados en la base de datos.",
+                              text:
+                                  "No hay registro de clientes eliminados en la base de datos.",
                             ));
                       }
                     } else if (snapshot.hasError) {
-                        return Container(
-                            margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                            child: const HNComponentPanel(
-                              title: 'Ha ocurrido un error',
-                              text: "Lo sentimos, pero ha habido un error al intentar recuperar los datos. Por favor, inténtelo de nuevo más tarde.",
-                            ));
+                      return Container(
+                          margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                          child: const HNComponentPanel(
+                            title: 'Ha ocurrido un error',
+                            text:
+                                "Lo sentimos, pero ha habido un error al intentar recuperar los datos. Por favor, inténtelo de nuevo más tarde.",
+                          ));
                     } else {
-                        return Container(
-                            margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                            child: const HNComponentPanel(
-                              title: 'No hay clientes',
-                              text: "No hay registro de clientes eliminados en la base de datos.",
-                            ));
+                      return Container(
+                          margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                          child: const HNComponentPanel(
+                            title: 'No hay clientes',
+                            text:
+                                "No hay registro de clientes eliminados en la base de datos.",
+                          ));
                     }
                   }
                   return const CircularProgressIndicator(
@@ -152,5 +159,4 @@ class _AllClientsPageState extends State<AllClientsPage> {
           builder: (context) => DeletedClientsPage(currentUser),
         ));
   }
-
 }
