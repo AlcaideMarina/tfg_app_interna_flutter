@@ -11,6 +11,7 @@ import 'package:hueveria_nieto_interna/model/current_user_model.dart';
 import 'package:hueveria_nieto_interna/screens/users_and_clients/new_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
+import '../../component/component_panel.dart';
 import 'deleted_clients_page.dart';
 
 class AllClientsPage extends StatefulWidget {
@@ -84,7 +85,8 @@ class _AllClientsPageState extends State<AllClientsPage> {
                       final data = snapshot.data;
                       final List clientList = data.docs;
                       // TODO: Si clientList.length = 0 hay que mostrar el panel
-                      return Expanded(
+                      if (clientList.isNotEmpty) {
+                        return Expanded(
                           child: ListView.builder(
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
@@ -103,10 +105,28 @@ class _AllClientsPageState extends State<AllClientsPage> {
                                       "TODO"), // TODO: Falta por hacer la parte de pedidos
                                 );
                               }));
+                      } else {
+                        return Container(
+                            margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                            child: const HNComponentPanel(
+                              title: 'No hay clientes',
+                              text: "No hay registro de clientes eliminados en la base de datos.",
+                            ));
+                      }
                     } else if (snapshot.hasError) {
-                      // TODO: mensaje de error
+                        return Container(
+                            margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                            child: const HNComponentPanel(
+                              title: 'Ha ocurrido un error',
+                              text: "Lo sentimos, pero ha habido un error al intentar recuperar los datos. Por favor, inténtelo de nuevo más tarde.",
+                            ));
                     } else {
-                      // TODO: mensaje de que no hay info
+                        return Container(
+                            margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                            child: const HNComponentPanel(
+                              title: 'No hay clientes',
+                              text: "No hay registro de clientes eliminados en la base de datos.",
+                            ));
                     }
                   }
                   return const CircularProgressIndicator(
