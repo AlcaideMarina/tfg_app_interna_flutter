@@ -60,38 +60,54 @@ class _DeletedClientsPageState extends State<DeletedClientsPage> {
                 stream: getDeletedClients(),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.active &&
-                      snapshot.hasData) {
-                    final data = snapshot.data;
-                    final List clientList = data.docs;
-                    if (clientList.isNotEmpty) {
-                      return Expanded(
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: clientList.length,
-                              itemBuilder: (context, i) {
-                                final ClientModel client = ClientModel.fromMap(
-                                    clientList[i].data()
-                                        as Map<String, dynamic>);
-                                return Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 32, vertical: 8),
-                                  child: HNComponentClients(
-                                      client.id,
-                                      client.company,
-                                      client.cif,
-                                      "TODO"), // TODO: Falta por hacer la parte de pedidos
-                                );
-                              }));
+                  if (snapshot.connectionState == ConnectionState.active) {
+                    if (snapshot.hasData) {
+                      final data = snapshot.data;
+                      final List clientList = data.docs;
+                      if (clientList.isNotEmpty) {
+                        return Expanded(
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: clientList.length,
+                                itemBuilder: (context, i) {
+                                  final ClientModel client = ClientModel.fromMap(
+                                      clientList[i].data()
+                                          as Map<String, dynamic>);
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 32, vertical: 8),
+                                    child: HNComponentClients(
+                                        client.id,
+                                        client.company,
+                                        client.cif,
+                                        "TODO"), // TODO: Falta por hacer la parte de pedidos
+                                  );
+                                }));
+                      } else {
+                        return Container(
+                            margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                            child: const HNComponentPanel(
+                              title: 'No hay clientes',
+                              text: "No hay registro de clientes eliminados en la base de datos.",
+                            ));
+                      }
+                    } else if (snapshot.hasError) {
+                        return Container(
+                            margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                            child: const HNComponentPanel(
+                              title: 'Ha ocurrido un error',
+                              text: "Lo sentimos, pero ha habido un error al intentar recuperar los datos. Por favor, inténtelo de nuevo más tarde.",
+                            ));
                     } else {
-                      return Container(
-                          margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                          child: const HNComponentPanel(
-                            title: 'No hay clientes',
-                            text: "No hay registro de clientes eliminados en la base de datos.",
-                          ));
+                        return Container(
+                            margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                            child: const HNComponentPanel(
+                              title: 'No hay clientes',
+                              text: "No hay registro de clientes eliminados en la base de datos.",
+                            ));
                     }
+                    
                   } else {
                     return const CircularProgressIndicator(
                       color: CustomColors.redPrimaryColor,
@@ -100,69 +116,7 @@ class _DeletedClientsPageState extends State<DeletedClientsPage> {
                 }),
           ],
         )
-
-        /*Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 56,
-              vertical: 8
-            ),
-            child: Column(
-              children: [
-                HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton("Nuevo", null, null, navigateToNewClientPage, () { }),
-                const SizedBox(height: 8,),
-                HNButton(ButtonTypes.grayBlackRoundedButton).getTypedButton("Cuentas eliminadas", null, null, () { }, () { })
-              ],
-            ),
-          ),
-          const SizedBox(height: 16,),
-          StreamBuilder(
-            stream: FirebaseFirestore.instance
-                                .collection('client_info')
-                                .snapshots(),
-                            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasData) {
-                  // TODO: Hay que mostrar una LISTA
-                  // Sacamos la info del snapshot
-                  final data = snapshot.data as Map<String, dynamic>;
-                  final ClientModel client = ClientModel.fromMap(data);
-
-                  // return HNComponentClients
-                  return HNComponentClients(client.id, client.company, client.cif, 'actualOrder');
-                } else {
-                  if (snapshot.hasError) {
-                    // mensaje de error
-                  } else {
-                    // mensaje de que no hay info
-                  }
-                }
-                return Container();
-              } else {
-                return const CircularProgressIndicator(
-                  color: CustomColors.redPrimaryColor,
-                );
-              }
-            },
-          )
-          /*Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 32,
-              vertical: 8
-            ),
-            child: const HNComponentClients("0000", "Huevería Nieto", "B - 65454654", "94623"),
-          ), 
-          Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 32,
-              vertical: 8
-            ),
-            child: const HNComponentClients("0000", "Huevería Nieto", "B - 65454654", "94623"),
-          )*/
-        ],
-      ),*/
-        );
+    );
   }
 
   navigateToNewClientPage() {
