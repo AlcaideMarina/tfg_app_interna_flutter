@@ -11,6 +11,8 @@ import 'package:hueveria_nieto_interna/model/current_user_model.dart';
 import 'package:hueveria_nieto_interna/screens/users_and_clients/new_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
+import 'deleted_clients_page.dart';
+
 class AllClientsPage extends StatefulWidget {
   const AllClientsPage(this.currentUser, {Key? key}) : super(key: key);
 
@@ -66,7 +68,7 @@ class _AllClientsPageState extends State<AllClientsPage> {
                     height: 8,
                   ),
                   HNButton(ButtonTypes.grayBlackRoundedButton).getTypedButton(
-                      "Cuentas eliminadas", null, null, () {}, () {})
+                      "Cuentas eliminadas", null, null, navigateToDeletedClientsPage, () {})
                 ],
               ),
             ),
@@ -81,6 +83,7 @@ class _AllClientsPageState extends State<AllClientsPage> {
                     if (snapshot.hasData) {
                       final data = snapshot.data;
                       final List clientList = data.docs;
+                      // TODO: Si clientList.length = 0 hay que mostrar el panel
                       return Expanded(
                           child: ListView.builder(
                               shrinkWrap: true,
@@ -121,4 +124,13 @@ class _AllClientsPageState extends State<AllClientsPage> {
           builder: (context) => NewClientPage(currentUser),
         ));
   }
+
+  navigateToDeletedClientsPage() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DeletedClientsPage(currentUser),
+        ));
+  }
+
 }

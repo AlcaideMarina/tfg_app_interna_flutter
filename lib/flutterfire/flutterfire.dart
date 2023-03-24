@@ -63,3 +63,10 @@ Stream<QuerySnapshot<Map<String, dynamic>>> getActiveClients() {
       .where('deleted', isEqualTo: false)
       .snapshots();
 }
+
+Stream<QuerySnapshot<Map<String, dynamic>>> getDeletedClients() {
+  return FirebaseFirestore.instance
+      .collection('client_info')
+      .where('deleted', isEqualTo: true)
+      .snapshots();
+}
