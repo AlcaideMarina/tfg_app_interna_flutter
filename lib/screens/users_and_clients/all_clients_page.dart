@@ -8,6 +8,7 @@ import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/flutterfire/flutterfire.dart';
 import 'package:hueveria_nieto_interna/model/client_model.dart';
 import 'package:hueveria_nieto_interna/model/current_user_model.dart';
+import 'package:hueveria_nieto_interna/screens/users_and_clients/detail_client_page.dart';
 import 'package:hueveria_nieto_interna/screens/users_and_clients/new_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
@@ -88,7 +89,6 @@ class _AllClientsPageState extends State<AllClientsPage> {
                     if (snapshot.hasData) {
                       final data = snapshot.data;
                       final List clientList = data.docs;
-                      // TODO: Si clientList.length = 0 hay que mostrar el panel
                       if (clientList.isNotEmpty) {
                         return Expanded(
                             child: ListView.builder(
@@ -106,7 +106,8 @@ class _AllClientsPageState extends State<AllClientsPage> {
                                         client.id,
                                         client.company,
                                         client.cif,
-                                        "TODO"), // TODO: Falta por hacer la parte de pedidos
+                                        "TODO",         // TODO: Falta por hacer la parte de pedidos
+                                        onTap: () => navigateToDetailClientsPage(client),),
                                   );
                                 }));
                       } else {
@@ -158,5 +159,11 @@ class _AllClientsPageState extends State<AllClientsPage> {
         MaterialPageRoute(
           builder: (context) => DeletedClientsPage(currentUser),
         ));
+  }
+
+  navigateToDetailClientsPage(ClientModel client) {
+    Navigator.push(
+      context, 
+      MaterialPageRoute(builder: (context) => ClientDetailPage(currentUser, client)));
   }
 }
