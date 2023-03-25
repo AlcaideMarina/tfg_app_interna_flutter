@@ -18,8 +18,11 @@ class HNComponentTextInput extends StatelessWidget {
   final IconData? suffixIcon;
   final IconData? icon;
   final bool? isDense;
+  final bool? isEnabled;
   final EdgeInsetsGeometry? contentPadding;
   final TextEditingController? textEditingController;
+  final Color? backgroundColor;
+  final Color? textColor;
 
   const HNComponentTextInput(
       {Key? key,
@@ -37,8 +40,11 @@ class HNComponentTextInput extends StatelessWidget {
       this.suffixIcon,
       this.icon,
       this.isDense,
+      this.isEnabled,
       this.contentPadding, 
-      this.textEditingController})
+      this.textEditingController,
+      this.backgroundColor,
+      this.textColor})
       : super(key: key);
 
   @override
@@ -59,7 +65,11 @@ class HNComponentTextInput extends StatelessWidget {
         }
       },
       autovalidateMode: autovalidateMode,
+      enabled: isEnabled,
+      style: TextStyle(color: textColor),
       decoration: InputDecoration(
+        filled: backgroundColor != null,
+        fillColor: backgroundColor,
         isDense: isDense,
         contentPadding: contentPadding,
         hintText: hintText,
