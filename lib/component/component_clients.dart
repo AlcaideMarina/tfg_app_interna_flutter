@@ -9,6 +9,7 @@ class HNComponentClients extends StatelessWidget {
   final String name;
   final String cif;
   final String actualOrder;
+  final Function()? onTap;
   // TODO: Falta por añadir en onClick
 
   const HNComponentClients(
@@ -16,11 +17,13 @@ class HNComponentClients extends StatelessWidget {
     this.name, 
     this.cif, 
     this.actualOrder, 
-    {Key? key}) : super(key: key);
+    {Key? key, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+        onTap: onTap,
+        child: Container(
       padding: const EdgeInsets.all(16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,6 +48,6 @@ class HNComponentClients extends StatelessWidget {
         ),
         borderRadius: const BorderRadius.all(Radius.circular(20))
       ),
-    );
+    ));
   }
 }
