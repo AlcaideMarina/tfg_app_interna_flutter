@@ -70,7 +70,7 @@ class _AllClientsPageState extends State<AllClientsPage> {
                     height: 8,
                   ),
                   HNButton(ButtonTypes.grayBlackRoundedButton).getTypedButton(
-                      "Cuentas eliminadas",
+                      "Clientes eliminadas",
                       null,
                       null,
                       navigateToDeletedClientsPage,
@@ -116,7 +116,7 @@ class _AllClientsPageState extends State<AllClientsPage> {
                             child: const HNComponentPanel(
                               title: 'No hay clientes',
                               text:
-                                  "No hay registro de clientes eliminados en la base de datos.",
+                                  "No hay registro de clientes activos en la base de datos.",
                             ));
                       }
                     } else if (snapshot.hasError) {
@@ -133,7 +133,7 @@ class _AllClientsPageState extends State<AllClientsPage> {
                           child: const HNComponentPanel(
                             title: 'No hay clientes',
                             text:
-                                "No hay registro de clientes eliminados en la base de datos.",
+                                "No hay registro de clientes activos en la base de datos.",
                           ));
                     }
                   }
