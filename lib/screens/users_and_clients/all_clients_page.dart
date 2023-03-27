@@ -137,8 +137,12 @@ class _AllClientsPageState extends State<AllClientsPage> {
                           ));
                     }
                   }
-                  return const CircularProgressIndicator(
-                    color: CustomColors.redPrimaryColor,
+                  return const Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: CustomColors.redPrimaryColor,
+                      ),
+                    ),
                   );
                 }),
           ],
