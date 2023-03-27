@@ -10,6 +10,7 @@ import 'package:hueveria_nieto_interna/flutterfire/flutterfire.dart';
 import 'package:hueveria_nieto_interna/model/client_model.dart';
 import 'package:hueveria_nieto_interna/model/current_user_model.dart';
 import 'package:hueveria_nieto_interna/model/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/screens/users_and_clients/deleted_internal_users_page.dart';
 import 'package:hueveria_nieto_interna/screens/users_and_clients/detail_client_page.dart';
 import 'package:hueveria_nieto_interna/screens/users_and_clients/new_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
@@ -75,7 +76,7 @@ class _InternalUsersPageState extends State<InternalUsersPage> {
                       "Cuentas eliminadas",
                       null,
                       null,
-                      () {},
+                      navigateToDeletedInternalUsersPage,
                       () {})
                 ],
               ),
@@ -150,4 +151,13 @@ class _InternalUsersPageState extends State<InternalUsersPage> {
           ],
         ));
   }
+
+  navigateToDeletedInternalUsersPage() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DeletedInternalUsersPage(currentUser),
+        ));
+  }
+
 }
