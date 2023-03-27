@@ -4,7 +4,7 @@ import 'dart:developer' as developer;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ClientModel {
-  // TODO: Igual hay que mirar que el id sea nulable, porque incialmente no va a vernir en el map - o se
+  // TODO: Igual hay que mirar que el DOCUMENT_ID sea nulable, porque incialmente no va a vernir en el map - o se
   //      añade en el map antes de pasarlo a esta clase o se deja como nulable y se añade después
   final String id;
   final String company;
@@ -23,8 +23,9 @@ class ClientModel {
   final String? createdBy;
   final String? uid;
   final bool deleted;
+  String? documentId;   // TODO: Investigar - ¿nulable?
 
-  const ClientModel(
+  ClientModel(
       this.id,
       this.company,
       this.direction,
@@ -76,6 +77,7 @@ class ClientModel {
       },
     );
 
+    // TODO: Investigar - ¿Deberíamos meter documentId?
     return ClientModel(
         json['id'],
         json['company'],
@@ -97,7 +99,8 @@ class ClientModel {
   }
 
   Map<String, dynamic> toMap() => {
-        // TODO: ¿deberíamos añadir id? Entiendo que no porque no se guarda en bbdd como tal
+        // TODO: ¿deberíamos añadir documentId? Entiendo que no porque no se guarda en bbdd como tal
+        'id': id,
         'company': company,
         'direction': direction,
         'city': city,
