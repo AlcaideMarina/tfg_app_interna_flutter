@@ -5,6 +5,7 @@ import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/model/current_user_model.dart';
 import 'package:hueveria_nieto_interna/screens/users_and_clients/all_clients_page.dart';
+import 'package:hueveria_nieto_interna/screens/users_and_clients/internal_users_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
 class UsersAndClientsPage extends StatefulWidget {
@@ -77,7 +78,7 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
             Container(
               child: Column(children: [
                 HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                    "Usuarios internos", null, null, () {}, () {}),
+                    "Usuarios internos", null, null, navigateToInternalUsersPage, () {}),
                 const SizedBox(
                   height: 16,
                 ),
@@ -96,6 +97,14 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
         context,
         MaterialPageRoute(
           builder: (context) => AllClientsPage(currentUser),
+        ));
+  }
+
+  navigateToInternalUsersPage() {
+    Navigator.push(
+        context, 
+        MaterialPageRoute(
+          builder: (context) => InternalUsersPage(currentUser),
         ));
   }
 }
