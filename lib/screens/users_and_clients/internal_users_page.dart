@@ -133,7 +133,7 @@ class _InternalUsersPageState extends State<InternalUsersPage> {
                       return Container(
                           margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                           child: const HNComponentPanel(
-                            title: 'No hay clientes',
+                            title: 'No hay usuarios',
                             text:
                                 "No hay registro de usuarios internos activos en la base de datos.",
                           ));
