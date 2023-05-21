@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 
-import '../values/image_routes.dart';
+import '../../values/image_routes.dart';
 
 /// Component to use when listing all clients (e.g: AllClientsPage)
 

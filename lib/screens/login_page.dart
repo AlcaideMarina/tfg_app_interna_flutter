@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hueveria_nieto_interna/component/component_text_input.dart';
-import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
+import 'package:hueveria_nieto_interna/ui/components/component_text_input.dart';
+import 'package:hueveria_nieto_interna/ui/components/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/values/firebase_auth_constants.dart';
 import 'package:hueveria_nieto_interna/values/image_routes.dart';
 import '../custom/custom_colors.dart';

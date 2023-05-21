@@ -3,7 +3,7 @@ import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/utils/Utils.dart';
 import 'package:hueveria_nieto_interna/utils/constants.dart';
 
-import '../values/image_routes.dart';
+import '../../values/image_routes.dart';
 
 /// Component to use when listing all clients (e.g: AllClientsPage)
 

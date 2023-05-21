@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hueveria_nieto_interna/component/component_clients.dart';
-import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
+import 'package:hueveria_nieto_interna/ui/components/component_clients.dart';
+import 'package:hueveria_nieto_interna/ui/components/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
@@ -11,7 +11,7 @@ import 'package:hueveria_nieto_interna/screens/users_and_clients/detail_client_p
 import 'package:hueveria_nieto_interna/screens/users_and_clients/new_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
-import '../../component/component_panel.dart';
+import '../../ui/components/component_panel.dart';
 import '../../data/models/internal_user_model.dart';
 import 'deleted_clients_page.dart';
 
