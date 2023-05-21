@@ -77,7 +77,7 @@ class ClientModel {
         docId);
   }
 
-  Map<String, dynamic> toMap() => {
+  Map<Object, Object?> toMap() => {
         'cif': cif,
         'city': city,
         'created_by': createdBy,

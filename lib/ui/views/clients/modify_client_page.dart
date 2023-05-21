@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_colors.dart';
@@ -172,7 +173,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, () {}),
+              .getTypedButton('Guardar', null, null, updateClient, () {}),
           const SizedBox(
             height: 8,
           ),
@@ -373,4 +374,71 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
   goBack() {
     Navigator.of(context).pop();
   }
+
+  updateClient() async {
+    // TODO: Hay que hacer primero la llamada de usuario
+    bool conf = await FirebaseUtils.instance.updateClient(
+      ClientModel(
+        cif, 
+        city, 
+        company, 
+        clientData.createdBy, 
+        clientData.deleted, 
+        direction, 
+        email, 
+        hasAccount, 
+        id, 
+        [
+          {namePhone1: phone1}, 
+          {namePhone2: phone2}
+        ], 
+        postalCode, 
+        province, 
+        clientData.uid, 
+        user, 
+        clientData.documentId
+      )
+    );
+    if (conf) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+            title: const Text('Cliente guardado'),
+            content: const Text(
+                'La información del cliente se ha guardado correctamente'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('De acuerdo.'),
+                onPressed: () {
+                  Navigator.of(context)
+                    ..pop()
+                    ..pop();
+                },
+              )
+            ],
+          ));
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+            title: const Text('Error'),
+            content: const Text(
+                'Ha ocurrido un problema al guardar el cliente en la base de datos. Por favor, revise los datos e inténtelo de nuevo.'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('De acuerdo.'),
+                onPressed: () {
+                  Navigator.of(context)
+                    ..pop()
+                    ..pop();
+                },
+              )
+            ],
+          ));
+    }
+    
+    
+    
+  }
+
 }

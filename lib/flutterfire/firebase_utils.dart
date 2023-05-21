@@ -55,4 +55,17 @@ class FirebaseUtils {
         .orderBy('id')
         .snapshots();
   }
+
+  Future<bool> updateClient(ClientModel clientModel) async {
+    try {
+      Map<Object, Object?> dataMap = clientModel.toMap();
+      await FirebaseFirestore.instance
+          .collection('client_info')
+          .doc(clientModel.documentId)
+          .update(dataMap);
+      return true;
+    } catch(e) {
+      return false;
+    }
+  } 
 }
