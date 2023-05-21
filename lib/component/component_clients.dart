@@ -37,7 +37,6 @@ class HNComponentClients extends StatelessWidget {
               Text("CIF: " + cif),
             ],
           ),
-          // TODO: Cambiar icono - creo que se va a tener que importar
           Image.asset(
             ImageRoutes.getRoute('ic_next_arrow'), 
             width: 16,
