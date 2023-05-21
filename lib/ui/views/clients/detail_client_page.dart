@@ -11,6 +11,7 @@ import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/data/models/client_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/clients/modify_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer' as developer;
@@ -92,7 +93,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     's': 'Cajas S',
     'cartoned': 'Estuchados'
   };
-  List<String> userLabels = ['Usuario', 'Correo', 'Confirmación del correo'];
+  List<String> userLabels = ['Usuario'];
   // TODO: Mirar otra forma de contar - ¿mapas?
   int contCompany = 0;
   int contUser = 0;
@@ -124,15 +125,6 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
           top: false,
           child: Column(
             children: [
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.fromLTRB(72, 0, 48, 16),
-                child: Text(
-                  client.company,
-                  style: const TextStyle(fontSize: 20),
-                  textAlign: TextAlign.start,
-                ),
-              ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Container(
@@ -207,7 +199,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, () {}, () {}),
+              .getTypedButton('Modificar', null, null, navigateToModifyClient, () {}),
           const SizedBox(
             height: 8,
           ),
@@ -512,5 +504,13 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
 
   goBack() {
     Navigator.of(context).pop();
+  }
+
+  navigateToModifyClient() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ModifyClientPage(currentUser, client),
+      ));
   }
 }
