@@ -59,7 +59,7 @@ class _DeletedInternalUsersPageState extends State<DeletedInternalUsersPage> {
         body: Column(
           children: [
             StreamBuilder(
-                stream: getDeletedInternalUsers(),
+                stream: getInternalUsers(),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
@@ -76,16 +76,20 @@ class _DeletedInternalUsersPageState extends State<DeletedInternalUsersPage> {
                                   final InternalUserModel internalUser =
                                       InternalUserModel.fromMap(userList[i].data()
                                           as Map<String, dynamic>, userList[i].id);
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 32, vertical: 8),
-                                    child: HNComponentInternalUsers(
-                                        internalUser.id.toString(),
-                                        internalUser.name + ' ' + internalUser.surname,
-                                        internalUser.dni,
-                                        internalUser.position,
-                                        onTap: () {}),
-                                  );
+                                  if (internalUser.deleted) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 32, vertical: 8),
+                                      child: HNComponentInternalUsers(
+                                          internalUser.id.toString(),
+                                          internalUser.name + ' ' + internalUser.surname,
+                                          internalUser.dni,
+                                          internalUser.position,
+                                          onTap: () {}),
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
                                 }));
                       } else {
                         return Container(

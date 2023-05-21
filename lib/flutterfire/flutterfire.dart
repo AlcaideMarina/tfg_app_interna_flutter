@@ -35,21 +35,13 @@ Stream<QuerySnapshot<Map<String, dynamic>>> getAllClients() {
 Stream<QuerySnapshot<Map<String, dynamic>>> getClients() {
   return FirebaseFirestore.instance
       .collection('client_info')
-      //.where('deleted', isEqualTo: false)
       .orderBy('id')
       .snapshots();
 }
 
-Stream<QuerySnapshot<Map<String, dynamic>>> getActiveInternalUsers() {
+Stream<QuerySnapshot<Map<String, dynamic>>> getInternalUsers() {
   return FirebaseFirestore.instance
       .collection('user_info')
-      .where('deleted', isEqualTo: false)
-      .snapshots();
-}
-
-Stream<QuerySnapshot<Map<String, dynamic>>> getDeletedInternalUsers() {
-  return FirebaseFirestore.instance
-      .collection('user_info')
-      .where('deleted', isEqualTo: true)
+      .orderBy('id')
       .snapshots();
 }
