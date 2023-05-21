@@ -4,6 +4,7 @@ class ImageRoutes {
   }
 
   static final Map<String, String> imageRoutesMap = {
-    'ic_logo': 'assets/ic_logo.png'
+    'ic_logo': 'assets/ic_logo.png',
+    'ic_next_arrow': 'assets/ic_next_arrow.png'
   };
 }
