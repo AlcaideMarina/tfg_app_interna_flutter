@@ -53,7 +53,7 @@ class ComponentButton extends StatelessWidget {
                   width: 24,
                 ),
           Container(
-              margin: const EdgeInsets.symmetric(horizontal: 24.0),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
                 text,
                 style: textStyle,
