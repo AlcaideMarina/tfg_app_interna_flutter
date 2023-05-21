@@ -18,7 +18,7 @@ class ClientModel {
   final bool hasAccount;
   final String? user;
   final String? createdBy;
-  final String? uid;
+  String? uid;
   final bool deleted;
   String? documentId;   // TODO: Investigar - ¿nulable?
 

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'dart:developer' as developer;
 
@@ -68,4 +69,18 @@ class FirebaseUtils {
       return false;
     }
   } 
+
+  Future<String?> createAuthAccount(String email, String password) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      if (userCredential.user != null) {
+        return userCredential.user!.uid;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 
@@ -376,36 +377,28 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
   }
 
   updateClient() async {
-    // TODO: Hay que hacer primero la llamada de usuario
-    bool conf = await FirebaseUtils.instance.updateClient(
-      ClientModel(
-        cif, 
-        city, 
-        company, 
-        clientData.createdBy, 
-        clientData.deleted, 
-        direction, 
-        email, 
-        hasAccount, 
-        id, 
-        [
-          {namePhone1: phone1}, 
-          {namePhone2: phone2}
-        ], 
-        postalCode, 
-        province, 
-        clientData.uid, 
-        user, 
-        clientData.documentId
-      )
-    );
-    if (conf) {
-      showDialog(
+
+    String? authConf = null;
+    bool firestoreConf = false;
+    bool createAuthAccount = false;
+    
+    if(clientData.hasAccount) {
+      createAuthAccount = false;
+    } else {
+      createAuthAccount = hasAccount;
+    }
+
+    if (createAuthAccount) {
+      if (user != null) {
+        authConf = await FirebaseUtils.instance.createAuthAccount(email, user!);
+        clientData.uid = authConf;
+      } else {
+        showDialog(
         context: context,
         builder: (_) => AlertDialog(
-            title: const Text('Cliente guardado'),
+            title: const Text('Formulario incompleto'),
             content: const Text(
-                'La información del cliente se ha guardado correctamente'),
+                'Es necesario introducir un usuario si se quiere crear una cuenta. Este usuario será la contraseña por defecto hasta que el cliente la modifique. Por favor, revise los datos y vuelva a intentarlo.'),
             actions: <Widget>[
               TextButton(
                 child: const Text('De acuerdo.'),
@@ -417,28 +410,92 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
               )
             ],
           ));
+      }
+    }
+
+    if (authConf != null) {
+      if (cif != "" && city != "" && company != "" && direction != "" && email != "" && namePhone1 != "" && 
+        phone1 != -1 && namePhone2 != "" && phone2 != -1 && postalCode != -1 && province != "") {
+          firestoreConf = await FirebaseUtils.instance.updateClient(
+            ClientModel(
+              cif, 
+              city, 
+              company, 
+              clientData.createdBy, 
+              clientData.deleted, 
+              direction, 
+              email, 
+              hasAccount, 
+              id, 
+              [
+                {namePhone1: phone1}, 
+                {namePhone2: phone2}
+              ], 
+              postalCode, 
+              province, 
+              clientData.uid, 
+              user, 
+              clientData.documentId
+            )
+          );
+          if (firestoreConf) {
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                  title: const Text('Cliente guardado'),
+                  content: const Text(
+                      'La información del cliente se ha guardado correctamente'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo.'),
+                      onPressed: () {
+                        Navigator.of(context)
+                          ..pop()
+                          ..pop();
+                      },
+                    )
+                  ],
+                )
+            );
+          } else {
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                  title: const Text('Error'),
+                  content: const Text(
+                      'Ha ocurrido un problema al guardar el cliente en la base de datos. Por favor, revise los datos e inténtelo de nuevo.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo.'),
+                      onPressed: () {
+                        Navigator.of(context)
+                          ..pop()
+                          ..pop();
+                      },
+                    )
+                  ],
+                )
+            );
+          }
+      }
     } else {
       showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-            title: const Text('Error'),
-            content: const Text(
-                'Ha ocurrido un problema al guardar el cliente en la base de datos. Por favor, revise los datos e inténtelo de nuevo.'),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('De acuerdo.'),
-                onPressed: () {
-                  Navigator.of(context)
-                    ..pop()
-                    ..pop();
-                },
-              )
-            ],
-          ));
+      context: context,
+      builder: (_) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text(
+              'Ha ocurrido un error al intentar crear la cuenta del cliente. Por favor, revise los datos e inténtelo de nuevo.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('De acuerdo.'),
+              onPressed: () {
+                Navigator.of(context)
+                  ..pop()
+                  ..pop();
+              },
+            )
+          ],
+        ));
     }
-    
-    
-    
   }
-
 }
