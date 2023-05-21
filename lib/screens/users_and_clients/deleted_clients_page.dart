@@ -57,7 +57,7 @@ class _DeletedClientsPageState extends State<DeletedClientsPage> {
         body: Column(
           children: [
             StreamBuilder(
-                stream: getDeletedClients(),
+                stream: getClients(),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
@@ -74,14 +74,19 @@ class _DeletedClientsPageState extends State<DeletedClientsPage> {
                                   final ClientModel client =
                                       ClientModel.fromMap(clientList[i].data()
                                           as Map<String, dynamic>, clientList[i].id);
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 32, vertical: 8),
-                                    child: HNComponentClients(
-                                        client.id.toString(),
-                                        client.company,
-                                        client.cif,), // TODO: Falta por hacer la parte de pedidos
-                                  );
+                                  if (client.deleted) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 32, vertical: 8),
+                                      child: HNComponentClients(
+                                          client.id.toString(),
+                                          client.company,
+                                          client.cif,
+                                      )
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
                                 }));
                       } else {
                         return Container(

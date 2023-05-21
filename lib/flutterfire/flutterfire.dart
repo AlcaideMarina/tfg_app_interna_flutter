@@ -32,17 +32,11 @@ Stream<QuerySnapshot<Map<String, dynamic>>> getAllClients() {
   return FirebaseFirestore.instance.collection('client_info').snapshots();
 }
 
-Stream<QuerySnapshot<Map<String, dynamic>>> getActiveClients() {
+Stream<QuerySnapshot<Map<String, dynamic>>> getClients() {
   return FirebaseFirestore.instance
       .collection('client_info')
-      .where('deleted', isEqualTo: false)
-      .snapshots();
-}
-
-Stream<QuerySnapshot<Map<String, dynamic>>> getDeletedClients() {
-  return FirebaseFirestore.instance
-      .collection('client_info')
-      .where('deleted', isEqualTo: true)
+      //.where('deleted', isEqualTo: false)
+      .orderBy('id')
       .snapshots();
 }
 

@@ -82,7 +82,7 @@ class _AllClientsPageState extends State<AllClientsPage> {
               height: 16,
             ),
             StreamBuilder(
-                stream: getActiveClients(),
+                stream: getClients(),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
@@ -99,15 +99,19 @@ class _AllClientsPageState extends State<AllClientsPage> {
                                   final ClientModel client =
                                       ClientModel.fromMap(clientList[i].data()
                                           as Map<String, dynamic>, clientList[i].id);
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 32, vertical: 8),
-                                    child: HNComponentClients(
-                                        client.id.toString(),
-                                        client.company,
-                                        client.cif,
-                                        onTap: () => navigateToDetailClientsPage(client),),
-                                  );
+                                  if (!client.deleted) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 32, vertical: 8),
+                                        child: HNComponentClients(
+                                            client.id.toString(),
+                                            client.company,
+                                            client.cif,
+                                            onTap: () => navigateToDetailClientsPage(client),),
+                                      );
+                                  } else {
+                                    return Container();
+                                  }
                                 }));
                       } else {
                         return Container(
