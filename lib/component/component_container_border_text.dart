@@ -3,32 +3,19 @@ import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 
 /// Container whose title is on its top border.
 
-class HNComponentContainerBorderCheckTitle extends StatelessWidget {
+class HNComponentContainerBorderText extends StatelessWidget {
   final String title;
   final TextStyle titleStyle;
   final Container container;
   final Color backgroundColor;
-  final EdgeInsets contentPadding;
-  final VisualDensity visualDensity;
-  final bool isDense;
-  final bool value;
-  // TODO: final VoidCallback onChange;
-  final ListTileControlAffinity controlAffinity;
   final double leftPosition;
   final double rightPosition;
   final double topPosition;
-  final Function(bool) onChange;
 
-  const HNComponentContainerBorderCheckTitle(this.title, this.container,
-      this.onChange,
+  const HNComponentContainerBorderText(this.title, this.container,
       {Key? key,
-      this.contentPadding = EdgeInsets.zero,
-      this.visualDensity = VisualDensity.compact,
-      this.isDense = true,
-      this.value = false,
       this.backgroundColor = CustomColors.whiteColor,
       this.titleStyle = const TextStyle(fontSize: 14),
-      this.controlAffinity = ListTileControlAffinity.leading,
       this.leftPosition = 50,
       this.rightPosition = 0,
       this.topPosition = 12})
@@ -44,8 +31,14 @@ class HNComponentContainerBorderCheckTitle extends StatelessWidget {
           right: rightPosition,
           top: topPosition,
           child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             color: backgroundColor,
-            child: CheckboxListTile(
+            child: Text(
+              title,
+              style: titleStyle,
+            )
+            
+            /*CheckboxListTile(
               contentPadding: contentPadding,
               visualDensity: visualDensity,
               dense: isDense,
@@ -56,7 +49,7 @@ class HNComponentContainerBorderCheckTitle extends StatelessWidget {
               value: value,
               onChanged: (value) => onChange(value ?? false),
               controlAffinity: controlAffinity,
-            ),
+            ),*/
           ),
         ),
       ],

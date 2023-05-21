@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/component/menu/lateral_menu.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
-import 'package:hueveria_nieto_interna/model/current_user.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
+
+import '../model/current_user_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage(this.currentUser, {Key? key}) : super(key: key);
 
-  final CurrentUser currentUser;
+  final CurrentUserModel currentUser;
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -16,7 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  late CurrentUser currentUser;
+  late CurrentUserModel currentUser;
 
   @override
   void initState() {

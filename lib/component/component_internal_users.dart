@@ -3,24 +3,24 @@ import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 
 /// Component to use when listing all clients (e.g: AllClientsPage)
 
-class HNComponentClients extends StatelessWidget {
+class HNComponentInternalUsers extends StatelessWidget {
   
   final String id;
   final String name;
-  final String cif;
-  final String actualOrder;
+  final String dni;
+  final int jobPosition;
   final Function()? onTap;
-  // TODO: Falta por añadir en onClick
 
-  const HNComponentClients(
+  const HNComponentInternalUsers(
     this.id, 
     this.name, 
-    this.cif, 
-    this.actualOrder, 
+    this.dni, 
+    this.jobPosition, 
     {Key? key, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
         onTap: onTap,
         child: Container(
@@ -33,8 +33,8 @@ class HNComponentClients extends StatelessWidget {
             children: [
               Text(id),
               Text(name),
-              Text("CIF: " + cif),
-              Text("Pedido actual: " + actualOrder)
+              Text("DNI: " + dni),
+              Text("Puesto: " + jobPosition.toString()) // TODO: Sacar equivalencia del puesto por bbdd
             ],
           ),
           // TODO: Cambiar icono - creo que se va a tener que importar

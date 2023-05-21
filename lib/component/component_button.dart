@@ -73,7 +73,7 @@ class ComponentButton extends StatelessWidget {
           backgroundColor: MaterialStateProperty.resolveWith<Color>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.pressed)) {
-                return Theme.of(context).colorScheme.primary.withOpacity(0.5);
+                return CustomColors.redPrimaryColor.withOpacity(0.5);
               } else if (states.contains(MaterialState.disabled)) {
                 return CustomColors.grayColor;
               }
