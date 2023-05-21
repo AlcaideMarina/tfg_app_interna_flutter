@@ -65,19 +65,11 @@ class _NewClientPageState extends State<NewClientPage> {
     'Código postal',
     'CIF',
     'Correo',
-    'Confirmación del email',
     'Teléfono',
     'Precio/ud.',
   ];
 
-  Map<String, String> eggTypes = {
-    'xl': 'Cajas XL',
-    'l': 'Cajas L',
-    'm': 'Cajas M',
-    's': 'Cajas S',
-    'cartoned': 'Estuchados'
-  };
-  List<String> userLabels = ['Usuario', 'Correo', 'Confirmación del correo'];
+  List<String> userLabels = ['Usuario'];
   int contCompany = 0;
   int contUser = 0;
 
@@ -171,17 +163,7 @@ class _NewClientPageState extends State<NewClientPage> {
             'Correo', null, TextInputType.emailAddress, (value) {
           email = value;
         }, textCapitalization: TextCapitalization.none),
-        getCompanyComponentSimpleForm(
-            'Confirmación del correo', null, TextInputType.emailAddress,
-            (value) {
-          isEmailConfirmated = (value == email);
-        }, textCapitalization: TextCapitalization.none),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
-        getComponentTableForm('Precio/ud.', getPricePerUnitTableRow(),
-            columnWidhts: {
-              0: const IntrinsicColumnWidth(),
-              2: const IntrinsicColumnWidth()
-            }),
         getClientUserContainerComponent(),
       ],
     );
@@ -260,55 +242,44 @@ class _NewClientPageState extends State<NewClientPage> {
             40,
             const EdgeInsets.only(left: 16, right: 8, bottom: 8),
             HNComponentTextInput(
-              labelText: 'Teléfono',
-              textInputType: TextInputType.number,
+              labelText: 'Contacto',
+              textCapitalization: TextCapitalization.words,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               onChange: (value) {
-                phone1 = int.parse(value);
-                // format user
-                if (value.length > 2) {
-                  phone1UserName = value.substring(value.length - 2);
-                } else {
-                  phone1UserName = '';
-                }
-                userController.text = companyUserName +
-                    '_' +
-                    phone1NameUserName +
-                    '_' +
-                    phone1UserName;
+                namePhone1 = value;
               },
             )),
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             HNComponentTextInput(
-              labelText: 'Nombre contacto',
-              textCapitalization: TextCapitalization.words,
+              labelText: 'Teléfono',
+              textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               onChange: (value) {
-                namePhone1 = value;
-                // format user
-                phone1NameUserName = '';
-                final list = namePhone1.split(' ');
-                for (String word in list) {
-                  if (word.isNotEmpty) {
-                    phone1NameUserName += word.toLowerCase().substring(0, 1);
-                  }
-                }
-                userController.text = companyUserName +
-                    '_' +
-                    phone1NameUserName +
-                    '_' +
-                    phone1UserName;
+                phone1 = int.parse(value);
               },
             )),
+      
       ]),
       TableRow(children: [
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 16, right: 8),
+            HNComponentTextInput(
+              labelText: 'Contacto',
+              textCapitalization: TextCapitalization.words,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              onChange: (value) {
+                namePhone2 = value;
+              },
+            )),
+        HNComponentCellTableForm(
+            40,
+            const EdgeInsets.only(left: 8, right: 16),
             HNComponentTextInput(
               labelText: 'Teléfono',
               textInputType: TextInputType.number,
@@ -318,58 +289,8 @@ class _NewClientPageState extends State<NewClientPage> {
                 phone2 = int.parse(value);
               },
             )),
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16),
-            HNComponentTextInput(
-              labelText: 'Nombre contacto',
-              textCapitalization: TextCapitalization.words,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              onChange: (value) {
-                namePhone2 = value;
-              },
-            )),
       ]),
     ];
-  }
-
-  List<TableRow> getPricePerUnitTableRow() {
-    List<TableRow> list = [];
-    int cont = 0;
-    for (var key in eggTypes.keys) {
-      double bottomMargin = 8;
-      if (cont == eggTypes.length) {
-        bottomMargin = 0;
-      }
-
-      list.add(TableRow(children: [
-        Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text(eggTypes[key] ?? 'error - ' + key)),
-        Container(
-          height: 40,
-          margin: EdgeInsets.only(left: 8, right: 16, bottom: bottomMargin),
-          child: HNComponentTextInput(
-            initialValue: prices[key] != null ? prices[key].toString() : '0.0',
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            textInputType: const TextInputType.numberWithOptions(),
-            onChange: (value) {
-              // TODO: Fix - Aquí hay que meter una validación para comprobar que el input se pueda pasar a double
-              prices[key] = double.parse(value);
-            },
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(right: 16),
-          child: const Text('€'),
-        )
-      ]));
-
-      cont++;
-    }
-    return list;
   }
 
   Widget getClientUserContainerComponent() {
@@ -390,17 +311,10 @@ class _NewClientPageState extends State<NewClientPage> {
             getClientComponentSimpleForm(userLabels[0], TextInputType.text,
                 (value) {
               user = value;
-            }, controller: userController),
-            getClientComponentSimpleForm(
-                userLabels[1], TextInputType.emailAddress, (value) {
-              emailAccount = value;
-            }),
-            getClientComponentSimpleForm(
-                userLabels[2], TextInputType.emailAddress, (value) {
-              isEmailAccountConfirmated = (value == emailAccount);
-            }),
+            }, controller: userController,
+            isEnabled: hasAccount),
             const Text(
-                'Se le mandará a esta dirección de correo un mensaje con la información para terminar de crear la cuenta.'),
+                'El usuario debe tener más de 6 dígitos.\nLa contraseña será igual que el usuario. Por favor, cámbiela en cuanto sea posible. Para hacer login, se necesitará el correo y la contraseña.'),
           ],
         ),
       ),
@@ -417,7 +331,7 @@ class _NewClientPageState extends State<NewClientPage> {
 
   Widget getClientComponentSimpleForm(
       String label, TextInputType textInputType, Function(String)? onChange,
-      {TextEditingController? controller}) {
+      {TextEditingController? controller, bool isEnabled = true}) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (contUser == 0) {
@@ -438,6 +352,7 @@ class _NewClientPageState extends State<NewClientPage> {
         textInputType: textInputType,
         onChange: onChange,
         textEditingController: controller,
+        isEnabled: isEnabled,
       ),
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       textMargin: const EdgeInsets.only(left: 24),
