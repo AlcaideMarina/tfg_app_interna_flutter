@@ -16,7 +16,7 @@ import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer' as developer;
 
-import '../../../flutterfire/flutterfire.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../../data/models/internal_user_model.dart';
 
 // TODO: Cuidado - todo esta clase está hardcodeada
@@ -421,7 +421,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
       // TODO: CircularProgressIndicator()
 
       // TODO: Conseguir el valor del id
-      id = await getNextUserId();
+      id = await FirebaseUtils.instance.getNextUserId();
       // TODO: si hasAccount == true y email_account no es nulo, hay que hacer llamada también a Firebase Auth
       if (hasAccount) {
         // Pendiente de desarrollo de app cliente - ¿creo contraseña que aparezca en el correo y luego que se modifique?
