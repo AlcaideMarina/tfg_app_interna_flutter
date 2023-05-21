@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 
+import '../values/image_routes.dart';
+
 /// Component to use when listing all clients (e.g: AllClientsPage)
 
 class HNComponentClients extends StatelessWidget {
@@ -25,6 +27,7 @@ class HNComponentClients extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,7 +38,10 @@ class HNComponentClients extends StatelessWidget {
             ],
           ),
           // TODO: Cambiar icono - creo que se va a tener que importar
-          const Icon(Icons.arrow_right_alt_outlined)
+          Image.asset(
+            ImageRoutes.getRoute('ic_next_arrow'), 
+            width: 16,
+            height: 24,)
         ],
       ),
       decoration: BoxDecoration(
