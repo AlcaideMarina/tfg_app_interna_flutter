@@ -168,7 +168,6 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('ID: ' + client.id.toString()),
         getCompanyComponentSimpleForm('Empresa', client.company, null, TextInputType.text,
             (value) {
           company = value;
@@ -357,10 +356,14 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
           borderRadius: BorderRadius.circular(16),
           shape: BoxShape.rectangle,
         ),
-        child: hasAccount ? clientHasAppAccount() : clientHasNotAppAccount()
+        child: 
+            getClientComponentSimpleForm(userLabels[0], TextInputType.text,
+                (value) {
+              user = value;
+            }),
       ),
       leftPosition: 24,
-      rightPosition: 150,
+      rightPosition: 50,
       topPosition: 10,
     );
   }
