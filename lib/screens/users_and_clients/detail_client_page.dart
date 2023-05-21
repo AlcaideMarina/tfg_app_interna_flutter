@@ -207,7 +207,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, saveClient, () {}),
+              .getTypedButton('Modificar', null, null, () {}, () {}),
           const SizedBox(
             height: 8,
           ),
