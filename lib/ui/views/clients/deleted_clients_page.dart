@@ -9,10 +9,10 @@ import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/flutterfire/flutterfire.dart';
 import 'package:hueveria_nieto_interna/data/models/client_model.dart';
-import 'package:hueveria_nieto_interna/screens/users_and_clients/new_client_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/clients/new_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
-import '../../data/models/internal_user_model.dart';
+import '../../../data/models/internal_user_model.dart';
 
 class DeletedClientsPage extends StatefulWidget {
   const DeletedClientsPage(this.currentUser, {Key? key}) : super(key: key);

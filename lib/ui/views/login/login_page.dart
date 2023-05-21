@@ -5,9 +5,9 @@ import 'package:hueveria_nieto_interna/ui/components/component_text_input.dart';
 import 'package:hueveria_nieto_interna/ui/components/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/values/firebase_auth_constants.dart';
 import 'package:hueveria_nieto_interna/values/image_routes.dart';
-import '../custom/custom_colors.dart';
-import '../data/models/internal_user_model.dart';
-import 'home_page.dart';
+import '../../../custom/custom_colors.dart';
+import '../../../data/models/internal_user_model.dart';
+import '../main/main_page.dart';
 import 'dart:developer' as developer;
 
 class LoginPage extends StatefulWidget {

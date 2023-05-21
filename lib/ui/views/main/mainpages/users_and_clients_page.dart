@@ -3,11 +3,11 @@ import 'package:hueveria_nieto_interna/ui/components/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/ui/components/menu/lateral_menu.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
-import 'package:hueveria_nieto_interna/screens/users_and_clients/all_clients_page.dart';
-import 'package:hueveria_nieto_interna/screens/users_and_clients/internal_users_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/clients/all_clients_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/internalusers/internal_users_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
-import '../../data/models/internal_user_model.dart';
+import '../../../../data/models/internal_user_model.dart';
 
 class UsersAndClientsPage extends StatefulWidget {
   const UsersAndClientsPage(this.currentUser, {Key? key}) : super(key: key);

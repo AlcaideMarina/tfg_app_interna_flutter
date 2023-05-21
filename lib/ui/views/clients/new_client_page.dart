@@ -14,8 +14,8 @@ import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer' as developer;
 
-import '../../flutterfire/flutterfire.dart';
-import '../../data/models/internal_user_model.dart';
+import '../../../flutterfire/flutterfire.dart';
+import '../../../data/models/internal_user_model.dart';
 
 // TODO: Cuidado - todo esta clase está hardcodeada
 // TODO: Intentar reducir código
