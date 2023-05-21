@@ -9,21 +9,22 @@ import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/flutterfire/flutterfire.dart';
 import 'package:hueveria_nieto_interna/model/client_model.dart';
-import 'package:hueveria_nieto_interna/model/current_user_model.dart';
 import 'package:hueveria_nieto_interna/screens/users_and_clients/new_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
+
+import '../../model/internal_user_model.dart';
 
 class DeletedClientsPage extends StatefulWidget {
   const DeletedClientsPage(this.currentUser, {Key? key}) : super(key: key);
 
-  final CurrentUserModel currentUser;
+  final InternalUserModel currentUser;
 
   @override
   State<DeletedClientsPage> createState() => _DeletedClientsPageState();
 }
 
 class _DeletedClientsPageState extends State<DeletedClientsPage> {
-  late CurrentUserModel currentUser;
+  late InternalUserModel currentUser;
 
   @override
   void initState() {

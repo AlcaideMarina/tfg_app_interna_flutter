@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 import 'dart:developer' as developer;
 
 import '../../flutterfire/flutterfire.dart';
-import '../../model/current_user_model.dart';
+import '../../model/internal_user_model.dart';
 
 // TODO: Cuidado - todo esta clase está hardcodeada
 // TODO: Intentar reducir código
@@ -23,7 +23,7 @@ import '../../model/current_user_model.dart';
 class NewClientPage extends StatefulWidget {
   const NewClientPage(this.currentUser, {Key? key}) : super(key: key);
 
-  final CurrentUserModel currentUser;
+  final InternalUserModel currentUser;
 
   @override
   State<NewClientPage> createState() => _NewClientPageState();
@@ -31,7 +31,7 @@ class NewClientPage extends StatefulWidget {
 
 // TODO: Faltan todas las validaciones
 class _NewClientPageState extends State<NewClientPage> {
-  late CurrentUserModel currentUser;
+  late InternalUserModel currentUser;
 
   @override
   void initState() {

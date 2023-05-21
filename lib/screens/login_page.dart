@@ -6,7 +6,7 @@ import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/values/firebase_auth_constants.dart';
 import 'package:hueveria_nieto_interna/values/image_routes.dart';
 import '../custom/custom_colors.dart';
-import '../model/current_user_model.dart';
+import '../model/internal_user_model.dart';
 import 'home_page.dart';
 import 'dart:developer' as developer;
 
@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  navigateToMainPage(CurrentUserModel currentUser) {
+  navigateToMainPage(InternalUserModel currentUser) {
     // TODO: Evitar que al dar al botón de atrás, vuelva aquí - investigar
     Navigator.pushReplacement(
         context,
@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   // TODO: Esto debería estar en una clase aparte
-  Future<CurrentUserModel?>? getUserInfo() async {
+  Future<InternalUserModel?>? getUserInfo() async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
         .collection('user_info')
@@ -120,25 +120,26 @@ class _LoginPageState extends State<LoginPage> {
       final Map<String, dynamic>? userInfo = document.data() as Map<String, dynamic>?;
       if (userInfo != null) {
         // TODO: hacer un .fromMap
-        return CurrentUserModel(
-          document.id,
-          uid ?? '', 
-          userInfo['id'], 
-          userInfo['name'], 
-          userInfo['surname'], 
-          userInfo['dni'], 
-          userInfo['phone'], 
-          userInfo['email'], 
-          userInfo['direction'], 
-          userInfo['city'], 
-          userInfo['province'], 
-          userInfo['postal_code'], 
-          userInfo['same_dni_direction'], 
-          userInfo['ss_number'], 
+        return InternalUserModel(
           userInfo['bank_account'], 
-          userInfo['position'], 
+          userInfo['city'], 
+          userInfo['created_by'],
+          userInfo['deleted'],
+          userInfo['direction'], 
+          userInfo['dni'], 
+          userInfo['email'], 
+          userInfo['id'],
+          userInfo['name'], 
+          userInfo['phone'], 
+          userInfo['position'],
+          userInfo['postal_code'], 
+          userInfo['province'], 
+          userInfo['salary'],
+          userInfo['ss_number'], 
+          userInfo['surname'], 
+          uid!, 
           userInfo['user'],
-          // TODO: Faltan los permisos
+          document.id,
         );
       } else {
         return null;
@@ -163,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
           email: user.trim(), password: password);
       developer.log('Función signInWithEmailAndPassword() terminada', name: 'Login');
       developer.log('Empieza la función getUserInfo()', name: 'Login');
-      CurrentUserModel? currentUser = await getUserInfo();
+      InternalUserModel? currentUser = await getUserInfo();
       developer.log('Función getUserInfo() terminada', name: 'Login');
       if (currentUser != null) {
         navigateToMainPage(currentUser);

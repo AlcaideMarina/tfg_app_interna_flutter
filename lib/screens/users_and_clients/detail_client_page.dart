@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 import 'dart:developer' as developer;
 
 import '../../flutterfire/flutterfire.dart';
-import '../../model/current_user_model.dart';
+import '../../model/internal_user_model.dart';
 
 // TODO: Cuidado - todo esta clase está hardcodeada
 // TODO: Intentar reducir código
@@ -24,7 +24,7 @@ import '../../model/current_user_model.dart';
 class ClientDetailPage extends StatefulWidget {
   const ClientDetailPage(this.currentUser, this.client, {Key? key}) : super(key: key);
 
-  final CurrentUserModel currentUser;
+  final InternalUserModel currentUser;
   final ClientModel client;
 
   @override
@@ -32,7 +32,7 @@ class ClientDetailPage extends StatefulWidget {
 }
 
 class _ClientDetailPageState extends State<ClientDetailPage> {
-  late CurrentUserModel currentUser;
+  late InternalUserModel currentUser;
   late ClientModel client;
 
   late int id;
