@@ -101,12 +101,12 @@ class _InternalUsersPageState extends State<InternalUsersPage> {
                                 itemBuilder: (context, i) {
                                   final InternalUserModel internalUser =
                                       InternalUserModel.fromMap(userList[i].data()
-                                          as Map<String, dynamic>);
+                                          as Map<String, dynamic>, userList[i].id);
                                   return Container(
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 32, vertical: 8),
                                     child: HNComponentInternalUsers(
-                                        internalUser.id,
+                                        internalUser.id.toString(),
                                         internalUser.name + ' ' + internalUser.surname,
                                         internalUser.dni,
                                         internalUser.position,

@@ -39,12 +39,12 @@ class ClientModel {
       this.user,
       this.documentId);
 
-  factory ClientModel.fromJson(String str, String docId) =>
+  factory ClientModel.fromJson(String str, String? docId) =>
       ClientModel.fromMap(jsonDecode(str), docId);
 
   String toJson() => jsonEncode(toMap());
 
-  factory ClientModel.fromMap(Map<String, dynamic> json, String docId) {
+  factory ClientModel.fromMap(Map<String, dynamic> json, String? docId) {
     List<Map<String, int>> phoneMap = [];
     (json['phone'] as List<dynamic>).forEach((element) {
       try {

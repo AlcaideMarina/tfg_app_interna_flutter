@@ -4,11 +4,11 @@ import 'dart:developer' as developer;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class InternalUserModel {
-  final String id;
+  final int id;
   final String bankAccount;
   final String city;
   final String createdBy;
-  final Timestamp creationDate;
+  final bool deleted;
   final String direction;
   final String dni;
   final String email;
@@ -17,83 +17,81 @@ class InternalUserModel {
   final int position;
   final int postalCode;
   final String province;
-  final bool sameDniDirection;    // TODO: Investigar - ¿este dato es necesario?
+  final double? salary;
   final int ssNumber;
   final String surname;
-  final String uid;
-  final String user;
-  final bool deleted;
+  final String? uid;
+  final String? user;
+  final String? documentId;
 
   InternalUserModel(
-    this.id, 
     this.bankAccount, 
     this.city, 
     this.createdBy, 
-    this.creationDate, 
+    this.deleted,
     this.direction, 
     this.dni, 
     this.email, 
+    this.id, 
     this.name, 
     this.phone, 
     this.position, 
     this.postalCode, 
     this.province, 
-    this.sameDniDirection, 
+    this.salary,
     this.ssNumber, 
     this.surname, 
     this.uid, 
     this.user,
-    this.deleted);
+    this.documentId);
 
-factory InternalUserModel.fromJson(String str) =>
-      InternalUserModel.fromMap(jsonDecode(str));
+factory InternalUserModel.fromJson(String str, String? docId) =>
+      InternalUserModel.fromMap(jsonDecode(str), docId);
 
   String toJson() => jsonEncode(toMap());
 
-  factory InternalUserModel.fromMap(Map<String, dynamic> json) {
+  factory InternalUserModel.fromMap(Map<String, dynamic> json, String? docId) {
     return InternalUserModel(
-        json['id'],
         json['bank_account'],
         json['city'],
         json['created_by'],
-        json['creation_date'],
+        json['deleted'],
         json['direction'],
         json['dni'],
         json['email'],
+        json['id'],
         json['name'],
         json['phone'],
         json['position'],
         json['postal_code'],
         json['province'],
-        json['same_dni_direction'],
+        json['salary'],
         json['ss_number'],
         json['surname'],
         json['uid'],
         json['user'],
-        json['deleted']);
+        docId);
   }
 
   Map<String, dynamic> toMap() => {
-        // TODO: ¿deberíamos añadir id? Entiendo que no porque no se guarda en bbdd como tal
-        'id': id,
         'bankAccount': bankAccount,
         'city': city,
         'created_by': createdBy,
-        'creation_date': creationDate,
+        'deleted': deleted,
         'direction': direction,
         'dni': dni,
         'email': email,
+        'id': id,
         'name': name,
         'phone': phone,
         'position': position,
         'postal_code': postalCode,
         'province': province,
-        'same_dni_direction': sameDniDirection,
+        'salary': salary,
         'ss_number': ssNumber,
         'surname': surname,
         'uid': uid,
         'user': user,
-        'deleted': deleted
       };
   
 }
