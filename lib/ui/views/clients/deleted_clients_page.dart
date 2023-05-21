@@ -1,32 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hueveria_nieto_interna/component/component_clients.dart';
-import 'package:hueveria_nieto_interna/component/component_panel.dart';
-import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
+import 'package:hueveria_nieto_interna/ui/components/component_clients.dart';
+import 'package:hueveria_nieto_interna/ui/components/component_panel.dart';
+import 'package:hueveria_nieto_interna/ui/components/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/flutterfire/flutterfire.dart';
-import 'package:hueveria_nieto_interna/model/client_model.dart';
-import 'package:hueveria_nieto_interna/model/current_user_model.dart';
-import 'package:hueveria_nieto_interna/screens/users_and_clients/new_client_page.dart';
+import 'package:hueveria_nieto_interna/data/models/client_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/clients/new_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
-import '../../component/component_internal_users.dart';
-import '../../model/internal_user_model.dart';
+import '../../../data/models/internal_user_model.dart';
 
-class DeletedInternalUsersPage extends StatefulWidget {
-  const DeletedInternalUsersPage(this.currentUser, {Key? key}) : super(key: key);
+class DeletedClientsPage extends StatefulWidget {
+  const DeletedClientsPage(this.currentUser, {Key? key}) : super(key: key);
 
-  final CurrentUserModel currentUser;
+  final InternalUserModel currentUser;
 
   @override
-  State<DeletedInternalUsersPage> createState() => _DeletedInternalUsersPageState();
+  State<DeletedClientsPage> createState() => _DeletedClientsPageState();
 }
 
-class _DeletedInternalUsersPageState extends State<DeletedInternalUsersPage> {
-  late CurrentUserModel currentUser;
+class _DeletedClientsPageState extends State<DeletedClientsPage> {
+  late InternalUserModel currentUser;
 
   @override
   void initState() {
@@ -53,48 +51,51 @@ class _DeletedInternalUsersPageState extends State<DeletedInternalUsersPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Cuentas eliminadas",
+              "Clientes eliminados",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
         body: Column(
           children: [
             StreamBuilder(
-                stream: getDeletedClients(),
+                stream: getClients(),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
                     if (snapshot.hasData) {
                       final data = snapshot.data;
-                      final List userList = data.docs;
-                      if (userList.isNotEmpty) {
+                      final List clientList = data.docs;
+                      if (clientList.isNotEmpty) {
                         return Expanded(
                             child: ListView.builder(
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
-                                itemCount: userList.length,
+                                itemCount: clientList.length,
                                 itemBuilder: (context, i) {
-                                  final InternalUserModel internalUser =
-                                      InternalUserModel.fromMap(userList[i].data()
-                                          as Map<String, dynamic>);
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 32, vertical: 8),
-                                    child: HNComponentInternalUsers(
-                                        internalUser.id,
-                                        internalUser.name + ' ' + internalUser.surname,
-                                        internalUser.dni,
-                                        internalUser.position,
-                                        onTap: () {}),
-                                  );
+                                  final ClientModel client =
+                                      ClientModel.fromMap(clientList[i].data()
+                                          as Map<String, dynamic>, clientList[i].id);
+                                  if (client.deleted) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 32, vertical: 8),
+                                      child: HNComponentClients(
+                                          client.id.toString(),
+                                          client.company,
+                                          client.cif,
+                                      )
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
                                 }));
                       } else {
                         return Container(
                             margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                             child: const HNComponentPanel(
-                              title: 'No hay usuarios',
+                              title: 'No hay clientes',
                               text:
-                                  "No hay registro de usuarios internos eliminados en la base de datos.",
+                                  "No hay registro de clientes eliminados en la base de datos.",
                             ));
                       }
                     } else if (snapshot.hasError) {
@@ -109,9 +110,9 @@ class _DeletedInternalUsersPageState extends State<DeletedInternalUsersPage> {
                       return Container(
                           margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                           child: const HNComponentPanel(
-                            title: 'No hay usuarios',
+                            title: 'No hay clientes',
                             text:
-                                "No hay registro de usuarios internos eliminados en la base de datos.",
+                                "No hay registro de clientes eliminados en la base de datos.",
                           ));
                     }
                   } else {

@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ClientModel {
   // TODO: Igual hay que mirar que el DOCUMENT_ID sea nulable, porque incialmente no va a vernir en el map - o se
   //      añade en el map antes de pasarlo a esta clase o se deja como nulable y se añade después
-  final String id;
+  final int id;
   final String company;
   final String direction;
   final String city;
@@ -15,41 +15,36 @@ class ClientModel {
   final String cif;
   final String email;
   final List<Map<String, int>> phone;
-  final Map<String, double> price;
   final bool hasAccount;
   final String? user;
-  final String? emailAccount;
-  final Timestamp? creationDatetime;
   final String? createdBy;
   final String? uid;
   final bool deleted;
   String? documentId;   // TODO: Investigar - ¿nulable?
 
   ClientModel(
-      this.id,
-      this.company,
-      this.direction,
-      this.city,
-      this.province,
-      this.postalCode,
       this.cif,
-      this.email,
-      this.phone,
-      this.price,
-      this.hasAccount,
-      this.user,
-      this.emailAccount,
-      this.creationDatetime,
+      this.city,
+      this.company,
       this.createdBy,
+      this.deleted,
+      this.direction,
+      this.email,
+      this.hasAccount,
+      this.id,
+      this.phone,
+      this.postalCode,
+      this.province,
       this.uid,
-      this.deleted);
+      this.user,
+      this.documentId);
 
-  factory ClientModel.fromJson(String str) =>
-      ClientModel.fromMap(jsonDecode(str));
+  factory ClientModel.fromJson(String str, String? docId) =>
+      ClientModel.fromMap(jsonDecode(str), docId);
 
   String toJson() => jsonEncode(toMap());
 
-  factory ClientModel.fromMap(Map<String, dynamic> json) {
+  factory ClientModel.fromMap(Map<String, dynamic> json, String? docId) {
     List<Map<String, int>> phoneMap = [];
     (json['phone'] as List<dynamic>).forEach((element) {
       try {
@@ -63,59 +58,39 @@ class ClientModel {
       }
     });
 
-    Map<String, double> priceMap = {};
-    (json['price'] as Map<String, dynamic>).forEach(
-      (key, value) {
-        try {
-          priceMap[key] = value.toDouble();
-        } catch (e) {
-          priceMap[key] = 0.0;
-          developer.log(
-              'Error - ClientModel - ClientModel.fromMap() - prices: ' +
-                  e.toString());
-        }
-      },
-    );
-
     // TODO: Investigar - ¿Deberíamos meter documentId?
     return ClientModel(
-        json['id'],
-        json['company'],
-        json['direction'],
-        json['city'],
-        json['province'],
-        json['postal_code'],
         json['cif'],
-        json['email'],
-        phoneMap,
-        priceMap,
-        json['has_account'],
-        json['user'],
-        json['email_account'],
-        json['creation_datetime'],
+        json['city'],
+        json['company'],
         json['created_by'],
+        json['deleted'],
+        json['direction'],
+        json['email'],
+        json['has_account'],
+        json['id'],
+        phoneMap,
+        json['postal_code'],
+        json['province'],
         json['uid'],
-        json['deleted']);
+        json['user'],
+        docId);
   }
 
   Map<String, dynamic> toMap() => {
-        // TODO: ¿deberíamos añadir documentId? Entiendo que no porque no se guarda en bbdd como tal
-        'id': id,
-        'company': company,
-        'direction': direction,
-        'city': city,
-        'province': province,
-        'postal_code': postalCode,
         'cif': cif,
-        'email': email,
-        'phone': phone,
-        'price': price,
-        'has_account': hasAccount,
-        'user': user,
-        'email_account': emailAccount,
-        'creation_datetime': creationDatetime,
+        'city': city,
         'created_by': createdBy,
+        'company': company,
+        'deleted': deleted,
+        'direction': direction,
+        'email': email,
+        'has_account': hasAccount,
+        'id': id,
+        'phone': phone,
+        'postal_code': postalCode,
+        'province': province,
         'uid': uid,
-        'deleted': deleted
+        'user': user,
       };
 }

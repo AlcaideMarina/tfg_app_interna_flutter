@@ -1,34 +1,33 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hueveria_nieto_interna/component/component_clients.dart';
-import 'package:hueveria_nieto_interna/component/component_internal_users.dart';
-import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
+import 'package:hueveria_nieto_interna/ui/components/component_clients.dart';
+import 'package:hueveria_nieto_interna/ui/components/component_internal_users.dart';
+import 'package:hueveria_nieto_interna/ui/components/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/flutterfire/flutterfire.dart';
-import 'package:hueveria_nieto_interna/model/client_model.dart';
-import 'package:hueveria_nieto_interna/model/current_user_model.dart';
-import 'package:hueveria_nieto_interna/model/internal_user_model.dart';
-import 'package:hueveria_nieto_interna/screens/users_and_clients/deleted_internal_users_page.dart';
-import 'package:hueveria_nieto_interna/screens/users_and_clients/detail_client_page.dart';
-import 'package:hueveria_nieto_interna/screens/users_and_clients/new_client_page.dart';
+import 'package:hueveria_nieto_interna/data/models/client_model.dart';
+import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/internalusers/deleted_internal_users_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/clients/detail_client_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/clients/new_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
-import '../../component/component_panel.dart';
-import 'deleted_clients_page.dart';
+import '../../components/component_panel.dart';
+import '../clients/deleted_clients_page.dart';
 
 class InternalUsersPage extends StatefulWidget {
   const InternalUsersPage(this.currentUser, {Key? key}) : super(key: key);
 
-  final CurrentUserModel currentUser;
+  final InternalUserModel currentUser;
 
   @override
   State<InternalUsersPage> createState() => _InternalUsersPageState();
 }
 
 class _InternalUsersPageState extends State<InternalUsersPage> {
-  late CurrentUserModel currentUser;
+  late InternalUserModel currentUser;
 
   @override
   void initState() {
@@ -85,7 +84,7 @@ class _InternalUsersPageState extends State<InternalUsersPage> {
               height: 16,
             ),
             StreamBuilder(
-                stream: getActiveInternalUsers(),
+                stream: getInternalUsers(),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
@@ -101,17 +100,21 @@ class _InternalUsersPageState extends State<InternalUsersPage> {
                                 itemBuilder: (context, i) {
                                   final InternalUserModel internalUser =
                                       InternalUserModel.fromMap(userList[i].data()
-                                          as Map<String, dynamic>);
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 32, vertical: 8),
-                                    child: HNComponentInternalUsers(
-                                        internalUser.id,
-                                        internalUser.name + ' ' + internalUser.surname,
-                                        internalUser.dni,
-                                        internalUser.position,
-                                        onTap: () {}),
-                                  );
+                                          as Map<String, dynamic>, userList[i].id);
+                                  if (!internalUser.deleted) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 32, vertical: 8),
+                                      child: HNComponentInternalUsers(
+                                          internalUser.id.toString(),
+                                          internalUser.name + ' ' + internalUser.surname,
+                                          internalUser.dni,
+                                          internalUser.position,
+                                          onTap: () {}),
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
                                 }));
                       } else {
                         return Container(
