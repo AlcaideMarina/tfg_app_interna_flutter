@@ -40,7 +40,7 @@ class _NewClientPageState extends State<NewClientPage> {
     currentUser = widget.currentUser;
   }
 
-  late String id;
+  late int id;
   late String company;
   late String direction;
   late String city;
@@ -463,45 +463,41 @@ class _NewClientPageState extends State<NewClientPage> {
       }
 
       final client = ClientModel(
-          id,
-          company,
-          direction,
-          city,
-          province,
-          postalCode,
           cif,
+          city,
+          company,
+          currentUser.documentId,
+          false,
+          direction,
           email,
+          hasAccount,
+          id,
           [
             {namePhone1: phone1},
             {namePhone2: phone2}
           ],
-          prices,
-          hasAccount,
-          hasAccount ? user : null,
-          hasAccount ? emailAccount : null,
-          Timestamp.now(),
-          currentUser.documentId,
+          postalCode,
+          province,
           null, // TODO: Pendiente del UID que devuelva la parte de authentication
-          false);
+          hasAccount ? user : null,
+          null
+      );
 
       await FirebaseFirestore.instance.collection('client_info').add({
-        'id': client.id,
-        'company': client.company,
-        'direction': client.direction,
-        'city': client.city,
-        'province': client.province,
-        'postal_code': client.postalCode,
         'cif': client.cif,
-        'email': client.email,
-        'phone': client.phone,
-        'price': client.price,
-        'has_account': client.hasAccount,
-        'user': client.user,
-        'email_account': client.emailAccount,
-        'creation_datetime': client.creationDatetime,
+        'city': client.city,
+        'company': client.company,
         'created_by': client.createdBy,
+        'deleted': client.deleted,
+        'direction': client.direction,
+        'email': client.email,
+        'id': client.id,
+        'has_account': client.hasAccount,
+        'phone': client.phone,
+        'postal_code': client.postalCode,
+        'province': client.province,
         'uid': client.uid,
-        'deleted': client.deleted
+        'user': client.user
       });
 
       // TODO: Cerrar CircularProgressIndicator()

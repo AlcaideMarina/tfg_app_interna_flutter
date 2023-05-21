@@ -3,7 +3,7 @@ import 'dart:convert';
 class CurrentUserModel {
   final String documentId;
   final String uid;
-  final String visibleID;
+  final int id;
   final String name;
   final String surname;
   final String dni;
@@ -26,7 +26,7 @@ class CurrentUserModel {
   //      añade en el map antes de pasarlo a esta clase o se deja como nulable y se añade después
     this.documentId,
     this.uid,
-    this.visibleID,
+    this.id,
     this.name,
     this.surname,
     this.dni,
@@ -50,7 +50,7 @@ class CurrentUserModel {
   factory CurrentUserModel.fromMap(Map<String, dynamic> json) => CurrentUserModel(
     json['document_id'],
     json['uid'],
-    json['visible_id'],
+    json['id'],
     json['name'],
     json['surname'],
     json['dni'],
@@ -70,7 +70,7 @@ class CurrentUserModel {
   Map<String, dynamic> toMap() => {
     // TODO: ¿deberíamos añadir documentId? Entiendo que no porque no se guarda en bbdd como tal
     'uid': uid,
-    'visible_id': visibleID,
+    'visible_id': id,
     'name': name,
     'surname': surname,
     'dni': dni,

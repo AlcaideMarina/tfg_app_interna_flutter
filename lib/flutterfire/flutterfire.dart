@@ -28,7 +28,7 @@ Future<Map<String, double>?> getEggTypes() async {
   }
 }
 
-Future<String> getNextUserId() async {
+Future<int> getNextUserId() async {
   try {
     QuerySnapshot query = await FirebaseFirestore.instance
         .collection('client_info')
@@ -36,20 +36,19 @@ Future<String> getNextUserId() async {
         .get();
 
     if (query.docs.isEmpty || !query.docs[query.docs.length - 1].exists) {
-      return '0000000000';
+      return 0;
     } else {
-      Map<String, dynamic> lastDocument =
+      QueryDocumentSnapshot lastDocument =
+          query.docs[query.docs.length - 1];
+      Map<String, dynamic> lastMap =
           query.docs[query.docs.length - 1].data() as Map<String, dynamic>;
-      ClientModel clientModel = ClientModel.fromMap(lastDocument);
-      String newId = (int.parse(clientModel.id) + 1).toString();
-      while (newId.length < 10) {
-        newId = '0' + newId;
-      }
+      ClientModel clientModel = ClientModel.fromMap(lastMap, lastDocument.id);
+      int newId = clientModel.id + 1;
       return newId;
     }
   } catch (e) {
     developer.log('Error - FlutterFire - getNextUserId(): ' + e.toString());
-    return 'error-id-$e';
+    return -1;
   }
 }
 

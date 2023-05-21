@@ -73,12 +73,12 @@ class _DeletedClientsPageState extends State<DeletedClientsPage> {
                                 itemBuilder: (context, i) {
                                   final ClientModel client =
                                       ClientModel.fromMap(clientList[i].data()
-                                          as Map<String, dynamic>);
+                                          as Map<String, dynamic>, clientList[i].id);
                                   return Container(
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 32, vertical: 8),
                                     child: HNComponentClients(
-                                        client.id,
+                                        client.id.toString(),
                                         client.company,
                                         client.cif,
                                         "TODO"), // TODO: Falta por hacer la parte de pedidos

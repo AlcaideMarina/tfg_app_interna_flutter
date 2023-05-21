@@ -36,7 +36,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
   late CurrentUserModel currentUser;
   late ClientModel client;
 
-  late String id;
+  late int id;
   late String company;
   late String direction;
   late String city;
@@ -48,10 +48,8 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
   late int phone2;
   late String namePhone1;
   late String namePhone2;
-  Map<String, double> prices = {};
   bool hasAccount = false;
   String? user;
-  String? emailAccount;
 
   @override
   void initState() {
@@ -71,10 +69,8 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     namePhone1 = client.phone[0].keys.first;
     phone2 = client.phone[1].values.first;
     namePhone2 = client.phone[1].keys.first;
-    prices = client.price;
     hasAccount = client.hasAccount;
     user = client.user;
-    emailAccount = client.emailAccount;
   }
 
   List<String> labelList = [
@@ -106,11 +102,6 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
   Widget build(BuildContext context) {
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
-
-    final productsService = Provider.of<ProductsService>(context);
-
-    prices = productsService
-        .products; // TODO: Fix - cuando abres por primera vez viene todo a 0.0
 
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     if (StringsTranslation.of(context) == null) {
@@ -178,7 +169,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('ID: ' + client.id),
+        Text('ID: ' + client.id.toString()),
         getCompanyComponentSimpleForm('Empresa', client.company, null, TextInputType.text,
             (value) {
           company = value;
@@ -207,11 +198,6 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
           email = value;
         }, textCapitalization: TextCapitalization.none),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
-        getComponentTableForm('Precio/ud.', getPricePerUnitTableRow(),
-            columnWidhts: {
-              0: const IntrinsicColumnWidth(),
-              2: const IntrinsicColumnWidth()
-            }),
         getClientUserContainerComponent(),
       ],
     );
@@ -360,47 +346,6 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     ];
   }
 
-  List<TableRow> getPricePerUnitTableRow() {
-    List<TableRow> list = [];
-    int cont = 0;
-    for (var key in eggTypes.keys) {
-      double bottomMargin = 8;
-      if (cont == eggTypes.length) {
-        bottomMargin = 0;
-      }
-
-      list.add(TableRow(children: [
-        Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text(eggTypes[key] ?? 'error - ' + key)),
-        Container(
-          height: 40,
-          margin: EdgeInsets.only(left: 8, right: 16, bottom: bottomMargin),
-          child: HNComponentTextInput(
-            initialValue: prices[key] != null ? prices[key].toString() : '0.0',
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            textInputType: const TextInputType.numberWithOptions(),
-            onChange: (value) {
-              // TODO: Fix - Aquí hay que meter una validación para comprobar que el input se pueda pasar a double
-              prices[key] = double.parse(value);
-            },
-          isEnabled: false,
-          backgroundColor: CustomColors.backgroundTextFieldDisabled,
-          textColor: CustomColors.darkGrayColor,
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(right: 16),
-          child: const Text('€'),
-        )
-      ]));
-
-      cont++;
-    }
-    return list;
-  }
-
   Widget getClientUserContainerComponent() {
     return HNComponentContainerBorderText(
       'Usuario de la aplicación',
@@ -459,10 +404,6 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
                 (value) {
               user = value;
             }),
-            getClientComponentSimpleForm(
-                userLabels[1], TextInputType.emailAddress, (value) {
-              emailAccount = value;
-            }),
             HNButton(ButtonTypes.blackRedRoundedButton).getTypedButton('Eliminar', null, null, () { }, () { })
 
           ],
@@ -488,50 +429,45 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
       // TODO: Conseguir el valor del id
       id = await getNextUserId();
       // TODO: si hasAccount == true y email_account no es nulo, hay que hacer llamada también a Firebase Auth
-      if (hasAccount && emailAccount != null) {
+      if (hasAccount) {
         // Pendiente de desarrollo de app cliente - ¿creo contraseña que aparezca en el correo y luego que se modifique?
       }
 
       final client = ClientModel(
-          id,
-          company,
-          direction,
-          city,
-          province,
-          postalCode,
           cif,
+          city,
+          company,
+          currentUser.documentId,
+          false,
+          direction,
           email,
+          hasAccount,
+          id,
           [
             {namePhone1: phone1},
             {namePhone2: phone2}
           ],
-          prices,
-          hasAccount,
+          postalCode,
+          province,
+          null, // TODO: Pendiente del UID que devuelva la parte de authentication);
           hasAccount ? user : null,
-          hasAccount ? emailAccount : null,
-          Timestamp.now(),
-          currentUser.documentId,
-          null, // TODO: Pendiente del UID que devuelva la parte de authentication
-          false);
+          null);
 
       await FirebaseFirestore.instance.collection('client_info').add({
-        'id': client.id,
-        'company': client.company,
-        'direction': client.direction,
-        'city': client.city,
-        'province': client.province,
-        'postal_code': client.postalCode,
         'cif': client.cif,
-        'email': client.email,
-        'phone': client.phone,
-        'price': client.price,
-        'has_account': client.hasAccount,
-        'user': client.user,
-        'email_account': client.emailAccount,
-        'creation_datetime': client.creationDatetime,
+        'city': client.city,
+        'company': client.company,
         'created_by': client.createdBy,
+        'direction': client.direction,
+        'deleted': client.deleted,
+        'email': client.email,
+        'has_account': client.hasAccount,
+        'id': client.id,
+        'phone': client.phone,
+        'postal_code': client.postalCode,
+        'province': client.province,
         'uid': client.uid,
-        'deleted': client.deleted
+        'user': client.user,
       });
 
       // TODO: Cerrar CircularProgressIndicator()

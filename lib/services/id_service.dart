@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../flutterfire/flutterfire.dart';
 
 class IDService extends ChangeNotifier {
-  String newId = '';
+  int newId = 0;
 
   bool isLoading = true;
 
@@ -11,7 +11,7 @@ class IDService extends ChangeNotifier {
     loadNextUserId();
   }
 
-  Future<String?> loadNextUserId() async {
+  Future<int?> loadNextUserId() async {
     isLoading = true;
     notifyListeners();
 
