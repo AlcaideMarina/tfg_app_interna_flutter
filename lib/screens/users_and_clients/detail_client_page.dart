@@ -10,13 +10,13 @@ import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
-import 'package:hueveria_nieto_interna/model/client_model.dart';
+import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer' as developer;
 
 import '../../flutterfire/flutterfire.dart';
-import '../../model/internal_user_model.dart';
+import '../../data/models/internal_user_model.dart';
 
 // TODO: Cuidado - todo esta clase está hardcodeada
 // TODO: Intentar reducir código

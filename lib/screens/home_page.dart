@@ -4,7 +4,7 @@ import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
-import '../model/internal_user_model.dart';
+import '../data/models/internal_user_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage(this.currentUser, {Key? key}) : super(key: key);

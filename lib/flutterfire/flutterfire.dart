@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hueveria_nieto_interna/model/client_model.dart';
+import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'dart:developer' as developer;
 
 import '../values/firebase_constants.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
-import 'package:hueveria_nieto_interna/model/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/screens/users_and_clients/users_and_clients_page.dart';
 import 'lateral_menu_header.dart';
 

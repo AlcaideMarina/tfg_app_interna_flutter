@@ -7,7 +7,7 @@ import 'package:hueveria_nieto_interna/screens/users_and_clients/all_clients_pag
 import 'package:hueveria_nieto_interna/screens/users_and_clients/internal_users_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
-import '../../model/internal_user_model.dart';
+import '../../data/models/internal_user_model.dart';
 
 class UsersAndClientsPage extends StatefulWidget {
   const UsersAndClientsPage(this.currentUser, {Key? key}) : super(key: key);

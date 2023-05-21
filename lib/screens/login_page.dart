@@ -6,7 +6,7 @@ import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/values/firebase_auth_constants.dart';
 import 'package:hueveria_nieto_interna/values/image_routes.dart';
 import '../custom/custom_colors.dart';
-import '../model/internal_user_model.dart';
+import '../data/models/internal_user_model.dart';
 import 'home_page.dart';
 import 'dart:developer' as developer;
 
