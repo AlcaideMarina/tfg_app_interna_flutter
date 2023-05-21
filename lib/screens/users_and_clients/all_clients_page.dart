@@ -106,7 +106,6 @@ class _AllClientsPageState extends State<AllClientsPage> {
                                         client.id.toString(),
                                         client.company,
                                         client.cif,
-                                        "TODO",         // TODO: Falta por hacer la parte de pedidos
                                         onTap: () => navigateToDetailClientsPage(client),),
                                   );
                                 }));

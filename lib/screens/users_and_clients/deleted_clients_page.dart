@@ -80,8 +80,7 @@ class _DeletedClientsPageState extends State<DeletedClientsPage> {
                                     child: HNComponentClients(
                                         client.id.toString(),
                                         client.company,
-                                        client.cif,
-                                        "TODO"), // TODO: Falta por hacer la parte de pedidos
+                                        client.cif,), // TODO: Falta por hacer la parte de pedidos
                                   );
                                 }));
                       } else {

@@ -8,7 +8,6 @@ class HNComponentClients extends StatelessWidget {
   final String id;
   final String name;
   final String cif;
-  final String actualOrder;
   final Function()? onTap;
   // TODO: Falta por añadir en onClick
 
@@ -16,7 +15,6 @@ class HNComponentClients extends StatelessWidget {
     this.id, 
     this.name, 
     this.cif, 
-    this.actualOrder, 
     {Key? key, this.onTap}) : super(key: key);
 
   @override
@@ -34,7 +32,6 @@ class HNComponentClients extends StatelessWidget {
               Text(id),
               Text(name),
               Text("CIF: " + cif),
-              Text("Pedido actual: " + actualOrder)
             ],
           ),
           // TODO: Cambiar icono - creo que se va a tener que importar
