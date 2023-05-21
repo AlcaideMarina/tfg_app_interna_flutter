@@ -16,7 +16,6 @@ import 'dart:developer' as developer;
 
 import '../../flutterfire/flutterfire.dart';
 import '../../model/current_user_model.dart';
-import '../../services/products_service.dart';
 
 // TODO: Cuidado - todo esta clase está hardcodeada
 // TODO: Intentar reducir código
@@ -94,11 +93,6 @@ class _NewClientPageState extends State<NewClientPage> {
   Widget build(BuildContext context) {
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
-
-    final productsService = Provider.of<ProductsService>(context);
-
-    prices = productsService
-        .products; // TODO: Fix - cuando abres por primera vez viene todo a 0.0
 
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     if (StringsTranslation.of(context) == null) {

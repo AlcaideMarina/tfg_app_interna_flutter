@@ -17,7 +17,6 @@ import 'dart:developer' as developer;
 
 import '../../flutterfire/flutterfire.dart';
 import '../../model/current_user_model.dart';
-import '../../services/products_service.dart';
 
 // TODO: Cuidado - todo esta clase está hardcodeada
 // TODO: Intentar reducir código
