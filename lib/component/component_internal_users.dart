@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
+import 'package:hueveria_nieto_interna/utils/Utils.dart';
+import 'package:hueveria_nieto_interna/utils/constants.dart';
 
 import '../values/image_routes.dart';
 
@@ -37,7 +39,7 @@ class HNComponentInternalUsers extends StatelessWidget {
               Text('ID: ' + id),
               Text(name),
               Text("DNI: " + dni),
-              Text("Puesto: " + jobPosition.toString()) // TODO: Sacar equivalencia del puesto por bbdd
+              Text("Puesto: " + Utils().getKey(Constants().roles, jobPosition))
             ],
           ),
           Image.asset(
