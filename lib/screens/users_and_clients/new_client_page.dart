@@ -76,7 +76,6 @@ class _NewClientPageState extends State<NewClientPage> {
   bool isEmailConfirmated = false;
   bool isEmailAccountConfirmated = false;
 
-  final TextEditingController userController = TextEditingController();
   String companyUserName = '';
   String phone1UserName = '';
   String phone1NameUserName = '';
@@ -135,10 +134,6 @@ class _NewClientPageState extends State<NewClientPage> {
         getCompanyComponentSimpleForm('Empresa', null, TextInputType.text,
             (value) {
           company = value;
-          // format user
-          companyUserName = value.toLowerCase().replaceAll(RegExp(' '), '_');
-          userController.text =
-              companyUserName + '_' + phone1NameUserName + '_' + phone1UserName;
         }),
         getCompanyComponentSimpleForm('Dirección', null, TextInputType.text,
             (value) {
@@ -311,7 +306,7 @@ class _NewClientPageState extends State<NewClientPage> {
             getClientComponentSimpleForm(userLabels[0], TextInputType.text,
                 (value) {
               user = value;
-            }, controller: userController,
+            },
             isEnabled: hasAccount),
             const Text(
                 'El usuario debe tener más de 6 dígitos.\nLa contraseña será igual que el usuario. Por favor, cámbiela en cuanto sea posible. Para hacer login, se necesitará el correo y la contraseña.'),
