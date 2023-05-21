@@ -32,7 +32,7 @@ class HNComponentClients extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(id),
+              Text('ID: ' + id),
               Text(name),
               Text("CIF: " + cif),
             ],

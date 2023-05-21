@@ -34,7 +34,7 @@ class HNComponentInternalUsers extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(id),
+              Text('ID: ' + id),
               Text(name),
               Text("DNI: " + dni),
               Text("Puesto: " + jobPosition.toString()) // TODO: Sacar equivalencia del puesto por bbdd
