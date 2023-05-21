@@ -5,6 +5,7 @@ import 'package:hueveria_nieto_interna/component/component_text_input.dart';
 import 'package:hueveria_nieto_interna/component/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/values/firebase_auth_constants.dart';
 import 'package:hueveria_nieto_interna/values/image_routes.dart';
+import '../custom/custom_colors.dart';
 import '../model/current_user_model.dart';
 import 'home_page.dart';
 import 'dart:developer' as developer;
@@ -44,10 +45,10 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(
                       height: 48,
                     ),
-                    // TODO: Esto será el usuario, no el correo
                     HNComponentTextInput(
                       labelText: 'Correo',
                       textInputType: TextInputType.emailAddress,
+                      textCapitalization: TextCapitalization.none,
                       onChange: (text) {
                         user = text;
                         setState(() {});
@@ -58,6 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     HNComponentTextInput(
                       labelText: 'Contraseña',
+                      textCapitalization: TextCapitalization.none,
                       obscureText: true,
                       onChange: (text) {
                         password = text;
@@ -149,6 +151,7 @@ class _LoginPageState extends State<LoginPage> {
   Future signIn() async {
     // TODO: añadir un Circular Progress Indicator - que no se pueda quitar
     // TODO: hacer un componente de pop-up
+    // TODO: Fix - si hay algún error, no se quita el circular progress indicator
     try {
       showDialog(
         context: context, 
