@@ -55,7 +55,6 @@ class _NewClientPageState extends State<NewClientPage> {
   bool hasAccount = false;
   // TODO: Mirar otra forma de contar - ¿mapas?
   String? user;
-  String? emailAccount;
 
   List<String> labelList = [
     'Empresa',
@@ -348,6 +347,7 @@ class _NewClientPageState extends State<NewClientPage> {
         onChange: onChange,
         textEditingController: controller,
         isEnabled: isEnabled,
+        backgroundColor: isEnabled ? CustomColors.whiteColor : CustomColors.backgroundTextFieldDisabled,
       ),
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       textMargin: const EdgeInsets.only(left: 24),
@@ -356,16 +356,42 @@ class _NewClientPageState extends State<NewClientPage> {
 
   saveClient() async {
     try {
-      // TODO: Cerrar el teclado
-      // TODO: CircularProgressIndicator()
+      FocusManager.instance.primaryFocus?.unfocus();
 
-      // TODO: Conseguir el valor del id
+      showAlertDialog(context);
+
+      String? authConf = "uid";
+      String? uid;
       id = await FirebaseUtils.instance.getNextUserId();
-      // TODO: si hasAccount == true y email_account no es nulo, hay que hacer llamada también a Firebase Auth
-      if (hasAccount && emailAccount != null) {
-        // Pendiente de desarrollo de app cliente - ¿creo contraseña que aparezca en el correo y luego que se modifique?
+
+      if (hasAccount) {
+        if (user != null && user != "") {
+          authConf = await FirebaseUtils.instance.createAuthAccount(email, user!);
+          uid = authConf;
+        } else {
+          Navigator.of(context).pop();
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                title: const Text('Formulario incompleto'),
+                content: const Text(
+                    'Es necesario introducir un usuario si se quiere crear una cuenta. Este usuario será la contraseña por defecto hasta que el cliente la modifique. Por favor, revise los datos y vuelva a intentarlo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context)
+                        .pop();
+                    },
+                  )
+                ],
+              ));
+        }
       }
 
+      if (authConf != null) {
+        if (cif != "" && city != "" && company != "" && direction != "" && email != "" && namePhone1 != "" && 
+          phone1 != -1 && namePhone2 != "" && phone2 != -1 && postalCode != -1 && province != "") {
       final client = ClientModel(
           cif,
           city,
@@ -382,7 +408,7 @@ class _NewClientPageState extends State<NewClientPage> {
           ],
           postalCode,
           province,
-          null, // TODO: Pendiente del UID que devuelva la parte de authentication
+          uid,
           hasAccount ? user : null,
           null
       );
@@ -406,6 +432,8 @@ class _NewClientPageState extends State<NewClientPage> {
 
       // TODO: Cerrar CircularProgressIndicator()
 
+      
+      Navigator.of(context).pop();
       showDialog(
           context: context,
           builder: (_) => AlertDialog(
@@ -423,8 +451,28 @@ class _NewClientPageState extends State<NewClientPage> {
                   )
                 ],
               ));
+          } else {
+      Navigator.of(context).pop();
+      showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+          title: const Text('Formulario incompleto'),
+          content: const Text(
+              '¡Por favor, revise los datos e inténtelo de nuevo.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('De acuerdo.'),
+              onPressed: () {
+                Navigator.of(context)
+                  .pop();
+              },
+            )
+          ],
+        ));
+    }
+      } 
     } catch (e) {
-      developer.log(e.toString(), name: 'Error - NewPageDart');
+      Navigator.of(context).pop();
       showDialog(
           context: context,
           builder: (_) => AlertDialog(
@@ -444,5 +492,16 @@ class _NewClientPageState extends State<NewClientPage> {
 
   goBack() {
     Navigator.of(context).pop();
+  }
+
+  showAlertDialog(BuildContext context){
+    showDialog(barrierDismissible: false,
+      context:context,
+      builder:(BuildContext context){
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 }
