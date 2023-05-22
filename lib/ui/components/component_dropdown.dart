@@ -18,6 +18,7 @@ class HNComponentDropdown extends StatelessWidget {
   final EdgeInsetsGeometry? contentPadding;
   final Color? backgroundColor;
   final List<String> items;
+  final Color? textColor;
 
   const HNComponentDropdown(
     this.items,
@@ -35,7 +36,8 @@ class HNComponentDropdown extends StatelessWidget {
       this.isExpanded = true,
       this.isEnabled,
       this.contentPadding = const EdgeInsets.symmetric(vertical: 8, horizontal: 16), 
-      this.backgroundColor}) : super(key: key);
+      this.backgroundColor,
+      this.textColor}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +45,7 @@ class HNComponentDropdown extends StatelessWidget {
             autofocus: autofocus,
             icon: dropdownIcon == null ? null : const Icon(Icons.keyboard_arrow_down_rounded),
             isExpanded: isExpanded,
+            style: TextStyle(color: textColor),
             decoration: InputDecoration(
               filled: backgroundColor != null,
               fillColor: backgroundColor,

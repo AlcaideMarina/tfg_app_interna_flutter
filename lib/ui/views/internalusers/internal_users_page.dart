@@ -12,6 +12,7 @@ import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/ui/views/internalusers/deleted_internal_users_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/clients/detail_client_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/clients/new_client_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/internalusers/internal_user_detail_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/internalusers/new_internal_user_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
@@ -111,7 +112,7 @@ class _InternalUsersPageState extends State<InternalUsersPage> {
                                           internalUser.name + ' ' + internalUser.surname,
                                           internalUser.dni,
                                           internalUser.position,
-                                          onTap: () {}),
+                                          onTap: () => navigateToInternalUserDetail(internalUser)),
                                     );
                                   } else {
                                     return Container();
@@ -169,6 +170,14 @@ class _InternalUsersPageState extends State<InternalUsersPage> {
         context,
         MaterialPageRoute(
           builder: (context) => NewInternalUserPage(currentUser),
+        ));
+  }
+
+  navigateToInternalUserDetail(InternalUserModel internalUserModel) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => InternalUserDetailPage(currentUser, internalUserModel),
         ));
   }
 

@@ -21,7 +21,7 @@ class InternalUserModel {
   final int ssNumber;
   final String surname;
   final String? uid;
-  final String? user;
+  final String user;
   final String? documentId;
 
   InternalUserModel(
