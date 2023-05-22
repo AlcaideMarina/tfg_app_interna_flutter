@@ -377,6 +377,8 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
   }
 
   updateClient() async {
+      FocusManager.instance.primaryFocus?.unfocus();
+      showAlertDialog(context);
 
     String? authConf = "uid";
     bool firestoreConf = false;
@@ -389,10 +391,11 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
     }
 
     if (createAuthAccount) {
-      if (user != null) {
+      if (user != null && user != "") {
         authConf = await FirebaseUtils.instance.createAuthAccount(email, user!);
         clientData.uid = authConf;
       } else {
+      Navigator.of(context).pop();
         showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -437,6 +440,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
             );
           firestoreConf = await FirebaseUtils.instance.updateClient(updatedClient);
           if (firestoreConf) {
+      Navigator.of(context).pop();
             showDialog(
               context: context,
               builder: (_) => AlertDialog(
@@ -455,6 +459,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
                 )
             );
           } else {
+      Navigator.of(context).pop();
             showDialog(
               context: context,
               builder: (_) => AlertDialog(
@@ -475,12 +480,13 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
           }
       }
     } else {
+      Navigator.of(context).pop();
       showDialog(
       context: context,
       builder: (_) => AlertDialog(
-          title: const Text('Error'),
+          title: const Text('Formulario incompleto'),
           content: const Text(
-              'Ha ocurrido un error al intentar crear la cuenta del cliente. Por favor, revise los datos e inténtelo de nuevo.'),
+              'Por favor, revise los datos e inténtelo de nuevo.'),
           actions: <Widget>[
             TextButton(
               child: const Text('De acuerdo.'),
@@ -492,5 +498,18 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
           ],
         ));
     }
+  }
+
+  
+
+  showAlertDialog(BuildContext context){
+    showDialog(barrierDismissible: false,
+      context:context,
+      builder:(BuildContext context){
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 }
