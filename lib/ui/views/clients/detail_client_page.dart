@@ -413,34 +413,10 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
           isEnabled: false,
           backgroundColor: CustomColors.backgroundTextFieldDisabled,
           textColor: CustomColors.darkGrayColor,
+          initialValue: user,
       ),
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       textMargin: const EdgeInsets.only(left: 24),
-    );
-  }
-
-  Widget clientHasAppAccount() {
-    return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            getClientComponentSimpleForm(userLabels[0], TextInputType.text,
-                (value) {
-              user = value;
-            }),
-            HNButton(ButtonTypes.blackRedRoundedButton).getTypedButton('Eliminar', null, null, () { }, () { })
-
-          ],
-        );
-  }
-
-  Widget clientHasNotAppAccount() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('El cliente no tiene cuenta de la aplicación.'),
-        const SizedBox(height: 16,),
-        HNButton(ButtonTypes.blackWhiteRoundedButton).getTypedButton('Crear cuenta', null, null, () { }, () { })
-      ]
     );
   }
 
