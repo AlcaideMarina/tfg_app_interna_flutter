@@ -18,6 +18,7 @@ import 'dart:developer' as developer;
 
 import '../../../flutterfire/firebase_utils.dart';
 import '../../../data/models/internal_user_model.dart';
+import '../../components/component_panel.dart';
 
 // TODO: Cuidado - todo esta clase está hardcodeada
 // TODO: Intentar reducir código
@@ -125,32 +126,60 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
           top: false,
           child: Column(
             children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Container(
-                      margin: const EdgeInsets.fromLTRB(24, 8, 24, 32),
-                      child: Form(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            getAllFormElements(),
-                            const SizedBox(
-                              height: 32,
-                            ),
-                            const Text('Últimos pedidos:', style: TextStyle(fontWeight: FontWeight.bold),),
-                            // TODO: A falta que hacer la parte de pedidos
-                            const SizedBox(
-                              height: 32,
-                            ),
-                            getButtonsComponent(),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                          ],
+              StreamBuilder(
+                stream: FirebaseUtils.instance.getClientWithDocId(client.documentId!),
+                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.active) {
+                    if (snapshot.hasData) {
+                      DocumentSnapshot data = snapshot.data;
+                      Map<String, dynamic> map = data.data() as Map<String, dynamic>;
+                      client = ClientModel.fromMap(map, data.id);
+                      return Expanded(
+                        child: SingleChildScrollView(
+                          child: Container(
+                              margin: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+                              child: Form(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    getAllFormElements(),
+                                    const SizedBox(
+                                      height: 32,
+                                    ),
+                                    const Text('Últimos pedidos:', style: TextStyle(fontWeight: FontWeight.bold),),
+                                    // TODO: A falta que hacer la parte de pedidos
+                                    const SizedBox(
+                                      height: 32,
+                                    ),
+                                    getButtonsComponent(),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                  ],
+                                ),
+                              )),
                         ),
-                      )),
-                ),
-              ),
+                      );
+                    } else {
+                      return Container(
+                            margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                            child: const HNComponentPanel(
+                              title: 'Ha ocurrido un error',
+                              text:
+                                  "Se ha producido un error en la carga de datos del cliente. Por favor, inténtelo de nuevo.",
+                            ));
+                    }
+                  } else {
+                    return const Expanded(
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: CustomColors.redPrimaryColor,
+                        ),
+                      ),
+                    );
+                  }
+                }
+              )
             ],
           ),
         ));
@@ -506,11 +535,16 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     Navigator.of(context).pop();
   }
 
-  navigateToModifyClient() {
-    Navigator.push(
+  navigateToModifyClient() async {
+    final result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ModifyClientPage(currentUser, client),
       ));
+    
+    if (result != null) {
+      client = result;
+      setState(() {});
+    }
   }
 }

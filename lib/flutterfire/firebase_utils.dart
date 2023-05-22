@@ -83,4 +83,11 @@ class FirebaseUtils {
       return null;
     }
   }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getClientWithDocId(String documentId) {
+    return FirebaseFirestore.instance
+        .collection('client_info')
+        .doc(documentId)
+        .snapshots();
+  }
 }

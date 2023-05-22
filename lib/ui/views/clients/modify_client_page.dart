@@ -378,7 +378,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
 
   updateClient() async {
 
-    String? authConf = null;
+    String? authConf = "uid";
     bool firestoreConf = false;
     bool createAuthAccount = false;
     
@@ -404,8 +404,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
                 child: const Text('De acuerdo.'),
                 onPressed: () {
                   Navigator.of(context)
-                    ..pop()
-                    ..pop();
+                    .pop();
                 },
               )
             ],
@@ -416,8 +415,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
     if (authConf != null) {
       if (cif != "" && city != "" && company != "" && direction != "" && email != "" && namePhone1 != "" && 
         phone1 != -1 && namePhone2 != "" && phone2 != -1 && postalCode != -1 && province != "") {
-          firestoreConf = await FirebaseUtils.instance.updateClient(
-            ClientModel(
+          ClientModel updatedClient = ClientModel(
               cif, 
               city, 
               company, 
@@ -436,8 +434,8 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
               clientData.uid, 
               user, 
               clientData.documentId
-            )
-          );
+            );
+          firestoreConf = await FirebaseUtils.instance.updateClient(updatedClient);
           if (firestoreConf) {
             showDialog(
               context: context,
@@ -449,9 +447,8 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
                     TextButton(
                       child: const Text('De acuerdo.'),
                       onPressed: () {
-                        Navigator.of(context)
-                          ..pop()
-                          ..pop();
+                        Navigator.pop(context);
+                        Navigator.pop(context, updatedClient);
                       },
                     )
                   ],
@@ -469,8 +466,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
                       child: const Text('De acuerdo.'),
                       onPressed: () {
                         Navigator.of(context)
-                          ..pop()
-                          ..pop();
+                          .pop();
                       },
                     )
                   ],
@@ -490,8 +486,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
               child: const Text('De acuerdo.'),
               onPressed: () {
                 Navigator.of(context)
-                  ..pop()
-                  ..pop();
+                  .pop();
               },
             )
           ],
