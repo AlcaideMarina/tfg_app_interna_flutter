@@ -16,7 +16,8 @@ import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class ModifyClientPage extends StatefulWidget {
-  ModifyClientPage(this.currentUserData, this.clientData, {Key? key}) : super(key: key);
+  ModifyClientPage(this.currentUserData, this.clientData, {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUserData;
   final ClientModel clientData;
@@ -52,7 +53,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
     super.initState();
     currentUserData = widget.currentUserData;
     clientData = widget.clientData;
-    
+
     id = clientData.id;
     company = clientData.company;
     direction = clientData.direction;
@@ -135,31 +136,38 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        getCompanyComponentSimpleForm('Empresa', clientData.company, null, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Empresa', clientData.company, null, TextInputType.text, (value) {
           company = value;
         }),
-        getCompanyComponentSimpleForm('Dirección', clientData.direction, null, TextInputType.text,
+        getCompanyComponentSimpleForm(
+            'Dirección', clientData.direction, null, TextInputType.text,
             (value) {
           direction = value;
         }),
-        getCompanyComponentSimpleForm('Ciudad', clientData.city, null, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Ciudad', clientData.city, null, TextInputType.text, (value) {
           city = value;
         }),
-        getCompanyComponentSimpleForm('Provincia', clientData.province, null, TextInputType.text,
+        getCompanyComponentSimpleForm(
+            'Provincia', clientData.province, null, TextInputType.text,
             (value) {
           province = value;
         }),
         getCompanyComponentSimpleForm(
-            'Código postal', clientData.postalCode.toString(), null, TextInputType.number, (value) {
+            'Código postal',
+            clientData.postalCode.toString(),
+            null,
+            TextInputType.number, (value) {
           postalCode = int.parse(value);
         }),
-        getCompanyComponentSimpleForm('CIF', clientData.cif, null, TextInputType.text, (value) {
+        getCompanyComponentSimpleForm(
+            'CIF', clientData.cif, null, TextInputType.text, (value) {
           cif = value;
         }, textCapitalization: TextCapitalization.characters),
         getCompanyComponentSimpleForm(
-            'Correo', clientData.email, null, TextInputType.emailAddress, (value) {
+            'Correo', clientData.email, null, TextInputType.emailAddress,
+            (value) {
           email = value;
         }, textCapitalization: TextCapitalization.none),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
@@ -185,8 +193,12 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
     );
   }
 
-  Widget getCompanyComponentSimpleForm(String label, String initialValue, String? labelInputText,
-      TextInputType textInputType, Function(String)? onChange,
+  Widget getCompanyComponentSimpleForm(
+      String label,
+      String initialValue,
+      String? labelInputText,
+      TextInputType textInputType,
+      Function(String)? onChange,
       {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
     double topMargin = 4;
     double bottomMargin = 4;
@@ -252,8 +264,8 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
               onChange: (value) {
                 phone1 = int.parse(value);
               },
-          isEnabled: true,
-          textColor: CustomColors.darkGrayColor,
+              isEnabled: true,
+              textColor: CustomColors.darkGrayColor,
             )),
         HNComponentCellTableForm(
             40,
@@ -267,8 +279,8 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
               onChange: (value) {
                 namePhone1 = value;
               },
-          isEnabled: false,
-          textColor: CustomColors.darkGrayColor,
+              isEnabled: false,
+              textColor: CustomColors.darkGrayColor,
             )),
       ]),
       TableRow(children: [
@@ -284,8 +296,8 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
               onChange: (value) {
                 phone2 = int.parse(value);
               },
-          isEnabled: true,
-          textColor: CustomColors.darkGrayColor,
+              isEnabled: true,
+              textColor: CustomColors.darkGrayColor,
             )),
         HNComponentCellTableForm(
             40,
@@ -299,8 +311,8 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
               onChange: (value) {
                 namePhone2 = value;
               },
-          isEnabled: true,
-          textColor: CustomColors.darkGrayColor,
+              isEnabled: true,
+              textColor: CustomColors.darkGrayColor,
             )),
       ]),
     ];
@@ -324,8 +336,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
             getClientComponentSimpleForm(userLabels[0], TextInputType.text,
                 (value) {
               user = value;
-            },
-            isEnabled: hasAccount),
+            }, isEnabled: hasAccount),
             const Text(
                 'El usuario debe tener más de 6 dígitos.\nLa contraseña será igual que el usuario. Por favor, cámbiela en cuanto sea posible. Para hacer login, se necesitará el correo y la contraseña.'),
           ],
@@ -343,7 +354,8 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
   }
 
   Widget getClientComponentSimpleForm(
-      String label, TextInputType textInputType, Function(String)? onChange, {bool isEnabled = true}) {
+      String label, TextInputType textInputType, Function(String)? onChange,
+      {bool isEnabled = true}) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (contUser == 0) {
@@ -364,27 +376,29 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
         textInputType: textInputType,
         onChange: onChange,
         isEnabled: isEnabled,
-        backgroundColor: isEnabled ? CustomColors.whiteColor : CustomColors.backgroundTextFieldDisabled,
+        backgroundColor: isEnabled
+            ? CustomColors.whiteColor
+            : CustomColors.backgroundTextFieldDisabled,
         textColor: CustomColors.darkGrayColor,
       ),
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       textMargin: const EdgeInsets.only(left: 24),
     );
   }
-  
+
   goBack() {
     Navigator.of(context).pop();
   }
 
   updateClient() async {
-      FocusManager.instance.primaryFocus?.unfocus();
-      showAlertDialog(context);
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
 
     String? authConf = "uid";
     bool firestoreConf = false;
     bool createAuthAccount = false;
-    
-    if(clientData.hasAccount) {
+
+    if (clientData.hasAccount) {
       createAuthAccount = false;
     } else {
       createAuthAccount = hasAccount;
@@ -395,117 +409,120 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
         authConf = await FirebaseUtils.instance.createAuthAccount(email, user!);
         clientData.uid = authConf;
       } else {
-      Navigator.of(context).pop();
+        Navigator.of(context).pop();
         showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-            title: const Text('Formulario incompleto'),
-            content: const Text(
-                'Es necesario introducir un usuario si se quiere crear una cuenta. Este usuario será la contraseña por defecto hasta que el cliente la modifique. Por favor, revise los datos y vuelva a intentarlo.'),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('De acuerdo.'),
-                onPressed: () {
-                  Navigator.of(context)
-                    .pop();
-                },
-              )
-            ],
-          ));
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Formulario incompleto'),
+                  content: const Text(
+                      'Es necesario introducir un usuario si se quiere crear una cuenta. Este usuario será la contraseña por defecto hasta que el cliente la modifique. Por favor, revise los datos y vuelva a intentarlo.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo.'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ));
       }
     }
 
     if (authConf != null) {
-      if (cif != "" && city != "" && company != "" && direction != "" && email != "" && namePhone1 != "" && 
-        phone1 != -1 && namePhone2 != "" && phone2 != -1 && postalCode != -1 && province != "") {
-          ClientModel updatedClient = ClientModel(
-              cif, 
-              city, 
-              company, 
-              clientData.createdBy, 
-              clientData.deleted, 
-              direction, 
-              email, 
-              hasAccount, 
-              id, 
-              [
-                {namePhone1: phone1}, 
-                {namePhone2: phone2}
-              ], 
-              postalCode, 
-              province, 
-              clientData.uid, 
-              user, 
-              clientData.documentId
-            );
-          firestoreConf = await FirebaseUtils.instance.updateClient(updatedClient);
-          if (firestoreConf) {
-      Navigator.of(context).pop();
-            showDialog(
+      if (cif != "" &&
+          city != "" &&
+          company != "" &&
+          direction != "" &&
+          email != "" &&
+          namePhone1 != "" &&
+          phone1 != -1 &&
+          namePhone2 != "" &&
+          phone2 != -1 &&
+          postalCode != -1 &&
+          province != "") {
+        ClientModel updatedClient = ClientModel(
+            cif,
+            city,
+            company,
+            clientData.createdBy,
+            clientData.deleted,
+            direction,
+            email,
+            hasAccount,
+            id,
+            [
+              {namePhone1: phone1},
+              {namePhone2: phone2}
+            ],
+            postalCode,
+            province,
+            clientData.uid,
+            user,
+            clientData.documentId);
+        firestoreConf =
+            await FirebaseUtils.instance.updateClient(updatedClient);
+        if (firestoreConf) {
+          Navigator.of(context).pop();
+          showDialog(
               context: context,
               builder: (_) => AlertDialog(
-                  title: const Text('Cliente guardado'),
-                  content: const Text(
-                      'La información del cliente se ha guardado correctamente'),
-                  actions: <Widget>[
-                    TextButton(
-                      child: const Text('De acuerdo.'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.pop(context, updatedClient);
-                      },
-                    )
-                  ],
-                )
-            );
-          } else {
-      Navigator.of(context).pop();
-            showDialog(
+                    title: const Text('Cliente guardado'),
+                    content: const Text(
+                        'La información del cliente se ha guardado correctamente'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context, updatedClient);
+                        },
+                      )
+                    ],
+                  ));
+        } else {
+          Navigator.of(context).pop();
+          showDialog(
               context: context,
               builder: (_) => AlertDialog(
-                  title: const Text('Error'),
-                  content: const Text(
-                      'Ha ocurrido un problema al guardar el cliente en la base de datos. Por favor, revise los datos e inténtelo de nuevo.'),
-                  actions: <Widget>[
-                    TextButton(
-                      child: const Text('De acuerdo.'),
-                      onPressed: () {
-                        Navigator.of(context)
-                          .pop();
-                      },
-                    )
-                  ],
-                )
-            );
-          }
+                    title: const Text('Error'),
+                    content: const Text(
+                        'Ha ocurrido un problema al guardar el cliente en la base de datos. Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ));
+        }
       }
     } else {
       Navigator.of(context).pop();
       showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-          title: const Text('Formulario incompleto'),
-          content: const Text(
-              'Por favor, revise los datos e inténtelo de nuevo.'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('De acuerdo.'),
-              onPressed: () {
-                Navigator.of(context)
-                  .pop();
-              },
-            )
-          ],
-        ));
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formulario incompleto'),
+                content: const Text(
+                    'Por favor, revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
     }
   }
 
-  
-
-  showAlertDialog(BuildContext context){
-    showDialog(barrierDismissible: false,
-      context:context,
-      builder:(BuildContext context){
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
         return const Center(
           child: CircularProgressIndicator(),
         );

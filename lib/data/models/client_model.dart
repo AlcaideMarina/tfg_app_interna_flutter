@@ -20,7 +20,7 @@ class ClientModel {
   final String? createdBy;
   String? uid;
   final bool deleted;
-  String? documentId;   // TODO: Investigar - ¿nulable?
+  String? documentId; // TODO: Investigar - ¿nulable?
 
   ClientModel(
       this.cif,

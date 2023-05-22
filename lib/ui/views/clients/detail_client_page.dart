@@ -24,7 +24,8 @@ import '../../components/component_panel.dart';
 // TODO: Intentar reducir código
 
 class ClientDetailPage extends StatefulWidget {
-  const ClientDetailPage(this.currentUser, this.client, {Key? key}) : super(key: key);
+  const ClientDetailPage(this.currentUser, this.client, {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
   final ClientModel client;
@@ -57,7 +58,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     super.initState();
     currentUser = widget.currentUser;
     client = widget.client;
-    
+
     id = client.id;
     company = client.company;
     direction = client.direction;
@@ -127,59 +128,67 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
           child: Column(
             children: [
               StreamBuilder(
-                stream: FirebaseUtils.instance.getClientWithDocId(client.documentId!),
-                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.active) {
-                    if (snapshot.hasData) {
-                      DocumentSnapshot data = snapshot.data;
-                      Map<String, dynamic> map = data.data() as Map<String, dynamic>;
-                      client = ClientModel.fromMap(map, data.id);
-                      return Expanded(
-                        child: SingleChildScrollView(
-                          child: Container(
-                              margin: const EdgeInsets.fromLTRB(24, 8, 24, 32),
-                              child: Form(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    getAllFormElements(),
-                                    const SizedBox(
-                                      height: 32,
-                                    ),
-                                    const Text('Últimos pedidos:', style: TextStyle(fontWeight: FontWeight.bold),),
-                                    // TODO: A falta que hacer la parte de pedidos
-                                    const SizedBox(
-                                      height: 32,
-                                    ),
-                                    getButtonsComponent(),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        ),
-                      );
-                    } else {
-                      return Container(
+                  stream: FirebaseUtils.instance
+                      .getClientWithDocId(client.documentId!),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      if (snapshot.hasData) {
+                        DocumentSnapshot data = snapshot.data;
+                        Map<String, dynamic> map =
+                            data.data() as Map<String, dynamic>;
+                        client = ClientModel.fromMap(map, data.id);
+                        return Expanded(
+                          child: SingleChildScrollView(
+                            child: Container(
+                                margin:
+                                    const EdgeInsets.fromLTRB(24, 8, 24, 32),
+                                child: Form(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      getAllFormElements(),
+                                      const SizedBox(
+                                        height: 32,
+                                      ),
+                                      const Text(
+                                        'Últimos pedidos:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      // TODO: A falta que hacer la parte de pedidos
+                                      const SizedBox(
+                                        height: 32,
+                                      ),
+                                      getButtonsComponent(),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                          ),
+                        );
+                      } else {
+                        return Container(
                             margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                             child: const HNComponentPanel(
                               title: 'Ha ocurrido un error',
                               text:
                                   "Se ha producido un error en la carga de datos del cliente. Por favor, inténtelo de nuevo.",
                             ));
-                    }
-                  } else {
-                    return const Expanded(
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: CustomColors.redPrimaryColor,
+                      }
+                    } else {
+                      return const Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: CustomColors.redPrimaryColor,
+                          ),
                         ),
-                      ),
-                    );
-                  }
-                }
-              )
+                      );
+                    }
+                  })
             ],
           ),
         ));
@@ -189,27 +198,28 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        getCompanyComponentSimpleForm('Empresa', client.company, null, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Empresa', client.company, null, TextInputType.text, (value) {
           company = value;
         }),
-        getCompanyComponentSimpleForm('Dirección', client.direction, null, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Dirección', client.direction, null, TextInputType.text, (value) {
           direction = value;
         }),
-        getCompanyComponentSimpleForm('Ciudad', client.city, null, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Ciudad', client.city, null, TextInputType.text, (value) {
           city = value;
         }),
-        getCompanyComponentSimpleForm('Provincia', client.province, null, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Provincia', client.province, null, TextInputType.text, (value) {
           province = value;
         }),
-        getCompanyComponentSimpleForm(
-            'Código postal', client.postalCode.toString(), null, TextInputType.number, (value) {
+        getCompanyComponentSimpleForm('Código postal',
+            client.postalCode.toString(), null, TextInputType.number, (value) {
           postalCode = int.parse(value);
         }),
-        getCompanyComponentSimpleForm('CIF', client.cif, null, TextInputType.text, (value) {
+        getCompanyComponentSimpleForm(
+            'CIF', client.cif, null, TextInputType.text, (value) {
           cif = value;
         }, textCapitalization: TextCapitalization.characters),
         getCompanyComponentSimpleForm(
@@ -227,8 +237,8 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
-          HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, navigateToModifyClient, () {}),
+          HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
+              'Modificar', null, null, navigateToModifyClient, () {}),
           const SizedBox(
             height: 8,
           ),
@@ -239,8 +249,12 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     );
   }
 
-  Widget getCompanyComponentSimpleForm(String label, String initialValue, String? labelInputText,
-      TextInputType textInputType, Function(String)? onChange,
+  Widget getCompanyComponentSimpleForm(
+      String label,
+      String initialValue,
+      String? labelInputText,
+      TextInputType textInputType,
+      Function(String)? onChange,
       {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
     double topMargin = 4;
     double bottomMargin = 4;
@@ -307,9 +321,9 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
               onChange: (value) {
                 phone1 = int.parse(value);
               },
-          isEnabled: false,
-          backgroundColor: CustomColors.backgroundTextFieldDisabled,
-          textColor: CustomColors.darkGrayColor,
+              isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
+              textColor: CustomColors.darkGrayColor,
             )),
         HNComponentCellTableForm(
             40,
@@ -323,9 +337,9 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
               onChange: (value) {
                 namePhone1 = value;
               },
-          isEnabled: false,
-          backgroundColor: CustomColors.backgroundTextFieldDisabled,
-          textColor: CustomColors.darkGrayColor,
+              isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
+              textColor: CustomColors.darkGrayColor,
             )),
       ]),
       TableRow(children: [
@@ -341,9 +355,9 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
               onChange: (value) {
                 phone2 = int.parse(value);
               },
-          isEnabled: false,
-          backgroundColor: CustomColors.backgroundTextFieldDisabled,
-          textColor: CustomColors.darkGrayColor,
+              isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
+              textColor: CustomColors.darkGrayColor,
             )),
         HNComponentCellTableForm(
             40,
@@ -357,9 +371,9 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
               onChange: (value) {
                 namePhone2 = value;
               },
-          isEnabled: false,
-          backgroundColor: CustomColors.backgroundTextFieldDisabled,
-          textColor: CustomColors.darkGrayColor,
+              isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
+              textColor: CustomColors.darkGrayColor,
             )),
       ]),
     ];
@@ -377,11 +391,10 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
           borderRadius: BorderRadius.circular(16),
           shape: BoxShape.rectangle,
         ),
-        child: 
-            getClientComponentSimpleForm(userLabels[0], TextInputType.text,
-                (value) {
-              user = value;
-            }),
+        child: getClientComponentSimpleForm(userLabels[0], TextInputType.text,
+            (value) {
+          user = value;
+        }),
       ),
       leftPosition: 24,
       rightPosition: 50,
@@ -410,10 +423,10 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
         textCapitalization: TextCapitalization.none,
         textInputType: textInputType,
         onChange: onChange,
-          isEnabled: false,
-          backgroundColor: CustomColors.backgroundTextFieldDisabled,
-          textColor: CustomColors.darkGrayColor,
-          initialValue: user,
+        isEnabled: false,
+        backgroundColor: CustomColors.backgroundTextFieldDisabled,
+        textColor: CustomColors.darkGrayColor,
+        initialValue: user,
       ),
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       textMargin: const EdgeInsets.only(left: 24),
@@ -513,11 +526,11 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
 
   navigateToModifyClient() async {
     final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ModifyClientPage(currentUser, client),
-      ));
-    
+        context,
+        MaterialPageRoute(
+          builder: (context) => ModifyClientPage(currentUser, client),
+        ));
+
     if (result != null) {
       client = result;
       setState(() {});

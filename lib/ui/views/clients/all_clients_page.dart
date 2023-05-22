@@ -97,18 +97,22 @@ class _AllClientsPageState extends State<AllClientsPage> {
                                 itemCount: clientList.length,
                                 itemBuilder: (context, i) {
                                   final ClientModel client =
-                                      ClientModel.fromMap(clientList[i].data()
-                                          as Map<String, dynamic>, clientList[i].id);
+                                      ClientModel.fromMap(
+                                          clientList[i].data()
+                                              as Map<String, dynamic>,
+                                          clientList[i].id);
                                   if (!client.deleted) {
-                                      return Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 32, vertical: 8),
-                                        child: HNComponentClients(
-                                            client.id.toString(),
-                                            client.company,
-                                            client.cif,
-                                            onTap: () => navigateToDetailClientsPage(client),),
-                                      );
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 32, vertical: 8),
+                                      child: HNComponentClients(
+                                        client.id.toString(),
+                                        client.company,
+                                        client.cif,
+                                        onTap: () =>
+                                            navigateToDetailClientsPage(client),
+                                      ),
+                                    );
                                   } else {
                                     return Container();
                                   }
@@ -170,7 +174,8 @@ class _AllClientsPageState extends State<AllClientsPage> {
 
   navigateToDetailClientsPage(ClientModel client) {
     Navigator.push(
-      context, 
-      MaterialPageRoute(builder: (context) => ClientDetailPage(currentUser, client)));
+        context,
+        MaterialPageRoute(
+            builder: (context) => ClientDetailPage(currentUser, client)));
   }
 }

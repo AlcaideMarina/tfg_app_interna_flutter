@@ -6,14 +6,12 @@ import 'dart:developer' as developer;
 import '../values/firebase_constants.dart';
 
 class FirebaseUtils {
-
   static FirebaseUtils? _instance;
   FirebaseUtils._() : super();
 
   static FirebaseUtils get instance {
     return _instance ??= FirebaseUtils._();
   }
-
 
   Future<int> getNextUserId() async {
     try {
@@ -25,8 +23,7 @@ class FirebaseUtils {
       if (query.docs.isEmpty || !query.docs[query.docs.length - 1].exists) {
         return 0;
       } else {
-        QueryDocumentSnapshot lastDocument =
-            query.docs[query.docs.length - 1];
+        QueryDocumentSnapshot lastDocument = query.docs[query.docs.length - 1];
         Map<String, dynamic> lastMap =
             query.docs[query.docs.length - 1].data() as Map<String, dynamic>;
         ClientModel clientModel = ClientModel.fromMap(lastMap, lastDocument.id);
@@ -65,10 +62,10 @@ class FirebaseUtils {
           .doc(clientModel.documentId)
           .update(dataMap);
       return true;
-    } catch(e) {
+    } catch (e) {
       return false;
     }
-  } 
+  }
 
   Future<String?> createAuthAccount(String email, String password) async {
     try {
@@ -84,7 +81,8 @@ class FirebaseUtils {
     }
   }
 
-  Stream<DocumentSnapshot<Map<String, dynamic>>> getClientWithDocId(String documentId) {
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getClientWithDocId(
+      String documentId) {
     return FirebaseFirestore.instance
         .collection('client_info')
         .doc(documentId)
