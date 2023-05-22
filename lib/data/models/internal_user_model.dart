@@ -74,7 +74,7 @@ factory InternalUserModel.fromJson(String str, String? docId) =>
   }
 
   Map<String, dynamic> toMap() => {
-        'bankAccount': bankAccount,
+        'bank_account': bankAccount,
         'city': city,
         'created_by': createdBy,
         'deleted': deleted,

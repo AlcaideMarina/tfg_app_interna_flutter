@@ -4,6 +4,8 @@ import 'package:hueveria_nieto_interna/utils/constants.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
+import '../../../flutterfire/firebase_utils.dart';
+import '../../../utils/Utils.dart';
 import '../../components/component_dropdown.dart';
 import '../../components/component_simple_form.dart';
 import '../../components/component_text_input.dart';
@@ -27,24 +29,22 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
     currentUser = widget.currentUser;
   }
 
-  late String id;
-  late String name;
-  late String surname;
-  late String dni;
-  late int phone;
-  late String email;
-  late String direction;
-  late String city;
-  late String province;
-  late int postalCode;
-  late bool sameDniDirecion;
-  late int ssNumber;
-  late String bankAccount;
-  late int jobPosition;   // TODO: Esto va a tener que ser un dropdown
-  late bool hasAccount;
-  late String user;
-  late String accountEmail;
-  late bool internalApplication;
+  int id = -1;
+  String name = "";
+  String surname = "";
+  String dni = "";
+  int phone = -1;
+  String email = "";
+  String direction = "";
+  String city = "";
+  String province = "";
+  int postalCode = -1;
+  bool sameDniDirecion = false;
+  int ssNumber = -1;
+  String bankAccount = "";
+  String jobPosition = "";   // TODO: Esto va a tener que ser un dropdown
+  String user = "";
+  bool internalApplication = false;
   // TODO: Lista de persisos de la app interna
   late bool deliveryApplication;
   // TODO: Lista de persisos de la app de repartos
@@ -119,12 +119,16 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
         }, textCapitalization: TextCapitalization.characters),
         getCompanyComponentSimpleForm('Teléfono', null, TextInputType.number,
             (value) {
-          phone = int.parse(value);
+          try {
+            phone = int.parse(value);
+          } catch (e) {
+            phone = -1;
+          }
         }),
         getCompanyComponentSimpleForm(
             'Correo', null, TextInputType.emailAddress, (value) {
           email = value;
-        }),
+        }, textCapitalization: TextCapitalization.none),
         getCompanyComponentSimpleForm('Dirección', null, TextInputType.text, (value) {
           direction = value;
         }),
@@ -138,7 +142,19 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
         }),
         getCompanyComponentSimpleForm('Código postal', null, TextInputType.number,
             (value) {
-          postalCode = int.parse(value);
+          try {
+            postalCode = int.parse(value);
+          } catch (e) {
+            postalCode = -1;
+          }
+        }),
+        getCompanyComponentSimpleForm('Nº Afiliación de la Seguridad Social', null, TextInputType.number,
+            (value) {
+          try {
+            ssNumber = int.parse(value);
+          } catch (e) {
+            ssNumber = -1;
+          }
         }),
         getCompanyComponentSimpleForm('Cuenta bancaria', null, TextInputType.text,
             (value) {
@@ -163,12 +179,12 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, () {}),
+              .getTypedButton('Guardar', null, null, saveUser, () {}),
           const SizedBox(
             height: 8,
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Cancelar', null, null, () {}, () {}),
+              .getTypedButton('Cancelar', null, null, goBack, () {}),
         ],
       ),
     );
@@ -231,4 +247,167 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
           ),
         );
   }
+
+  ////// Functions
+  
+  saveUser() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+
+    String? authConf = "uid";
+    String? uid;
+    bool firestoreConf = false;
+    id = await FirebaseUtils.instance.getNextInternalUserId();
+
+    if (user != null && user != "") {
+      authConf = await FirebaseUtils.instance.createAuthAccount(email, user);
+      uid = authConf;
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formulario incompleto'),
+                content: const Text(
+                    'Es necesario introducir un usuario si se quiere crear una cuenta. Este usuario será la contraseña por defecto hasta que el cliente la modifique. Por favor, revise los datos y vuelva a intentarlo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
+    }
+    
+
+    if (authConf != null) {
+      if (bankAccount != "" &&
+          city != "" &&
+          direction != "" &&
+          email != "" &&
+          dni != "" &&
+          email != "" &&
+          name != "" &&
+          phone != -1 &&
+          postalCode != -1 &&
+          jobPosition != "" &&
+          postalCode != -1 &&
+          province != "" &&
+          ssNumber != -1 &&
+          surname != "" ) {
+        InternalUserModel internalUser = InternalUserModel(
+            bankAccount,
+            city,
+            currentUser.documentId!,
+            false,
+            direction,
+            dni,
+            email,
+            id,
+            name,
+            phone,
+            Utils().rolesStringToInt(jobPosition),
+            postalCode,
+            province,
+            null,
+            ssNumber,
+            surname,
+            uid!,
+            user,
+            null);
+        firestoreConf =
+            await FirebaseUtils.instance.createInternalUser(internalUser);
+        if (firestoreConf) {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Cliente guardado'),
+                    content: const Text(
+                        'La información del usuario se ha guardado correctamente'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.of(context)
+                              ..pop()
+                              ..pop();
+                        },
+                      )
+                    ],
+                  ));
+        } else {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Error'),
+                    content: const Text(
+                        'Ha ocurrido un problema al guardar el usuario en la base de datos. Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ));
+        }
+      } else {
+        Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Formulario incompleto'),
+                    content: const Text(
+                        'Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ));
+          }
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formulario incompleto'),
+                content: const Text(
+                    'Por favor, revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
+    }
+  }
+
+  goBack() {
+    Navigator.of(context).pop();
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
 }

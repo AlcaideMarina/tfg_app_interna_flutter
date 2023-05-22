@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hueveria_nieto_interna/data/models/client_model.dart';
+import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'dart:developer' as developer;
 
 import '../values/firebase_constants.dart';
@@ -28,6 +29,29 @@ class FirebaseUtils {
             query.docs[query.docs.length - 1].data() as Map<String, dynamic>;
         ClientModel clientModel = ClientModel.fromMap(lastMap, lastDocument.id);
         int newId = clientModel.id + 1;
+        return newId;
+      }
+    } catch (e) {
+      developer.log('Error - FlutterFire - getNextUserId(): ' + e.toString());
+      return -1;
+    }
+  }
+
+  Future<int> getNextInternalUserId() async {
+    try {
+      QuerySnapshot query = await FirebaseFirestore.instance
+          .collection('user_info')
+          .orderBy('id')
+          .get();
+
+      if (query.docs.isEmpty || !query.docs[query.docs.length - 1].exists) {
+        return 0;
+      } else {
+        QueryDocumentSnapshot lastDocument = query.docs[query.docs.length - 1];
+        Map<String, dynamic> lastMap =
+            query.docs[query.docs.length - 1].data() as Map<String, dynamic>;
+        InternalUserModel internalUserModel = InternalUserModel.fromMap(lastMap, lastDocument.id);
+        int newId = internalUserModel.id + 1;
         return newId;
       }
     } catch (e) {
@@ -87,5 +111,16 @@ class FirebaseUtils {
         .collection('client_info')
         .doc(documentId)
         .snapshots();
+  }
+
+  Future<bool> createInternalUser(InternalUserModel internalUserModel) async {
+    try {
+      await FirebaseFirestore.instance
+        .collection("user_info")
+        .add(internalUserModel.toMap());
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

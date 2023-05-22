@@ -354,6 +354,8 @@ class _NewClientPageState extends State<NewClientPage> {
     );
   }
 
+  ////// Functions
+
   saveClient() async {
     try {
       FocusManager.instance.primaryFocus?.unfocus();
