@@ -197,15 +197,15 @@ class _NewClientPageState extends State<NewClientPage> {
         8,
         40,
         const EdgeInsets.symmetric(horizontal: 16),
-        HNComponentTextInput(
+        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+        componentTextInput: HNComponentTextInput(
           textCapitalization: textCapitalization,
           labelText: labelInputText,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           textInputType: textInputType,
           onChange: onChange,
-        ),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin));
+        ),);
   }
 
   Widget getComponentTableForm(String label, List<TableRow> children,
@@ -235,7 +235,7 @@ class _NewClientPageState extends State<NewClientPage> {
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 16, right: 8, bottom: 8),
-            HNComponentTextInput(
+            componentTextInput: HNComponentTextInput(
               labelText: 'Contacto',
               textCapitalization: TextCapitalization.words,
               contentPadding:
@@ -247,7 +247,7 @@ class _NewClientPageState extends State<NewClientPage> {
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 8, right: 16, bottom: 8),
-            HNComponentTextInput(
+            componentTextInput: HNComponentTextInput(
               labelText: 'Teléfono',
               textInputType: TextInputType.number,
               contentPadding:
@@ -261,7 +261,7 @@ class _NewClientPageState extends State<NewClientPage> {
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 16, right: 8),
-            HNComponentTextInput(
+            componentTextInput: HNComponentTextInput(
               labelText: 'Contacto',
               textCapitalization: TextCapitalization.words,
               contentPadding:
@@ -273,7 +273,7 @@ class _NewClientPageState extends State<NewClientPage> {
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 8, right: 16),
-            HNComponentTextInput(
+            componentTextInput: HNComponentTextInput(
               labelText: 'Teléfono',
               textInputType: TextInputType.number,
               contentPadding:
@@ -338,7 +338,8 @@ class _NewClientPageState extends State<NewClientPage> {
       8,
       40,
       const EdgeInsets.only(left: 0),
-      HNComponentTextInput(
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         textCapitalization: TextCapitalization.none,
         textInputType: textInputType,
@@ -349,7 +350,6 @@ class _NewClientPageState extends State<NewClientPage> {
             ? CustomColors.whiteColor
             : CustomColors.backgroundTextFieldDisabled,
       ),
-      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       textMargin: const EdgeInsets.only(left: 24),
     );
   }
