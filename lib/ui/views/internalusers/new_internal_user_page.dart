@@ -254,49 +254,29 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
 
-    String? authConf = "uid";
     String? uid;
     bool firestoreConf = false;
     id = await FirebaseUtils.instance.getNextInternalUserId();
 
-    if (user != null && user != "") {
-      authConf = await FirebaseUtils.instance.createAuthAccount(email, user);
-      uid = authConf;
-    } else {
-      Navigator.of(context).pop();
-      showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-                title: const Text('Formulario incompleto'),
-                content: const Text(
-                    'Es necesario introducir un usuario si se quiere crear una cuenta. Este usuario será la contraseña por defecto hasta que el cliente la modifique. Por favor, revise los datos y vuelva a intentarlo.'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('De acuerdo.'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              ));
-    }
-    
+    if (bankAccount != "" &&
+        city != "" &&
+        direction != "" &&
+        email != "" &&
+        dni != "" &&
+        email != "" &&
+        name != "" &&
+        phone != -1 &&
+        postalCode != -1 &&
+        jobPosition != "" &&
+        postalCode != -1 &&
+        province != "" &&
+        ssNumber != -1 &&
+        surname != "" &&
+        user != "") {
+      
+      uid = await FirebaseUtils.instance.createAuthAccount(email, user);
 
-    if (authConf != null) {
-      if (bankAccount != "" &&
-          city != "" &&
-          direction != "" &&
-          email != "" &&
-          dni != "" &&
-          email != "" &&
-          name != "" &&
-          phone != -1 &&
-          postalCode != -1 &&
-          jobPosition != "" &&
-          postalCode != -1 &&
-          province != "" &&
-          ssNumber != -1 &&
-          surname != "" ) {
+      if(uid != null) {
         InternalUserModel internalUser = InternalUserModel(
             bankAccount,
             city,
@@ -314,7 +294,7 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
             null,
             ssNumber,
             surname,
-            uid!,
+            uid,
             user,
             null);
         firestoreConf =
@@ -374,24 +354,25 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
                     ],
                   ));
           }
-    } else {
-      Navigator.of(context).pop();
-      showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-                title: const Text('Formulario incompleto'),
-                content: const Text(
-                    'Por favor, revise los datos e inténtelo de nuevo.'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('De acuerdo.'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              ));
-    }
+      } else {
+          Navigator.of(context).pop();
+            showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                      title: const Text('Formulario incompleto'),
+                      content: const Text(
+                          'Por favor, revise los datos e inténtelo de nuevo.'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('De acuerdo.'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ],
+                    ));
+            }
+    
   }
 
   goBack() {
