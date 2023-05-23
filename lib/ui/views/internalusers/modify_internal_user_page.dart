@@ -197,13 +197,13 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, () {}, () {}),
+              .getTypedButton('Guardar', null, null, () {}, () {}),
           const SizedBox(
             height: 8,
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
               .getTypedButton(
-                'Eliminar usuario', 
+                'Cancelar', 
                 null, 
                 null, 
                 () {}, 
