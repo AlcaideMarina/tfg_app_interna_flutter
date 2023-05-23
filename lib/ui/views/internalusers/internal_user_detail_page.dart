@@ -208,7 +208,7 @@ class _InternalUserDetailPageState extends State<InternalUserDetailPage> {
                 'Eliminar usuario', 
                 null, 
                 null, 
-                getIsButtonEnabled() ? () {} : null, 
+                getIsButtonEnabled() ? deleteWarningUser : null, 
                 null, 
               ),
         ],
@@ -288,4 +288,82 @@ class _InternalUserDetailPageState extends State<InternalUserDetailPage> {
     }
   }
 
+  deleteWarningUser() {
+    showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Aviso impoertante'),
+                content: const Text('Esta acción es irreversible. ¿Está seguro de que quiere eliminar el usuario?'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Cancelar'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('Continuar'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      deleteUser();
+                    },
+                  )
+                ],
+              ));
+  }
+
+  deleteUser() async {
+      FocusManager.instance.primaryFocus?.unfocus();
+      showAlertDialog(context);
+      bool conf = await FirebaseUtils.instance.deleteDocument("user_info", internalUserModel.documentId!);
+
+      Navigator.pop(context);
+      if(conf) {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Usuario eliminado'),
+                content: const Text(
+                    'El usuario ha sido eliminado correctamente.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
+      } else {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Vaya...'),
+                content: const Text(
+                    'Parece que ha habido un error. Por favor, inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context)
+                          ..pop()
+                          ..pop();
+                    },
+                  )
+                ],
+              ));
+      }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
 }
