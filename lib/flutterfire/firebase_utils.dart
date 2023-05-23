@@ -123,4 +123,18 @@ class FirebaseUtils {
       return false;
     }
   }
+
+  Future<bool> deleteDocument(String collection, String documentId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(collection)
+          .doc(documentId)
+          .update(
+            {'deleted': true}
+          );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }
