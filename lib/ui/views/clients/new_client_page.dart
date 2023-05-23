@@ -467,7 +467,7 @@ class _NewClientPageState extends State<NewClientPage> {
               builder: (_) => AlertDialog(
                     title: const Text('Formulario incompleto'),
                     content: const Text(
-                        '¡Por favor, revise los datos e inténtelo de nuevo.'),
+                        'Por favor, revise los datos e inténtelo de nuevo.'),
                     actions: <Widget>[
                       TextButton(
                         child: const Text('De acuerdo.'),
