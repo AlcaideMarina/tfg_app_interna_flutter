@@ -206,7 +206,7 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
                 'Cancelar', 
                 null, 
                 null, 
-                () {}, 
+                goBack, 
                 null, 
               ),
         ],
@@ -272,6 +272,10 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
             isEnabled: true,
           ),
         );
+  }
+
+  goBack() {
+    Navigator.of(context).pop();
   }
 
   showAlertDialog(BuildContext context) {
