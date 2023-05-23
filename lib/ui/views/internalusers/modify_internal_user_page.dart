@@ -240,8 +240,6 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
           textInputType: textInputType,
           onChange: onChange,
           isEnabled: true,
-          backgroundColor: CustomColors.backgroundTextFieldDisabled,
-          textColor: CustomColors.darkGrayColor,
         ),);
   }
 
@@ -265,15 +263,13 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
         EdgeInsets.only(top: topMargin, bottom: bottomMargin,),
         componentDropdown: 
           HNComponentDropdown(
-            [],
+            items,
             labelText: labelInputText,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             textInputType: textInputType,
             onChange: onChange,
             isEnabled: true,
-          backgroundColor: CustomColors.backgroundTextFieldDisabled,
-          textColor: CustomColors.darkGrayColor,
           ),
         );
   }
