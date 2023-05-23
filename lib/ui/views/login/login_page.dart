@@ -180,15 +180,13 @@ class _LoginPageState extends State<LoginPage> {
         context: context, 
         builder: (_) => const Center(
           child: CircularProgressIndicator()));
-      developer.log('Empieza la función signInWithEmailAndPassword()', name: 'Login');
-      // TODO: Esto va muy lento - investigar
+
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: user.trim(), password: password);
-      developer.log('Función signInWithEmailAndPassword() terminada', name: 'Login');
-      developer.log('Empieza la función getUserInfo()', name: 'Login');
+
       InternalUserModel? currentUser = await getUserInfo();
-      developer.log('Función getUserInfo() terminada', name: 'Login');
-      if (currentUser != null) {
+
+      if (currentUser != null && !currentUser.deleted) {
         navigateToMainPage(currentUser);
       } else {
         showDialog(context: context, builder: (_) => AlertDialog(
