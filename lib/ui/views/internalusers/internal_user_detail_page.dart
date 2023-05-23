@@ -329,7 +329,9 @@ class _InternalUserDetailPageState extends State<InternalUserDetailPage> {
                   TextButton(
                     child: const Text('De acuerdo.'),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context)
+                          ..pop()
+                          ..pop();
                     },
                   )
                 ],

@@ -243,7 +243,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
             height: 8,
           ),
           HNButton(ButtonTypes.blackRedBoldRoundedButton)
-              .getTypedButton('Cancelar', null, null, goBack, () {}),
+              .getTypedButton('Eliminar cliente', null, null, deleteWarningUser, () {}),
         ],
       ),
     );
@@ -433,95 +433,73 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     );
   }
 
-  saveClient() async {
-    try {
-      // TODO: Cerrar el teclado
-      // TODO: CircularProgressIndicator()
-
-      // TODO: Conseguir el valor del id
-      id = await FirebaseUtils.instance.getNextUserId();
-      // TODO: si hasAccount == true y email_account no es nulo, hay que hacer llamada también a Firebase Auth
-      if (hasAccount) {
-        // Pendiente de desarrollo de app cliente - ¿creo contraseña que aparezca en el correo y luego que se modifique?
-      }
-
-      final client = ClientModel(
-          cif,
-          city,
-          company,
-          currentUser.documentId,
-          false,
-          direction,
-          email,
-          hasAccount,
-          id,
-          [
-            {namePhone1: phone1},
-            {namePhone2: phone2}
-          ],
-          postalCode,
-          province,
-          null, // TODO: Pendiente del UID que devuelva la parte de authentication);
-          hasAccount ? user : null,
-          null);
-
-      await FirebaseFirestore.instance.collection('client_info').add({
-        'cif': client.cif,
-        'city': client.city,
-        'company': client.company,
-        'created_by': client.createdBy,
-        'direction': client.direction,
-        'deleted': client.deleted,
-        'email': client.email,
-        'has_account': client.hasAccount,
-        'id': client.id,
-        'phone': client.phone,
-        'postal_code': client.postalCode,
-        'province': client.province,
-        'uid': client.uid,
-        'user': client.user,
-      });
-
-      // TODO: Cerrar CircularProgressIndicator()
-
-      showDialog(
+  deleteWarningUser() {
+    showDialog(
           context: context,
           builder: (_) => AlertDialog(
-                title: const Text('Cliente guardado'),
+                title: const Text('Aviso impoertante'),
+                content: const Text('Esta acción es irreversible. ¿Está seguro de que quiere eliminar el cliente?'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Cancelar'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('Continuar'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      deleteUser();
+                    },
+                  )
+                ],
+              ));
+  }
+
+  deleteUser() async {
+      FocusManager.instance.primaryFocus?.unfocus();
+      showAlertDialog(context);
+      bool conf = await FirebaseUtils.instance.deleteDocument("client_info", client.documentId!);
+
+      Navigator.pop(context);
+      if(conf) {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Usuario eliminado'),
                 content: const Text(
-                    'La información del cliente se ha guardado correctamente'),
+                    'El usuario ha sido eliminado correctamente.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),
                     onPressed: () {
                       Navigator.of(context)
-                        ..pop()
-                        ..pop();
+                          ..pop()
+                          ..pop();
                     },
                   )
                 ],
               ));
-    } catch (e) {
-      developer.log(e.toString(), name: 'Error - NewPageDart');
-      showDialog(
+      } else {
+        showDialog(
           context: context,
           builder: (_) => AlertDialog(
                 title: const Text('Vaya...'),
-                content: const Text('Se ha producido un error'),
+                content: const Text(
+                    'Parece que ha habido un error. Por favor, inténtelo de nuevo.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context)
+                          ..pop()
+                          ..pop();
                     },
                   )
                 ],
               ));
-    }
-  }
-
-  goBack() {
-    Navigator.of(context).pop();
+      }
   }
 
   navigateToModifyClient() async {
@@ -535,5 +513,17 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
       client = result;
       setState(() {});
     }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 }
