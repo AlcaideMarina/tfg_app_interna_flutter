@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/internalusers/modify_internal_user_page.dart';
 import 'package:hueveria_nieto_interna/utils/constants.dart';
 
 import '../../../custom/app_theme.dart';
@@ -199,7 +200,12 @@ class _InternalUserDetailPageState extends State<InternalUserDetailPage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, () {}, () {}),
+              .getTypedButton(
+                'Modificar', 
+                null, 
+                null, 
+                navigateToModifyInternalUser, 
+                null),
           const SizedBox(
             height: 8,
           ),
@@ -368,4 +374,12 @@ class _InternalUserDetailPageState extends State<InternalUserDetailPage> {
       },
     );
   }
+
+  navigateToModifyInternalUser() {
+    Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => ModifyInternalUserPage(currentUser, internalUserModel)));
+  }
+
 }
