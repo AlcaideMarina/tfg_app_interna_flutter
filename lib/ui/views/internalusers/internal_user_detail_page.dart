@@ -205,7 +205,12 @@ class _InternalUserDetailPageState extends State<InternalUserDetailPage> {
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
               .getTypedButton(
-                'Eliminar usuario', null, null, () {}, internalUserModel.documentId == currentUser.documentId ? null : () {}),
+                'Eliminar usuario', 
+                null, 
+                null, 
+                getIsButtonEnabled() ? () {} : null, 
+                null, 
+              ),
         ],
       ),
     );
@@ -273,6 +278,14 @@ class _InternalUserDetailPageState extends State<InternalUserDetailPage> {
           textColor: CustomColors.darkGrayColor,
           ),
         );
+  }
+
+  bool getIsButtonEnabled() {
+    if (internalUserModel.documentId == currentUser.documentId ) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
 }
