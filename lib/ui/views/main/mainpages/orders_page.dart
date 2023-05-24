@@ -84,10 +84,8 @@ class _OrdersPageState extends State<OrdersPage> {
                             }
 
                             List<QueryDocumentSnapshot> orderDocs = orderSnapshot.data?.docs ?? [];
-                            // _categorListOfDocs is given below (and renamed to _categories)
                             List<dynamic>? _categories = orderSnapshot.data?.docs
                               .map((e) => OrderModel.fromMap(e.data() as Map<String, dynamic>,e.id)).toList();
-                            // return your widgets here.
                             return Expanded(
                             child: ListView.builder(
                                 shrinkWrap: true,
