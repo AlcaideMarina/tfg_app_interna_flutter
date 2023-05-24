@@ -4,6 +4,7 @@ import '../../custom/custom_colors.dart';
 
 class HNComponentDropdown extends StatelessWidget {
   final bool autofocus;
+  final String? initialValue;
   final TextInputType? textInputType;
   final Function(Object?)? onChange;
   final String? hintText;
@@ -24,6 +25,7 @@ class HNComponentDropdown extends StatelessWidget {
     this.items,
     {Key? key,
       this.autofocus = false,
+      this.initialValue,
       this.textInputType,
       this.onChange,
       this.hintText,
@@ -43,6 +45,7 @@ class HNComponentDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
             autofocus: autofocus,
+            value: initialValue,
             icon: dropdownIcon == null ? null : const Icon(Icons.keyboard_arrow_down_rounded),
             isExpanded: isExpanded,
             style: TextStyle(color: textColor),
@@ -73,6 +76,9 @@ class HNComponentDropdown extends StatelessWidget {
                   child: Text(
                     e,
                     overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: CustomColors.blackColor
+                    ),
                   ),
                 ),
               );
