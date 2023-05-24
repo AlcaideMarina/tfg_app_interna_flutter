@@ -149,4 +149,18 @@ class FirebaseUtils {
       return false;
     }
   }
- }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllDocumentsFromCollection(String collection) {
+    return FirebaseFirestore.instance
+        .collection(collection)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUserOrders(String clientDocumentId) {
+    return FirebaseFirestore.instance
+        .collection("client_info")
+        .doc(clientDocumentId)
+        .collection("orders")
+        .snapshots();
+  }
+}
