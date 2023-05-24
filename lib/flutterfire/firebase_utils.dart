@@ -137,4 +137,16 @@ class FirebaseUtils {
       return false;
     }
   }
-}
+
+  Future<bool> updateDocument(String collection, String documentId, Map<String, dynamic> data) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(collection)
+          .doc(documentId)
+          .update(data);
+      return true;
+    } catch(e) {
+      return false;
+    }
+  }
+ }
