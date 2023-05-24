@@ -84,8 +84,7 @@ class _DeletedInternalUsersPageState extends State<DeletedInternalUsersPage> {
                                           internalUser.id.toString(),
                                           internalUser.name + ' ' + internalUser.surname,
                                           internalUser.dni,
-                                          internalUser.position,
-                                          onTap: () {}),
+                                          internalUser.position),
                                     );
                                   } else {
                                     return Container();
