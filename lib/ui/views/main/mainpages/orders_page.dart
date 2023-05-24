@@ -41,10 +41,11 @@ class _OrdersPageState extends State<OrdersPage> {
     return Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
+        drawer: LateralMenu(currentUser),
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Clientes eliminados",
+              "Pedidos y repartos",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
