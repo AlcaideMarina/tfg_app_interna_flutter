@@ -12,7 +12,7 @@ class HNComponentOrders extends StatelessWidget {
   final int orderId;
   final String company;
   final String orderSummary;
-  final double price;
+  final double? price;
   final int status;
   final String? deliveryDni;
   final Function()? onTap;
@@ -43,7 +43,7 @@ class HNComponentOrders extends StatelessWidget {
               Text('ID Pedido: ' + orderId.toString()),
               Text(company),
               Text(orderSummary),
-              Text("Precio: " + price.toString() + " €"),
+              Text("Precio: " + (price ?? "-").toString() + " €"),
               Text(Utils().getKey(Constants().orderStatus, status))
             ],
           ),
