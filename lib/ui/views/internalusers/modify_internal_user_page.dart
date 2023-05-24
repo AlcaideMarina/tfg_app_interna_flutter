@@ -4,6 +4,7 @@ import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_colors.dart';
 import '../../../custom/custom_sizes.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../../utils/Utils.dart';
 import '../../../utils/constants.dart';
 import '../../components/component_dropdown.dart';
@@ -197,7 +198,7 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, () {}),
+              .getTypedButton('Guardar', null, null, updateUser, null),
           const SizedBox(
             height: 8,
           ),
@@ -214,7 +215,7 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
     );
   }
 
-  Widget getCompanyComponentSimpleForm(String label, String? labelInputText,
+  Widget getCompanyComponentSimpleForm(String label, String initialValue,
       TextInputType textInputType, Function(String)? onChange,
       {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
     double topMargin = 4;
@@ -234,16 +235,16 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
         EdgeInsets.only(top: topMargin, bottom: bottomMargin),
         componentTextInput: HNComponentTextInput(
           textCapitalization: textCapitalization,
-          labelText: labelInputText,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           textInputType: textInputType,
           onChange: onChange,
           isEnabled: true,
+          initialValue: initialValue,
         ),);
   }
 
-  Widget getDropdownComponentSimpleForm(String label, String? labelInputText, 
+  Widget getDropdownComponentSimpleForm(String label, String initialValue, 
       TextInputType textInputType, Function(dynamic)? onChange, 
       {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
         double topMargin = 4;
@@ -264,14 +265,117 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
         componentDropdown: 
           HNComponentDropdown(
             items,
-            labelText: labelInputText,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             textInputType: textInputType,
             onChange: onChange,
             isEnabled: true,
+            initialValue: initialValue,
           ),
         );
+  }
+
+  ///// Functions
+
+  updateUser() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+    
+    bool firestoreConf = false;
+
+    if (bankAccount != "" &&
+        city != "" &&
+        direction != "" &&
+        email != "" &&
+        dni != "" &&
+        email != "" &&
+        name != "" &&
+        phone != -1 &&
+        postalCode != -1 &&
+        jobPosition != "" &&
+        postalCode != -1 &&
+        province != "" &&
+        ssNumber != -1 &&
+        surname != "" &&
+        user != "") {
+
+        InternalUserModel updatedUser = InternalUserModel(
+            bankAccount,
+            city,
+            currentUser.documentId!,
+            internalUserModel.deleted,
+            direction,
+            dni,
+            email,
+            id,
+            name,
+            phone,
+            Utils().rolesStringToInt(jobPosition),
+            postalCode,
+            province,
+            internalUserModel.salary,
+            ssNumber,
+            surname,
+            internalUserModel.uid,
+            user,
+            internalUserModel.documentId);
+        firestoreConf =
+            await FirebaseUtils.instance.updateDocument("user_info", updatedUser.documentId!, updatedUser.toMap());
+        if (firestoreConf) {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Usuario guardado'),
+                    content: const Text(
+                        'La información del usuario se ha guardado correctamente'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.of(context)
+                              ..pop()
+                              ..pop();
+                        },
+                      )
+                    ],
+                  ));
+        } else {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Error'),
+                    content: const Text(
+                        'Ha ocurrido un problema al guardar el usuario en la base de datos. Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ));
+        }
+      } else {
+        Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Formulario incompleto'),
+                    content: const Text(
+                        'Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ));
+          } 
   }
 
   goBack() {
