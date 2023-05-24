@@ -50,10 +50,12 @@ class OrderModel {
 
   factory OrderModel.fromMap(Map<String, dynamic> json, String? docId) {
     Map<String, Map<String, num>> orderMap = {};
+    print(docId);
+    
     (json['order'] as Map<String, dynamic>).forEach((key, value) {
       
       Map<String, num> aux = {};
-      (value as Map<String, num>).forEach((key2, value2) { 
+      (value as Map<String, dynamic>).forEach((key2, value2) { 
         aux.addAll({key2: value2});
       });
       
