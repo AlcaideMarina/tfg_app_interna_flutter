@@ -7,7 +7,7 @@ import 'package:hueveria_nieto_interna/ui/components/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
-import 'package:hueveria_nieto_interna/flutterfire/flutterfire.dart';
+import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'package:hueveria_nieto_interna/ui/views/clients/new_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
@@ -58,7 +58,7 @@ class _DeletedClientsPageState extends State<DeletedClientsPage> {
         body: Column(
           children: [
             StreamBuilder(
-                stream: getClients(),
+                stream: FirebaseUtils.instance.getClients(),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
@@ -73,18 +73,19 @@ class _DeletedClientsPageState extends State<DeletedClientsPage> {
                                 itemCount: clientList.length,
                                 itemBuilder: (context, i) {
                                   final ClientModel client =
-                                      ClientModel.fromMap(clientList[i].data()
-                                          as Map<String, dynamic>, clientList[i].id);
+                                      ClientModel.fromMap(
+                                          clientList[i].data()
+                                              as Map<String, dynamic>,
+                                          clientList[i].id);
                                   if (client.deleted) {
                                     return Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 32, vertical: 8),
-                                      child: HNComponentClients(
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 32, vertical: 8),
+                                        child: HNComponentClients(
                                           client.id.toString(),
                                           client.company,
                                           client.cif,
-                                      )
-                                    );
+                                        ));
                                   } else {
                                     return Container();
                                   }

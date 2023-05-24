@@ -80,11 +80,11 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
               child: Column(children: [
                 HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
                     "Usuarios internos", null, null, navigateToInternalUsersPage, () {}),
-                const SizedBox(
+                /* const SizedBox(
                   height: 16,
                 ),
                 HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                    "Usuarios externos", null, null, () {}, () {})
+                    "Usuarios externos", null, null, () {}, () {}) */
               ]),
             ),
           ],

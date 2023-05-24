@@ -18,9 +18,9 @@ class ClientModel {
   final bool hasAccount;
   final String? user;
   final String? createdBy;
-  final String? uid;
+  String? uid;
   final bool deleted;
-  String? documentId;   // TODO: Investigar - ¿nulable?
+  String? documentId; // TODO: Investigar - ¿nulable?
 
   ClientModel(
       this.cif,
@@ -77,7 +77,7 @@ class ClientModel {
         docId);
   }
 
-  Map<String, dynamic> toMap() => {
+  Map<Object, Object?> toMap() => {
         'cif': cif,
         'city': city,
         'created_by': createdBy,

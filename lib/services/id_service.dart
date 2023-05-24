@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../flutterfire/flutterfire.dart';
+import '../flutterfire/firebase_utils.dart';
 
 class IDService extends ChangeNotifier {
   int newId = 0;
@@ -15,7 +15,7 @@ class IDService extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    newId = await getNextUserId();
+    newId = await FirebaseUtils.instance.getNextUserId();
 
     isLoading = false;
     notifyListeners();

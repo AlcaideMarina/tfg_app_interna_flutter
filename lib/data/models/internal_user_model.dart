@@ -21,7 +21,7 @@ class InternalUserModel {
   final int ssNumber;
   final String surname;
   final String? uid;
-  final String? user;
+  final String user;
   final String? documentId;
 
   InternalUserModel(
@@ -74,7 +74,7 @@ factory InternalUserModel.fromJson(String str, String? docId) =>
   }
 
   Map<String, dynamic> toMap() => {
-        'bankAccount': bankAccount,
+        'bank_account': bankAccount,
         'city': city,
         'created_by': createdBy,
         'deleted': deleted,

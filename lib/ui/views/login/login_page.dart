@@ -176,21 +176,20 @@ class _LoginPageState extends State<LoginPage> {
           user,
           'JyoaC4ZOxhv6hBgIBuJd'));
       } else {
-      showDialog(
-        context: context, 
-        builder: (_) => const Center(
-          child: CircularProgressIndicator()));
-      developer.log('Empieza la función signInWithEmailAndPassword()', name: 'Login');
-      // TODO: Esto va muy lento - investigar
+
+      FocusManager.instance.primaryFocus?.unfocus();
+      showAlertDialog(context);
+
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: user.trim(), password: password);
-      developer.log('Función signInWithEmailAndPassword() terminada', name: 'Login');
-      developer.log('Empieza la función getUserInfo()', name: 'Login');
+
       InternalUserModel? currentUser = await getUserInfo();
-      developer.log('Función getUserInfo() terminada', name: 'Login');
-      if (currentUser != null) {
+
+      if (currentUser != null && !currentUser.deleted) {
+        Navigator.of(context).pop();
         navigateToMainPage(currentUser);
       } else {
+        Navigator.of(context).pop();
         showDialog(context: context, builder: (_) => AlertDialog(
           title: const Text('Vaya...'),
           content: const Text('Parece que ha habido un problema. Inténtalo de nuevo más tarde.'),
@@ -215,6 +214,7 @@ class _LoginPageState extends State<LoginPage> {
         errorMessage = FirebaseAuthConstants.loginErrors[e.code] ?? "";
       }
 
+      Navigator.of(context).pop();
       showDialog(
           context: context,
           builder: (_) => AlertDialog(
@@ -224,14 +224,23 @@ class _LoginPageState extends State<LoginPage> {
                   TextButton(
                     child: const Text('De acuerdo.'),
                     onPressed: () {
-                      setState(() {
-                        // TODO: borrar contraseña
-                      });
                       Navigator.of(context).pop();
                     },
                   )
                 ],
               ));
     }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 }

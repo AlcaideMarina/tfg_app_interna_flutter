@@ -42,10 +42,11 @@ class HNComponentInternalUsers extends StatelessWidget {
               Text("Puesto: " + Utils().getKey(Constants().roles, jobPosition))
             ],
           ),
-          Image.asset(
+          onTap != null ? Image.asset(
             ImageRoutes.getRoute('ic_next_arrow'), 
             width: 16,
             height: 24,)
+          : Container()
         ],
       ),
       decoration: BoxDecoration(

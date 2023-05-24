@@ -37,10 +37,11 @@ class HNComponentClients extends StatelessWidget {
               Text("CIF: " + cif),
             ],
           ),
-          Image.asset(
+          onTap != null ? Image.asset(
             ImageRoutes.getRoute('ic_next_arrow'), 
             width: 16,
             height: 24,)
+          : Container()
         ],
       ),
       decoration: BoxDecoration(

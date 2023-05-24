@@ -11,18 +11,21 @@ import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/data/models/client_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/clients/modify_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer' as developer;
 
-import '../../../flutterfire/flutterfire.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../../data/models/internal_user_model.dart';
+import '../../components/component_panel.dart';
 
 // TODO: Cuidado - todo esta clase está hardcodeada
 // TODO: Intentar reducir código
 
 class ClientDetailPage extends StatefulWidget {
-  const ClientDetailPage(this.currentUser, this.client, {Key? key}) : super(key: key);
+  const ClientDetailPage(this.currentUser, this.client, {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
   final ClientModel client;
@@ -55,7 +58,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     super.initState();
     currentUser = widget.currentUser;
     client = widget.client;
-    
+
     id = client.id;
     company = client.company;
     direction = client.direction;
@@ -92,7 +95,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     's': 'Cajas S',
     'cartoned': 'Estuchados'
   };
-  List<String> userLabels = ['Usuario', 'Correo', 'Confirmación del correo'];
+  List<String> userLabels = ['Usuario'];
   // TODO: Mirar otra forma de contar - ¿mapas?
   int contCompany = 0;
   int contUser = 0;
@@ -124,41 +127,68 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
           top: false,
           child: Column(
             children: [
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.fromLTRB(72, 0, 48, 16),
-                child: Text(
-                  client.company,
-                  style: const TextStyle(fontSize: 20),
-                  textAlign: TextAlign.start,
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Container(
-                      margin: const EdgeInsets.fromLTRB(24, 8, 24, 32),
-                      child: Form(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            getAllFormElements(),
-                            const SizedBox(
-                              height: 32,
-                            ),
-                            const Text('Últimos pedidos:', style: TextStyle(fontWeight: FontWeight.bold),),
-                            // TODO: A falta que hacer la parte de pedidos
-                            const SizedBox(
-                              height: 32,
-                            ),
-                            getButtonsComponent(),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                          ],
+              StreamBuilder(
+                  stream: FirebaseUtils.instance
+                      .getClientWithDocId(client.documentId!),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      if (snapshot.hasData) {
+                        DocumentSnapshot data = snapshot.data;
+                        Map<String, dynamic> map =
+                            data.data() as Map<String, dynamic>;
+                        client = ClientModel.fromMap(map, data.id);
+                        return Expanded(
+                          child: SingleChildScrollView(
+                            child: Container(
+                                margin:
+                                    const EdgeInsets.fromLTRB(24, 8, 24, 32),
+                                child: Form(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      getAllFormElements(),
+                                      const SizedBox(
+                                        height: 32,
+                                      ),
+                                      const Text(
+                                        'Últimos pedidos:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      // TODO: A falta que hacer la parte de pedidos
+                                      const SizedBox(
+                                        height: 32,
+                                      ),
+                                      getButtonsComponent(),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                          ),
+                        );
+                      } else {
+                        return Container(
+                            margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                            child: const HNComponentPanel(
+                              title: 'Ha ocurrido un error',
+                              text:
+                                  "Se ha producido un error en la carga de datos del cliente. Por favor, inténtelo de nuevo.",
+                            ));
+                      }
+                    } else {
+                      return const Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: CustomColors.redPrimaryColor,
+                          ),
                         ),
-                      )),
-                ),
-              ),
+                      );
+                    }
+                  })
             ],
           ),
         ));
@@ -168,27 +198,28 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        getCompanyComponentSimpleForm('Empresa', client.company, null, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Empresa', client.company, null, TextInputType.text, (value) {
           company = value;
         }),
-        getCompanyComponentSimpleForm('Dirección', client.direction, null, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Dirección', client.direction, null, TextInputType.text, (value) {
           direction = value;
         }),
-        getCompanyComponentSimpleForm('Ciudad', client.city, null, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Ciudad', client.city, null, TextInputType.text, (value) {
           city = value;
         }),
-        getCompanyComponentSimpleForm('Provincia', client.province, null, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Provincia', client.province, null, TextInputType.text, (value) {
           province = value;
         }),
-        getCompanyComponentSimpleForm(
-            'Código postal', client.postalCode.toString(), null, TextInputType.number, (value) {
+        getCompanyComponentSimpleForm('Código postal',
+            client.postalCode.toString(), null, TextInputType.number, (value) {
           postalCode = int.parse(value);
         }),
-        getCompanyComponentSimpleForm('CIF', client.cif, null, TextInputType.text, (value) {
+        getCompanyComponentSimpleForm(
+            'CIF', client.cif, null, TextInputType.text, (value) {
           cif = value;
         }, textCapitalization: TextCapitalization.characters),
         getCompanyComponentSimpleForm(
@@ -206,20 +237,24 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
-          HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, () {}, () {}),
+          HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
+              'Modificar', null, null, navigateToModifyClient, () {}),
           const SizedBox(
             height: 8,
           ),
           HNButton(ButtonTypes.blackRedBoldRoundedButton)
-              .getTypedButton('Cancelar', null, null, goBack, () {}),
+              .getTypedButton('Eliminar cliente', null, null, deleteWarningUser, () {}),
         ],
       ),
     );
   }
 
-  Widget getCompanyComponentSimpleForm(String label, String initialValue, String? labelInputText,
-      TextInputType textInputType, Function(String)? onChange,
+  Widget getCompanyComponentSimpleForm(
+      String label,
+      String initialValue,
+      String? labelInputText,
+      TextInputType textInputType,
+      Function(String)? onChange,
       {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
     double topMargin = 4;
     double bottomMargin = 4;
@@ -235,7 +270,8 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
         8,
         40,
         const EdgeInsets.symmetric(horizontal: 16),
-        HNComponentTextInput(
+        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+        componentTextInput: HNComponentTextInput(
           textCapitalization: textCapitalization,
           labelText: labelInputText,
           initialValue: initialValue,
@@ -246,8 +282,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
           isEnabled: false,
           backgroundColor: CustomColors.backgroundTextFieldDisabled,
           textColor: CustomColors.darkGrayColor,
-        ),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin));
+        ),);
   }
 
   Widget getComponentTableForm(String label, List<TableRow> children,
@@ -277,7 +312,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 16, right: 8, bottom: 8),
-            HNComponentTextInput(
+            componentTextInput: HNComponentTextInput(
               labelText: 'Teléfono',
               initialValue: phone1.toString(),
               textInputType: TextInputType.number,
@@ -286,14 +321,14 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
               onChange: (value) {
                 phone1 = int.parse(value);
               },
-          isEnabled: false,
-          backgroundColor: CustomColors.backgroundTextFieldDisabled,
-          textColor: CustomColors.darkGrayColor,
+              isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
+              textColor: CustomColors.darkGrayColor,
             )),
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 8, right: 16, bottom: 8),
-            HNComponentTextInput(
+            componentTextInput: HNComponentTextInput(
               labelText: 'Nombre contacto',
               initialValue: namePhone1,
               textCapitalization: TextCapitalization.words,
@@ -302,16 +337,16 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
               onChange: (value) {
                 namePhone1 = value;
               },
-          isEnabled: false,
-          backgroundColor: CustomColors.backgroundTextFieldDisabled,
-          textColor: CustomColors.darkGrayColor,
+              isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
+              textColor: CustomColors.darkGrayColor,
             )),
       ]),
       TableRow(children: [
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 16, right: 8),
-            HNComponentTextInput(
+            componentTextInput: HNComponentTextInput(
               labelText: 'Teléfono',
               initialValue: phone2.toString(),
               textInputType: TextInputType.number,
@@ -320,14 +355,14 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
               onChange: (value) {
                 phone2 = int.parse(value);
               },
-          isEnabled: false,
-          backgroundColor: CustomColors.backgroundTextFieldDisabled,
-          textColor: CustomColors.darkGrayColor,
+              isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
+              textColor: CustomColors.darkGrayColor,
             )),
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 8, right: 16),
-            HNComponentTextInput(
+            componentTextInput: HNComponentTextInput(
               labelText: 'Nombre contacto',
               initialValue: namePhone2,
               textCapitalization: TextCapitalization.words,
@@ -336,9 +371,9 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
               onChange: (value) {
                 namePhone2 = value;
               },
-          isEnabled: false,
-          backgroundColor: CustomColors.backgroundTextFieldDisabled,
-          textColor: CustomColors.darkGrayColor,
+              isEnabled: false,
+              backgroundColor: CustomColors.backgroundTextFieldDisabled,
+              textColor: CustomColors.darkGrayColor,
             )),
       ]),
     ];
@@ -356,11 +391,10 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
           borderRadius: BorderRadius.circular(16),
           shape: BoxShape.rectangle,
         ),
-        child: 
-            getClientComponentSimpleForm(userLabels[0], TextInputType.text,
-                (value) {
-              user = value;
-            }),
+        child: getClientComponentSimpleForm(userLabels[0], TextInputType.text,
+            (value) {
+          user = value;
+        }),
       ),
       leftPosition: 24,
       rightPosition: 50,
@@ -384,133 +418,112 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
       8,
       40,
       const EdgeInsets.only(left: 0),
-      HNComponentTextInput(
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         textCapitalization: TextCapitalization.none,
         textInputType: textInputType,
         onChange: onChange,
-          isEnabled: false,
-          backgroundColor: CustomColors.backgroundTextFieldDisabled,
-          textColor: CustomColors.darkGrayColor,
+        isEnabled: false,
+        backgroundColor: CustomColors.backgroundTextFieldDisabled,
+        textColor: CustomColors.darkGrayColor,
+        initialValue: user,
       ),
-      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       textMargin: const EdgeInsets.only(left: 24),
     );
   }
 
-  Widget clientHasAppAccount() {
-    return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            getClientComponentSimpleForm(userLabels[0], TextInputType.text,
-                (value) {
-              user = value;
-            }),
-            HNButton(ButtonTypes.blackRedRoundedButton).getTypedButton('Eliminar', null, null, () { }, () { })
-
-          ],
-        );
-  }
-
-  Widget clientHasNotAppAccount() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('El cliente no tiene cuenta de la aplicación.'),
-        const SizedBox(height: 16,),
-        HNButton(ButtonTypes.blackWhiteRoundedButton).getTypedButton('Crear cuenta', null, null, () { }, () { })
-      ]
-    );
-  }
-
-  saveClient() async {
-    try {
-      // TODO: Cerrar el teclado
-      // TODO: CircularProgressIndicator()
-
-      // TODO: Conseguir el valor del id
-      id = await getNextUserId();
-      // TODO: si hasAccount == true y email_account no es nulo, hay que hacer llamada también a Firebase Auth
-      if (hasAccount) {
-        // Pendiente de desarrollo de app cliente - ¿creo contraseña que aparezca en el correo y luego que se modifique?
-      }
-
-      final client = ClientModel(
-          cif,
-          city,
-          company,
-          currentUser.documentId,
-          false,
-          direction,
-          email,
-          hasAccount,
-          id,
-          [
-            {namePhone1: phone1},
-            {namePhone2: phone2}
-          ],
-          postalCode,
-          province,
-          null, // TODO: Pendiente del UID que devuelva la parte de authentication);
-          hasAccount ? user : null,
-          null);
-
-      await FirebaseFirestore.instance.collection('client_info').add({
-        'cif': client.cif,
-        'city': client.city,
-        'company': client.company,
-        'created_by': client.createdBy,
-        'direction': client.direction,
-        'deleted': client.deleted,
-        'email': client.email,
-        'has_account': client.hasAccount,
-        'id': client.id,
-        'phone': client.phone,
-        'postal_code': client.postalCode,
-        'province': client.province,
-        'uid': client.uid,
-        'user': client.user,
-      });
-
-      // TODO: Cerrar CircularProgressIndicator()
-
-      showDialog(
+  deleteWarningUser() {
+    showDialog(
           context: context,
           builder: (_) => AlertDialog(
-                title: const Text('Cliente guardado'),
+                title: const Text('Aviso impoertante'),
+                content: const Text('Esta acción es irreversible. ¿Está seguro de que quiere eliminar el cliente?'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Cancelar'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('Continuar'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      deleteUser();
+                    },
+                  )
+                ],
+              ));
+  }
+
+  deleteUser() async {
+      FocusManager.instance.primaryFocus?.unfocus();
+      showAlertDialog(context);
+      bool conf = await FirebaseUtils.instance.deleteDocument("client_info", client.documentId!);
+
+      Navigator.pop(context);
+      if(conf) {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Usuario eliminado'),
                 content: const Text(
-                    'La información del cliente se ha guardado correctamente'),
+                    'El usuario ha sido eliminado correctamente.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),
                     onPressed: () {
                       Navigator.of(context)
-                        ..pop()
-                        ..pop();
+                          ..pop()
+                          ..pop();
                     },
                   )
                 ],
               ));
-    } catch (e) {
-      developer.log(e.toString(), name: 'Error - NewPageDart');
-      showDialog(
+      } else {
+        showDialog(
           context: context,
           builder: (_) => AlertDialog(
                 title: const Text('Vaya...'),
-                content: const Text('Se ha producido un error'),
+                content: const Text(
+                    'Parece que ha habido un error. Por favor, inténtelo de nuevo.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context)
+                          ..pop()
+                          ..pop();
                     },
                   )
                 ],
               ));
+      }
+  }
+
+  navigateToModifyClient() async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ModifyClientPage(currentUser, client),
+        ));
+
+    if (result != null) {
+      client = result;
+      setState(() {});
     }
   }
 
-  goBack() {
-    Navigator.of(context).pop();
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 }

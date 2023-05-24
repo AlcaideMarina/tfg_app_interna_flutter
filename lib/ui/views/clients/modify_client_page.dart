@@ -1,43 +1,34 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hueveria_nieto_interna/ui/components/component_cell_table_form.dart';
-import 'package:hueveria_nieto_interna/ui/components/component_container_border_check_title.dart';
-import 'package:hueveria_nieto_interna/ui/components/component_simple_form.dart';
-import 'package:hueveria_nieto_interna/ui/components/component_table_form.dart';
-import 'package:hueveria_nieto_interna/ui/components/component_text_input.dart';
-import 'package:hueveria_nieto_interna/ui/components/constants/hn_button.dart';
-import 'package:hueveria_nieto_interna/custom/app_theme.dart';
-import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
-import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
-import 'package:hueveria_nieto_interna/data/models/client_model.dart';
-import 'package:hueveria_nieto_interna/values/strings_translation.dart';
-import 'package:provider/provider.dart';
-import 'dart:developer' as developer;
+import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 
-import '../../../flutterfire/firebase_utils.dart';
+import '../../../custom/app_theme.dart';
+import '../../../custom/custom_colors.dart';
+import '../../../custom/custom_sizes.dart';
+import '../../../data/models/client_model.dart';
 import '../../../data/models/internal_user_model.dart';
+import '../../components/component_cell_table_form.dart';
+import '../../components/component_container_border_check_title.dart';
+import '../../components/component_container_border_text.dart';
+import '../../components/component_simple_form.dart';
+import '../../components/component_table_form.dart';
+import '../../components/component_text_input.dart';
+import '../../components/constants/hn_button.dart';
 
-// TODO: Cuidado - todo esta clase está hardcodeada
-// TODO: Intentar reducir código
+class ModifyClientPage extends StatefulWidget {
+  ModifyClientPage(this.currentUserData, this.clientData, {Key? key})
+      : super(key: key);
 
-class NewClientPage extends StatefulWidget {
-  const NewClientPage(this.currentUser, {Key? key}) : super(key: key);
-
-  final InternalUserModel currentUser;
+  final InternalUserModel currentUserData;
+  final ClientModel clientData;
 
   @override
-  State<NewClientPage> createState() => _NewClientPageState();
+  State<ModifyClientPage> createState() => _ModifyClientPageState();
 }
 
-// TODO: Faltan todas las validaciones
-class _NewClientPageState extends State<NewClientPage> {
-  late InternalUserModel currentUser;
-
-  @override
-  void initState() {
-    super.initState();
-    currentUser = widget.currentUser;
-  }
+class _ModifyClientPageState extends State<ModifyClientPage> {
+  late InternalUserModel currentUserData;
+  late ClientModel clientData;
 
   late int id;
   late String company;
@@ -51,10 +42,33 @@ class _NewClientPageState extends State<NewClientPage> {
   late int phone2;
   late String namePhone1;
   late String namePhone2;
-  Map<String, double> prices = {};
   bool hasAccount = false;
-  // TODO: Mirar otra forma de contar - ¿mapas?
   String? user;
+
+  int contCompany = 0;
+  int contUser = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUserData = widget.currentUserData;
+    clientData = widget.clientData;
+
+    id = clientData.id;
+    company = clientData.company;
+    direction = clientData.direction;
+    city = clientData.city;
+    province = clientData.province;
+    postalCode = clientData.postalCode;
+    cif = clientData.cif;
+    email = clientData.email;
+    phone1 = clientData.phone[0].values.first;
+    namePhone1 = clientData.phone[0].keys.first;
+    phone2 = clientData.phone[1].values.first;
+    namePhone2 = clientData.phone[1].keys.first;
+    hasAccount = clientData.hasAccount;
+    user = clientData.user;
+  }
 
   List<String> labelList = [
     'Empresa',
@@ -64,20 +78,11 @@ class _NewClientPageState extends State<NewClientPage> {
     'Código postal',
     'CIF',
     'Correo',
+    'Confirmación del email',
     'Teléfono',
     'Precio/ud.',
   ];
-
   List<String> userLabels = ['Usuario'];
-  int contCompany = 0;
-  int contUser = 0;
-
-  bool isEmailConfirmated = false;
-  bool isEmailAccountConfirmated = false;
-
-  String companyUserName = '';
-  String phone1UserName = '';
-  String phone1NameUserName = '';
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +90,6 @@ class _NewClientPageState extends State<NewClientPage> {
     final double _height = MediaQuery.of(context).size.height;
 
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-    if (StringsTranslation.of(context) == null) {
-      print('NULO');
-    } else {
-      print('NO NULO');
-    }
     contCompany = 0;
     contUser = 0;
 
@@ -98,30 +98,36 @@ class _NewClientPageState extends State<NewClientPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Nuevo cliente',
+              'Información del cliente',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
         body: SafeArea(
           top: false,
-          child: SingleChildScrollView(
-            child: Container(
-                margin: const EdgeInsets.fromLTRB(24, 16, 24, 32),
-                child: Form(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      getAllFormElements(),
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      getButtonsComponent(),
-                      const SizedBox(
-                        height: 8,
-                      )
-                    ],
-                  ),
-                )),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Container(
+                      margin: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+                      child: Form(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            getAllFormElements(),
+                            const SizedBox(
+                              height: 32,
+                            ),
+                            getButtonsComponent(),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
+              ),
+            ],
           ),
         ));
   }
@@ -130,35 +136,42 @@ class _NewClientPageState extends State<NewClientPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        getCompanyComponentSimpleForm('Empresa', null, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Empresa', clientData.company, null, TextInputType.text, (value) {
           company = value;
         }),
-        getCompanyComponentSimpleForm('Dirección', null, TextInputType.text,
+        getCompanyComponentSimpleForm(
+            'Dirección', clientData.direction, null, TextInputType.text,
             (value) {
           direction = value;
         }),
-        getCompanyComponentSimpleForm('Ciudad', null, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Ciudad', clientData.city, null, TextInputType.text, (value) {
           city = value;
         }),
-        getCompanyComponentSimpleForm('Provincia', null, TextInputType.text,
+        getCompanyComponentSimpleForm(
+            'Provincia', clientData.province, null, TextInputType.text,
             (value) {
           province = value;
         }),
         getCompanyComponentSimpleForm(
-            'Código postal', null, TextInputType.number, (value) {
+            'Código postal',
+            clientData.postalCode.toString(),
+            null,
+            TextInputType.number, (value) {
           postalCode = int.parse(value);
         }),
-        getCompanyComponentSimpleForm('CIF', null, TextInputType.text, (value) {
+        getCompanyComponentSimpleForm(
+            'CIF', clientData.cif, null, TextInputType.text, (value) {
           cif = value;
         }, textCapitalization: TextCapitalization.characters),
         getCompanyComponentSimpleForm(
-            'Correo', null, TextInputType.emailAddress, (value) {
+            'Correo', clientData.email, null, TextInputType.emailAddress,
+            (value) {
           email = value;
         }, textCapitalization: TextCapitalization.none),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
-        getClientUserContainerComponent(),
+        clientData.hasAccount ? Container() : getClientUserContainerComponent(),
       ],
     );
   }
@@ -168,20 +181,24 @@ class _NewClientPageState extends State<NewClientPage> {
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
-          HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, saveClient, () {}),
+          HNButton(ButtonTypes.redWhiteBoldRoundedButton)
+              .getTypedButton('Guardar', null, null, updateClient, () {}),
           const SizedBox(
             height: 8,
           ),
-          HNButton(ButtonTypes.redWhiteBoldRoundedButton)
+          HNButton(ButtonTypes.blackRedBoldRoundedButton)
               .getTypedButton('Cancelar', null, null, goBack, () {}),
         ],
       ),
     );
   }
 
-  Widget getCompanyComponentSimpleForm(String label, String? labelInputText,
-      TextInputType textInputType, Function(String)? onChange,
+  Widget getCompanyComponentSimpleForm(
+      String label,
+      String initialValue,
+      String? labelInputText,
+      TextInputType textInputType,
+      Function(String)? onChange,
       {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
     double topMargin = 4;
     double bottomMargin = 4;
@@ -201,10 +218,13 @@ class _NewClientPageState extends State<NewClientPage> {
         componentTextInput: HNComponentTextInput(
           textCapitalization: textCapitalization,
           labelText: labelInputText,
+          initialValue: initialValue,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           textInputType: textInputType,
           onChange: onChange,
+          isEnabled: true,
+          textColor: CustomColors.darkGrayColor,
         ),);
   }
 
@@ -236,25 +256,31 @@ class _NewClientPageState extends State<NewClientPage> {
             40,
             const EdgeInsets.only(left: 16, right: 8, bottom: 8),
             componentTextInput: HNComponentTextInput(
-              labelText: 'Contacto',
-              textCapitalization: TextCapitalization.words,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              onChange: (value) {
-                namePhone1 = value;
-              },
-            )),
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16, bottom: 8),
-            componentTextInput: HNComponentTextInput(
               labelText: 'Teléfono',
+              initialValue: phone1.toString(),
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               onChange: (value) {
                 phone1 = int.parse(value);
               },
+              isEnabled: true,
+              textColor: CustomColors.darkGrayColor,
+            )),
+        HNComponentCellTableForm(
+            40,
+            const EdgeInsets.only(left: 8, right: 16, bottom: 8),
+            componentTextInput: HNComponentTextInput(
+              labelText: 'Nombre contacto',
+              initialValue: namePhone1,
+              textCapitalization: TextCapitalization.words,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              onChange: (value) {
+                namePhone1 = value;
+              },
+              isEnabled: false,
+              textColor: CustomColors.darkGrayColor,
             )),
       ]),
       TableRow(children: [
@@ -262,25 +288,31 @@ class _NewClientPageState extends State<NewClientPage> {
             40,
             const EdgeInsets.only(left: 16, right: 8),
             componentTextInput: HNComponentTextInput(
-              labelText: 'Contacto',
-              textCapitalization: TextCapitalization.words,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              onChange: (value) {
-                namePhone2 = value;
-              },
-            )),
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16),
-            componentTextInput: HNComponentTextInput(
               labelText: 'Teléfono',
+              initialValue: phone2.toString(),
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               onChange: (value) {
                 phone2 = int.parse(value);
               },
+              isEnabled: true,
+              textColor: CustomColors.darkGrayColor,
+            )),
+        HNComponentCellTableForm(
+            40,
+            const EdgeInsets.only(left: 8, right: 16),
+            componentTextInput: HNComponentTextInput(
+              labelText: 'Nombre contacto',
+              initialValue: namePhone2,
+              textCapitalization: TextCapitalization.words,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              onChange: (value) {
+                namePhone2 = value;
+              },
+              isEnabled: true,
+              textColor: CustomColors.darkGrayColor,
             )),
       ]),
     ];
@@ -323,7 +355,7 @@ class _NewClientPageState extends State<NewClientPage> {
 
   Widget getClientComponentSimpleForm(
       String label, TextInputType textInputType, Function(String)? onChange,
-      {TextEditingController? controller, bool isEnabled = true}) {
+      {bool isEnabled = true}) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (contUser == 0) {
@@ -344,104 +376,92 @@ class _NewClientPageState extends State<NewClientPage> {
         textCapitalization: TextCapitalization.none,
         textInputType: textInputType,
         onChange: onChange,
-        textEditingController: controller,
         isEnabled: isEnabled,
         backgroundColor: isEnabled
             ? CustomColors.whiteColor
             : CustomColors.backgroundTextFieldDisabled,
+        textColor: CustomColors.darkGrayColor,
       ),
       textMargin: const EdgeInsets.only(left: 24),
     );
   }
 
-  ////// Functions
+  goBack() {
+    Navigator.of(context).pop();
+  }
 
-  saveClient() async {
-    try {
-      FocusManager.instance.primaryFocus?.unfocus();
+  updateClient() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
 
-      showAlertDialog(context);
+    String? authConf = "uid";
+    bool firestoreConf = false;
+    bool createAuthAccount = false;
 
-      String? authConf = "uid";
-      String? uid;
-      id = await FirebaseUtils.instance.getNextUserId();
+    if (clientData.hasAccount) {
+      createAuthAccount = false;
+    } else {
+      createAuthAccount = hasAccount;
+    }
 
-      if (hasAccount) {
-        if (user != null && user != "") {
-          authConf =
-              await FirebaseUtils.instance.createAuthAccount(email, user!);
-          uid = authConf;
-        } else {
-          Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Formulario incompleto'),
-                    content: const Text(
-                        'Es necesario introducir un usuario si se quiere crear una cuenta. Este usuario será la contraseña por defecto hasta que el cliente la modifique. Por favor, revise los datos y vuelva a intentarlo.'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('De acuerdo.'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
-                  ));
-        }
+    if (createAuthAccount) {
+      if (user != null && user != "") {
+        authConf = await FirebaseUtils.instance.createAuthAccount(email, user!);
+        clientData.uid = authConf;
+      } else {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Formulario incompleto'),
+                  content: const Text(
+                      'Es necesario introducir un usuario si se quiere crear una cuenta. Este usuario será la contraseña por defecto hasta que el cliente la modifique. Por favor, revise los datos y vuelva a intentarlo.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo.'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ));
       }
+    }
 
-      if (authConf != null) {
-        if (cif != "" &&
-            city != "" &&
-            company != "" &&
-            direction != "" &&
-            email != "" &&
-            namePhone1 != "" &&
-            phone1 != -1 &&
-            namePhone2 != "" &&
-            phone2 != -1 &&
-            postalCode != -1 &&
-            province != "") {
-          final client = ClientModel(
-              cif,
-              city,
-              company,
-              currentUser.documentId,
-              false,
-              direction,
-              email,
-              hasAccount,
-              id,
-              [
-                {namePhone1: phone1},
-                {namePhone2: phone2}
-              ],
-              postalCode,
-              province,
-              uid,
-              hasAccount ? user : null,
-              null);
-
-          await FirebaseFirestore.instance.collection('client_info').add({
-            'cif': client.cif,
-            'city': client.city,
-            'company': client.company,
-            'created_by': client.createdBy,
-            'deleted': client.deleted,
-            'direction': client.direction,
-            'email': client.email,
-            'id': client.id,
-            'has_account': client.hasAccount,
-            'phone': client.phone,
-            'postal_code': client.postalCode,
-            'province': client.province,
-            'uid': client.uid,
-            'user': client.user
-          });
-
-          // TODO: Cerrar CircularProgressIndicator()
-
+    if (authConf != null) {
+      if (cif != "" &&
+          city != "" &&
+          company != "" &&
+          direction != "" &&
+          email != "" &&
+          namePhone1 != "" &&
+          phone1 != -1 &&
+          namePhone2 != "" &&
+          phone2 != -1 &&
+          postalCode != -1 &&
+          province != "") {
+        ClientModel updatedClient = ClientModel(
+            cif,
+            city,
+            company,
+            clientData.createdBy,
+            clientData.deleted,
+            direction,
+            email,
+            hasAccount,
+            id,
+            [
+              {namePhone1: phone1},
+              {namePhone2: phone2}
+            ],
+            postalCode,
+            province,
+            clientData.uid,
+            user,
+            clientData.documentId);
+        firestoreConf =
+            await FirebaseUtils.instance.updateClient(updatedClient);
+        if (firestoreConf) {
           Navigator.of(context).pop();
           showDialog(
               context: context,
@@ -453,9 +473,8 @@ class _NewClientPageState extends State<NewClientPage> {
                       TextButton(
                         child: const Text('De acuerdo.'),
                         onPressed: () {
-                          Navigator.of(context)
-                            ..pop()
-                            ..pop();
+                          Navigator.pop(context);
+                          Navigator.pop(context, updatedClient);
                         },
                       )
                     ],
@@ -465,9 +484,9 @@ class _NewClientPageState extends State<NewClientPage> {
           showDialog(
               context: context,
               builder: (_) => AlertDialog(
-                    title: const Text('Formulario incompleto'),
+                    title: const Text('Error'),
                     content: const Text(
-                        'Por favor, revise los datos e inténtelo de nuevo.'),
+                        'Ha ocurrido un problema al guardar el cliente en la base de datos. Por favor, revise los datos e inténtelo de nuevo.'),
                     actions: <Widget>[
                       TextButton(
                         child: const Text('De acuerdo.'),
@@ -479,13 +498,14 @@ class _NewClientPageState extends State<NewClientPage> {
                   ));
         }
       }
-    } catch (e) {
+    } else {
       Navigator.of(context).pop();
       showDialog(
           context: context,
           builder: (_) => AlertDialog(
-                title: const Text('Vaya...'),
-                content: const Text('Se ha producido un error'),
+                title: const Text('Formulario incompleto'),
+                content: const Text(
+                    'Por favor, revise los datos e inténtelo de nuevo.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),
@@ -496,10 +516,6 @@ class _NewClientPageState extends State<NewClientPage> {
                 ],
               ));
     }
-  }
-
-  goBack() {
-    Navigator.of(context).pop();
   }
 
   showAlertDialog(BuildContext context) {
