@@ -375,11 +375,16 @@ class _InternalUserDetailPageState extends State<InternalUserDetailPage> {
     );
   }
 
-  navigateToModifyInternalUser() {
-    Navigator.push(
+  navigateToModifyInternalUser() async {
+    final result = await Navigator.push(
       context, 
       MaterialPageRoute(
         builder: (context) => ModifyInternalUserPage(currentUser, internalUserModel)));
+
+    if (result != null) {
+      internalUserModel = result;
+      setState(() {});
+    }
   }
 
 }

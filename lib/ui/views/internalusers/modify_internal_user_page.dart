@@ -333,9 +333,8 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
                       TextButton(
                         child: const Text('De acuerdo.'),
                         onPressed: () {
-                          Navigator.of(context)
-                              ..pop()
-                              ..pop();
+                          Navigator.pop(context);
+                          Navigator.pop(context, updatedUser);
                         },
                       )
                     ],
