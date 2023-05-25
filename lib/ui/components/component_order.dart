@@ -37,15 +37,20 @@ class HNComponentOrders extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('ID Pedido: ' + orderId.toString()),
-              Text(company),
-              Text(orderSummary),
-              Text("Precio: " + (price ?? "-").toString() + " €"),
-              Text(Utils().getKey(Constants().orderStatus, status))
-            ],
+          Flexible(
+            child: Container(
+              margin: const EdgeInsets.only(right: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('ID Pedido: ' + orderId.toString()),
+                  Text(company),
+                  Text(orderSummary),
+                  Text("Precio: " + (price ?? "-").toString() + " €"),
+                  Text(Utils().getKey(Constants().orderStatus, status))
+                ],
+              ),
+            ),
           ),
           onTap != null ? Image.asset(
             ImageRoutes.getRoute('ic_next_arrow'), 
