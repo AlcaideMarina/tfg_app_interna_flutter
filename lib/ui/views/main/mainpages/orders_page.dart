@@ -113,7 +113,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                     list.add(item);
                                   }
                                 }
-                                list.sort((a, b) {
+                                list.sort((b, a) {
                                   return a.orderDatetime.compareTo(b.orderDatetime);
                                 });
               
