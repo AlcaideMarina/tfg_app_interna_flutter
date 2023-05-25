@@ -1,24 +1,24 @@
 class DBOrderFieldData {
 
   num? xlBoxPrice;
-  late num xlBoxQuantity;
+  num xlBoxQuantity = 0;
   num? xlDozenPrice;
-  late num xlDozenQuantity;
+  num xlDozenQuantity = 0;
 
   num? lBoxPrice;
-  late num lBoxQuantity;
+  num lBoxQuantity = 0;
   num? lDozenPrice;
-  late num lDozenQuantity;
+  num lDozenQuantity = 0;
 
   num? mBoxPrice;
-  late num mBoxQuantity;
+  num mBoxQuantity = 0;
   num? mDozenPrice;
-  late num mDozenQuantity;
+  num mDozenQuantity = 0;
 
   num? sBoxPrice;
-  late num sBoxQuantity;
+  num sBoxQuantity = 0;
   num? sDozenPrice;
-  late num sDozenQuantity;
+  num sDozenQuantity = 0;
 
   DBOrderFieldData({
     xlBoxPrice,
