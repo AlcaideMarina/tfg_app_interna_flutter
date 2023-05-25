@@ -137,7 +137,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                                 orderModel.orderDatetime,
                                                 orderModel.orderId!,
                                                 orderModel.company,
-                                                "TODO: summary",        // TODO
+                                                OrderUtils().getOrderSummary(OrderUtils().orderDataToBDOrderModel(orderModel)),        // TODO
                                                 orderModel.totalPrice,
                                                 orderModel.status,
                                                 orderModel.deliveryDni,
