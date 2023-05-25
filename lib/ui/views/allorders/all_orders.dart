@@ -29,7 +29,7 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
     super.initState();
     currentUser = widget.currentUser;
   }
-  
+
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -144,6 +144,14 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
                 ),
               ),
           ],
-        ));
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: CustomColors.redPrimaryColor,
+          child: const Icon(Icons.add_rounded),
+          onPressed: () {
+            // TODO: Aquí iría la navegación
+          },
+        ),
+      );
   }
 }
