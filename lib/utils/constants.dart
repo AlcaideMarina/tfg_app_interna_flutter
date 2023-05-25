@@ -16,5 +16,11 @@ class Constants {
     "Intento de entrega": 4,
     "Cancelado": 5
   };
+  
+  Map<String, int> paymentMethods = {
+    "Al contado": 0,
+    "Por recibo": 1,
+    "Por transferencia": 2,
+  };
 
 }
