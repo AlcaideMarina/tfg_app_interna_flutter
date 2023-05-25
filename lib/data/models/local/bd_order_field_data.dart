@@ -1,45 +1,45 @@
 class DBOrderFieldData {
 
-  final num? xlBoxPrice = null;
-  final num xlBoxQuantity = 0;
-  final num? xlDozenPrice = null;
-  final num xlDozenQuantity = 0;
+  num? xlBoxPrice;
+  late num xlBoxQuantity;
+  num? xlDozenPrice;
+  late num xlDozenQuantity;
 
-  final num? lBoxPrice = null;
-  final num lBoxQuantity = 0;
-  final num? lDozenPrice = null;
-  final num lDozenQuantity = 0;
+  num? lBoxPrice;
+  late num lBoxQuantity;
+  num? lDozenPrice;
+  late num lDozenQuantity;
 
-  final num? mBoxPrice = null;
-  final num mBoxQuantity = 0;
-  final num? mDozenPrice = null;
-  final num mDozenQuantity = 0;
+  num? mBoxPrice;
+  late num mBoxQuantity;
+  num? mDozenPrice;
+  late num mDozenQuantity;
 
-  final num? sBoxPrice = null;
-  final num sBoxQuantity = 0;
-  final num? sDozenPrice = null;
-  final num sDozenQuantity = 0;
+  num? sBoxPrice;
+  late num sBoxQuantity;
+  num? sDozenPrice;
+  late num sDozenQuantity;
 
-  DBOrderFieldData(
+  DBOrderFieldData({
     xlBoxPrice,
-    xlBoxQuantity,
+    xlBoxQuantity = 0,
     xlDozenPrice,
-    xlDozenQuantity,
+    xlDozenQuantity = 0,
 
     lBoxPrice,
-    lBoxQuantity,
+    lBoxQuantity = 0,
     lDozenPrice,
-    lDozenQuantity,
+    lDozenQuantity = 0,
 
     mBoxPrice,
-    mBoxQuantity,
+    mBoxQuantity = 0,
     mDozenPrice,
-    mDozenQuantity,
+    mDozenQuantity = 0,
 
     sBoxPrice,
-    sBoxQuantity,
+    sBoxQuantity = 0,
     sDozenPrice,
-    sDozenQuantity,
-  );
+    sDozenQuantity = 0,
+  });
 
 }
