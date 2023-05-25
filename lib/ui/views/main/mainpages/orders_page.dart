@@ -4,12 +4,14 @@ import 'package:hueveria_nieto_interna/data/models/order_model.dart';
 import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_order.dart';
 import 'package:hueveria_nieto_interna/utils/constants.dart';
+import 'package:hueveria_nieto_interna/utils/utils.dart';
 
 import '../../../../custom/app_theme.dart';
 import '../../../../custom/custom_colors.dart';
 import '../../../../custom/custom_sizes.dart';
 import '../../../../data/models/internal_user_model.dart';
 import '../../../components/component_panel.dart';
+import '../../../components/constants/hn_button.dart';
 import '../../../components/menu/lateral_menu.dart';
 
 class OrdersPage extends StatefulWidget {
@@ -49,94 +51,130 @@ class _OrdersPageState extends State<OrdersPage> {
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
-        body: Column(
-          children: [
-            StreamBuilder(
-              stream: FirebaseUtils.instance.getAllDocumentsFromCollection("client_info"),
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-
-                  // TODO: Pop-up del error
-                  if (snapshot.hasError) return const Text("error");
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Expanded(
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: CustomColors.redPrimaryColor,
-                          ),
-                        ),
-                      );
-                  }
-
-                  return StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance.collectionGroup('orders').snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> orderSnapshot) {
-                          
-                            // TODO: Pop-up del error
-                            if (orderSnapshot.hasError) return const Text("error");
-                            if (orderSnapshot.connectionState == ConnectionState.waiting) {
-                              return const Expanded(
-                                  child: Center(
-                                    child: CircularProgressIndicator(
-                                      color: CustomColors.redPrimaryColor,
-                                    ),
-                                  ),
-                                );
-                            }
-
-                            List<dynamic>? orderModelList = orderSnapshot.data?.docs
-                              .map((e) => OrderModel.fromMap(e.data() as Map<String, dynamic>,e.id)).toList() ?? [];
-                            
-                            List<OrderModel> list = [];
-                            final DateTime todayDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-                            for (OrderModel item in orderModelList) {
-                              if (item.status != Constants().orderStatus["Cancelado"]
-                                  && item.orderDatetime.compareTo(Timestamp.fromDate(todayDate)) >= 1) {
-                                list.add(item);
-                              }
-                            }
-                            list.sort((a, b) {
-                              return a.orderDatetime.compareTo(b.orderDatetime);
+        body: Container(
+                margin: EdgeInsets.all(32),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                child: Center(
+                  child: Text(Utils().parseTimestmpToString(Timestamp.now()) ?? "", style: TextStyle(fontSize: 24, color: CustomColors.whiteColor),)
+                ),
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: CustomColors.redPrimaryColor,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(16))
+                ),
+              ),
+              Container(
+                child: StreamBuilder(
+                  stream: FirebaseUtils.instance.getAllDocumentsFromCollection("client_info"),
+                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              
+                      // TODO: Pop-up del error
+                      if (snapshot.hasError) return const Text("error");
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Expanded(
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: CustomColors.redPrimaryColor,
+                              ),
+                            ),
+                          );
+                      }
+              
+                      return StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance.collectionGroup('orders').snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> orderSnapshot) {
+                              
+                                // TODO: Pop-up del error
+                                if (orderSnapshot.hasError) return const Text("error");
+                                if (orderSnapshot.connectionState == ConnectionState.waiting) {
+                                  return const Expanded(
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          color: CustomColors.redPrimaryColor,
+                                        ),
+                                      ),
+                                    );
+                                }
+              
+                                List<dynamic>? orderModelList = orderSnapshot.data?.docs
+                                  .map((e) => OrderModel.fromMap(e.data() as Map<String, dynamic>,e.id)).toList() ?? [];
+                                
+                                List<OrderModel> list = [];
+                                final DateTime todayDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+                                for (OrderModel item in orderModelList) {
+                                  if (item.status != Constants().orderStatus["Cancelado"]
+                                      && item.orderDatetime.compareTo(Timestamp.fromDate(todayDate)) <= 1) {
+                                    list.add(item);
+                                  }
+                                }
+                                list.sort((a, b) {
+                                  return a.orderDatetime.compareTo(b.orderDatetime);
+                                });
+              
+                                if (list.isNotEmpty) {
+                                  return Expanded(
+                                    child: Container(
+                                      width: double.infinity,
+                                      decoration: const BoxDecoration(
+                                        color: CustomColors.redGrayLightSecondaryColor,
+                                        borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))
+                                      ),
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        itemCount: list.length,
+                                        itemBuilder: (context, i) {
+                                          final OrderModel orderModel = list[i];
+                                                  
+                                          return Container(
+                                              margin: const EdgeInsets.symmetric(
+                                                  horizontal: 32, vertical: 8),
+                                              child: HNComponentOrders(
+                                                orderModel.orderDatetime,
+                                                orderModel.orderId!,
+                                                orderModel.company,
+                                                "TODO: summary",        // TODO
+                                                orderModel.totalPrice,
+                                                orderModel.status,
+                                                orderModel.deliveryDni,
+                                                onTap: () {}),
+                                            );
+                                          
+                                        }),
+                                    ));
+                                } else {
+                                  return Expanded(
+                                    child: Container(
+                                      width: double.infinity,
+                                      decoration: const BoxDecoration(
+                                        color: CustomColors.redGrayLightSecondaryColor,
+                                        borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))
+                                      ),
+                                      child: SingleChildScrollView(
+                                          child: Container(
+                                                  margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                                                  child: const HNComponentPanel(
+                                                    title: 'No hay clientes',
+                                                    text:
+                                                        "No hay registro de clientes eliminados en la base de datos.",
+                                                  )),
+                                        ),
+                                    ));
+                                }
+                                
                             });
-
-                            if (list.isNotEmpty) {
-                              return Expanded(
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: list.length,
-                                  itemBuilder: (context, i) {
-                                    final OrderModel orderModel = list[i];
-
-                                    return Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 32, vertical: 8),
-                                        child: HNComponentOrders(
-                                          orderModel.orderDatetime,
-                                          orderModel.orderId!,
-                                          orderModel.company,
-                                          "TODO: summary",        // TODO
-                                          orderModel.totalPrice,
-                                          orderModel.status,
-                                          orderModel.deliveryDni,
-                                          onTap: () {}),
-                                      );
-                                    
-                                  }));
-                            } else {
-                              return Container(
-                                margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                                child: const HNComponentPanel(
-                                  title: 'No hay clientes',
-                                  text:
-                                      "No hay registro de clientes eliminados en la base de datos.",
-                                ));
-                            }
-                            
-                        });
-              }
-            )
-          ]
+                  }
+                ),
+              ),
+              SizedBox(height: 32,),
+              HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
+                'Modificar', null, null, () {}, () {}),
+            ]
+          ),
         )
     );
   }
