@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/ui/views/allorders/new_order.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_colors.dart';
@@ -148,10 +149,16 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: CustomColors.redPrimaryColor,
           child: const Icon(Icons.add_rounded),
-          onPressed: () {
-            // TODO: Aquí iría la navegación
-          },
+          onPressed: navigateToAllOrders
         ),
       );
+  }
+  
+  navigateToAllOrders() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NewOrderPage(currentUser),
+        ));
   }
 }
