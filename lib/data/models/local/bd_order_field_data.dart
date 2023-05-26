@@ -17,7 +17,7 @@ class DBOrderFieldData{
   double? sDozenPrice;
   int? sDozenQuantity;
 
-  DBOrderFieldData(
+  DBOrderFieldData({
     this.xlBoxPrice, 
     this.xlBoxQuantity, 
     this.xlDozenPrice, 
@@ -34,6 +34,7 @@ class DBOrderFieldData{
     this.sBoxQuantity, 
     this.sDozenPrice, 
     this.sDozenQuantity
+    }
   );
 
   Map<String, Map<String, num?>> toMap() {
@@ -129,22 +130,22 @@ class DBOrderFieldData{
     }
 
     return DBOrderFieldData(
-      xlBoxPriceMap,
-      xlBoxQuantityMap,
-      xlDozenPriceMap,
-      xlDozenQuantityMap,
-      lBoxPriceMap,
-      lBoxQuantityMap,
-      lDozenPriceMap,
-      lDozenQuantityMap,
-      mBoxPriceMap,
-      mBoxQuantityMap,
-      mDozenPriceMap,
-      mDozenQuantityMap,
-      sBoxPriceMap,
-      sBoxQuantityMap,
-      sDozenPriceMap,
-      sDozenQuantityMap,
+      xlBoxPrice: xlBoxPriceMap,
+      xlBoxQuantity: xlBoxQuantityMap,
+      xlDozenPrice: xlDozenPriceMap,
+      xlDozenQuantity: xlDozenQuantityMap,
+      lBoxPrice: lBoxPriceMap,
+      lBoxQuantity: lBoxQuantityMap,
+      lDozenPrice: lDozenPriceMap,
+      lDozenQuantity: lDozenQuantityMap,
+      mBoxPrice: mBoxPriceMap,
+      mBoxQuantity: mBoxQuantityMap,
+      mDozenPrice: mDozenPriceMap,
+      mDozenQuantity: mDozenQuantityMap,
+      sBoxPrice: sBoxPriceMap,
+      sBoxQuantity: sBoxQuantityMap,
+      sDozenPrice: sDozenPriceMap,
+      sDozenQuantity: sDozenQuantityMap,
     );
   }
   
