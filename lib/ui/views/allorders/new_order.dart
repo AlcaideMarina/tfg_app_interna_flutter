@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
+import '../../../data/models/local/egg_prices_data.dart';
 import '../../components/component_dropdown.dart';
 import '../../components/component_simple_form.dart';
 import '../../components/component_text_input.dart';
@@ -28,6 +29,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
   void initState() {
     super.initState();
     currentUser = widget.currentUser;
+    dateController.text = dateFormat.format(minDate);
+    datePickerTimestamp = Timestamp.fromDate(minDate);
   }
 
   String company = "";
@@ -52,17 +55,19 @@ class _NewOrderPageState extends State<NewOrderPage> {
   List<String> companyItems = [];
   List<String> paymentMethodItems = [];
 
-  TextEditingController dateController = TextEditingController();
+  late TextEditingController dateController = TextEditingController();
   DateTime minDate = DateTime.now().add(const Duration(days: 3));
-  Timestamp? datePickerTimestamp;
+  late Timestamp? datePickerTimestamp;
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+  
+  Map<String, int> productQuantities = {}; 
 
   @override
   Widget build(BuildContext context) {
 
-    if (companyItems.isEmpty) {
+    if (paymentMethodItems.isEmpty) {
       for (String key in Constants().paymentMethods.keys) {
-        companyItems.add(key);
+        paymentMethodItems.add(key);
       }
     }
 
@@ -71,7 +76,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Nuevo usuario interno',
+              'Nuevo pedido',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
@@ -126,7 +131,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
         getTextComponentSimpleForm('Dirección', null, TextInputType.text, (value) {
           direction = value;
         }),
-        getDropdownComponentSimpleForm('Empresa', null, TextInputType.text,
+        getDropdownComponentSimpleForm('Método de pago', null, TextInputType.text,
             (value) => {
           company = value!
         }, paymentMethodItems), 
