@@ -8,8 +8,10 @@ import 'package:intl/intl.dart';
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
 import '../../../data/models/local/egg_prices_data.dart';
+import '../../components/component_cell_table_form.dart';
 import '../../components/component_dropdown.dart';
 import '../../components/component_simple_form.dart';
+import '../../components/component_table_form.dart';
 import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
@@ -130,11 +132,11 @@ class _NewOrderPageState extends State<NewOrderPage> {
           cif = value;
         }),
         // TODO: Campo de teléfono
-        Text("Pedido"),
-        Text("XL"),
-        Text("L"),
-        Text("M"),
-        Text("S"),
+        getComponentTableForm('Pedido', getPricePerUnitTableRow(), 
+            columnWidhts: {
+              0: const IntrinsicColumnWidth(),
+              2: const IntrinsicColumnWidth()
+            }),
         // TODO: Campos del pedido
         getTextComponentSimpleForm('Dirección', null, TextInputType.text, (value) {
           direction = value;
@@ -243,6 +245,102 @@ class _NewOrderPageState extends State<NewOrderPage> {
           onChange: onChange,
           textEditingController: textEditingController
         ),);
+  }
+
+  Widget getComponentTableForm(String label, List<TableRow> children,
+      {Map<int, TableColumnWidth>? columnWidhts}) {
+    double topMargin = 4;
+    double bottomMargin = 4;
+
+    return HNComponentTableForm(
+      label,
+      8,
+      TableCellVerticalAlignment.middle,
+      children,
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      columnWidths: columnWidhts,
+    );
+  }
+
+  
+  List<TableRow> getPricePerUnitTableRow() {
+    List<TableRow> list = [];
+
+    for (var item in Constants().productClasses) {
+      list.add(
+        TableRow(
+          children: [
+            Container(
+              child: Text(item),
+              margin: const EdgeInsets.only(left: 12, right: 16),
+            ),
+            Container(),
+            Container()
+          ]
+        )
+      );
+
+      list.add(
+        TableRow(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 16),
+              child: Text("Docena")),
+            Container(
+              height: 40,
+              margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
+              child: HNComponentTextInput(
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                textInputType: const TextInputType.numberWithOptions(),
+                onChange: (value) {
+                  // TODO: Fix - Aquí hay que meter una validación para comprobar que el input se pueda pasar a double
+                  String key = "${item.toLowerCase()}_dozen";
+                  productQuantities[key] = int.parse(value);
+                },
+                isEnabled: true,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 16),
+              child: Text("${valuesMap["${item.toLowerCase()}_dozen"]} €")),
+          ],
+        )
+      );
+
+      list.add(
+        TableRow(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 16),
+              child: Text("Caja")),
+            Container(
+              height: 40,
+              margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
+              child: HNComponentTextInput(
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                textInputType: const TextInputType.numberWithOptions(),
+                onChange: (value) {
+                  // TODO: Fix - Aquí hay que meter una validación para comprobar que el input se pueda pasar a double
+                  String key = "${item.toLowerCase()}_box";
+                  productQuantities[key] = int.parse(value);
+                },
+                isEnabled: true,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 24, right: 16),
+              child: Text("${valuesMap["${item.toLowerCase()}_box"]} €")),
+          ]
+        )
+      );
+    }
+
+
+    
+    return list;
+
   }
   
 }
