@@ -181,7 +181,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
             height: 8,
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Cancelar', null, null, () {}, () {}),
+              .getTypedButton('Cancelar', null, null, goBack, () {}),
         ],
       ),
     );
@@ -341,6 +341,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
     
     return list;
 
+  }
+
+  
+
+  goBack() {
+    Navigator.of(context).pop();
   }
   
 }
