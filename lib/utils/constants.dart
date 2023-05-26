@@ -23,4 +23,6 @@ class Constants {
     "Por transferencia": 2,
   };
 
+  List<String> productClasses = ["XL", "L", "M", "S"];
+
 }
