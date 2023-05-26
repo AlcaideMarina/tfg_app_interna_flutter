@@ -163,11 +163,18 @@ class FirebaseUtils {
         .collection("orders")
         .snapshots();
   }
-  
+
   Future<QuerySnapshot<Map<String, dynamic>>> getEggPrices() async {
     return FirebaseFirestore.instance
         .collection('default_constants')
         .where('constant_name', isEqualTo: 'egg_prices')
         .get();
   }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllDocumentsFromCollectionFuture(String collection) {
+    return FirebaseFirestore.instance
+        .collection(collection)
+        .get();
+  }
+
 }
