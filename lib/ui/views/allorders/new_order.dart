@@ -14,9 +14,10 @@ import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class NewOrderPage extends StatefulWidget {
-  const NewOrderPage(this.currentUser, {Key? key}) : super(key: key);
+  const NewOrderPage(this.currentUser, this.eggPricesMap, {Key? key}) : super(key: key);
 
   final InternalUserModel currentUser;
+  final Map<String, dynamic> eggPricesMap;
 
   @override
   State<NewOrderPage> createState() => _NewOrderPageState();
@@ -24,6 +25,8 @@ class NewOrderPage extends StatefulWidget {
 
 class _NewOrderPageState extends State<NewOrderPage> {
   late InternalUserModel currentUser;
+  late Map<String, dynamic> valuesMap;
+  late EggPricesData productPrices;
 
   @override
   void initState() {
@@ -31,6 +34,11 @@ class _NewOrderPageState extends State<NewOrderPage> {
     currentUser = widget.currentUser;
     dateController.text = dateFormat.format(minDate);
     datePickerTimestamp = Timestamp.fromDate(minDate);
+    valuesMap = widget.eggPricesMap;
+    productPrices = EggPricesData(
+      valuesMap['xl_box'], valuesMap['xl_dozen'], valuesMap['l_box'], 
+      valuesMap['l_dozen'], valuesMap['m_box'], valuesMap['m_dozen'], 
+      valuesMap['s_box'], valuesMap['s_dozen']);
   }
 
   String company = "";

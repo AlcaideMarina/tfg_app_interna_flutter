@@ -154,11 +154,15 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
       );
   }
   
-  navigateToAllOrders() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => NewOrderPage(currentUser),
-        ));
+  navigateToAllOrders() async {
+    var future = await FirebaseUtils.instance.getEggPrices();
+    Map<String, dynamic> valuesMap = future.docs[0].data()["values"];
+    if (context.mounted){
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewOrderPage(currentUser, valuesMap),
+          ));
+    }
   }
 }
