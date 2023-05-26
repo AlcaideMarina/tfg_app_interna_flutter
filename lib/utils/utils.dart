@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hueveria_nieto_interna/utils/constants.dart';
 import 'package:intl/intl.dart';
@@ -24,6 +26,11 @@ class Utils {
       String formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
       return formattedDate;
     }
+  }
+
+  double roundDouble(double value, int places){ 
+    num mod = pow(10.0, places); 
+    return ((value * mod).round().toDouble() / mod); 
   }
 
 }
