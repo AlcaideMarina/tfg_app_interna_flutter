@@ -1,21 +1,21 @@
 
 class DBOrderFieldData{
-  final double? xlBoxPrice;
-  final int? xlBoxQuantity;
-  final double? xlDozenPrice;
-  final int? xlDozenQuantity;
-  final double? lBoxPrice;
-  final int? lBoxQuantity;
-  final double? lDozenPrice;
-  final int? lDozenQuantity;
-  final double? mBoxPrice;
-  final int? mBoxQuantity;
-  final double? mDozenPrice;
-  final int? mDozenQuantity;
-  final double? sBoxPrice;
-  final int? sBoxQuantity;
-  final double? sDozenPrice;
-  final int? sDozenQuantity;
+  double? xlBoxPrice;
+  int? xlBoxQuantity;
+  double? xlDozenPrice;
+  int? xlDozenQuantity;
+  double? lBoxPrice;
+  int? lBoxQuantity;
+  double? lDozenPrice;
+  int? lDozenQuantity;
+  double? mBoxPrice;
+  int? mBoxQuantity;
+  double? mDozenPrice;
+  int? mDozenQuantity;
+  double? sBoxPrice;
+  int? sBoxQuantity;
+  double? sDozenPrice;
+  int? sDozenQuantity;
 
   DBOrderFieldData(
     this.xlBoxPrice, 
