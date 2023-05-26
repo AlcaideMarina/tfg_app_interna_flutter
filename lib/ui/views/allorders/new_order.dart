@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/utils/constants.dart';
+import 'package:hueveria_nieto_interna/utils/order_utils.dart';
 import 'package:hueveria_nieto_interna/utils/utils.dart';
 import 'package:intl/intl.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
+import '../../../data/models/local/bd_order_field_data.dart';
 import '../../../data/models/local/egg_prices_data.dart';
 import '../../components/component_cell_table_form.dart';
 import '../../components/component_dropdown.dart';
@@ -16,10 +19,11 @@ import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class NewOrderPage extends StatefulWidget {
-  const NewOrderPage(this.currentUser, this.eggPricesMap, {Key? key}) : super(key: key);
+  const NewOrderPage(this.currentUser, this.eggPricesMap, this.clientModelList, {Key? key}) : super(key: key);
 
   final InternalUserModel currentUser;
   final Map<String, dynamic> eggPricesMap;
+  final List<ClientModel> clientModelList;
 
   @override
   State<NewOrderPage> createState() => _NewOrderPageState();
@@ -29,18 +33,21 @@ class _NewOrderPageState extends State<NewOrderPage> {
   late InternalUserModel currentUser;
   late Map<String, dynamic> valuesMap;
   late EggPricesData productPrices;
+  late List<ClientModel> clientModelList;
 
   @override
   void initState() {
     super.initState();
     currentUser = widget.currentUser;
-    dateController.text = dateFormat.format(minDate);
-    datePickerTimestamp = Timestamp.fromDate(minDate);
     valuesMap = widget.eggPricesMap;
     productPrices = EggPricesData(
       valuesMap['xl_box'], valuesMap['xl_dozen'], valuesMap['l_box'], 
       valuesMap['l_dozen'], valuesMap['m_box'], valuesMap['m_dozen'], 
       valuesMap['s_box'], valuesMap['s_dozen']);
+    clientModelList = widget.clientModelList;
+
+    dateController.text = dateFormat.format(minDate);
+    datePickerTimestamp = Timestamp.fromDate(minDate);
   }
 
   String company = "";
@@ -337,15 +344,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
       );
     }
 
-
-    
     return list;
 
   }
 
-  
-
   goBack() {
+    FocusManager.instance.primaryFocus?.unfocus();
     Navigator.of(context).pop();
   }
   

@@ -1,5 +1,8 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'package:hueveria_nieto_interna/ui/views/allorders/new_order.dart';
 
 import '../../../custom/app_theme.dart';
@@ -155,13 +158,25 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
   }
   
   navigateToAllOrders() async {
-    var future = await FirebaseUtils.instance.getEggPrices();
-    Map<String, dynamic> valuesMap = future.docs[0].data()["values"];
+    
+    var futureEggPrices = await FirebaseUtils.instance.getEggPrices();
+    Map<String, dynamic> valuesMap = futureEggPrices.docs[0].data()["values"];
+
+    var futureClients = await FirebaseUtils.instance.getAllDocumentsFromCollectionFuture("client_info");
+    List<ClientModel> clientModelList = [];
+    for (var client in futureClients.docs) {
+      try {
+        clientModelList.add(ClientModel.fromMap(client.data(), client.id));
+      } catch (e) {
+        //
+      }
+    }
+
     if (context.mounted){
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => NewOrderPage(currentUser, valuesMap),
+            builder: (context) => NewOrderPage(currentUser, valuesMap, clientModelList),
           ));
     }
   }
