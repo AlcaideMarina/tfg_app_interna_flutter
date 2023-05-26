@@ -109,7 +109,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                 final DateTime todayDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
                                 for (OrderModel item in orderModelList) {
                                   if (item.status != Constants().orderStatus["Cancelado"]
-                                      && item.orderDatetime.compareTo(Timestamp.fromDate(todayDate)) <= 1) {
+                                      && item.orderDatetime.compareTo(Timestamp.fromDate(todayDate)) >= 1) {
                                     list.add(item);
                                   }
                                 }
