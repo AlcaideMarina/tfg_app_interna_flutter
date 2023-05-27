@@ -591,6 +591,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                       onPressed: () {
                         Navigator.of(context)
                             ..pop()
+                            ..pop()
                             ..pop();
                       },
                     )
