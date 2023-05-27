@@ -7,6 +7,7 @@ import 'package:hueveria_nieto_interna/utils/utils.dart';
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
 import '../../../data/models/client_model.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../../utils/constants.dart';
 import '../../components/component_cell_table_form.dart';
 import '../../components/component_dropdown.dart';
@@ -176,7 +177,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             height: 8,
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Eliminar', null, null, isDeleteEnabled ? () {} : null, null),
+              .getTypedButton('Eliminar', null, null, isDeleteEnabled ? deleteWarningUser : null, null),
         ],
       ),
     );
@@ -369,7 +370,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           context: context,
           builder: (_) => AlertDialog(
                 title: const Text('Aviso impoertante'),
-                content: const Text('Esta acción es irreversible. ¿Está seguro de que quiere eliminar el cliente?'),
+                content: const Text('Esta acción es irreversible. ¿Está seguro de que quiere eliminar el pedido?'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('Cancelar'),
@@ -381,10 +382,67 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     child: const Text('Continuar'),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      //deleteUser();
+                      deleteOrder();
                     },
                   )
                 ],
               ));
   }
+
+  deleteOrder() async {
+      FocusManager.instance.primaryFocus?.unfocus();
+      showAlertDialog(context);
+      bool conf = await FirebaseUtils.instance.deleteOrder(clientModel.documentId!, orderModel.documentId!);
+
+      Navigator.pop(context);
+      if(conf) {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Pedido eliminado'),
+                content: const Text(
+                    'El pedido ha sido eliminado correctamente.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context)
+                          ..pop()
+                          ..pop();
+                    },
+                  )
+                ],
+              ));
+      } else {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Error'),
+                content: const Text(
+                    'Se ha producido un error al eliminar el pedido. Revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context)
+                          ..pop()
+                          ..pop();
+                    },
+                  )
+                ],
+              ));}
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
 }
