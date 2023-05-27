@@ -1,5 +1,7 @@
 import 'package:hueveria_nieto_interna/data/models/local/bd_order_field_data.dart';
 import 'package:hueveria_nieto_interna/data/models/order_model.dart';
+import 'package:hueveria_nieto_interna/utils/constants.dart';
+import 'package:hueveria_nieto_interna/utils/utils.dart';
 
 import '../data/models/local/egg_prices_data.dart';
 
@@ -138,6 +140,14 @@ class OrderUtils {
       sDozenPrice: sDozen == 0 ? null : eggPrices.sDozen!.toDouble(),
       sDozenQuantity: sDozen,
     );
+  }
+
+  String paymentMethodIntToString(int paymentMethodInt) {
+    return Utils().getKey(Constants().paymentMethods, paymentMethodInt);
+  }
+
+  int paymentMethodStringToInt(String paymentMethodStr) {
+    return Constants().paymentMethods[paymentMethodStr] ?? -1;
   }
 
 }
