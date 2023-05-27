@@ -176,5 +176,14 @@ class FirebaseUtils {
         .collection(collection)
         .get();
   }
+  
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getUserOrdersFuture(String clientDocumentId) {
+    return FirebaseFirestore.instance
+        .collection("client_info")
+        .doc(clientDocumentId)
+        .collection("orders")
+        .get();
+  }
 
 }
