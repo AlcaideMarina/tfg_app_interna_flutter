@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
@@ -106,12 +107,16 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
   String lot = "";
   String deliveryDni = "";
   String status = "";
-
   
   List<String> paymentMethodItems = [];
   List<String> deliveryPersonItems = [];
   Map<String, String> deliveryPersonItemsMap = {};
   List<String> statusItem = [];
+  
+  TextEditingController dateController = TextEditingController();
+  DateTime minDate = DateTime.now().add(const Duration(days: 3));
+  late Timestamp? datePickerTimestamp;
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
   @override
   Widget build(BuildContext context) {
@@ -122,9 +127,19 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
       }
     }
     if (deliveryPersonItems.isEmpty) {
+      bool contains = false;
       for (InternalUserModel user in internalUserModelList) {
+        if (deliveryPerson == user.documentId!) {
+          contains = true;
+          deliveryPerson = user.id.toString() + " - " + user.name + " " + user.surname;
+        }
         deliveryPersonItems.add(user.id.toString() + " - " + user.name + " " + user.surname);
         deliveryPersonItemsMap[user.id.toString() + " - " + user.name + " " + user.surname] = user.documentId!;
+      }
+      if (deliveryPerson != null && !contains) {
+        deliveryPersonItems.add("Antiguo repartidor");
+        deliveryPersonItemsMap["Antiguo repartidor"] = deliveryPerson!;
+        deliveryPerson = "Antiguo repartidor";
       }
     }
     if (statusItem.isEmpty) {
@@ -175,18 +190,19 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
 
   Widget getAllFormElements() {
 
+    // TODO: Pasar esto también a detalle de pedido 
     List<int> statusApproxDeliveryDatetimeList = [0, 1, 2];
     String deliveryDatetimeAux;
+
     if (statusApproxDeliveryDatetimeList.contains(orderModel.status)) {
-      String status = Utils().getKey(Constants().orderStatus, orderModel.status);
-      deliveryDatetimeAux = "$status - ${Utils().parseTimestmpToString(orderModel.approxDeliveryDatetime) ?? ""}";
+      deliveryDatetimeAux = Utils().parseTimestmpToString(orderModel.approxDeliveryDatetime) ?? "";
     } else if (orderModel.status == 4) {
       deliveryDatetimeAux = Utils().parseTimestmpToString(orderModel.deliveryDatetime!) ?? "";
     } else if (orderModel.status == 5) {
       String status = Utils().getKey(Constants().orderStatus, orderModel.status);
       String dt;
       if (orderModel.deliveryDatetime != null) {
-        dt = Utils().parseTimestmpToString(orderModel.deliveryDatetime!) ?? "";
+        dt = Utils().parseTimestmpToString(orderModel.deliveryDatetime ?? orderModel.approxDeliveryDatetime) ?? "";
       } else {
         dt = "";
       }
@@ -204,16 +220,22 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // TODO: Esto no está deshabilitado
         getDropdownComponentSimpleForm('Empresa', null, clientModel.company, TextInputType.none, null, [clientModel.company], false),
-        getTextComponentSimpleForm('Dirección', null, clientModel.direction),
-        getTextComponentSimpleForm('CIF', null, clientModel.cif),
+        getTextComponentSimpleForm('Dirección', clientModel.direction, TextInputType.streetAddress, 
+            (value) {
+              direction = value;
+            }, isEnabled: false),
+        getTextComponentSimpleForm('CIF', clientModel.cif, TextInputType.text, 
+            (value) {
+              cif = value;
+            }, isEnabled: false),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
         getComponentTableForm('Pedido', getPricePerUnitTableRow(), 
             columnWidhts: {
               0: const IntrinsicColumnWidth(),
               2: const IntrinsicColumnWidth()
             }),
-        getTextComponentSimpleForm('Precio total', null, (orderModel.totalPrice ?? "").toString()),
         SizedBox(
           width: double.infinity,
           child: Column(
@@ -224,9 +246,11 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
                 child: 
                     CheckboxListTile(
                       title: Text("Pagado"),
-                      enabled: false,
-                      value: orderModel.paid,
-                      onChanged: (newValue) {},
+                      enabled: true,
+                      value: paid,
+                      onChanged: (newValue) {
+                        paid = newValue ?? false;
+                      },
                       dense: true,
                       controlAffinity: ListTileControlAffinity.leading,
                     ),
@@ -234,24 +258,66 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
             ],
           ),
         ),
-        getDropdownComponentSimpleForm('Método de pago', null,
-            OrderUtils().paymentMethodIntToString(orderModel.paymentMethod), TextInputType.none, 
-            (value) {
-              paymentMethod = value;
-            }, paymentMethodItems, true), 
-        getTextComponentSimpleForm('Fecha de pedido', null, Utils().parseTimestmpToString(orderModel.orderDatetime) ?? ""),
-        getTextComponentSimpleForm('Fecha de entrega', null, deliveryDatetimeAux),
-        getDropdownComponentSimpleForm('Repartidor', null, orderModel.deliveryPerson, TextInputType.none, 
+        // TODO: Esto no se inhabilita
+        orderModel.paid ?
+          getDropdownComponentSimpleForm('Método de pago', null,
+              OrderUtils().paymentMethodIntToString(orderModel.paymentMethod), TextInputType.none, 
+              null, [paymentMethod], false)
+          : getDropdownComponentSimpleForm('Método de pago', null,
+              OrderUtils().paymentMethodIntToString(orderModel.paymentMethod), TextInputType.none, 
+              (value) {
+                paymentMethod = value;
+              }, paymentMethodItems, orderModel.paid), 
+        getTextComponentSimpleForm('Fecha de pedido', Utils().parseTimestmpToString(orderModel.orderDatetime) ?? "", TextInputType.none, 
+            null, isEnabled: false),
+            
+        [2, 3, 4].contains(orderModel.status) ?
+            getTextComponentSimpleForm('Fecha de entrega', deliveryDatetimeAux, TextInputType.none, 
+                null, isReadOnly: true, isEnabled: false)
+            : getTextComponentSimpleForm('Fecha de entrega', deliveryDatetimeAux, TextInputType.none, 
+                null, isReadOnly: true, onTap: () async {
+                // TODO: Cambiar el color
+                DateTime? pickedDate = await showDatePicker(
+                  context: context, 
+                  initialDate: minDate, 
+                  firstDate: minDate, 
+                  lastDate: DateTime(
+                    DateTime.now().year + 1,
+                    DateTime.now().month,
+                    minDate.day
+                  )
+                );
+                if (pickedDate != null) {
+                  setState(() {
+                    datePickerTimestamp = Timestamp.fromDate(pickedDate);
+                    dateController.text = dateFormat.format(pickedDate);
+                  });
+                }
+              },
+              textEditingController: dateController),
+        getDropdownComponentSimpleForm('Repartidor', null, deliveryPerson, TextInputType.none, 
             (value) {
               deliveryPerson = value;
             }, deliveryPersonItems, true),
-        getTextComponentSimpleForm('Albarán', null, (orderModel.deliveryNote ?? "").toString()),
-        getTextComponentSimpleForm('Lote', null, (orderModel.lot ?? "").toString()),
-        getTextComponentSimpleForm('DNI de entrega', null, orderModel.deliveryDni ?? ""),
-        getDropdownComponentSimpleForm('Estado', null, OrderUtils().orderStatusIntToString(orderModel.status) ?? "", TextInputType.none,
+        getTextComponentSimpleForm('Albarán', (orderModel.deliveryNote ?? "").toString(), TextInputType.number, 
             (value) {
-              status = value;
-            }, statusItem, true),
+              deliveryNote = int.tryParse(value) ?? -1;
+            }),
+        getTextComponentSimpleForm('Lote', (orderModel.lot ?? "").toString(), TextInputType.text, 
+            (value) {
+              lot = value;
+            }),
+        getTextComponentSimpleForm('DNI de entrega', orderModel.deliveryDni ?? "", TextInputType.text, 
+            (value) {
+              deliveryDni = value;
+            }, isEnabled: !(orderModel.status == 3)),
+        (orderModel.status == 3) ? 
+          getDropdownComponentSimpleForm('Estado', null, OrderUtils().orderStatusIntToString(orderModel.status) ?? "", TextInputType.none,
+              null, [status], false)
+          : getDropdownComponentSimpleForm('Estado', null, OrderUtils().orderStatusIntToString(orderModel.status) ?? "", TextInputType.none,
+              (value) {
+                status = value;
+              }, statusItem, !(orderModel.status == 3)),
       ],
     );
   }
@@ -299,8 +365,11 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
         );
   }
 
-  Widget getTextComponentSimpleForm(String label, String? labelInputText,
-      String value) {
+  Widget getTextComponentSimpleForm(String label, String initialValue,
+      TextInputType textInputType, Function(String)? onChange,
+      {TextCapitalization textCapitalization = TextCapitalization.sentences, 
+      TextEditingController? textEditingController, bool isEnabled = true, bool isReadOnly = false, 
+      Future<dynamic> Function()? onTap}) {
     double topMargin = 4;
     double bottomMargin = 4;
 
@@ -311,11 +380,13 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
         const EdgeInsets.symmetric(horizontal: 16),
         EdgeInsets.only(top: topMargin, bottom: bottomMargin),
         componentTextInput: HNComponentTextInput(
-          labelText: labelInputText,
+          textCapitalization: textCapitalization,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          initialValue: value,
-          isEnabled: false,
+          textInputType: textInputType,
+          onChange: onChange,
+          isEnabled: isEnabled,
+          initialValue: initialValue,
         ),);
   }
 
@@ -336,6 +407,10 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
   
   List<TableRow> getPricePerUnitTableRow() {
     List<TableRow> list = [];
+    bool orderEnabled = true;
+    if (orderModel.paid) {
+      orderEnabled = false;
+    }
 
     for (var item in Constants().productClasses) {
       String dozenKey = "${item.toLowerCase()}_dozen";
@@ -389,7 +464,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
                 initialValue: dozenQuantity.toString(),
-                isEnabled: false,
+                isEnabled: orderEnabled,
               ),
             ),
             Container(
@@ -413,7 +488,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
                 initialValue: boxQuantity.toString(),
-                isEnabled: false,
+                isEnabled: orderEnabled,
               ),
             ),
             Container(
