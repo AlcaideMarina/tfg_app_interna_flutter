@@ -160,7 +160,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
         getTextComponentSimpleForm('CIF', null, TextInputType.text, (value) {
           cif = value;
         }, textEditingController: cifController, isEnabled: false),
-        // TODO: Campo de teléfono
+        getComponentTableForm('Teléfono', getTelephoneTableRow()),
         getComponentTableForm('Pedido', getPricePerUnitTableRow(), 
             columnWidhts: {
               0: const IntrinsicColumnWidth(),
@@ -291,7 +291,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
       columnWidths: columnWidhts,
     );
   }
-
   
   List<TableRow> getPricePerUnitTableRow() {
     List<TableRow> list = [];
@@ -370,6 +369,38 @@ class _NewOrderPageState extends State<NewOrderPage> {
     return list;
 
   }
+
+  List<TableRow> getTelephoneTableRow() {
+    return [
+      TableRow(children: [
+        HNComponentCellTableForm(
+            40,
+            const EdgeInsets.only(left: 16, right: 8, bottom: 8),
+            componentTextInput: HNComponentTextInput(
+              labelText: 'Contacto',
+              textCapitalization: TextCapitalization.words,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              onChange: (value) {
+                namePhone = value;
+              },
+            )),
+        HNComponentCellTableForm(
+            40,
+            const EdgeInsets.only(left: 8, right: 16, bottom: 8),
+            componentTextInput: HNComponentTextInput(
+              labelText: 'Teléfono',
+              textInputType: TextInputType.number,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              onChange: (value) {
+                phone = int.parse(value);
+              },
+            )),
+      ]),
+    ];
+  }
+
 
   goBack() {
     FocusManager.instance.primaryFocus?.unfocus();
