@@ -384,7 +384,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
               onChange: (value) {
                 namePhone = value;
               },
-            )),
+              textEditingController: namePhoneController,
+            ),
+          ),
         HNComponentCellTableForm(
             40,
             const EdgeInsets.only(left: 8, right: 16, bottom: 8),
@@ -396,6 +398,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
               onChange: (value) {
                 phone = int.parse(value);
               },
+              textEditingController: phoneController,
             )),
       ]),
     ];
