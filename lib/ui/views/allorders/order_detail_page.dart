@@ -370,7 +370,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     showDialog(
           context: context,
           builder: (_) => AlertDialog(
-                title: const Text('Aviso impoertante'),
+                title: const Text('Aviso importante'),
                 content: const Text('Esta acción es irreversible. ¿Está seguro de que quiere eliminar el pedido?'),
                 actions: <Widget>[
                   TextButton(
