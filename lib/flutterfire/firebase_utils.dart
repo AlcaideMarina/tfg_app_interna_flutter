@@ -200,4 +200,11 @@ class FirebaseUtils {
         .catchError((error) => false);
   }
 
+Future<QuerySnapshot<Map<String, dynamic>>> getClientById(int clientId) async {
+    return await FirebaseFirestore.instance
+        .collection("client_info")
+        .where("id", isEqualTo: clientId)
+        .get();
+}
+
 }
