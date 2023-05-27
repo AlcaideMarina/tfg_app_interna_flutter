@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/utils/constants.dart';
 import 'dart:developer' as developer;
 
 import '../data/models/order_model.dart';
@@ -200,11 +201,30 @@ class FirebaseUtils {
         .catchError((error) => false);
   }
 
-Future<QuerySnapshot<Map<String, dynamic>>> getClientById(int clientId) async {
-    return await FirebaseFirestore.instance
-        .collection("client_info")
-        .where("id", isEqualTo: clientId)
-        .get();
-}
+  Future<QuerySnapshot<Map<String, dynamic>>> getClientById(int clientId) async {
+      return await FirebaseFirestore.instance
+          .collection("client_info")
+          .where("id", isEqualTo: clientId)
+          .get();
+  }
+
+  Future<bool> deleteOrder(String clientDocumentId, String orderDocumentId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("client_info")
+          .doc(clientDocumentId)
+          .collection("orders")
+          .doc(orderDocumentId)
+          .update(
+            {
+              'status': Constants().orderStatus["Cancelado"]!.toInt(),
+              'delivery_datetime': Timestamp.now()
+            }
+          );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
 }
