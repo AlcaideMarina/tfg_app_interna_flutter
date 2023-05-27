@@ -174,7 +174,7 @@ class _OrdersPageState extends State<OrdersPage> {
               ),
               SizedBox(height: 32,),
               HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
-                'Modificar', null, null, navigateToAllOrders, () {}),
+                'Ver todo', null, null, navigateToAllOrders, () {}),
             ]
           ),
         ),
