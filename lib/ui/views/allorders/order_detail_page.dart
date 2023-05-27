@@ -48,7 +48,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Nuevo pedido',
+              'Detalle de pedido',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
@@ -123,17 +123,36 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               0: const IntrinsicColumnWidth(),
               2: const IntrinsicColumnWidth()
             }),
-        getTextComponentSimpleForm('Precio total', null, orderModel.totalPrice.toString()),
-        // TODO: Checkbox pagado
+        getTextComponentSimpleForm('Precio total', null, (orderModel.totalPrice ?? "").toString()),
+        SizedBox(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: 150,
+                child: 
+                    CheckboxListTile(
+                      title: Text("Pagado"),
+                      enabled: false,
+                      value: orderModel.paid,
+                      onChanged: (newValue) {},
+                      dense: true,
+                      controlAffinity: ListTileControlAffinity.leading,
+                    ),
+              ),
+            ],
+          ),
+        ),
         getDropdownComponentSimpleForm('Método de pago', 
             OrderUtils().paymentMethodIntToString(orderModel.paymentMethod)), 
-        // TODO: Fecha pedido
+        getTextComponentSimpleForm('Fecha de pedido', null, Utils().parseTimestmpToString(orderModel.orderDatetime) ?? ""),
         getTextComponentSimpleForm('Fecha de entrega', null, deliveryDatetimeAux),
-        // TODO: Repartidor
-        // TODO: Albarán
-        // TODO: Lote
-        // TODO: DNI de entrega
-        // TODO: Estado
+        getDropdownComponentSimpleForm('Repartidor', orderModel.deliveryPerson ?? ""),
+        getTextComponentSimpleForm('Albarán', null, (orderModel.deliveryNote ?? "").toString()),
+        getTextComponentSimpleForm('Lote', null, (orderModel.lot ?? "").toString()),
+        getTextComponentSimpleForm('DNI de entrega', null, orderModel.deliveryDni ?? ""),
+        getDropdownComponentSimpleForm('Estado', OrderUtils().orderStatusIntToString(orderModel.status) ?? ""),
       ],
     );
   }
