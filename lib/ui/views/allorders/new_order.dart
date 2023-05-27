@@ -209,7 +209,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, () {}),
+              .getTypedButton('Guardar', null, null, saveGetPriceButton, () {}),
           const SizedBox(
             height: 8,
           ),
@@ -432,6 +432,170 @@ class _NewOrderPageState extends State<NewOrderPage> {
       }
     }
   }
+  
+  saveGetPriceButton() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+    if (checkFields()) {
+      QuerySnapshot<Map<String, dynamic>> allOrders = await FirebaseUtils.instance.getUserOrdersFuture(companyItemsMap[company]!);
+      int newId = allOrders.size;
+      DBOrderFieldData dbOrderFieldData = OrderUtils().getOrderStructure(productQuantities, productPrices);
+      double totalPrice = Utils().roundDouble(getTotalPrice(dbOrderFieldData), 2);
+      if (context.mounted) {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Precio final'),
+                    content: Text(
+                        'El precio total del pedido será de $totalPrice €. ¿Desea continuar?'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(this.context).pop();
+                        }, 
+                        child: const Text("Atrás")
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(this.context).pop();
+                          // TODO: Guardar pedido
+                          saveOrder(newId, dbOrderFieldData, totalPrice);
+                        }, 
+                        child: const Text("Contiuar")
+                      ),
+                    ],
+                  ));
+      }
+    }
+  }
 
+  bool checkFields() {
+    if (paymentMethod != null && datePickerTimestamp != null && isOrder()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool isOrder() {
+    if ((productQuantities.containsKey("xl_box") && productQuantities["xl_box"] != 0) || 
+        (productQuantities.containsKey("xl_dozen") && productQuantities["xl_dozen"] != 0) || 
+        (productQuantities.containsKey("l_box") && productQuantities["l_box"] != 0) || 
+        (productQuantities.containsKey("l_dozen") && productQuantities["l_dozen"] != 0) || 
+        (productQuantities.containsKey("m_box") && productQuantities["m_box"] != 0) || 
+        (productQuantities.containsKey("m_dozen") && productQuantities["m_dozen"] != 0) || 
+        (productQuantities.containsKey("s_box") && productQuantities["s_box"] != 0) || 
+        (productQuantities.containsKey("s_dozen") && productQuantities["s_dozen"] != 0)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
+  double getTotalPrice(DBOrderFieldData dbOrderFieldData) {
+    double totalPrice = 0.0;
+
+    if (dbOrderFieldData.xlBoxQuantity != null && dbOrderFieldData.xlBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.xlBoxQuantity as int) * (dbOrderFieldData.xlBoxPrice!.toDouble());
+    }
+    if (dbOrderFieldData.xlDozenQuantity != null && dbOrderFieldData.xlDozenQuantity != null) {
+      totalPrice += (dbOrderFieldData.xlDozenQuantity as int) * (dbOrderFieldData.xlDozenQuantity!.toDouble());
+    }
+    if (dbOrderFieldData.lBoxQuantity != null && dbOrderFieldData.lBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.lBoxQuantity as int) * (dbOrderFieldData.lBoxPrice!.toDouble());
+    }
+    if (dbOrderFieldData.lDozenQuantity != null && dbOrderFieldData.lDozenQuantity != null) {
+      totalPrice += (dbOrderFieldData.lDozenQuantity as int) * (dbOrderFieldData.lDozenQuantity!.toDouble());
+    }
+    if (dbOrderFieldData.mBoxQuantity != null && dbOrderFieldData.mBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.mBoxQuantity as int) * (dbOrderFieldData.mBoxPrice!.toDouble());
+    }
+    if (dbOrderFieldData.mDozenQuantity != null && dbOrderFieldData.mDozenQuantity != null) {
+      totalPrice += (dbOrderFieldData.mDozenQuantity as int) * (dbOrderFieldData.mDozenQuantity!.toDouble());
+    }
+    if (dbOrderFieldData.sBoxQuantity != null && dbOrderFieldData.sBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.sBoxQuantity as int) * (dbOrderFieldData.sBoxPrice!.toDouble());
+    }
+    if (dbOrderFieldData.sDozenQuantity != null && dbOrderFieldData.sDozenQuantity != null) {
+      totalPrice += (dbOrderFieldData.sDozenQuantity as int) * (dbOrderFieldData.sDozenQuantity!.toDouble());
+    }
+    return totalPrice;
+  }
+
+  saveOrder(int newId, DBOrderFieldData dbOrderFieldData, double totalPrice) async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+
+    OrderModel orderModel = OrderModel(
+      datePickerTimestamp!, 
+      client!.id,
+      client!.company,
+      "user_${client!.id}", 
+      null, 
+      null, 
+      null, 
+      null, 
+      null,
+      null, 
+      dbOrderFieldData.toMap(), 
+      Timestamp.now(), 
+      newId, 
+      false, 
+      OrderUtils().paymentMethodStringToInt(paymentMethod), 
+      1, 
+      totalPrice,
+      null);
+
+      bool firestoreConf =
+          await FirebaseUtils.instance.saveNewOrder(client!.documentId!, orderModel);
+      if (firestoreConf) {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text("Pedido realizado"),
+                  content: const Text("Su pedido se ha realizado correctamente"),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo.'),
+                      onPressed: () {
+                        Navigator.of(context)
+                            ..pop()
+                            ..pop();
+                      },
+                    )
+                  ],
+                ));
+      } else {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Se ha producido un error'),
+                  content: const Text('Sentimos comunicarle que se ha producido un error inesperado durante el pedido. Por favor, inténtelo más tarde o póngase en contacto con nosotros.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo.'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ));
+      }
+  }
   
 }
