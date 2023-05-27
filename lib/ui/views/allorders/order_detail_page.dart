@@ -158,17 +158,25 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   }
 
   Widget getButtonsComponent() {
+    bool isModifyEnabled = true;
+    bool isDeleteEnabled = true;
+    if (orderModel.status == Constants().orderStatus["Cancelado"]) {
+      isModifyEnabled = false;
+      isDeleteEnabled = false;
+    } else if (orderModel.status == Constants().orderStatus["Entregado"]) {
+      isDeleteEnabled = false;
+    }
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, () {}, () {}),
+              .getTypedButton('Modificar', null, null, isModifyEnabled ? () {} : null, null),
           const SizedBox(
             height: 8,
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Eliminar', null, null, () {}, () {}),
+              .getTypedButton('Eliminar', null, null, isDeleteEnabled ? () {} : null, null),
         ],
       ),
     );
@@ -354,5 +362,29 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             )),
       ]),
     ];
+  }
+
+  deleteWarningUser() {
+    showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Aviso impoertante'),
+                content: const Text('Esta acción es irreversible. ¿Está seguro de que quiere eliminar el cliente?'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Cancelar'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('Continuar'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      //deleteUser();
+                    },
+                  )
+                ],
+              ));
   }
 }
