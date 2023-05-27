@@ -329,9 +329,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
                 onChange: (value) {
-                  // TODO: Fix - Aquí hay que meter una validación para comprobar que el input se pueda pasar a double
                   String key = "${item.toLowerCase()}_dozen";
-                  productQuantities[key] = int.parse(value);
+                  productQuantities[key] = int.tryParse(value) ?? 0;
                 },
                 isEnabled: true,
               ),
@@ -357,9 +356,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
                 onChange: (value) {
-                  // TODO: Fix - Aquí hay que meter una validación para comprobar que el input se pueda pasar a double
                   String key = "${item.toLowerCase()}_box";
-                  productQuantities[key] = int.parse(value);
+                  productQuantities[key] = int.tryParse(value) ?? 0;
                 },
                 isEnabled: true,
               ),
