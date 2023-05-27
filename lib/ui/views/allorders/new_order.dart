@@ -176,7 +176,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
             }),
         getDropdownComponentSimpleForm('Método de pago', null, TextInputType.text,
             (value) => {
-          company = value!
+          paymentMethod = value!
         }, paymentMethodItems), 
         getTextComponentSimpleForm('Fecha de entrega', null, TextInputType.none, null,
           isReadOnly: true, onTap: () async {
