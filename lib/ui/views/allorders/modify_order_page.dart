@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
 import '../../../data/models/client_model.dart';
 import '../../../data/models/internal_user_model.dart';
+import '../../../data/models/local/bd_order_field_data.dart';
+import '../../../data/models/local/egg_prices_data.dart';
 import '../../../data/models/order_model.dart';
 import '../../../utils/Utils.dart';
 import '../../../utils/constants.dart';
@@ -16,11 +19,13 @@ import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class ModifyOrderPage extends StatefulWidget {
-  const ModifyOrderPage(this.currentUser, this.clientModel, this.orderModel, {Key? key}) : super(key: key);
+  const ModifyOrderPage(this.currentUser, this.clientModel, this.orderModel, this.eggPricesMap, this.internalUserModelList, {Key? key}) : super(key: key);
 
   final InternalUserModel currentUser;
   final ClientModel clientModel;
   final OrderModel orderModel;
+  final Map<String, dynamic> eggPricesMap;
+  final List<InternalUserModel> internalUserModelList;
   
   @override
   State<ModifyOrderPage> createState() => _ModifyOrderPageState();
@@ -31,6 +36,10 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
   late InternalUserModel currentUser;
   late ClientModel clientModel;
   late OrderModel orderModel;
+  late Map<String, dynamic> valuesMap;
+  late EggPricesData eggPricesData;
+  late DBOrderFieldData dbOrderFieldQuantitiesData;
+  late List<InternalUserModel> internalUserModelList;
 
   @override
   void initState() {
@@ -38,10 +47,92 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
     currentUser = widget.currentUser;
     clientModel = widget.clientModel;
     orderModel = widget.orderModel;
+    valuesMap = widget.eggPricesMap;
+    internalUserModelList = widget.internalUserModelList;
+    eggPricesData = EggPricesData(
+      valuesMap['xl_box'], valuesMap['xl_dozen'], valuesMap['l_box'], 
+      valuesMap['l_dozen'], valuesMap['m_box'], valuesMap['m_dozen'], 
+      valuesMap['s_box'], valuesMap['s_dozen']);
+    dbOrderFieldQuantitiesData = OrderUtils().orderDataToBDOrderModel(orderModel);
+
+    // Datos cliente
+    company = clientModel.company;
+    direction = clientModel.direction;
+    cif = clientModel.cif;
+    phone = clientModel.phone[0].values.first;
+    namePhone = clientModel.phone[0].keys.first;
+    // Datos pedido (sólo cantidades)
+    xlDozen = dbOrderFieldQuantitiesData.xlDozenQuantity ?? 0;
+    xlBox = dbOrderFieldQuantitiesData.xlBoxQuantity ?? 0;
+    lDozen = dbOrderFieldQuantitiesData.lDozenQuantity ?? 0;
+    lBox = dbOrderFieldQuantitiesData.lBoxQuantity ?? 0;
+    mDozen = dbOrderFieldQuantitiesData.mDozenQuantity ?? 0;
+    mBox = dbOrderFieldQuantitiesData.mBoxQuantity ?? 0;
+    sDozen = dbOrderFieldQuantitiesData.sDozenQuantity ?? 0;
+    sBox = dbOrderFieldQuantitiesData.sBoxQuantity ?? 0;
+    // Datos pedido
+    totalPrice = orderModel.totalPrice ?? 0;
+    paid = orderModel.paid;
+    paymentMethod = OrderUtils().paymentMethodIntToString(orderModel.paymentMethod);
+    orderTimestamp = orderModel.orderDatetime;
+    deliveryPerson = orderModel.deliveryPerson;
+    deliveryNote = orderModel.deliveryNote ?? -1;
+    lot = orderModel.lot ?? "";
+    deliveryDni = orderModel.deliveryDni ?? "";
+    status = OrderUtils().orderStatusIntToString(orderModel.status) ?? "";
   }
+
+  String company = "";
+  String direction = "";
+  String cif = "";
+  int phone = -1;
+  String namePhone = "";
+  int xlDozen = 0;
+  int xlBox = 0;
+  int lDozen = 0;
+  int lBox = 0;
+  int mDozen = 0;
+  int mBox = 0;
+  int sDozen = 0;
+  int sBox = 0; 
+  double totalPrice = 0;
+  bool paid = false;
+  String paymentMethod = "";
+  Timestamp orderTimestamp = Timestamp.now();   // Esto no se setea en el initstate porque se hace más abajo.
+  Timestamp deliveryTimestamp = Timestamp.now();
+  String deliveryDatetimeStr = "";//Utils().parseTimestmpToString(deliveryTimestamp) ?? "";
+  String? deliveryPerson;
+  int deliveryNote = -1;
+  String lot = "";
+  String deliveryDni = "";
+  String status = "";
+
+  
+  List<String> paymentMethodItems = [];
+  List<String> deliveryPersonItems = [];
+  Map<String, String> deliveryPersonItemsMap = {};
+  List<String> statusItem = [];
 
   @override
   Widget build(BuildContext context) {
+
+    if (paymentMethodItems.isEmpty) {
+      for (String key in Constants().paymentMethods.keys) {
+        paymentMethodItems.add(key);
+      }
+    }
+    if (deliveryPersonItems.isEmpty) {
+      for (InternalUserModel user in internalUserModelList) {
+        deliveryPersonItems.add(user.id.toString() + " - " + user.name + " " + user.surname);
+        deliveryPersonItemsMap[user.id.toString() + " - " + user.name + " " + user.surname] = user.documentId!;
+      }
+    }
+    if (statusItem.isEmpty) {
+      for (String key in Constants().orderStatus.keys) {
+        statusItem.add(key);
+      }
+    }
+
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -113,7 +204,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        getDropdownComponentSimpleForm('Empresa', clientModel.company),
+        getDropdownComponentSimpleForm('Empresa', null, clientModel.company, TextInputType.none, null, [clientModel.company], false),
         getTextComponentSimpleForm('Dirección', null, clientModel.direction),
         getTextComponentSimpleForm('CIF', null, clientModel.cif),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
@@ -143,15 +234,24 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
             ],
           ),
         ),
-        getDropdownComponentSimpleForm('Método de pago', 
-            OrderUtils().paymentMethodIntToString(orderModel.paymentMethod)), 
+        getDropdownComponentSimpleForm('Método de pago', null,
+            OrderUtils().paymentMethodIntToString(orderModel.paymentMethod), TextInputType.none, 
+            (value) {
+              paymentMethod = value;
+            }, paymentMethodItems, true), 
         getTextComponentSimpleForm('Fecha de pedido', null, Utils().parseTimestmpToString(orderModel.orderDatetime) ?? ""),
         getTextComponentSimpleForm('Fecha de entrega', null, deliveryDatetimeAux),
-        getDropdownComponentSimpleForm('Repartidor', orderModel.deliveryPerson ?? ""),
+        getDropdownComponentSimpleForm('Repartidor', null, orderModel.deliveryPerson, TextInputType.none, 
+            (value) {
+              deliveryPerson = value;
+            }, deliveryPersonItems, true),
         getTextComponentSimpleForm('Albarán', null, (orderModel.deliveryNote ?? "").toString()),
         getTextComponentSimpleForm('Lote', null, (orderModel.lot ?? "").toString()),
         getTextComponentSimpleForm('DNI de entrega', null, orderModel.deliveryDni ?? ""),
-        getDropdownComponentSimpleForm('Estado', OrderUtils().orderStatusIntToString(orderModel.status) ?? ""),
+        getDropdownComponentSimpleForm('Estado', null, OrderUtils().orderStatusIntToString(orderModel.status) ?? "", TextInputType.none,
+            (value) {
+              status = value;
+            }, statusItem, true),
       ],
     );
   }
@@ -173,7 +273,10 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
     );
   }
 
-  Widget getDropdownComponentSimpleForm(String label, String value) {
+  Widget getDropdownComponentSimpleForm(String label, String? labelText, String? value, 
+      TextInputType textInputType, Function(dynamic)? onChange, List<String> items,
+      bool isEnabled,
+      {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
         double topMargin = 4;
         double bottomMargin = 4;
         
@@ -185,13 +288,13 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
         EdgeInsets.only(top: topMargin, bottom: bottomMargin,),
         componentDropdown: 
           HNComponentDropdown(
-            const [],
-            labelText: value,
+            items,
+            labelText: labelText,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             initialValue: value,
-            isEnabled: false,
-            onChange: null,
+            isEnabled: isEnabled,
+            onChange: onChange,
           ),
         );
   }

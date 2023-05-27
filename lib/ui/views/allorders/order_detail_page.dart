@@ -435,10 +435,25 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   }
 
   navigateToModifyOrder() async {
+    
+    var futureEggPrices = await FirebaseUtils.instance.getEggPrices();
+    Map<String, dynamic> valuesMap = futureEggPrices.docs[0].data()["values"];
+    
+    var futureUsers = await FirebaseUtils.instance.getAllDeliveryPersonFuture();
+    List<InternalUserModel> deliveryPersonList = [];
+    for (var user in futureUsers.docs) {
+      try {
+        deliveryPersonList.add(InternalUserModel.fromMap(user.data(), user.id));
+      } catch (e) {
+        //
+      }
+    }
+
     final result = await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ModifyOrderPage(currentUser, clientModel, orderModel),
+          builder: (context) => ModifyOrderPage(
+            currentUser, clientModel, orderModel, valuesMap, deliveryPersonList),
         ));
 
     if (result != null) {
