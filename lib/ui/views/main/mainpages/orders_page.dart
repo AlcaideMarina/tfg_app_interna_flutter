@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/order_model.dart';
 import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_order.dart';
-import 'package:hueveria_nieto_interna/ui/views/allorders/all_orders.dart';
+import 'package:hueveria_nieto_interna/ui/views/allorders/all_orders_page.dart';
 import 'package:hueveria_nieto_interna/utils/constants.dart';
 import 'package:hueveria_nieto_interna/utils/order_utils.dart';
 import 'package:hueveria_nieto_interna/utils/utils.dart';

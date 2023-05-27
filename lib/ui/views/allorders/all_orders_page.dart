@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/client_model.dart';
-import 'package:hueveria_nieto_interna/ui/views/allorders/new_order.dart';
+import 'package:hueveria_nieto_interna/ui/views/allorders/new_order_page.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_colors.dart';
