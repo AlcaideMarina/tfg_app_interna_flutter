@@ -48,6 +48,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
 
     dateController.text = dateFormat.format(minDate);
     datePickerTimestamp = Timestamp.fromDate(minDate);
+
   }
 
   String company = "";
@@ -70,6 +71,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
   int cont = 0;
 
   List<String> companyItems = [];
+  Map<String, String> companyItemsMap = {};
   List<String> paymentMethodItems = [];
 
   late TextEditingController dateController = TextEditingController();
@@ -85,6 +87,14 @@ class _NewOrderPageState extends State<NewOrderPage> {
     if (paymentMethodItems.isEmpty) {
       for (String key in Constants().paymentMethods.keys) {
         paymentMethodItems.add(key);
+      }
+    }
+
+    if (companyItems.isEmpty) {
+      clientModelList.sort((a, b) => a.id.compareTo(b.id));
+      for (ClientModel client in clientModelList) {
+        companyItems.add(client.id.toString() + " - " + client.company);
+        companyItemsMap[client.id.toString() + " - " + client.company] = client.documentId!;
       }
     }
 
@@ -352,5 +362,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
     FocusManager.instance.primaryFocus?.unfocus();
     Navigator.of(context).pop();
   }
+
   
 }
