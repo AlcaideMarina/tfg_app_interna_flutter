@@ -221,7 +221,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // TODO: Esto no está deshabilitado
-        getDropdownComponentSimpleForm('Empresa', null, clientModel.company, TextInputType.none, null, [clientModel.company], false),
+        getDropdownComponentSimpleForm('Empresa', clientModel.company, null, TextInputType.none, null, [], false),
         getTextComponentSimpleForm('Dirección', clientModel.direction, TextInputType.streetAddress, 
             (value) {
               direction = value;
@@ -260,9 +260,9 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
         ),
         // TODO: Esto no se inhabilita
         orderModel.paid ?
-          getDropdownComponentSimpleForm('Método de pago', null,
-              OrderUtils().paymentMethodIntToString(orderModel.paymentMethod), TextInputType.none, 
-              null, [paymentMethod], false)
+          getDropdownComponentSimpleForm('Método de pago', 
+              OrderUtils().paymentMethodIntToString(orderModel.paymentMethod), null, TextInputType.none,
+              null, [], false)
           : getDropdownComponentSimpleForm('Método de pago', null,
               OrderUtils().paymentMethodIntToString(orderModel.paymentMethod), TextInputType.none, 
               (value) {
@@ -312,8 +312,8 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
               deliveryDni = value;
             }, isEnabled: !(orderModel.status == 3)),
         (orderModel.status == 3) ? 
-          getDropdownComponentSimpleForm('Estado', null, OrderUtils().orderStatusIntToString(orderModel.status) ?? "", TextInputType.none,
-              null, [status], false)
+          getDropdownComponentSimpleForm('Estado', OrderUtils().orderStatusIntToString(orderModel.status) ?? "", null, TextInputType.none,
+              null, [], false)
           : getDropdownComponentSimpleForm('Estado', null, OrderUtils().orderStatusIntToString(orderModel.status) ?? "", TextInputType.none,
               (value) {
                 status = value;
