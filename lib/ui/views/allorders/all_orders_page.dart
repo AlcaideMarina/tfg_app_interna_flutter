@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'package:hueveria_nieto_interna/ui/views/allorders/new_order_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/allorders/order_detail_page.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_colors.dart';
@@ -116,7 +117,10 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
                                                 orderModel.totalPrice,
                                                 orderModel.status,
                                                 orderModel.deliveryDni,
-                                                onTap: () {}),
+                                                onTap: () async {
+                                                  navigateToOrderDetail(orderModel);
+                                                }
+                                              ),
                                             );
                                           
                                         }),
@@ -150,12 +154,12 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: CustomColors.redPrimaryColor,
           child: const Icon(Icons.add_rounded),
-          onPressed: navigateToAllOrders
+          onPressed: navigateToNewOrder
         ),
       );
   }
   
-  navigateToAllOrders() async {
+  navigateToNewOrder() async {
     
     var futureEggPrices = await FirebaseUtils.instance.getEggPrices();
     Map<String, dynamic> valuesMap = futureEggPrices.docs[0].data()["values"];
@@ -177,5 +181,38 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
             builder: (context) => NewOrderPage(currentUser, valuesMap, clientModelList),
           ));
     }
+  }
+  
+  navigateToOrderDetail(OrderModel orderModel) async {
+
+    var future = await FirebaseUtils.instance.getClientById(orderModel.clientId);
+    if (future.docs.isNotEmpty) {;
+      ClientModel clientModel = ClientModel.fromMap(future.docs[0].data(), future.docs[0].id);
+      if (context.mounted){
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OrderDetailPage(currentUser, clientModel, orderModel),
+            ));
+      }
+    } else {
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Error'),
+                content: const Text(
+                    'Ha ocurrido un error al cargar los datos del cliente. Por favor, inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
+    }
+
+    
   }
 }
