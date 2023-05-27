@@ -488,7 +488,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
   }
 
   bool checkFields() {
-    if (paymentMethod != null && datePickerTimestamp != null && isOrder()) {
+    if (client != null && paymentMethod != null && datePickerTimestamp != null && isOrder()) {
       return true;
     } else {
       return false;
