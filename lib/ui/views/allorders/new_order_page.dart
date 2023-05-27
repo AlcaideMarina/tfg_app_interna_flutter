@@ -458,7 +458,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(this.context).pop();
                           // TODO: Guardar pedido
                           saveOrder(newId, dbOrderFieldData, totalPrice);
                         }, 
@@ -467,6 +466,24 @@ class _NewOrderPageState extends State<NewOrderPage> {
                     ],
                   ));
       }
+    } else {
+        Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Formulario incompleto'),
+                    content: const Text(
+                        'Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ));
+          
     }
   }
 
