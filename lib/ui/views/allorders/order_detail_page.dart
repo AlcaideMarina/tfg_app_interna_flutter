@@ -61,6 +61,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text("ID: " + orderModel.orderId.toString()),
+                      const SizedBox(
+                        height: 8,
+                      ),
                       getAllFormElements(),
                       const SizedBox(
                         height: 32,
@@ -110,7 +114,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        getDropdownComponentSimpleForm('Empresa', null, clientModel.company),
+        getDropdownComponentSimpleForm('Empresa', clientModel.company),
         getTextComponentSimpleForm('Dirección', null, clientModel.direction),
         getTextComponentSimpleForm('CIF', null, clientModel.cif),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
@@ -119,9 +123,17 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               0: const IntrinsicColumnWidth(),
               2: const IntrinsicColumnWidth()
             }),
-        getDropdownComponentSimpleForm('Método de pago', null, 
+        getTextComponentSimpleForm('Precio total', null, orderModel.totalPrice.toString()),
+        // TODO: Checkbox pagado
+        getDropdownComponentSimpleForm('Método de pago', 
             OrderUtils().paymentMethodIntToString(orderModel.paymentMethod)), 
-        getTextComponentSimpleForm('Fecha de entrega', null, Utils().parseTimestmpToString(orderModel.approxDeliveryDatetime)!),
+        // TODO: Fecha pedido
+        getTextComponentSimpleForm('Fecha de entrega', null, deliveryDatetimeAux),
+        // TODO: Repartidor
+        // TODO: Albarán
+        // TODO: Lote
+        // TODO: DNI de entrega
+        // TODO: Estado
       ],
     );
   }
@@ -143,8 +155,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     );
   }
 
-  Widget getDropdownComponentSimpleForm(String label, String? labelInputText, 
-      String value) {
+  Widget getDropdownComponentSimpleForm(String label, String value) {
         double topMargin = 4;
         double bottomMargin = 4;
         
@@ -156,11 +167,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         EdgeInsets.only(top: topMargin, bottom: bottomMargin,),
         componentDropdown: 
           HNComponentDropdown(
-            [],
-            labelText: labelInputText,
+            const [],
+            labelText: value,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             initialValue: value,
+            isEnabled: false,
+            onChange: null,
           ),
         );
   }
@@ -181,6 +194,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           initialValue: value,
+          isEnabled: false,
         ),);
   }
 
@@ -254,7 +268,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
                 initialValue: dozenQuantity.toString(),
-                isEnabled: true,
+                isEnabled: false,
               ),
             ),
             Container(
@@ -278,7 +292,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
                 initialValue: boxQuantity.toString(),
-                isEnabled: true,
+                isEnabled: false,
               ),
             ),
             Container(
