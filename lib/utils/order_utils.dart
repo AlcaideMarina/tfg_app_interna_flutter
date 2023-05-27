@@ -150,4 +150,14 @@ class OrderUtils {
     return Constants().paymentMethods[paymentMethodStr] ?? -1;
   }
 
+  int orderStatusStringToInt(String status) {
+    return Constants().orderStatus[status] ?? -1;
+  }
+
+  String? orderStatusIntToString(int status) {
+    var key = Constants().orderStatus.keys.firstWhere(
+      (k) => Constants().orderStatus[k] == status);
+    return key;
+  }
+
 }
