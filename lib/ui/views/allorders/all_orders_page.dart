@@ -93,7 +93,7 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
                                   }
                                 }
                                 list.sort((a, b) {
-                                  return a.orderDatetime.compareTo(b.orderDatetime);
+                                  return b.orderDatetime.compareTo(a.orderDatetime);
                                 });
               
                                 if (list.isNotEmpty) {

@@ -114,7 +114,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                   }
                                 }
                                 list.sort((b, a) {
-                                  return a.orderDatetime.compareTo(b.orderDatetime);
+                                  return b.orderDatetime.compareTo(a.orderDatetime);
                                 });
               
                                 if (list.isNotEmpty) {
