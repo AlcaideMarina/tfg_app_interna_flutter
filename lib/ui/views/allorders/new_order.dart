@@ -166,16 +166,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
               0: const IntrinsicColumnWidth(),
               2: const IntrinsicColumnWidth()
             }),
-        // TODO: Campos del pedido
-        getTextComponentSimpleForm('Dirección', null, TextInputType.text, (value) {
-          direction = value;
-        }),
         getDropdownComponentSimpleForm('Método de pago', null, TextInputType.text,
             (value) => {
           company = value!
         }, paymentMethodItems), 
-        getTextComponentSimpleForm('Fecha de entrega', null, TextInputType.text, 
-          (value) async {
+        getTextComponentSimpleForm('Fecha de entrega', null, TextInputType.none, null,
+          isReadOnly: true, onTap: () async {
             // TODO: Cambiar el color
             DateTime? pickedDate = await showDatePicker(
               context: context, 
@@ -249,7 +245,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
   Widget getTextComponentSimpleForm(String label, String? labelInputText,
       TextInputType textInputType, Function(String)? onChange,
       {TextCapitalization textCapitalization = TextCapitalization.sentences, 
-      TextEditingController? textEditingController, bool isEnabled = true}) {
+      TextEditingController? textEditingController, bool isEnabled = true, bool isReadOnly = false, 
+      Future<dynamic> Function()? onTap}) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (cont == 0) {
@@ -274,6 +271,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
           onChange: onChange,
           textEditingController: textEditingController,
           isEnabled: isEnabled,
+          onTap: onTap,
         ),);
   }
 
