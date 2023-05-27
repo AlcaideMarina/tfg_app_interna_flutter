@@ -11,6 +11,8 @@ import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
 import '../../../data/models/local/bd_order_field_data.dart';
 import '../../../data/models/local/egg_prices_data.dart';
+import '../../../data/models/order_model.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../components/component_cell_table_form.dart';
 import '../../components/component_dropdown.dart';
 import '../../components/component_simple_form.dart';
@@ -70,6 +72,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
 
   int cont = 0;
 
+  ClientModel? client;
+
   List<String> companyItems = [];
   Map<String, String> companyItemsMap = {};
   List<String> paymentMethodItems = [];
@@ -105,7 +109,11 @@ class _NewOrderPageState extends State<NewOrderPage> {
 
     directionController.text = direction;
     cifController.text = cif;
-    phoneController.text = phone.toString();
+    if (phone < 0) {
+      phoneController.text = "";
+    } else {
+      phoneController.text = phone.toString();
+    }
     namePhoneController.text = namePhone;
 
     return Scaffold(
@@ -383,6 +391,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 namePhone = value;
               },
               textEditingController: namePhoneController,
+              isEnabled: false,
             ),
           ),
         HNComponentCellTableForm(
@@ -397,6 +406,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 phone = int.parse(value);
               },
               textEditingController: phoneController,
+              isEnabled: false,
             )),
       ]),
     ];
@@ -413,12 +423,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
     if (docId != "") {
       int index = 0;
       while(index < clientModelList.length) {
-        ClientModel client = clientModelList[index];
-        if (client.documentId == docId) {
-          direction = client.direction;
-          cif = client.cif;
-          namePhone = client.phone[0].keys.first;
-          phone = client.phone[0].values.first;
+        client = clientModelList[index];
+        if (client!.documentId == docId) {
+          direction = client!.direction;
+          cif = client!.cif;
+          namePhone = client!.phone[0].keys.first;
+          phone = client!.phone[0].values.first;
         }
         index += 1;
       }
