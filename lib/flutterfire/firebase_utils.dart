@@ -178,7 +178,13 @@ class FirebaseUtils {
         .collection(collection)
         .get();
   }
-  
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllDeliveryPersonFuture() {
+    return FirebaseFirestore.instance
+        .collection("user_info")
+        .where("position", isEqualTo: 2)
+        .get();
+  }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getUserOrdersFuture(String clientDocumentId) {
     return FirebaseFirestore.instance
