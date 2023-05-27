@@ -4,6 +4,7 @@ import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'dart:developer' as developer;
 
+import '../data/models/order_model.dart';
 import '../values/firebase_constants.dart';
 
 class FirebaseUtils {
@@ -184,6 +185,19 @@ class FirebaseUtils {
         .doc(clientDocumentId)
         .collection("orders")
         .get();
+  }
+  
+  Future<bool> saveNewOrder(String documentId, OrderModel orderModel) async {
+    return await FirebaseFirestore.instance
+        .collection("client_info")
+        .doc(documentId)
+        .collection("orders")
+        .add(orderModel.toMap())
+        .then((value) {
+          var a = value;
+          return true;
+        })
+        .catchError((error) => false);
   }
 
 }
