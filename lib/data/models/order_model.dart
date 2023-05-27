@@ -82,7 +82,7 @@ class OrderModel {
       docId);
   }
 
-  Map<Object, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => {
       'approximate_delivery_datetime': approxDeliveryDatetime, 
       'client_id': clientId, 
       'company': company, 
