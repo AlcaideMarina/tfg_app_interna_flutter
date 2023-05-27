@@ -74,10 +74,15 @@ class _NewOrderPageState extends State<NewOrderPage> {
   Map<String, String> companyItemsMap = {};
   List<String> paymentMethodItems = [];
 
-  late TextEditingController dateController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
   DateTime minDate = DateTime.now().add(const Duration(days: 3));
   late Timestamp? datePickerTimestamp;
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+  
+  TextEditingController directionController = TextEditingController();
+  TextEditingController cifController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController namePhoneController = TextEditingController();
   
   Map<String, int> productQuantities = {}; 
 
@@ -97,6 +102,11 @@ class _NewOrderPageState extends State<NewOrderPage> {
         companyItemsMap[client.id.toString() + " - " + client.company] = client.documentId!;
       }
     }
+
+    directionController.text = direction;
+    cifController.text = cif;
+    phoneController.text = phone.toString();
+    namePhoneController.text = namePhone;
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -139,15 +149,17 @@ class _NewOrderPageState extends State<NewOrderPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         getDropdownComponentSimpleForm('Empresa', null, TextInputType.text,
-            (value) => {
-          company = value!
-        }, companyItems),   // TODO: Hay que sacar las empresas de bbdd
+            (value) {
+          company = value!;
+          getDirectionAndCIF(company);
+          setState(() {});
+        }, companyItems),
         getTextComponentSimpleForm('Dirección', null, TextInputType.text, (value) {
           direction = value;
-        }),
+        }, textEditingController: directionController, isEnabled: false),
         getTextComponentSimpleForm('CIF', null, TextInputType.text, (value) {
           cif = value;
-        }),
+        }, textEditingController: cifController, isEnabled: false),
         // TODO: Campo de teléfono
         getComponentTableForm('Pedido', getPricePerUnitTableRow(), 
             columnWidhts: {
@@ -237,7 +249,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
   Widget getTextComponentSimpleForm(String label, String? labelInputText,
       TextInputType textInputType, Function(String)? onChange,
       {TextCapitalization textCapitalization = TextCapitalization.sentences, 
-      TextEditingController? textEditingController}) {
+      TextEditingController? textEditingController, bool isEnabled = true}) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (cont == 0) {
@@ -260,7 +272,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           textInputType: textInputType,
           onChange: onChange,
-          textEditingController: textEditingController
+          textEditingController: textEditingController,
+          isEnabled: isEnabled,
         ),);
   }
 
@@ -361,6 +374,23 @@ class _NewOrderPageState extends State<NewOrderPage> {
   goBack() {
     FocusManager.instance.primaryFocus?.unfocus();
     Navigator.of(context).pop();
+  }
+
+  getDirectionAndCIF(String companyDropdownSelected) {
+    String docId = companyItemsMap[companyDropdownSelected] ?? "";
+    if (docId != "") {
+      int index = 0;
+      while(index < clientModelList.length) {
+        ClientModel client = clientModelList[index];
+        if (client.documentId == docId) {
+          direction = client.direction;
+          cif = client.cif;
+          namePhone = client.phone[0].keys.first;
+          phone = client.phone[0].values.first;
+        }
+        index += 1;
+      }
+    }
   }
 
   
