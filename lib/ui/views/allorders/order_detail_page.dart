@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/data/models/order_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/allorders/modify_order_page.dart';
 import 'package:hueveria_nieto_interna/utils/order_utils.dart';
 import 'package:hueveria_nieto_interna/utils/utils.dart';
 
@@ -172,12 +173,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, isModifyEnabled ? () {} : null, null),
+              .getTypedButton('Modificar', null, null, isModifyEnabled ? navigateToModifyOrder : null, null),
           const SizedBox(
             height: 8,
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Eliminar', null, null, isDeleteEnabled ? deleteWarningUser : null, null),
+              .getTypedButton('Eliminar', null, null, isDeleteEnabled ? deleteWarningOrder : null, null),
         ],
       ),
     );
@@ -365,7 +366,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     ];
   }
 
-  deleteWarningUser() {
+  deleteWarningOrder() {
     showDialog(
           context: context,
           builder: (_) => AlertDialog(
@@ -431,6 +432,19 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   )
                 ],
               ));}
+  }
+
+  navigateToModifyOrder() async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ModifyOrderPage(currentUser, clientModel, orderModel),
+        ));
+
+    if (result != null) {
+      orderModel = result;
+      setState(() {});
+    }
   }
 
   showAlertDialog(BuildContext context) {
