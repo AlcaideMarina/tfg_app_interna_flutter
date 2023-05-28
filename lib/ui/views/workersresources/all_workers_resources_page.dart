@@ -41,7 +41,7 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Ver usuarios internos",
+              "Trabajadores y salarios",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),

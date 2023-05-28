@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hueveria_nieto_interna/ui/views/workersresources/all_workers_resources.dart';
+import 'package:hueveria_nieto_interna/ui/views/workersresources/all_workers_resources_page.dart';
 
 import '../../../../custom/app_theme.dart';
 import '../../../../custom/custom_sizes.dart';
