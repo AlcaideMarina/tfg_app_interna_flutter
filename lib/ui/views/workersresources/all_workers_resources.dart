@@ -27,6 +27,9 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
     currentUser = widget.currentUser;
   }
 
+  List<InternalUserModel> workerList = [];
+  List<InternalUserModel> pendingWorkersList = [];
+
   @override
   Widget build(BuildContext context) {
     
@@ -48,7 +51,7 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
               margin: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
               child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
                   .getTypedButton(
-                      "Nuevo", null, null, () {}, () {}),
+                      "Sueldos pendientes", null, null, () {}, () {}),
             ),
             const SizedBox(
               height: 16,
@@ -72,16 +75,22 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
                                       InternalUserModel.fromMap(userList[i].data()
                                           as Map<String, dynamic>, userList[i].id);
                                   if (!internalUser.deleted) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 32, vertical: 8),
-                                      child: HNComponentWorker(
-                                          internalUser.id,
-                                          internalUser.name,
-                                          internalUser.surname,
-                                          internalUser.salary,
-                                          onTap: () {}),
-                                    );
+                                    if (internalUser.salary != null) {
+                                      workerList.add(internalUser);
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 32, vertical: 8),
+                                        child: HNComponentWorker(
+                                            internalUser.id,
+                                            internalUser.name,
+                                            internalUser.surname,
+                                            internalUser.salary,
+                                            onTap: () {}),
+                                      );
+                                    } else {
+                                      pendingWorkersList.add(internalUser);
+                                      return Container();
+                                    }
                                   } else {
                                     return Container();
                                   }
