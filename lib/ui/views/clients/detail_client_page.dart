@@ -273,8 +273,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
         EdgeInsets.only(top: topMargin, bottom: bottomMargin),
         componentTextInput: HNComponentTextInput(
           textCapitalization: textCapitalization,
-          labelText: labelInputText,
-          initialValue: initialValue,
+          labelText: initialValue,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           textInputType: textInputType,
@@ -313,8 +312,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
             40,
             const EdgeInsets.only(left: 16, right: 8, bottom: 8),
             componentTextInput: HNComponentTextInput(
-              labelText: 'Teléfono',
-              initialValue: phone1.toString(),
+              labelText: phone1.toString(),
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -329,8 +327,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
             40,
             const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             componentTextInput: HNComponentTextInput(
-              labelText: 'Nombre contacto',
-              initialValue: namePhone1,
+              labelText: namePhone1,
               textCapitalization: TextCapitalization.words,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -347,8 +344,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
             40,
             const EdgeInsets.only(left: 16, right: 8),
             componentTextInput: HNComponentTextInput(
-              labelText: 'Teléfono',
-              initialValue: phone2.toString(),
+              labelText: phone2.toString(),
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -363,8 +359,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
             40,
             const EdgeInsets.only(left: 8, right: 16),
             componentTextInput: HNComponentTextInput(
-              labelText: 'Nombre contacto',
-              initialValue: namePhone2,
+              labelText: namePhone2,
               textCapitalization: TextCapitalization.words,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -427,7 +422,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
         isEnabled: false,
         backgroundColor: CustomColors.backgroundTextFieldDisabled,
         textColor: CustomColors.darkGrayColor,
-        initialValue: user,
+        labelText: user,
       ),
       textMargin: const EdgeInsets.only(left: 24),
     );

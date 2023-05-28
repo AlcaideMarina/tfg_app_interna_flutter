@@ -228,10 +228,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         const EdgeInsets.symmetric(horizontal: 16),
         EdgeInsets.only(top: topMargin, bottom: bottomMargin),
         componentTextInput: HNComponentTextInput(
-          labelText: labelInputText,
+          labelText: value,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          initialValue: value,
           isEnabled: false,
         ),);
   }
@@ -305,7 +304,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: dozenQuantity.toString(),
+                labelText: dozenQuantity.toString(),
                 isEnabled: false,
               ),
             ),
@@ -329,7 +328,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: boxQuantity.toString(),
+                labelText: boxQuantity.toString(),
                 isEnabled: false,
               ),
             ),

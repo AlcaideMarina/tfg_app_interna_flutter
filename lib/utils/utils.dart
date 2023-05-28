@@ -18,14 +18,22 @@ class Utils {
     return Constants().roles[rolStr] ?? -1;
   }
 
-  String? parseTimestmpToString(Timestamp? timestamp) {
+  String? parseTimestmpToString(Timestamp? timestamp, {String dateFormat = "dd/MM/yyyy"}) {
     if (timestamp == null) {
       return null;
     } else {
       DateTime dateTime = timestamp.toDate();
-      String formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
+      String formattedDate = DateFormat(dateFormat).format(dateTime);
       return formattedDate;
     }
+  }
+
+  Timestamp parseStringToTimestamp(String dateStr, {String dateFormat = 'dd/MM/yyyy'}) {
+    return Timestamp.fromDate(DateFormat(dateFormat).parse(dateStr));
+  }
+
+  DateTime addToDate(DateTime date, {int daysToAdd = 0, int monthsToAdd = 0}) {
+    return DateTime(date.year, date.month + 1, date.day, date.hour, date.minute, date.second, date.millisecond, date.microsecond);
   }
 
   double roundDouble(double value, int places){ 
