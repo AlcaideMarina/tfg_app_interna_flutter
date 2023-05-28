@@ -47,42 +47,34 @@ class _PendingWorkersResourcesPageState
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
-        body: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
-              child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-                  .getTypedButton(
-                      "Sueldos pendientes", null, null, () {}, () {}),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            pendingWorkersList.isNotEmpty
-                ? Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+        body: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+          child: Column(
+            children: [
+              pendingWorkersList.isNotEmpty
+                  ? Expanded(
                       child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          itemCount: pendingWorkersList.length,
-                          itemBuilder: (context, i) {
-                            return HNComponentWorker(
-                                pendingWorkersList[i].id,
-                                pendingWorkersList[i].name,
-                                pendingWorkersList[i].surname,
-                                pendingWorkersList[i].salary,
-                                onTap: () {});
-                          }),
-                    ))
-                : Container(
-                    margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                    child: const HNComponentPanel(
-                      title: 'No hay usuarios',
-                      text:
-                          "No hay registro de usuarios internos activos en la base de datos.",
-                    ))
-          ],
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: pendingWorkersList.length,
+                            itemBuilder: (context, i) {
+                              return HNComponentWorker(
+                                  pendingWorkersList[i].id,
+                                  pendingWorkersList[i].name,
+                                  pendingWorkersList[i].surname,
+                                  pendingWorkersList[i].salary,
+                                  onTap: () {});
+                            }),
+                      )
+                  : Container(
+                      margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                      child: const HNComponentPanel(
+                        title: 'No hay usuarios',
+                        text:
+                            "No hay registro de usuarios internos activos en la base de datos.",
+                      ))
+            ],
+          ),
         ));
   }
 }
