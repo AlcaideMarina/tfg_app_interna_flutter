@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_worker.dart';
 import 'package:hueveria_nieto_interna/ui/views/workersresources/pending_workers_resources_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/workersresources/worker_detail_page.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_colors.dart';
@@ -88,7 +89,9 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
                                             internalUser.name,
                                             internalUser.surname,
                                             internalUser.salary,
-                                            onTap: () {}),
+                                            onTap: () {
+                                              navigateToWorkerDetail(internalUser);
+                                            }),
                                       );
                                     } else {
                                       pendingWorkersList.add(internalUser);
@@ -142,6 +145,14 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
         context,
         MaterialPageRoute(
           builder: (context) => PendingWorkersResourcesPage(currentUser, pendingWorkersList),
+        ));
+  }
+
+  navigateToWorkerDetail(InternalUserModel workerUser) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => WorkerDetailPage(currentUser, workerUser),
         ));
   }
 }

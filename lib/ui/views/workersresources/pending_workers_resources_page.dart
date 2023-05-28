@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/workersresources/worker_detail_page.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_colors.dart';
@@ -47,9 +48,7 @@ class _PendingWorkersResourcesPageState
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
-        body: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-          child: Column(
+        body: Column(
             children: [
               pendingWorkersList.isNotEmpty
                   ? Expanded(
@@ -58,12 +57,17 @@ class _PendingWorkersResourcesPageState
                             scrollDirection: Axis.vertical,
                             itemCount: pendingWorkersList.length,
                             itemBuilder: (context, i) {
-                              return HNComponentWorker(
+                              return Container(
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 32, vertical: 8),
+                                child: HNComponentWorker(
                                   pendingWorkersList[i].id,
                                   pendingWorkersList[i].name,
                                   pendingWorkersList[i].surname,
                                   pendingWorkersList[i].salary,
-                                  onTap: () {});
+                                  onTap: () {
+                                    navigateToWorkerDetail(pendingWorkersList[i]);
+                                  }));
                             }),
                       )
                   : Container(
@@ -75,6 +79,14 @@ class _PendingWorkersResourcesPageState
                       ))
             ],
           ),
+        );
+  }
+
+  navigateToWorkerDetail(InternalUserModel workerUser) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => WorkerDetailPage(currentUser, workerUser),
         ));
   }
 }
