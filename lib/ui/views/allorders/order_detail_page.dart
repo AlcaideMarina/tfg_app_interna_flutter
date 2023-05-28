@@ -18,11 +18,12 @@ import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class OrderDetailPage extends StatefulWidget {
-  const OrderDetailPage(this.currentUser, this.clientModel, this.orderModel, {Key? key}) : super(key: key);
+  const OrderDetailPage(this.currentUser, this.clientModel, this.orderModel, this.deliveryPerson, {Key? key}) : super(key: key);
 
   final InternalUserModel currentUser;
   final ClientModel clientModel;
   final OrderModel orderModel;
+  final InternalUserModel? deliveryPerson;
 
   @override
   State<OrderDetailPage> createState() => _OrderDetailPageState();
@@ -33,6 +34,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   late InternalUserModel currentUser;
   late ClientModel clientModel;
   late OrderModel orderModel;
+  late InternalUserModel? deliveryPerson;
 
   @override
   void initState() {
@@ -40,10 +42,17 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     currentUser = widget.currentUser;
     clientModel = widget.clientModel;
     orderModel = widget.orderModel;
+    deliveryPerson = widget.deliveryPerson;
   }
+
+  String deliveryPersonStr = "";
 
   @override
   Widget build(BuildContext context) {
+
+    if (deliveryPerson != null) {
+      deliveryPersonStr = deliveryPerson!.id.toString() + " - " + deliveryPerson!.name + " " + deliveryPerson!.surname;
+    }
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -150,7 +159,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             OrderUtils().paymentMethodIntToString(orderModel.paymentMethod)), 
         getTextComponentSimpleForm('Fecha de pedido', null, Utils().parseTimestmpToString(orderModel.orderDatetime) ?? ""),
         getTextComponentSimpleForm('Fecha de entrega', null, deliveryDatetimeAux),
-        getDropdownComponentSimpleForm('Repartidor', orderModel.deliveryPerson ?? ""),
+        getDropdownComponentSimpleForm('Repartidor', deliveryPersonStr),
         getTextComponentSimpleForm('Albarán', null, (orderModel.deliveryNote ?? "").toString()),
         getTextComponentSimpleForm('Lote', null, (orderModel.lot ?? "").toString()),
         getTextComponentSimpleForm('DNI de entrega', null, orderModel.deliveryDni ?? ""),

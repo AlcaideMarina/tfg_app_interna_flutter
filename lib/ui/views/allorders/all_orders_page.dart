@@ -186,13 +186,20 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
   navigateToOrderDetail(OrderModel orderModel) async {
 
     var future = await FirebaseUtils.instance.getClientById(orderModel.clientId);
-    if (future.docs.isNotEmpty) {;
+    InternalUserModel? deliveryPerson;
+    if (future.docs.isNotEmpty) {
       ClientModel clientModel = ClientModel.fromMap(future.docs[0].data(), future.docs[0].id);
+      if(orderModel.deliveryPerson != null) {
+        var futureDeliveryPerson = await FirebaseUtils.instance.getInternalUserWithDocumentId(orderModel.deliveryPerson!);
+        if(futureDeliveryPerson.exists && futureDeliveryPerson.data() != null) {
+          deliveryPerson = InternalUserModel.fromMap(futureDeliveryPerson.data()!, futureDeliveryPerson.id);
+        }
+      }
       if (context.mounted){
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => OrderDetailPage(currentUser, clientModel, orderModel),
+              builder: (context) => OrderDetailPage(currentUser, clientModel, orderModel, deliveryPerson),
             ));
       }
     } else {
