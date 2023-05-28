@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/data/models/local/egg_prices_data.dart';
+import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
+import 'package:hueveria_nieto_interna/ui/views/selingprice/selling_price_page.dart';
 
 import '../../../../custom/app_theme.dart';
 import '../../../../custom/custom_sizes.dart';
@@ -55,12 +58,28 @@ class _EconomyPageState extends State<EconomyPage> {
             Container(
               child: Column(children: [
                 HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                    "Precio de venta", null, null, () {}, () {}),
+                    "Precio de venta", null, null, navigateToSellingPrice, () {}),
               ]),
             ),
           ],
         ),
       ),
     );
+  }
+
+  navigateToSellingPrice() async {
+    var futureEggPrices = await FirebaseUtils.instance.getEggPrices();
+    EggPricesData eggPricesData = EggPricesData(0, 0, 0, 0, 0, 0, 0, 0);
+    if (futureEggPrices.docs.isNotEmpty) {
+      Map<String, dynamic> valuesMap = futureEggPrices.docs[0].data()["values"];
+      eggPricesData = EggPricesData(
+      valuesMap['xl_box'], valuesMap['xl_dozen'], valuesMap['l_box'], 
+      valuesMap['l_dozen'], valuesMap['m_box'], valuesMap['m_dozen'], 
+      valuesMap['s_box'], valuesMap['s_dozen']);
+    }
+    Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => SellingPricePage(currentUser, eggPricesData)));
   }
 }
