@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/utils/Utils.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
@@ -172,7 +173,7 @@ class _WorkerDetailPageState extends State<WorkerDetailPage> {
             margin: const EdgeInsets.only(right: 16, top: 4),
           ),
           Container(
-            child: Text(workerUser.id.toString()),
+            child: Text(workerUser.dni),
             margin: const EdgeInsets.only(right: 16, top: 4),
           ),
         ]
@@ -196,7 +197,7 @@ class _WorkerDetailPageState extends State<WorkerDetailPage> {
             margin: const EdgeInsets.only(right: 16, top: 32),
           ),
           Container(
-            child: Text(workerUser.id.toString()),
+            child: Text(Utils().rolesIntToString(workerUser.position).toString()),
             margin: const EdgeInsets.only(right: 16, top: 32),
           ),
         ]
