@@ -333,7 +333,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
             height: 8,
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Cancelar', null, null, () {}, null),
+              .getTypedButton('Cancelar', null, null, goBack, null),
         ],
       ),
     );
@@ -532,4 +532,9 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
       ]),
     ];
   }
+
+  goBack() {
+    Navigator.of(context).pop();
+  }
+
 }
