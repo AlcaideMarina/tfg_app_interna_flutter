@@ -635,8 +635,8 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
                       onPressed: () {
                         Navigator.of(context)
                             ..pop()
-                            ..pop()
                             ..pop();
+                        Navigator.pop(context, updateOrderModel);
                       },
                     )
                   ],

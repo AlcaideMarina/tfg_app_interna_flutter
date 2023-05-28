@@ -467,7 +467,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
     if (result != null) {
       orderModel = result;
-      setState(() {});
+      setState(() {
+        orderModel = result;
+      });
     }
   }
 
