@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/ui/views/selingprice/modify_selling_price_page.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
 import '../../../data/models/internal_user_model.dart';
 import '../../../data/models/local/egg_prices_data.dart';
-import '../../../utils/constants.dart';
 import '../../components/component_table_form.dart';
 import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
@@ -306,7 +306,22 @@ class _SellingPricePageState extends State<SellingPricePage> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, () {}, null),
+              .getTypedButton('Modificar', null, null, navigateToSellingPrice, null),
     );
   }
+
+  navigateToSellingPrice() async {
+    final result = await Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => ModifySellingPricePage(currentUser, eggPricesData)));
+
+    if (result != null) {
+      eggPricesData = result;
+      setState(() {
+        eggPricesData = result;
+      });
+    }
+  }
+
 }
