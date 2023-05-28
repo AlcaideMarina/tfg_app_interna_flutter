@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/ui/views/workersresources/all_workers_resources.dart';
 
 import '../../../../custom/app_theme.dart';
 import '../../../../custom/custom_sizes.dart';
@@ -45,7 +46,7 @@ class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
           children: [
             Container(
               child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Trabajadores y sueldos", null, null, () {}, () {}),
+                  "Trabajadores y sueldos", null, null, navigateToWorkerResources, () {}),
             ),
             const SizedBox(
               height: 16,
@@ -79,5 +80,13 @@ class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
         ),
       ),
     );
+  }
+
+  navigateToWorkerResources() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AllWorkersResources(currentUser),
+        ));
   }
 }
