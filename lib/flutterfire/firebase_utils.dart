@@ -233,4 +233,11 @@ class FirebaseUtils {
     }
   }
 
+  Future<DocumentSnapshot<Map<String, dynamic>>> getInternalUserWithDocumentId(String documentId) {
+    return FirebaseFirestore.instance
+        .collection("user_info")
+        .doc(documentId)
+        .get();
+  }
+
 }
