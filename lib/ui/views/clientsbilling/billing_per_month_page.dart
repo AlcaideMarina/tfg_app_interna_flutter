@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/data/models/local/billing_data.dart';
 import 'package:hueveria_nieto_interna/data/models/local/billing_per_month_data.dart';
 import 'package:hueveria_nieto_interna/data/models/order_model.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_billing_per_month.dart';
+import 'package:hueveria_nieto_interna/ui/views/clientsbilling/montly_billing_detail_page.dart';
 import 'package:hueveria_nieto_interna/utils/constants.dart';
 import 'package:hueveria_nieto_interna/utils/order_utils.dart';
 
@@ -73,7 +75,11 @@ class _BillingPerMonthPageState extends State<BillingPerMonthPage> {
                                         horizontal: 32, vertical: 8),
                                     child: HNComponentBillingPerMonth(
                                       BillingPerMonthData(data.initDate, data.endDate, data.billingData),
-                                      onTap: () {}),
+                                      onTap: () {
+                                        int dataMonth = data.initDate.toDate().month;
+                                        int thisMonth = DateTime.now().month;
+                                        navigateToMonthlyBillingDetail(data.billingData!, dataMonth == thisMonth);
+                                      }),
                                     );
                                 }));
                       } else {
@@ -113,5 +119,12 @@ class _BillingPerMonthPageState extends State<BillingPerMonthPage> {
                 }),
           ],
         ));
+  }
+
+  navigateToMonthlyBillingDetail(BillingData billingData, bool isThisMonth) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MonthlyBillingDetailPage(currentUser, billingData, isThisMonth)));
   }
 }
