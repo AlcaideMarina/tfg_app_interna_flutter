@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
 import '../../../data/models/internal_user_model.dart';
 import '../../../data/models/local/egg_prices_data.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../components/component_table_form.dart';
 import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
@@ -346,7 +348,120 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, null),
+              .getTypedButton('Guardar', null, null, warningUpdatePrices, null),
     );
   }
+
+  warningUpdatePrices() {
+    showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Aviso'),
+                content: const Text(
+                    'Esta acción cambiará los precios de los productos a partir de este momento, dejando todos los pedidos anteriores tal y como están.\nEs una ación que puede tener grandes consecuencias.\n¿Está seguro de que quiere continuar?'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Atrás'),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pop();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('Continuar'),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pop();
+                      updatePrices();
+                    },
+                  )
+                ],
+              ));
+  }
+
+  updatePrices() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+
+    if (xlBox != 0.0 && xlDozen != 0.0 && lBox != 0.0 && lDozen != 0.0 &&
+        mBox != 0.0 && mDozen != 0.0 && sBox != 0.0 && sDozen != 0.0) {
+      EggPricesData updateEggPricesData = EggPricesData(
+        xlBox, xlDozen, lBox, lDozen, mBox, mDozen, sBox, sDozen);
+      
+      QuerySnapshot<Map<String, dynamic>> futureEggPrices= await FirebaseUtils.instance.getEggPrices();
+      if (futureEggPrices.docs.isNotEmpty && futureEggPrices.docs[0].exists) {
+        bool firestoreConf = await FirebaseUtils.instance.updateDocument("default_constants", futureEggPrices.docs[0].id, 
+            {"values": updateEggPricesData.toMap()});
+
+        if (firestoreConf) {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Cambio registrado'),
+                    content: const Text(
+                        'Los precios de los productos se han cambiado correctamente.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context, updateEggPricesData);
+                        },
+                      )
+                    ],
+                  ));
+        } else {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Error'),
+                    content: const Text(
+                        'Se ha producido un error. Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ));
+        }
+      } else {
+        Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Formulario incompleto'),
+                    content: const Text(
+                        'Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ));
+          } 
+
+    }
+
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
 }
