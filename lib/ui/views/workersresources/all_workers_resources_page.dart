@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_worker.dart';
+import 'package:hueveria_nieto_interna/ui/views/workersresources/pending_workers_resources_page.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_colors.dart';
@@ -51,7 +52,7 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
               margin: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
               child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
                   .getTypedButton(
-                      "Sueldos pendientes", null, null, () {}, () {}),
+                      "Sueldos pendientes", null, null, navigateToPendingWorkers, () {}),
             ),
             const SizedBox(
               height: 16,
@@ -131,6 +132,14 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
                   );
                 }),
           ],
+        ));
+  }
+
+  navigateToPendingWorkers() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PendingWorkersResourcesPage(currentUser, pendingWorkersList),
         ));
   }
 }
