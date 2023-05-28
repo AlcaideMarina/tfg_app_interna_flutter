@@ -18,12 +18,12 @@ class Utils {
     return Constants().roles[rolStr] ?? -1;
   }
 
-  String? parseTimestmpToString(Timestamp? timestamp) {
+  String? parseTimestmpToString(Timestamp? timestamp, {String dateFormat = "dd/MM/yyyy"}) {
     if (timestamp == null) {
       return null;
     } else {
       DateTime dateTime = timestamp.toDate();
-      String formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
+      String formattedDate = DateFormat(dateFormat).format(dateTime);
       return formattedDate;
     }
   }
