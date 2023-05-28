@@ -56,6 +56,55 @@ class OrderUtils {
 
   }
 
+  DBOrderFieldData dbOrderModelFromTwoSources(OrderModel orderData, EggPricesData eggPricesData) {
+
+    Map<String, Map<String, num?>> order = orderData.order;
+    DBOrderFieldData dbOrderFieldData = DBOrderFieldData();
+
+    if (order.containsKey("xl_box")) {
+      Map<String, num?> xlBox = order["xl_box"]!;
+      dbOrderFieldData.xlBoxPrice = (eggPricesData.xlBox ?? 0.0).toDouble();
+      dbOrderFieldData.xlBoxQuantity = xlBox["quantity"]!.toInt();
+    }
+    if (order.containsKey("xl_dozen")) {
+      Map<String, num?> xlDozen = order["xl_dozen"]!;
+      dbOrderFieldData.xlDozenPrice = (eggPricesData.xlDozen ?? 0.0).toDouble();
+      dbOrderFieldData.xlDozenQuantity = xlDozen["quantity"]!.toInt();
+    }
+    if (order.containsKey("l_box")) {
+      Map<String, num?> lBox = order["l_box"]!;
+      dbOrderFieldData.lBoxPrice = (eggPricesData.lBox ?? 0.0).toDouble();
+      dbOrderFieldData.lBoxQuantity = lBox["quantity"]!.toInt();
+    }
+    if (order.containsKey("l_dozen")) {
+      Map<String, num?> lDozen = order["l_dozen"]!;
+      dbOrderFieldData.lDozenPrice = (eggPricesData.lDozen ?? 0.0).toDouble();
+      dbOrderFieldData.lDozenQuantity = lDozen["quantity"]!.toInt();
+    }
+    if (order.containsKey("m_box")) {
+      Map<String, num?> mBox = order["m_box"]!;
+      dbOrderFieldData.mBoxPrice = (eggPricesData.mBox ?? 0.0).toDouble();
+      dbOrderFieldData.mBoxQuantity = mBox["quantity"]!.toInt();
+    }
+    if (order.containsKey("m_dozen")) {
+      Map<String, num?> mDozen = order["m_dozen"]!;
+      dbOrderFieldData.mDozenPrice = (eggPricesData.mDozen ?? 0.0).toDouble();
+      dbOrderFieldData.mDozenQuantity = mDozen["quantity"]!.toInt();
+    }
+    if (order.containsKey("s_box")) {
+      Map<String, num?> sBox = order["s_box"]!;
+      dbOrderFieldData.sBoxPrice = (eggPricesData.sBox ?? 0.0).toDouble();
+      dbOrderFieldData.sBoxQuantity = sBox["quantity"]!.toInt();
+    }
+    if (order.containsKey("s_dozen")) {
+      Map<String, num?> sDozen = order["s_dozen"]!;
+      dbOrderFieldData.sDozenPrice = (eggPricesData.sDozen ?? 0.0).toDouble();
+      dbOrderFieldData.sDozenQuantity = sDozen["quantity"]!.toInt();
+    }
+    return dbOrderFieldData;
+
+  }
+
   String getOrderSummary(DBOrderFieldData dbOrderFieldData) {
 
     List<String> list = [];
@@ -98,7 +147,6 @@ class OrderUtils {
 
     if (productQuantities.containsKey("xl_box") && productQuantities['xl_box'] != null){
       xlBox = productQuantities['xl_box']!;
-
     }
     if (productQuantities.containsKey("xl_dozen") && productQuantities['xl_dozen'] != null){
       xlDozen = productQuantities['xl_dozen']!;
@@ -140,6 +188,61 @@ class OrderUtils {
       sDozenPrice: sDozen == 0 ? null : eggPrices.sDozen!.toDouble(),
       sDozenQuantity: sDozen,
     );
+  }
+
+  Map<String, Map<String, num>> bdOrderFieldDataToMap(DBOrderFieldData data) {
+    Map<String, Map<String, num>> map = {};
+
+    if (data.xlBoxQuantity != null && data.xlBoxPrice != null) {
+      map["xl_box"] = {
+        "quantity": data.xlBoxQuantity!,
+        "price": data.xlBoxPrice!
+      };
+    }
+    if (data.xlDozenQuantity != null && data.xlDozenPrice != null) {
+      map["xl_dozen"] = {
+        "quantity": data.xlDozenQuantity!,
+        "price": data.xlDozenPrice!
+      };
+    }
+    if (data.lBoxQuantity != null && data.lBoxPrice != null) {
+      map["l_box"] = {
+        "quantity": data.lBoxQuantity!,
+        "price": data.lBoxPrice!
+      };
+    }
+    if (data.lDozenQuantity != null && data.lDozenPrice != null) {
+      map["l_dozen"] = {
+        "quantity": data.lDozenQuantity!,
+        "price": data.lDozenPrice!
+      };
+    }
+    if (data.mBoxQuantity != null && data.mBoxPrice != null) {
+      map["m_box"] = {
+        "quantity": data.mBoxQuantity!,
+        "price": data.mBoxPrice!
+      };
+    }
+    if (data.mDozenQuantity != null && data.mDozenPrice != null) {
+      map["m_dozen"] = {
+        "quantity": data.mDozenQuantity!,
+        "price": data.mDozenPrice!
+      };
+    }
+    if (data.sBoxQuantity != null && data.sBoxPrice != null) {
+      map["s_box"] = {
+        "quantity": data.sBoxQuantity!,
+        "price": data.sBoxPrice!
+      };
+    }
+    if (data.sDozenQuantity != null && data.sDozenPrice != null) {
+      map["s_dozen"] = {
+        "quantity": data.sDozenQuantity!,
+        "price": data.sDozenPrice!
+      };
+    }
+
+    return map;
   }
 
   String paymentMethodIntToString(int paymentMethodInt) {

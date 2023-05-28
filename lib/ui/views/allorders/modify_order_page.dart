@@ -9,6 +9,7 @@ import '../../../data/models/internal_user_model.dart';
 import '../../../data/models/local/bd_order_field_data.dart';
 import '../../../data/models/local/egg_prices_data.dart';
 import '../../../data/models/order_model.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../../utils/Utils.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/order_utils.dart';
@@ -39,8 +40,8 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
   late OrderModel orderModel;
   late Map<String, dynamic> valuesMap;
   late EggPricesData eggPricesData;
-  late DBOrderFieldData dbOrderFieldQuantitiesData;
   late List<InternalUserModel> internalUserModelList;
+  late DBOrderFieldData dbOrderFieldData;
 
   @override
   void initState() {
@@ -54,7 +55,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
       valuesMap['xl_box'], valuesMap['xl_dozen'], valuesMap['l_box'], 
       valuesMap['l_dozen'], valuesMap['m_box'], valuesMap['m_dozen'], 
       valuesMap['s_box'], valuesMap['s_dozen']);
-    dbOrderFieldQuantitiesData = OrderUtils().orderDataToBDOrderModel(orderModel);
+    dbOrderFieldData = OrderUtils().dbOrderModelFromTwoSources(orderModel, eggPricesData);
 
     // Datos cliente
     company = clientModel.company;
@@ -63,14 +64,14 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
     phone = clientModel.phone[0].values.first;
     namePhone = clientModel.phone[0].keys.first;
     // Datos pedido (sólo cantidades)
-    xlDozen = dbOrderFieldQuantitiesData.xlDozenQuantity ?? 0;
-    xlBox = dbOrderFieldQuantitiesData.xlBoxQuantity ?? 0;
-    lDozen = dbOrderFieldQuantitiesData.lDozenQuantity ?? 0;
-    lBox = dbOrderFieldQuantitiesData.lBoxQuantity ?? 0;
-    mDozen = dbOrderFieldQuantitiesData.mDozenQuantity ?? 0;
-    mBox = dbOrderFieldQuantitiesData.mBoxQuantity ?? 0;
-    sDozen = dbOrderFieldQuantitiesData.sDozenQuantity ?? 0;
-    sBox = dbOrderFieldQuantitiesData.sBoxQuantity ?? 0;
+    xlDozen = dbOrderFieldData.xlDozenQuantity ?? 0;
+    xlBox = dbOrderFieldData.xlBoxQuantity ?? 0;
+    lDozen = dbOrderFieldData.lDozenQuantity ?? 0;
+    lBox = dbOrderFieldData.lBoxQuantity ?? 0;
+    mDozen = dbOrderFieldData.mDozenQuantity ?? 0;
+    mBox = dbOrderFieldData.mBoxQuantity ?? 0;
+    sDozen = dbOrderFieldData.sDozenQuantity ?? 0;
+    sBox = dbOrderFieldData.sBoxQuantity ?? 0;
     // Datos pedido
     totalPrice = orderModel.totalPrice ?? 0;
     paid = orderModel.paid;
@@ -81,6 +82,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
     lot = orderModel.lot ?? "";
     deliveryDni = orderModel.deliveryDni ?? "";
     status = OrderUtils().orderStatusIntToString(orderModel.status) ?? "";
+    datePickerTimestamp = orderModel.approxDeliveryDatetime;
   }
 
   String company = "";
@@ -117,6 +119,8 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
   DateTime minDate = DateTime.now().add(const Duration(days: 3));
   late Timestamp? datePickerTimestamp;
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+
+  Map<String, int> productQuantities = {};
 
   @override
   Widget build(BuildContext context) {
@@ -419,21 +423,20 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
       num dozenQuantity = 0;
       num? boxPrice;
       num boxQuantity = 0;
-
+      if (valuesMap[dozenKey] != null) {
+        dozenPrice = valuesMap[dozenKey];
+      }
+      if (valuesMap[boxKey] != null) {
+        boxPrice = valuesMap[boxKey];
+      }
       if (orderModel.order.containsKey(dozenKey) && orderModel.order[dozenKey] != null) {
-        if (orderModel.order[dozenKey]!.containsKey("price")) {
-          dozenPrice = orderModel.order[dozenKey]!["price"];
-        }
         if (orderModel.order[dozenKey]!.containsKey("quantity") && orderModel.order[dozenKey]!["quantity"] != null) {
-          dozenQuantity = orderModel.order[dozenKey]!["quantity"]!;
+          productQuantities[dozenKey] = orderModel.order[dozenKey]!["quantity"]!.toInt();
         }
       }
       if (orderModel.order.containsKey(boxKey) && orderModel.order[boxKey] != null) {
-        if (orderModel.order[boxKey]!.containsKey("price")) {
-          boxPrice = orderModel.order[boxKey]!["price"];
-        }
         if (orderModel.order[boxKey]!.containsKey("quantity") && orderModel.order[boxKey]!["quantity"] != null) {
-          boxQuantity = orderModel.order[boxKey]!["quantity"]!;
+          productQuantities[boxKey] = orderModel.order[boxKey]!["quantity"]!.toInt();
         }
       }
 
@@ -465,6 +468,10 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
                 textInputType: const TextInputType.numberWithOptions(),
                 initialValue: dozenQuantity.toString(),
                 isEnabled: orderEnabled,
+                onChange: (value) {
+                  String key = "${item.toLowerCase()}_dozen";
+                  productQuantities[key] = int.tryParse(value) ?? 0;
+                },
               ),
             ),
             Container(
