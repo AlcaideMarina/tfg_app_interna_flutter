@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/workersresources/modify_worker_page.dart';
 import 'package:hueveria_nieto_interna/utils/Utils.dart';
 
 import '../../../custom/app_theme.dart';
@@ -209,7 +210,16 @@ class _WorkerDetailPageState extends State<WorkerDetailPage> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, () {}, null),
+              .getTypedButton('Modificar', null, null, navigateToModifyWorker, null),
     );
   }
+
+  navigateToModifyWorker() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ModifyWorkerPage(currentUser, workerUser),
+        ));
+  }
+
 }
