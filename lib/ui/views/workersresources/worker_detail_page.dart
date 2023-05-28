@@ -214,12 +214,21 @@ class _WorkerDetailPageState extends State<WorkerDetailPage> {
     );
   }
 
-  navigateToModifyWorker() {
-    Navigator.push(
+  navigateToModifyWorker() async {
+    final result = await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => ModifyWorkerPage(currentUser, workerUser),
         ));
+
+    if (result != null) {
+      workerUser = result;
+      salary = result.salary;
+      setState(() {
+        workerUser = result;
+        salary = result.salary;
+      });
+    }
   }
 
 }
