@@ -105,9 +105,9 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
   Timestamp deliveryTimestamp = Timestamp.now();
   String deliveryDatetimeStr = "";//Utils().parseTimestmpToString(deliveryTimestamp) ?? "";
   String? deliveryPerson;
-  int deliveryNote = -1;
-  String lot = "";
-  String deliveryDni = "";
+  int? deliveryNote;
+  String? lot;
+  String? deliveryDni;
   String status = "";
   
   List<String> paymentMethodItems = [];
@@ -305,7 +305,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
             }, deliveryPersonItems, true),
         getTextComponentSimpleForm('Albarán', (orderModel.deliveryNote ?? "").toString(), TextInputType.number, 
             (value) {
-              deliveryNote = int.tryParse(value) ?? -1;
+              deliveryNote = int.tryParse(value);
             }),
         getTextComponentSimpleForm('Lote', (orderModel.lot ?? "").toString(), TextInputType.text, 
             (value) {
@@ -570,7 +570,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
                           // TODO: Guardar pedido
                           updateOrder(dbOrderFieldData, totalPrice);
                         }, 
-                        child: const Text("Contiuar")
+                        child: const Text("Continuar")
                       ),
                     ],
                   ));
@@ -607,8 +607,8 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
       orderModel.createdBy, 
       deliveryTimestamp, 
       deliveryDni, 
-      deliveryNote, 
-      deliveryPerson, 
+      deliveryNote == -1 ? null : deliveryNote, 
+      deliveryPersonItemsMap[deliveryPerson], 
       lot,
       orderModel.notes, 
       dbOrderFieldData.toMap(), 
