@@ -104,6 +104,9 @@ class _ModifyWorkerPageState extends State<ModifyWorkerPage> {
                 textInputType: const TextInputType.numberWithOptions(),
                 initialValue: (salary ?? 0.0).toString(),
                 isEnabled: true,
+                onChange: (value) {
+                  salary = double.tryParse(value) ?? 0.0;
+                },
               ),
             ),
             Container(
@@ -208,8 +211,55 @@ class _ModifyWorkerPageState extends State<ModifyWorkerPage> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, null),
+              .getTypedButton('Guardar', null, null, updateUserWarning, null),
     );
+  }
+
+  updateUserWarning() {
+    if (salary != null && salary != 0.0) {
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Aviso'),
+                content: Text(
+                    'Esta acción cambiará el salario del trabajador con DNI ${workerUser.dni}, pasando de ser de ${workerUser.salary ?? "-"} € mensuales, a $salary €.\n¿Está seguro de que quiere continuar?'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Atrás'),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pop();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('Continuar'),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pop();
+                      // TODO: Actualizar salario
+                    },
+                  )
+                ],
+              ));
+    } else {
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formulario incorrecto'),
+                content: const Text(
+                    'Los datos introducidos no son válidos. Por favor, revise el formulario e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo'),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pop();
+                    },
+                  ),
+                ],
+              ));
+    }
+    
   }
 
 }
