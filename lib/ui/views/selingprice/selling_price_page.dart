@@ -120,7 +120,7 @@ class _SellingPricePageState extends State<SellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.xlDozen ?? 0).toString(),
+                labelText: (eggPricesData.xlDozen ?? 0).toString(),
                 isEnabled: false,
               ),
             ),
@@ -141,7 +141,7 @@ class _SellingPricePageState extends State<SellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.xlBox ?? 0).toString(),
+                labelText: (eggPricesData.xlBox ?? 0).toString(),
                 isEnabled: false,
               ),
             ),
@@ -172,7 +172,7 @@ class _SellingPricePageState extends State<SellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.lDozen ?? 0).toString(),
+                labelText: (eggPricesData.lDozen ?? 0).toString(),
                 isEnabled: false,
               ),
             ),
@@ -193,7 +193,7 @@ class _SellingPricePageState extends State<SellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.lBox ?? 0).toString(),
+                labelText: (eggPricesData.lBox ?? 0).toString(),
                 isEnabled: false,
               ),
             ),
@@ -224,7 +224,7 @@ class _SellingPricePageState extends State<SellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.mDozen ?? 0).toString(),
+                labelText: (eggPricesData.mDozen ?? 0).toString(),
                 isEnabled: false,
               ),
             ),
@@ -245,7 +245,7 @@ class _SellingPricePageState extends State<SellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.mBox ?? 0).toString(),
+                labelText: (eggPricesData.mBox ?? 0).toString(),
                 isEnabled: false,
               ),
             ),
@@ -276,7 +276,7 @@ class _SellingPricePageState extends State<SellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.sDozen ?? 0).toString(),
+                labelText: (eggPricesData.sDozen ?? 0).toString(),
                 isEnabled: false,
               ),
             ),
@@ -297,7 +297,7 @@ class _SellingPricePageState extends State<SellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.sBox ?? 0).toString(),
+                labelText: (eggPricesData.sBox ?? 0).toString(),
                 isEnabled: false,
               ),
             ),
