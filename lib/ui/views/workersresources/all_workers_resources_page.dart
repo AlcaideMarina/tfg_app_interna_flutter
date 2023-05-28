@@ -35,7 +35,9 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
   Widget build(BuildContext context) {
     
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+    workerList = [];
+    pendingWorkersList = [];
+    
     return Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
