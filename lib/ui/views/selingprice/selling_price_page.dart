@@ -50,6 +50,15 @@ class _SellingPricePageState extends State<SellingPricePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const SizedBox(
+                        width: double.infinity,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Precio actual"),
+                          ],
+                        )
+                      ),
                       getComponentTableForm('Pedido', getPricePerUnitTableRow(), 
                         columnWidhts: {
                           0: const IntrinsicColumnWidth(),
