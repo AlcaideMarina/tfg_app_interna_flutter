@@ -206,6 +206,20 @@ class FirebaseUtils {
         })
         .catchError((error) => false);
   }
+  
+  Future<bool> updateOrder(String documentId, OrderModel orderModel) async {
+    return await FirebaseFirestore.instance
+        .collection("client_info")
+        .doc(documentId)
+        .collection("orders")
+        .doc(orderModel.documentId!)
+        .update(orderModel.toMap())
+        .then((value) {
+          var a = value;
+          return true;
+        })
+        .catchError((error) => false);
+  }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getClientById(int clientId) async {
       return await FirebaseFirestore.instance
