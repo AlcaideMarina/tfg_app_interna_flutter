@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/local/egg_prices_data.dart';
 import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
+import 'package:hueveria_nieto_interna/ui/views/clientsbilling/clients_billing_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/selingprice/selling_price_page.dart';
 
 import '../../../../custom/app_theme.dart';
@@ -50,7 +51,7 @@ class _EconomyPageState extends State<EconomyPage> {
           children: [
             Container(
               child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Facturación de clientes", null, null, () {}, () {}),
+                  "Facturación de clientes", null, null, navigateToBilling, () {}),
             ),
             const SizedBox(
               height: 24,
@@ -81,5 +82,12 @@ class _EconomyPageState extends State<EconomyPage> {
       context, 
       MaterialPageRoute(
         builder: (context) => SellingPricePage(currentUser, eggPricesData)));
+  }
+
+  navigateToBilling() async {
+    Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => ClientsBillingPage(currentUser)));
   }
 }
