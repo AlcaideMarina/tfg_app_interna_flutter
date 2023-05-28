@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_client_billing.dart';
+import 'package:hueveria_nieto_interna/ui/views/clientsbilling/billing_per_month_page.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_colors.dart';
@@ -71,7 +72,9 @@ class _ClientsBillingPageState extends State<ClientsBillingPage> {
                                       child: HNComponentClientBilling(
                                         client.id.toString(),
                                         client.company,
-                                        onTap: () => () {},
+                                        onTap: () {
+                                          navigateToBillingPerMonth(client);
+                                        },
                                       ),
                                     );
                                   } else {
@@ -116,6 +119,13 @@ class _ClientsBillingPageState extends State<ClientsBillingPage> {
           ],
         ),
       );
+  }
+
+  navigateToBillingPerMonth(ClientModel) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => BillingPerMonthPage(currentUser, ClientModel)));
   }
 
 }
