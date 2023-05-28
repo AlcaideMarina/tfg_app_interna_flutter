@@ -21,12 +21,29 @@ class ModifySellingPricePage extends StatefulWidget {
 class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
   late InternalUserModel currentUser;
   late EggPricesData eggPricesData;
+  late double xlBox;
+  late double xlDozen;
+  late double lBox;
+  late double lDozen;
+  late double mBox;
+  late double mDozen;
+  late double sBox;
+  late double sDozen;
 
   @override
   void initState() {
     super.initState();
     currentUser = widget.currentUser;
     eggPricesData = widget.eggPricesData;
+
+    xlBox = (widget.eggPricesData.xlBox ?? 0).toDouble();
+    xlDozen = (widget.eggPricesData.xlDozen ?? 0).toDouble();
+    lBox = (widget.eggPricesData.lBox ?? 0).toDouble();
+    lDozen = (widget.eggPricesData.lDozen ?? 0).toDouble();
+    mBox = (widget.eggPricesData.mBox ?? 0).toDouble();
+    mDozen = (widget.eggPricesData.mDozen ?? 0).toDouble();
+    sBox = (widget.eggPricesData.sBox ?? 0).toDouble();
+    sDozen = (widget.eggPricesData.sDozen ?? 0).toDouble();
   }
 
   @override
@@ -110,8 +127,11 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.xlDozen ?? 0).toString(),
+                initialValue: xlDozen.toString(),
                 isEnabled: true,
+                onChange: (value) {
+                  xlDozen = double.tryParse(value) ?? 0.0;
+                },
               ),
             ),
             Container(
@@ -131,8 +151,11 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.xlBox ?? 0).toString(),
+                initialValue: xlBox.toString(),
                 isEnabled: true,
+                onChange: (value) {
+                  xlBox = double.tryParse(value) ?? 0.0;
+                },
               ),
             ),
             Container(
@@ -162,8 +185,11 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.lDozen ?? 0).toString(),
+                initialValue: lDozen.toString(),
                 isEnabled: true,
+                onChange: (value) {
+                  lDozen = double.tryParse(value) ?? 0.0;
+                },
               ),
             ),
             Container(
@@ -183,8 +209,11 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.lBox ?? 0).toString(),
+                initialValue: lBox.toString(),
                 isEnabled: true,
+                onChange: (value) {
+                  lBox = double.tryParse(value) ?? 0.0;
+                },
               ),
             ),
             Container(
@@ -214,8 +243,11 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.mDozen ?? 0).toString(),
+                initialValue: mDozen.toString(),
                 isEnabled: true,
+                onChange: (value) {
+                  mDozen = double.tryParse(value) ?? 0.0;
+                },
               ),
             ),
             Container(
@@ -235,8 +267,11 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.mBox ?? 0).toString(),
+                initialValue: mBox.toString(),
                 isEnabled: true,
+                onChange: (value) {
+                  mBox = double.tryParse(value) ?? 0.0;
+                },
               ),
             ),
             Container(
@@ -266,8 +301,11 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.sDozen ?? 0).toString(),
+                initialValue: sDozen.toString(),
                 isEnabled: true,
+                onChange: (value) {
+                  sDozen = double.tryParse(value) ?? 0.0;
+                },
               ),
             ),
             Container(
@@ -287,8 +325,11 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (eggPricesData.sBox ?? 0).toString(),
+                initialValue: sBox.toString(),
                 isEnabled: true,
+                onChange: (value) {
+                  sBox = double.tryParse(value) ?? 0.0;
+                },
               ),
             ),
             Container(
