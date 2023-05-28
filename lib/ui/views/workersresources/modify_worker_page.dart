@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
 import '../../../data/models/internal_user_model.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../../utils/Utils.dart';
 import '../../components/component_table_form.dart';
 import '../../components/component_table_form_without_label.dart';
@@ -236,7 +237,7 @@ class _ModifyWorkerPageState extends State<ModifyWorkerPage> {
                     onPressed: () {
                       Navigator.of(context)
                           .pop();
-                      // TODO: Actualizar salario
+                      updateSalary();
                     },
                   )
                 ],
@@ -261,5 +262,83 @@ class _ModifyWorkerPageState extends State<ModifyWorkerPage> {
     }
     
   }
+
+  updateSalary() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+
+    InternalUserModel updatedUser = InternalUserModel(
+      workerUser.bankAccount, 
+      workerUser.city, 
+      workerUser.createdBy, 
+      workerUser.deleted, 
+      workerUser.direction, 
+      workerUser.dni, 
+      workerUser.email, 
+      workerUser.id, 
+      workerUser.name, 
+      workerUser.phone, 
+      workerUser.position, 
+      workerUser.postalCode, 
+      workerUser.province, 
+      salary, 
+      workerUser.ssNumber, 
+      workerUser.surname, 
+      workerUser.uid, 
+      workerUser.user, 
+      workerUser.documentId);
+    
+    bool firestoreConf =
+        await FirebaseUtils.instance.updateDocument("user_info", updatedUser.documentId!, updatedUser.toMap());
+    if (firestoreConf) {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Sueldo actualizado'),
+                    content: const Text(
+                        'El sueldo del trabajador ha sido modificado correctamente.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context, updatedUser);
+                        },
+                      )
+                    ],
+                  ));
+        } else {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Error'),
+                    content: const Text(
+                        'Se ha producido un error cuando se estaban actualizando los datos del cliente. Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ));
+        }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
 
 }
