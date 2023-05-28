@@ -57,10 +57,8 @@ class _EconomyPageState extends State<EconomyPage> {
               height: 24,
             ),
             Container(
-              child: Column(children: [
-                HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                    "Precio de venta", null, null, navigateToSellingPrice, () {}),
-              ]),
+              child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
+                  "Precio de venta", null, null, navigateToSellingPrice, () {}),
             ),
           ],
         ),
