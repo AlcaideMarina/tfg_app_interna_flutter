@@ -28,6 +28,14 @@ class Utils {
     }
   }
 
+  Timestamp parseStringToTimestamp(String dateStr, {String dateFormat = 'dd/MM/yyyy'}) {
+    return Timestamp.fromDate(DateFormat(dateFormat).parse(dateStr));
+  }
+
+  DateTime addToDate(DateTime date, {int daysToAdd = 0, int monthsToAdd = 0}) {
+    return DateTime(date.year, date.month + 1, date.day, date.hour, date.minute, date.second, date.millisecond, date.microsecond);
+  }
+
   double roundDouble(double value, int places){ 
     num mod = pow(10.0, places); 
     return ((value * mod).round().toDouble() / mod); 
