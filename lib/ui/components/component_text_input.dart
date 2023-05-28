@@ -10,6 +10,7 @@ class HNComponentTextInput extends StatelessWidget {
   final TextInputType? textInputType;
   final bool obscureText;
   final Function(String)? onChange;
+  final Future Function()? onTap;
   // validator
   final AutovalidateMode? autovalidateMode;
   final String? hintText;
@@ -32,6 +33,7 @@ class HNComponentTextInput extends StatelessWidget {
       this.obscureText = false,
       this.textInputType,
       this.onChange,
+      this.onTap,
       // this.validator,
       this.autovalidateMode,
       this.hintText,
@@ -57,6 +59,7 @@ class HNComponentTextInput extends StatelessWidget {
       obscureText: obscureText,
       controller: textEditingController,
       onChanged: (value) => onChange != null ? onChange!(value) : null,
+      onTap: () => onTap != null ? onTap!() : null,
       validator: (value) {
         if (value == null) {
           return "Este campo es obligatorio";

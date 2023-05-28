@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/main/mainpages/orders_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/users_and_clients_page.dart';
 import 'lateral_menu_header.dart';
 
@@ -41,7 +42,7 @@ class _LateralMenuState extends State<LateralMenu> {
             leading: const Icon(Icons.note_add_outlined),
             title: const Text('Pedidos y repartos'),
             onTap: () {
-              print("Se ha pulsado el botón de pedidos y repartos del menú lateral");
+              navegateToOrderAndDelivery();
             },
           ),
           ListTile(
@@ -83,5 +84,12 @@ class _LateralMenuState extends State<LateralMenu> {
       MaterialPageRoute(
         builder: (context) => UsersAndClientsPage(currentUser),
       ));
+  }
+
+  navegateToOrderAndDelivery() {
+    Navigator.pushReplacement(
+      context, 
+      MaterialPageRoute(
+        builder: ((context) => OrdersPage(currentUser))));
   }
 }

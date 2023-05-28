@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/utils/constants.dart';
 import 'dart:developer' as developer;
 
+import '../data/models/order_model.dart';
 import '../values/firebase_constants.dart';
 
 class FirebaseUtils {
@@ -149,4 +151,107 @@ class FirebaseUtils {
       return false;
     }
   }
- }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllDocumentsFromCollection(String collection) {
+    return FirebaseFirestore.instance
+        .collection(collection)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUserOrders(String clientDocumentId) {
+    return FirebaseFirestore.instance
+        .collection("client_info")
+        .doc(clientDocumentId)
+        .collection("orders")
+        .snapshots();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getEggPrices() async {
+    return FirebaseFirestore.instance
+        .collection('default_constants')
+        .where('constant_name', isEqualTo: 'egg_prices')
+        .get();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllDocumentsFromCollectionFuture(String collection) {
+    return FirebaseFirestore.instance
+        .collection(collection)
+        .get();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllDeliveryPersonFuture() {
+    return FirebaseFirestore.instance
+        .collection("user_info")
+        .where("position", isEqualTo: 2)
+        .get();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getUserOrdersFuture(String clientDocumentId) {
+    return FirebaseFirestore.instance
+        .collection("client_info")
+        .doc(clientDocumentId)
+        .collection("orders")
+        .get();
+  }
+  
+  Future<bool> saveNewOrder(String documentId, OrderModel orderModel) async {
+    return await FirebaseFirestore.instance
+        .collection("client_info")
+        .doc(documentId)
+        .collection("orders")
+        .add(orderModel.toMap())
+        .then((value) {
+          var a = value;
+          return true;
+        })
+        .catchError((error) => false);
+  }
+  
+  Future<bool> updateOrder(String documentId, OrderModel orderModel) async {
+    return await FirebaseFirestore.instance
+        .collection("client_info")
+        .doc(documentId)
+        .collection("orders")
+        .doc(orderModel.documentId!)
+        .update(orderModel.toMap())
+        .then((value) {
+          var a = value;
+          return true;
+        })
+        .catchError((error) => false);
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getClientById(int clientId) async {
+      return await FirebaseFirestore.instance
+          .collection("client_info")
+          .where("id", isEqualTo: clientId)
+          .get();
+  }
+
+  Future<bool> deleteOrder(String clientDocumentId, String orderDocumentId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("client_info")
+          .doc(clientDocumentId)
+          .collection("orders")
+          .doc(orderDocumentId)
+          .update(
+            {
+              'status': Constants().orderStatus["Cancelado"]!.toInt(),
+              'delivery_datetime': Timestamp.now()
+            }
+          );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getInternalUserWithDocumentId(String documentId) {
+    return FirebaseFirestore.instance
+        .collection("user_info")
+        .doc(documentId)
+        .get();
+  }
+
+}
