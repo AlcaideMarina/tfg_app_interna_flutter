@@ -18,28 +18,36 @@ class HNComponentWorker extends StatelessWidget {
     return GestureDetector(
         onTap: onTap,
         child: Container(
+          width: double.infinity,
       padding: const EdgeInsets.all(16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('ID: ' + id.toString()),
-                  Text(name + " " + surname),
-                ],
-              ),
-              Text((salary ?? "-").toString() + " €")
+              Text('ID: ' + id.toString()),
+              Text(name + " " + surname),
             ],
           ),
-          onTap != null ? Image.asset(
-            ImageRoutes.getRoute('ic_next_arrow'), 
-            width: 16,
-            height: 24,)
-          : Container()
+          Row(
+            children: [
+              SizedBox(
+                width: 16,
+              ),
+              Text((salary ?? "-").toString() + " €"),
+              SizedBox(
+                width: 16,
+              ),
+              onTap != null ? Image.asset(
+                ImageRoutes.getRoute('ic_next_arrow'), 
+                width: 16,
+                height: 24,)
+              : Container()
+
+            ],
+          )
         ],
       ),
       decoration: BoxDecoration(
