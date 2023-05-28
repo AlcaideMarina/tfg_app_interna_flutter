@@ -14,6 +14,10 @@ class Utils {
     return null;
   }
 
+  String rolesIntToString(int rolCode) {
+    return getKey(Constants().roles, rolCode);
+  }
+
   int rolesStringToInt(String rolStr) {
     return Constants().roles[rolStr] ?? -1;
   }
