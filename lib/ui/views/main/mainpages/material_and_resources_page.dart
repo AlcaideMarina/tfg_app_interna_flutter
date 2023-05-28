@@ -6,16 +6,16 @@ import '../../../../data/models/internal_user_model.dart';
 import '../../../components/constants/hn_button.dart';
 import '../../../components/menu/lateral_menu.dart';
 
-class MaterialPage extends StatefulWidget {
-  const MaterialPage(this.currentUser, {Key? key}) : super(key: key);
+class MaterialAndResourcesPage extends StatefulWidget {
+  const MaterialAndResourcesPage(this.currentUser, {Key? key}) : super(key: key);
 
   final InternalUserModel currentUser;
 
   @override
-  State<MaterialPage> createState() => _MaterialPageState();
+  State<MaterialAndResourcesPage> createState() => _MaterialAndResourcesPageState();
 }
 
-class _MaterialPageState extends State<MaterialPage> {
+class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
   late InternalUserModel currentUser;
 
   @override
