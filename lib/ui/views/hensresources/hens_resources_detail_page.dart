@@ -9,6 +9,7 @@ import '../../../flutterfire/firebase_utils.dart';
 import '../../components/component_table_form_without_label.dart';
 import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
+import 'modify_hens_resources_page.dart';
 
 class HensResourcesDetailPage extends StatefulWidget {
   const HensResourcesDetailPage(this.currentUser, this.hensResourcesModel, {Key? key}) : super(key: key);
@@ -146,7 +147,7 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, () {}, null),
+              .getTypedButton('Modificar', null, null, navigateToModifyHensResource, null),
           const SizedBox(
             height: 8,
           ),
@@ -242,5 +243,17 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
         );
       },
     );
+  }
+
+  navigateToModifyHensResource() async {
+    final result = await Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => ModifyHensResourcesPage(currentUser, hensResourcesModel)));
+
+    if (result != null) {
+      hensResourcesModel = result;
+      setState(() {});
+    }
   }
 }
