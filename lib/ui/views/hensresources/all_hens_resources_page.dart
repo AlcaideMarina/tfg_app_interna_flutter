@@ -9,16 +9,16 @@ import '../../../custom/custom_sizes.dart';
 import '../../../flutterfire/firebase_utils.dart';
 import '../../components/component_panel.dart';
 
-class AllHensResources extends StatefulWidget {
-  const AllHensResources(this.currentUser, {Key? key}) : super(key: key);
+class AllHensResourcesPage extends StatefulWidget {
+  const AllHensResourcesPage(this.currentUser, {Key? key}) : super(key: key);
 
   final InternalUserModel currentUser;
 
   @override
-  State<AllHensResources> createState() => _AllHensResourcesState();
+  State<AllHensResourcesPage> createState() => _AllHensResourcesPageState();
 }
 
-class _AllHensResourcesState extends State<AllHensResources> {
+class _AllHensResourcesPageState extends State<AllHensResourcesPage> {
   late InternalUserModel currentUser;
 
   @override
