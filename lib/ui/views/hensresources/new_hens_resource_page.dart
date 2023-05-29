@@ -36,7 +36,13 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
   late Timestamp? datePickerTimestamp;
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
-  
+  TextEditingController shedATextEditingController = TextEditingController();
+  TextEditingController shedBTextEditingController = TextEditingController();
+
+  int? totalQuantity;
+  int? shedA;
+  int? shedB;
+  double? totalPrice;
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +138,6 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
             child: Text("Cantidad:"),
             margin: const EdgeInsets.only(right: 16, top: 4),
           ),
-          //TODO: Controlador de los campos de las naves tiene que venir del onchange de aquí
           Container(
               height: 40,
               margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
@@ -141,6 +146,20 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
                 isEnabled: true,
+                onChange: (value) {
+                  totalQuantity = int.tryParse(value);
+                  if (totalQuantity != null) {
+                    if (totalQuantity! % 2 == 0) {
+                      shedATextEditingController.text = (totalQuantity! ~/ 2).toString();
+                    } else {
+                      shedATextEditingController.text = ((totalQuantity! ~/ 2) + 1).toString();
+                    }
+                    shedBTextEditingController.text = (totalQuantity! ~/ 2).toString();
+                  } else {
+                    shedATextEditingController.text = "";
+                    shedBTextEditingController.text = "";
+                  }
+                },
               ),
             ),
         ]
@@ -159,6 +178,10 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
                 isEnabled: true,
+                onChange: (value) {
+                  shedATextEditingController.text = value;
+                },
+                textEditingController: shedATextEditingController,
               ),
             ),
         ]
@@ -177,6 +200,10 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
                 isEnabled: true,
+                onChange: (value) {
+                  shedBTextEditingController.text = value;
+                },
+                textEditingController: shedBTextEditingController,
               ),
             ),
         ]
@@ -195,6 +222,9 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
                 isEnabled: true,
+                onChange: (value) {
+                  totalPrice = double.tryParse(value);
+                },
               ),
             ),
         ]
