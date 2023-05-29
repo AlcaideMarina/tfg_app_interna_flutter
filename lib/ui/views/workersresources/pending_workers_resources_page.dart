@@ -5,6 +5,7 @@ import 'package:hueveria_nieto_interna/ui/views/workersresources/worker_detail_p
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_colors.dart';
 import '../../../custom/custom_sizes.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../components/component_panel.dart';
 import '../../components/component_worker.dart';
 import '../../components/constants/hn_button.dart';
@@ -25,58 +26,124 @@ class PendingWorkersResourcesPage extends StatefulWidget {
 class _PendingWorkersResourcesPageState
     extends State<PendingWorkersResourcesPage> {
   late InternalUserModel currentUser;
-  late List<InternalUserModel> pendingWorkersList;
 
   @override
   void initState() {
     super.initState();
     currentUser = widget.currentUser;
-    pendingWorkersList = widget.pendingWorkersList;
   }
 
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+    List<InternalUserModel> list = [];
     return Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Trabajadores y salarios",
+              "Salarios pendientes",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
         body: Column(
             children: [
-              pendingWorkersList.isNotEmpty
-                  ? Expanded(
-                      child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: pendingWorkersList.length,
-                            itemBuilder: (context, i) {
-                              return Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 32, vertical: 8),
-                                child: HNComponentWorker(
-                                  pendingWorkersList[i].id,
-                                  pendingWorkersList[i].name,
-                                  pendingWorkersList[i].surname,
-                                  pendingWorkersList[i].salary,
-                                  onTap: () {
-                                    navigateToWorkerDetail(pendingWorkersList[i]);
-                                  }));
-                            }),
-                      )
-                  : Container(
-                      margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                      child: const HNComponentPanel(
-                        title: 'No hay usuarios',
-                        text:
-                            "No hay registro de usuarios internos activos en la base de datos.",
-                      ))
+              StreamBuilder(
+                stream: FirebaseUtils.instance.getInternalUsers(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.active) {
+                    if (snapshot.hasData) {
+                      final data = snapshot.data;
+                      final List userList = data.docs;
+                      if (userList.isNotEmpty) {
+                        return Expanded(
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: userList.length,
+                                itemBuilder: (context, i) {
+                                  final InternalUserModel internalUser =
+                                      InternalUserModel.fromMap(userList[i].data()
+                                          as Map<String, dynamic>, userList[i].id);
+                                  if (!internalUser.deleted) {
+                                    if (internalUser.salary == null) {
+                                      list.add(internalUser);
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 32, vertical: 8),
+                                        child: HNComponentWorker(
+                                            internalUser.id,
+                                            internalUser.name,
+                                            internalUser.surname,
+                                            internalUser.salary,
+                                            onTap: () {
+                                              navigateToWorkerDetail(internalUser);
+                                            }),
+                                      );
+                                    } else {
+                                      if (i == (userList.length - 1) && list.isEmpty) {
+                                        return Container(
+                                          margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                                          child: const HNComponentPanel(
+                                            title: 'No hay usuarios',
+                                            text:
+                                                "No hay registro de usuarios internos activos en la base de datos.",
+                                          ));
+                                      } else {
+                                        return Container();
+                                      }
+                                    }
+                                  } else {
+                                    if (i == (userList.length - 1) && list.isEmpty) {
+                                      return Container(
+                                        margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                                        child: const HNComponentPanel(
+                                          title: 'No hay usuarios',
+                                          text:
+                                              "No hay registro de usuarios internos activos en la base de datos.",
+                                        ));
+                                    } else {
+                                      return Container();
+                                    }
+                                  }
+                                }));
+                      } else {
+                        return Container(
+                            margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                            child: const HNComponentPanel(
+                              title: 'No hay usuarios',
+                              text:
+                                  "No hay registro de usuarios internos activos en la base de datos.",
+                            ));
+                      }
+                    } else if (snapshot.hasError) {
+                      return Container(
+                          margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                          child: const HNComponentPanel(
+                            title: 'Ha ocurrido un error',
+                            text:
+                                "Lo sentimos, pero ha habido un error al intentar recuperar los datos. Por favor, inténtelo de nuevo más tarde.",
+                          ));
+                    } else {
+                      return Container(
+                          margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                          child: const HNComponentPanel(
+                            title: 'No hay usuarios',
+                            text:
+                                "No hay registro de usuarios internos activos en la base de datos.",
+                          ));
+                    }
+                  }
+                  return const Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: CustomColors.redPrimaryColor,
+                      ),
+                    ),
+                  );
+                }),
             ],
           ),
         );

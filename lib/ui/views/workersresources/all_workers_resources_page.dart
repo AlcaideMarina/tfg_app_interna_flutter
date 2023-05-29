@@ -95,10 +95,30 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
                                       );
                                     } else {
                                       pendingWorkersList.add(internalUser);
-                                      return Container();
+                                      if (i == (userList.length - 1) && workerList.isEmpty) {
+                                        return Container(
+                                          margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                                          child: const HNComponentPanel(
+                                            title: 'No hay usuarios',
+                                            text:
+                                                "No hay registro de usuarios internos activos en la base de datos.",
+                                          ));
+                                      } else {
+                                        return Container();
+                                      }
                                     }
                                   } else {
-                                    return Container();
+                                    if (i == (userList.length - 1) && workerList.isEmpty) {
+                                      return Container(
+                                        margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                                        child: const HNComponentPanel(
+                                          title: 'No hay usuarios',
+                                          text:
+                                              "No hay registro de usuarios internos activos en la base de datos.",
+                                        ));
+                                    } else {
+                                      return Container();
+                                    }
                                   }
                                 }));
                       } else {
