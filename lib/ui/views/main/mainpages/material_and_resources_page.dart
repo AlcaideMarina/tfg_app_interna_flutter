@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/ui/views/electricitywaterfasresources/all_electricity_water_gas_resources_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/hensresources/all_hens_resources_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/workersresources/all_workers_resources_page.dart';
 
@@ -61,7 +62,7 @@ class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
             ),
             Container(
               child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Luz, agua, gas", null, null, () {}, () {}),
+                  "Luz, agua, gas", null, null, navigateToEWGResources, () {}),
             ),
             const SizedBox(
               height: 16,
@@ -98,4 +99,13 @@ class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
           builder: (context) => AllHensResourcesPage(currentUser),
         ));
   }
+
+  navigateToEWGResources() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AllElectricityWaterGasResourcesPage(currentUser),
+        ));
+  }
+
 }
