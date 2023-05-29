@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/hens_resources_model.dart';
+import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_ticket.dart';
 
 import '../../../custom/app_theme.dart';
@@ -9,13 +10,22 @@ import '../../../flutterfire/firebase_utils.dart';
 import '../../components/component_panel.dart';
 
 class AllHensResources extends StatefulWidget {
-  const AllHensResources({Key? key}) : super(key: key);
+  const AllHensResources(this.currentUser, {Key? key}) : super(key: key);
+
+  final InternalUserModel currentUser;
 
   @override
   State<AllHensResources> createState() => _AllHensResourcesState();
 }
 
 class _AllHensResourcesState extends State<AllHensResources> {
+  late InternalUserModel currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = widget.currentUser;
+  }
   @override
   Widget build(BuildContext context) {
     
