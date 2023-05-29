@@ -268,7 +268,7 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
 
-    if (datePickerTimestamp != null && totalQuantity != null && totalPrice != null) {
+    if (datePickerTimestamp != null && totalQuantity != null && totalQuantity! > 0 && totalPrice != null && totalPrice! > 0) {
       var shedA = int.tryParse(shedATextEditingController.text) ?? 0;
       var shedB = int.tryParse(shedBTextEditingController.text) ?? 0;
       if (totalQuantity == (shedA + shedB)) {
