@@ -230,9 +230,8 @@ class _ModifyHensResourcesStatePage extends State<ModifyHensResourcesPage> {
                     actions: <Widget>[
                       TextButton(
                         onPressed: () {
-                          Navigator.of(this.context)
-                              ..pop()
-                              ..pop();
+                          Navigator.of(context).pop();
+                          Navigator.pop(context, updateHensResource);
                         }, 
                         child: const Text("De acuerdo")
                       ),
