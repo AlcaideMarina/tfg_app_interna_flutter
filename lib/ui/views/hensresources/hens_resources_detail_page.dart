@@ -98,7 +98,7 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: TextInputType.none,
-                isEnabled: true,
+                isEnabled: false,
                 labelText: Utils().parseTimestmpToString(hensResourcesModel.expenseDatetime),
               ),
             ),
@@ -117,7 +117,7 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
+                isEnabled: false,
                 labelText: hensResourcesModel.hensNumber.toString(),
               ),
             ),
@@ -136,7 +136,7 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
+                isEnabled: false,
                 labelText: hensResourcesModel.totalPrice.toString(),
               ),
             ),
