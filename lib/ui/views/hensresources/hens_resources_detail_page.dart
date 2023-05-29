@@ -158,7 +158,7 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
               .getTypedButton(
-                'Cancelar', 
+                'Eliminar', 
                 null, 
                 null, 
                 () {}, 
