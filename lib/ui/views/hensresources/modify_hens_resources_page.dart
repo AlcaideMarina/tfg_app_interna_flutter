@@ -176,4 +176,30 @@ class _ModifyHensResourcesStatePage extends State<ModifyHensResourcesPage> {
     Navigator.of(context).pop();
   }
 
+  warningUpdateHensResource() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+          title: const Text('Aviso'),
+          content: const Text(
+              'Va a modificar este ticket. ¿Quiere continuar con el proceso?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('Continuar'),
+              onPressed: () {
+                Navigator.pop(context);
+                // TODO: Actualizar
+              },
+            )
+          ],
+        ));
+  }
+
 }
