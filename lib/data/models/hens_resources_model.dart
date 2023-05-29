@@ -45,7 +45,7 @@ class HensResourcesModel {
     );
   }
 
-  Map<Object, Object?> toMap() => {
+  Map<String, Object?> toMap() => {
     'created_by': createdBy,
     'creation_datetime': creationDatetime,
     'deleted': deleted,
