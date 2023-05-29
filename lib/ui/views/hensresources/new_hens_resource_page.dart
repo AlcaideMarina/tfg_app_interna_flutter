@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:intl/intl.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
+import '../../../utils/Utils.dart';
 import '../../components/component_table_form_without_label.dart';
 import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
@@ -23,10 +26,21 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
   void initState() {
     super.initState();
     currentUser = widget.currentUser;
+    
+    dateController.text = dateFormat.format(minDate);
+    datePickerTimestamp = Timestamp.fromDate(minDate);
   }
+
+  TextEditingController dateController = TextEditingController();
+  DateTime minDate = Utils().addToDate(DateTime.now(), yearsToAdd: -1);
+  late Timestamp? datePickerTimestamp;
+  DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+
+  
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -90,9 +104,24 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
               child: HNComponentTextInput(
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: "TODO",
+                textInputType: TextInputType.none,
                 isEnabled: true,
+                onTap: () async {
+                  // TODO: Cambiar el color
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context, 
+                    initialDate: DateTime.now(), 
+                    firstDate: minDate, 
+                    lastDate: DateTime.now()
+                  );
+                  if (pickedDate != null) {
+                    setState(() {
+                      datePickerTimestamp = Timestamp.fromDate(pickedDate);
+                      dateController.text = dateFormat.format(pickedDate);
+                    });
+                  }
+                },
+                textEditingController: dateController
               ),
             ),
         ]
