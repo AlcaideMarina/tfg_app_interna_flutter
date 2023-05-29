@@ -37,7 +37,7 @@ class _AllHensResourcesState extends State<AllHensResources> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Trabajadores y salarios",
+              "Recursos - Gallinas",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
@@ -125,6 +125,12 @@ class _AllHensResourcesState extends State<AllHensResources> {
                   );
                 }),
           ],
-        ));
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: CustomColors.redPrimaryColor,
+          child: const Icon(Icons.add_rounded),
+          onPressed: () {}
+        ),
+    );
   }
 }
