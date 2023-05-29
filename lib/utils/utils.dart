@@ -36,8 +36,8 @@ class Utils {
     return Timestamp.fromDate(DateFormat(dateFormat).parse(dateStr));
   }
 
-  DateTime addToDate(DateTime date, {int daysToAdd = 0, int monthsToAdd = 0}) {
-    return DateTime(date.year, date.month + 1, date.day, date.hour, date.minute, date.second, date.millisecond, date.microsecond);
+  DateTime addToDate(DateTime date, {int daysToAdd = 0, int monthsToAdd = 0, int yearsToAdd = 0}) {
+    return DateTime(date.year + yearsToAdd, date.month + 1 + monthsToAdd, date.day + daysToAdd, date.hour, date.minute, date.second, date.millisecond, date.microsecond);
   }
 
   double roundDouble(double value, int places){ 
