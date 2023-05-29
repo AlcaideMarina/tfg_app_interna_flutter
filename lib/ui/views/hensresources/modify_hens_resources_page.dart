@@ -22,6 +22,8 @@ class ModifyHensResourcesPage extends StatefulWidget {
 class _ModifyHensResourcesStatePage extends State<ModifyHensResourcesPage> {
   late InternalUserModel currentUser;
   late HensResourcesModel hensResourcesModel;
+  late int? totalQuantity;
+  late double? totalPrice;
 
   @override
   void initState() {
@@ -29,6 +31,9 @@ class _ModifyHensResourcesStatePage extends State<ModifyHensResourcesPage> {
     
     currentUser = widget.currentUser;
     hensResourcesModel = widget.hensResourcesModel;
+
+    totalQuantity = hensResourcesModel.hensNumber;
+    totalPrice = hensResourcesModel.totalPrice;
   }
 
   @override
@@ -111,6 +116,9 @@ class _ModifyHensResourcesStatePage extends State<ModifyHensResourcesPage> {
                 textInputType: const TextInputType.numberWithOptions(),
                 isEnabled: true,
                 initialValue: hensResourcesModel.hensNumber.toString(),
+                onChange: (value) {
+                  totalQuantity = int.tryParse(value);
+                },
               ),
             ),
         ]
@@ -130,6 +138,9 @@ class _ModifyHensResourcesStatePage extends State<ModifyHensResourcesPage> {
                 textInputType: const TextInputType.numberWithOptions(),
                 isEnabled: true,
                 initialValue: hensResourcesModel.totalPrice.toString(),
+                onChange: (value) {
+                  totalPrice = double.tryParse(value);
+                },
               ),
             ),
         ]
