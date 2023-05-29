@@ -159,6 +159,7 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
                     shedATextEditingController.text = "";
                     shedBTextEditingController.text = "";
                   }
+                  setState(() {});
                 },
               ),
             ),
@@ -177,7 +178,7 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
+                isEnabled: totalQuantity == null ? false : true,
                 onChange: (value) {
                   shedATextEditingController.text = value;
                 },
@@ -199,7 +200,7 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
+                isEnabled: totalQuantity == null ? false : true,
                 onChange: (value) {
                   shedBTextEditingController.text = value;
                 },
