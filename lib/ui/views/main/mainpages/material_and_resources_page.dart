@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/ui/views/hensresources/all_hens_resources.dart';
 import 'package:hueveria_nieto_interna/ui/views/workersresources/all_workers_resources_page.dart';
 
 import '../../../../custom/app_theme.dart';
@@ -53,7 +54,7 @@ class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
             ),
             Container(
               child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Gallinas", null, null, () {}, () {}),
+                  "Gallinas", null, null, navigateToHensResources, () {}),
             ),
             const SizedBox(
               height: 16,
@@ -87,6 +88,14 @@ class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
         context,
         MaterialPageRoute(
           builder: (context) => AllWorkersResources(currentUser),
+        ));
+  }
+
+  navigateToHensResources() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AllHensResources(currentUser),
         ));
   }
 }
