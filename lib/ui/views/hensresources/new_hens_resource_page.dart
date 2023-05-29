@@ -199,5 +199,17 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
   goBack() {
     Navigator.of(context).pop();
   }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
   
 }
