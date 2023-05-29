@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/data/models/hens_resources_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:intl/intl.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../../utils/Utils.dart';
 import '../../components/component_table_form_without_label.dart';
 import '../../components/component_text_input.dart';
@@ -40,8 +42,6 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
   TextEditingController shedBTextEditingController = TextEditingController();
 
   int? totalQuantity;
-  int? shedA;
-  int? shedB;
   double? totalPrice;
 
   @override
@@ -181,6 +181,8 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
                 isEnabled: totalQuantity == null ? false : true,
                 onChange: (value) {
                   shedATextEditingController.text = value;
+                  shedATextEditingController.selection =
+                      TextSelection.collapsed(offset: shedATextEditingController.text.length);
                 },
                 textEditingController: shedATextEditingController,
               ),
@@ -203,6 +205,8 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
                 isEnabled: totalQuantity == null ? false : true,
                 onChange: (value) {
                   shedBTextEditingController.text = value;
+                  shedBTextEditingController.selection =
+                      TextSelection.collapsed(offset: shedBTextEditingController.text.length);
                 },
                 textEditingController: shedBTextEditingController,
               ),
@@ -240,7 +244,7 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, null),
+              .getTypedButton('Guardar', null, null, saveHensResource, null),
           const SizedBox(
             height: 8,
           ),
@@ -258,6 +262,101 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
 
   goBack() {
     Navigator.of(context).pop();
+  }
+
+  saveHensResource() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+
+    if (datePickerTimestamp != null && totalQuantity != null && totalPrice != null) {
+      var shedA = int.tryParse(shedATextEditingController.text) ?? 0;
+      var shedB = int.tryParse(shedBTextEditingController.text) ?? 0;
+      if (totalQuantity == (shedA + shedB)) {
+        HensResourcesModel hensResourcesModel = HensResourcesModel(
+          currentUser.documentId!, 
+          Timestamp.now(), 
+          false, 
+          datePickerTimestamp!, 
+          totalQuantity!, 
+          shedA, 
+          shedB, 
+          totalPrice!, 
+          null);
+        bool firestoreConf = await FirebaseUtils.instance.addDocument("material_hens", hensResourcesModel.toMap());
+        if (firestoreConf) {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Recurso guardado'),
+                    content: Text(
+                        'La información sobre las gallinas ha sido guardada correctamente en la base de datos.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(this.context)
+                              ..pop()
+                              ..pop();
+                        }, 
+                        child: const Text("De acuerdo")
+                      ),
+                    ],
+                  ));
+        } else {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Error'),
+                    content: Text(
+                        'Se ha producido un error al guardar el recurso. Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(this.context).pop();
+                        }, 
+                        child: const Text("De acuerdo")
+                      ),
+                    ],
+                  ));
+        }
+      } else {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Distribución de gallinas'),
+                  content: Text(
+                      'La distribución de gallinas es incorrecta. Recuerde que las gallinas totales deben resultar de la suma de las que se introducen en cada nave.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(this.context).pop();
+                      }, 
+                      child: const Text("De acuerdo")
+                    ),
+                  ],
+                ));
+      }
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formualrio incompleto'),
+                content: Text(
+                    'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(this.context).pop();
+                    }, 
+                    child: const Text("De acuerdo")
+                  ),
+                ],
+              ));
+    }
+
   }
 
   showAlertDialog(BuildContext context) {
