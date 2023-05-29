@@ -40,7 +40,7 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Detalle de trabajador',
+              'Detalle - Gallinas',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
@@ -93,16 +93,9 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
             margin: const EdgeInsets.only(right: 16),
           ),
           Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: TextInputType.none,
-                isEnabled: false,
-                labelText: Utils().parseTimestmpToString(hensResourcesModel.expenseDatetime),
-              ),
-            ),
+            child: Text(Utils().parseTimestmpToString(hensResourcesModel.expenseDatetime) ?? ""),
+            margin: const EdgeInsets.only(left: 16),
+          ),
         ]
       ),
       TableRow(
