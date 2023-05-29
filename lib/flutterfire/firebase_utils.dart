@@ -152,6 +152,17 @@ class FirebaseUtils {
     }
   }
 
+  Future<bool> addDocument(String collection, Map<String, Object?> data) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(collection)
+          .add(data);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getAllDocumentsFromCollection(String collection) {
     return FirebaseFirestore.instance
         .collection(collection)
