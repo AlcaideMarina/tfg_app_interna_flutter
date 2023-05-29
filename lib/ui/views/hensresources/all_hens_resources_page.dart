@@ -39,7 +39,7 @@ class _AllHensResourcesPageState extends State<AllHensResourcesPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Recursos - Gallinas",
+              "Gallinas",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),

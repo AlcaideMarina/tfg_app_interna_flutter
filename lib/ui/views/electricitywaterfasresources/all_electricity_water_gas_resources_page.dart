@@ -40,7 +40,7 @@ class _AllElectricityWaterGasResourcesPageState extends State<AllElectricityWate
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Recursos - Elec., agua, gas",
+              "Elec., agua, gas",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
