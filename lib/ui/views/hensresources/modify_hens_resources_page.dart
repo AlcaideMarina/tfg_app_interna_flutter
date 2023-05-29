@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/hens_resources_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
@@ -155,7 +156,7 @@ class _ModifyHensResourcesStatePage extends State<ModifyHensResourcesPage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, null),
+              .getTypedButton('Guardar', null, null, warningUpdateHensResource, null),
           const SizedBox(
             height: 8,
           ),
@@ -195,11 +196,84 @@ class _ModifyHensResourcesStatePage extends State<ModifyHensResourcesPage> {
               child: const Text('Continuar'),
               onPressed: () {
                 Navigator.pop(context);
-                // TODO: Actualizar
+                updateHensResource();
               },
             )
           ],
         ));
+  }
+
+  updateHensResource() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+
+    if (totalQuantity != null && totalQuantity! > 0 && totalPrice != null && totalPrice! > 0) {
+      HensResourcesModel updateHensResource = HensResourcesModel(
+        hensResourcesModel.createdBy, 
+        hensResourcesModel.creationDatetime, 
+        hensResourcesModel.deleted, 
+        hensResourcesModel.expenseDatetime, 
+        totalQuantity!, 
+        hensResourcesModel.shedA, 
+        hensResourcesModel.shedB, 
+        totalPrice!, 
+        hensResourcesModel.documentId);
+      bool firestoreConf = await FirebaseUtils.instance.updateDocument("material_hens", hensResourcesModel.documentId!, updateHensResource.toMap());
+      if (firestoreConf) {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Recurso actualizado'),
+                    content: Text(
+                        'La información sobre las gallinas ha sido actualizada correctamente en la base de datos.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(this.context)
+                              ..pop()
+                              ..pop();
+                        }, 
+                        child: const Text("De acuerdo")
+                      ),
+                    ],
+                  ));
+        } else {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Error'),
+                    content: Text(
+                        'Se ha producido un error al actualizar el recurso. Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(this.context).pop();
+                        }, 
+                        child: const Text("De acuerdo")
+                      ),
+                    ],
+                  ));
+        }
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formualrio incompleto'),
+                content: Text(
+                    'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(this.context).pop();
+                    }, 
+                    child: const Text("De acuerdo")
+                  ),
+                ],
+              ));
+    }
   }
 
   showAlertDialog(BuildContext context) {
