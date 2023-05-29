@@ -38,7 +38,7 @@ class _ModifyHensResourcesStatePage extends State<ModifyHensResourcesPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Detalle de trabajador',
+              'Modificar - Gallinas',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
@@ -109,8 +109,8 @@ class _ModifyHensResourcesStatePage extends State<ModifyHensResourcesPage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: false,
-                labelText: hensResourcesModel.hensNumber.toString(),
+                isEnabled: true,
+                initialValue: hensResourcesModel.hensNumber.toString(),
               ),
             ),
         ]
@@ -128,8 +128,8 @@ class _ModifyHensResourcesStatePage extends State<ModifyHensResourcesPage> {
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: false,
-                labelText: hensResourcesModel.totalPrice.toString(),
+                isEnabled: true,
+                initialValue: hensResourcesModel.totalPrice.toString(),
               ),
             ),
         ]
