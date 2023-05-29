@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/electricity_water_gas_resources_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/ui/components/component_dropdown.dart';
+import 'package:hueveria_nieto_interna/utils/constants.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
@@ -106,14 +108,14 @@ class _ElectricityWaterGasResourcesDetailPageState extends State<ElectricityWate
           Container(
               height: 40,
               margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              /* TODO: Cambiar a un dropdown
-              child: HNComponentTextInput(
+              child: HNComponentDropdown(
+                [],
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
                 isEnabled: false,
-                labelText: ewgModel.hensNumber.toString(),
-              ),*/
+                labelText: Utils().getKey(Constants().ewgTypes, ewgModel.type),
+              ),
             ),
         ]
       ),
