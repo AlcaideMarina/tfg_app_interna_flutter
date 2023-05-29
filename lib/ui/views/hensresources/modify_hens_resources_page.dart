@@ -153,11 +153,16 @@ class _ModifyHensResourcesStatePage extends State<ModifyHensResourcesPage> {
                 'Cancelar', 
                 null, 
                 null, 
-                () {}, 
+                goBack, 
                 null, 
               ),
         ])
     );
+  }
+
+  goBack() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    Navigator.of(context).pop();
   }
 
 }
