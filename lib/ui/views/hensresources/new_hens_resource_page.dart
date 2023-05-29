@@ -189,11 +189,15 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
                 'Cancelar', 
                 null, 
                 null, 
-                () {}, 
+                goBack, 
                 null, 
               ),
         ])
     );
+  }
+
+  goBack() {
+    Navigator.of(context).pop();
   }
   
 }
