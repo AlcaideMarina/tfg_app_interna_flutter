@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/hens_resources_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_ticket.dart';
+import 'package:hueveria_nieto_interna/ui/views/hensresources/hens_resources_detail_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/hensresources/new_hens_resource_page.dart';
 
 import '../../../custom/app_theme.dart';
@@ -73,7 +74,7 @@ class _AllHensResourcesPageState extends State<AllHensResourcesPage> {
                                             hensModel.totalPrice,
                                             units: "gallinas",
                                             onTap: () {
-                                              // TODO: Navegación
+                                              navigateToHensResourcesDetail(hensModel);
                                             }),
                                       );
                                   } else {
@@ -140,6 +141,14 @@ class _AllHensResourcesPageState extends State<AllHensResourcesPage> {
         context,
         MaterialPageRoute(
           builder: (context) => NewHensResourcePage(currentUser),
+        ));
+  }
+
+  navigateToHensResourcesDetail(HensResourcesModel hensResourcesModel) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HensResourcesDetailPage(currentUser, hensResourcesModel),
         ));
   }
 }
