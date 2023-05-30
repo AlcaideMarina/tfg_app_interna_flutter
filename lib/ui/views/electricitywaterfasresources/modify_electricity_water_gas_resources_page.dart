@@ -176,7 +176,7 @@ class _ModifyElectricityWaterGasResourcesPageState extends State<ModifyElectrici
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                 textInputType: TextInputType.multiline,
-                isEnabled: false,
+                isEnabled: true,
                 initialValue: ewgModel.notes,
                 maxLines: 5,
                 minLines: 5,
