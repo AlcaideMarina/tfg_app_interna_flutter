@@ -17,6 +17,22 @@ class HNComponentTicket extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Widget element;
+    if (units != null && units != "") {
+      element = Row(
+        children: [
+          Text(quantity),
+          SizedBox(
+            width: 16,
+          ),
+          Text(units ?? ""),
+        ],
+      );
+    } else {
+      element = Text(quantity);
+    }
+
     return GestureDetector(
         onTap: onTap,
         child: Container(
@@ -25,21 +41,17 @@ class HNComponentTicket extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(Utils().parseTimestmpToString(expenseDate) ?? "", 
-                  style: TextStyle(fontSize: 10),),
-              Row(
+          Flexible(
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(quantity),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Text(units ?? ""),
+                  Text(Utils().parseTimestmpToString(expenseDate) ?? "", 
+                      style: TextStyle(fontSize: 10),),
+                  element
                 ],
-              )
-            ],
+              ),
+            ),
           ),
           Row(
             children: [
