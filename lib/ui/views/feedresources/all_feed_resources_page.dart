@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/feedresources/feed_resources_detail_page.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_colors.dart';
@@ -40,7 +41,7 @@ class _AllFeedResourcesPageState extends State<AllFeedResourcesPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Gallinas",
+              "Pienso",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
@@ -74,7 +75,9 @@ class _AllFeedResourcesPageState extends State<AllFeedResourcesPage> {
                                             feedModel.kilos.toString(),
                                             feedModel.totalPrice,
                                             units: "kilos",
-                                            onTap: () {}),
+                                            onTap: () {
+                                              navigateToFeedDetail(feedModel);
+                                            }),
                                       );
                                   } else {
                                     if (i == (feedList.length - 1) && list.isEmpty) {
@@ -133,6 +136,13 @@ class _AllFeedResourcesPageState extends State<AllFeedResourcesPage> {
           onPressed: () {}
         ),
     );
+  }
+
+  navigateToFeedDetail(FeedResourcesModel feedModel) {
+    Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => FeedResourcesDetailPage(currentUser, feedModel)));
   }
 
 }
