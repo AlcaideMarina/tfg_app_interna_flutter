@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/electricity_water_gas_resources_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_dropdown.dart';
+import 'package:hueveria_nieto_interna/ui/views/electricitywaterfasresources/modify_electricity_water_gas_resources_page.dart';
 import 'package:hueveria_nieto_interna/utils/constants.dart';
 
 import '../../../custom/app_theme.dart';
@@ -173,7 +174,7 @@ class _ElectricityWaterGasResourcesDetailPageState extends State<ElectricityWate
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, () {}, null),
+              .getTypedButton('Modificar', null, null, navigateToModifyEWGResource, null),
           const SizedBox(
             height: 8,
           ),
@@ -270,6 +271,18 @@ class _ElectricityWaterGasResourcesDetailPageState extends State<ElectricityWate
         );
       },
     );
+  }
+
+  navigateToModifyEWGResource() async {
+    final result = await Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => ModifyElectricityWaterGasResourcesPage(currentUser, ewgModel)));
+
+    if (result != null) {
+      ewgModel = result;
+      setState(() {});
+    }
   }
 
 }
