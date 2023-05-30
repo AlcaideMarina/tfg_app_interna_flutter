@@ -41,7 +41,7 @@ class _AllBoxesAndCartonsResourcesPageState extends State<AllBoxesAndCartonsReso
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Gallinas",
+              "Cajas y cartones",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
