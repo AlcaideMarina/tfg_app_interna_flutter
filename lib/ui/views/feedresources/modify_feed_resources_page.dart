@@ -4,6 +4,7 @@ import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../../utils/Utils.dart';
 import '../../components/component_table_form_without_label.dart';
 import '../../components/component_text_input.dart';
@@ -155,7 +156,7 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, null),
+              .getTypedButton('Guardar', null, null, warningUpdateFeedResource, null),
           const SizedBox(
             height: 8,
           ),
@@ -174,6 +175,114 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
   goBack() {
     FocusManager.instance.primaryFocus?.unfocus();
     Navigator.of(context).pop();
+  }
+
+  warningUpdateFeedResource() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+          title: const Text('Aviso'),
+          content: const Text(
+              'Va a modificar este ticket. ¿Quiere continuar con el proceso?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('Continuar'),
+              onPressed: () {
+                Navigator.pop(context);
+                updateFeedResource();
+              },
+            )
+          ],
+        ));
+  }
+
+  updateFeedResource() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+
+    if (totalQuantity != null && totalQuantity! > 0 && totalPrice != null && totalPrice! > 0) {
+      FeedResourcesModel updateFeedResource = FeedResourcesModel(
+        feedResourcesModel.createdBy, 
+        feedResourcesModel.creationDatetime, 
+        feedResourcesModel.deleted, 
+        feedResourcesModel.expenseDatetime, 
+        totalQuantity!, 
+        totalPrice!, 
+        feedResourcesModel.documentId);
+      bool firestoreConf = await FirebaseUtils.instance.updateDocument("material_feed", feedResourcesModel.documentId!, updateFeedResource.toMap());
+      if (firestoreConf) {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Recurso actualizado'),
+                    content: Text(
+                        'La información sobre el pienso ha sido actualizada correctamente en la base de datos.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.pop(context, updateFeedResource);
+                        }, 
+                        child: const Text("De acuerdo")
+                      ),
+                    ],
+                  ));
+        } else {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Error'),
+                    content: Text(
+                        'Se ha producido un error al actualizar el recurso. Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(this.context).pop();
+                        }, 
+                        child: const Text("De acuerdo")
+                      ),
+                    ],
+                  ));
+        }
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formualrio incompleto'),
+                content: Text(
+                    'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(this.context).pop();
+                    }, 
+                    child: const Text("De acuerdo")
+                  ),
+                ],
+              ));
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 
 }
