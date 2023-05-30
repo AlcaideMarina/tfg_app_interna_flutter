@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/feed_resources_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/feedresources/modify_feed_resources_page.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
@@ -145,7 +146,7 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, () {}, null),
+              .getTypedButton('Modificar', null, null, navigateToModifyFeedResource, null),
           const SizedBox(
             height: 8,
           ),
@@ -241,6 +242,18 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
         );
       },
     );
+  }
+
+  navigateToModifyFeedResource() async {
+    final result = await Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => ModifyFeedResourcesPage(currentUser, feedResourcesModel)));
+
+    if (result != null) {
+      feedResourcesModel = result;
+      setState(() {});
+    }
   }
 
 }
