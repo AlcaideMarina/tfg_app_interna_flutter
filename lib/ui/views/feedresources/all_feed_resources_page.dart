@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/ui/views/feedresources/feed_resources_detail_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/feedresources/new_feed_resource_page.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_colors.dart';
@@ -133,7 +134,7 @@ class _AllFeedResourcesPageState extends State<AllFeedResourcesPage> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: CustomColors.redPrimaryColor,
           child: const Icon(Icons.add_rounded),
-          onPressed: () {}
+          onPressed: navigateToNewFeed
         ),
     );
   }
@@ -143,6 +144,13 @@ class _AllFeedResourcesPageState extends State<AllFeedResourcesPage> {
       context, 
       MaterialPageRoute(
         builder: (context) => FeedResourcesDetailPage(currentUser, feedModel)));
+  }
+
+  navigateToNewFeed() {
+    Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => NewFeedResourcePage(currentUser)));
   }
 
 }
