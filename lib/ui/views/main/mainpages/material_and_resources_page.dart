@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/ui/views/electricitywaterfasresources/all_electricity_water_gas_resources_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/feedresources/all_feed_resources_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/hensresources/all_hens_resources_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/workersresources/all_workers_resources_page.dart';
 
@@ -69,7 +70,7 @@ class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
             ),
             Container(
               child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Pienso", null, null, () {}, () {}),
+                  "Pienso", null, null, navigateToFeedResources, () {}),
             ),
             const SizedBox(
               height: 16,
@@ -105,6 +106,14 @@ class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
         context,
         MaterialPageRoute(
           builder: (context) => AllElectricityWaterGasResourcesPage(currentUser),
+        ));
+  }
+
+  navigateToFeedResources() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AllFeedResourcesPage(currentUser),
         ));
   }
 
