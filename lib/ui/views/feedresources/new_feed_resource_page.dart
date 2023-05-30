@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/data/models/feed_resources_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:intl/intl.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../../utils/Utils.dart';
 import '../../components/component_table_form_without_label.dart';
 import '../../components/component_text_input.dart';
@@ -179,7 +181,7 @@ class _NewFeedResourcePageState extends State<NewFeedResourcePage> {
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, null),
+              .getTypedButton('Guardar', null, null, saveFeedResource, null),
           const SizedBox(
             height: 8,
           ),
@@ -195,9 +197,92 @@ class _NewFeedResourcePageState extends State<NewFeedResourcePage> {
     );
   }
 
-  goBack() {
+  goBack() async {
     FocusManager.instance.primaryFocus?.unfocus();
     Navigator.of(context).pop();
   }
-}
 
+  saveFeedResource() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+
+    if (datePickerTimestamp != null && totalQuantity != null && totalQuantity! > 0 && totalPrice != null && totalPrice! > 0) {
+      FeedResourcesModel feedResourcesModel = FeedResourcesModel(
+        currentUser.documentId!, 
+        Timestamp.now(), 
+        false, 
+        datePickerTimestamp!, 
+        totalQuantity!, 
+        totalPrice!, 
+        null);
+      bool firestoreConf = await FirebaseUtils.instance.addDocument("material_feed", feedResourcesModel.toMap());
+      if (firestoreConf) {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Recurso guardado'),
+                  content: Text(
+                      'La información sobre las gallinas ha sido guardada correctamente en la base de datos.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            ..pop()
+                            ..pop();
+                      }, 
+                      child: const Text("De acuerdo")
+                    ),
+                  ],
+                ));
+      } else {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Error'),
+                  content: Text(
+                      'Se ha producido un error al guardar el recurso. Por favor, revise los datos e inténtelo de nuevo.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(this.context).pop();
+                      }, 
+                      child: const Text("De acuerdo")
+                    ),
+                  ],
+                ));
+      }
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formualrio incompleto'),
+                content: Text(
+                    'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(this.context).pop();
+                    }, 
+                    child: const Text("De acuerdo")
+                  ),
+                ],
+              ));
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
+}
