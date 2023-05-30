@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/ui/views/electricitywaterfasresources/electricity_water_gas_resources_detail_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/electricitywaterfasresources/new_electricity_water_gas_resources_page.dart';
 import 'package:hueveria_nieto_interna/utils/Utils.dart';
 import 'package:hueveria_nieto_interna/utils/constants.dart';
 
@@ -132,7 +133,7 @@ class _AllElectricityWaterGasResourcesPageState extends State<AllElectricityWate
         floatingActionButton: FloatingActionButton(
           backgroundColor: CustomColors.redPrimaryColor,
           child: const Icon(Icons.add_rounded),
-          onPressed: () {}
+          onPressed: navigateToNewEWGResource
         ),
     );
   }
@@ -143,4 +144,12 @@ class _AllElectricityWaterGasResourcesPageState extends State<AllElectricityWate
       MaterialPageRoute(
         builder: (context) => ElectricityWaterGasResourcesDetailPage(currentUser, ewgModel)));
   }
+
+  navigateToNewEWGResource() {
+    Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => NewElectricityWaterGasResourcesPage(currentUser)));
+  }
+
 }
