@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/data/models/boxes_and_cartons_resources_model.dart';
 import 'package:hueveria_nieto_interna/data/models/local/db_boxes_and_cartons_order_field_data.dart';
 
 class MaterialUtils {
@@ -19,6 +20,29 @@ class MaterialUtils {
     }
 
     return summary;
+  }
+
+  DBBoxesAndCartonsOrderFieldData bcOrderToDBBoxesAndCartonsOrderModel(BoxesAndCartonsResourcesModel bcData) {
+    Map<String, dynamic> order = bcData.order;
+    DBBoxesAndCartonsOrderFieldData data = DBBoxesAndCartonsOrderFieldData();
+
+    if (order.containsKey("box")) {
+      data.box = order["box"];
+    }
+    if (order.containsKey("xl_carton")) {
+      data.xlCarton = order["xl_carton"];
+    }
+    if (order.containsKey("l_carton")) {
+      data.lCarton = order["l_carton"];
+    }
+    if (order.containsKey("m_carton")) {
+      data.mCarton = order["m_carton"];
+    }
+    if (order.containsKey("s_carton")) {
+      data.sCarton = order["s_carton"];
+    }
+
+    return data;
   }
 
 }
