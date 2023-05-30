@@ -6,11 +6,11 @@ class MaterialUtils {
   String getBCOrderSummary(DBBoxesAndCartonsOrderFieldData data) {
     List<String> list = [];
     
-    if(data.box != 0) list.add(data.box.toString() + " cajas");
-    if(data.xlCarton != 0) list.add(data.xlCarton.toString() + " cartones XL");
-    if(data.lCarton != 0) list.add(data.lCarton.toString() + " cartones L");
-    if(data.mCarton != 0) list.add(data.mCarton.toString() + " cartones M");
-    if(data.sCarton != 0) list.add(data.sCarton.toString() + " cartones S");
+    if(data.box != null && data.box != 0) list.add(data.box.toString() + " cajas");
+    if(data.xlCarton != null && data.xlCarton != 0) list.add(data.xlCarton.toString() + " cartones XL");
+    if(data.lCarton != null && data.lCarton != 0) list.add(data.lCarton.toString() + " cartones L");
+    if(data.mCarton != null && data.mCarton != 0) list.add(data.mCarton.toString() + " cartones M");
+    if(data.sCarton != null && data.sCarton != 0) list.add(data.sCarton.toString() + " cartones S");
 
     String summary = "";
     for (String item in list) {
