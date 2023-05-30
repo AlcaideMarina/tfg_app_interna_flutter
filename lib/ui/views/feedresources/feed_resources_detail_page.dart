@@ -4,6 +4,7 @@ import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../../utils/Utils.dart';
 import '../../components/component_table_form_without_label.dart';
 import '../../components/component_text_input.dart';
@@ -153,10 +154,93 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
                 'Eliminar', 
                 null, 
                 null, 
-                () {}, 
+                warningDeleteFeedResource, 
                 null, 
               ),
         ])
     );
   }
+
+  warningDeleteFeedResource() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+            title: const Text('Aviso importante'),
+            content: Text(
+                'Esta acción es irreversible. Va a eliminar este ticket, y puede conllevar consecuencias para la empresa. ¿Está seguro de que quiere continuar?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(this.context).pop();
+                }, 
+                child: const Text("Atrás")
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(this.context).pop();
+                  deleteFeedResource();
+                }, 
+                child: const Text("Continuar")
+              ),
+            ],
+          ));
+  }
+
+  deleteFeedResource() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+    bool conf = await FirebaseUtils.instance.deleteDocument("material_feed", feedResourcesModel.documentId!);
+    
+    Navigator.pop(context);
+    if(conf) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text('Recurso eliminado'),
+              content: const Text(
+                  'El recurso ha sido eliminado correctamente.'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('De acuerdo.'),
+                  onPressed: () {
+                    Navigator.of(context)
+                        ..pop()
+                        ..pop();
+                  },
+                )
+              ],
+            ));
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text('Error'),
+              content: const Text(
+                  'Se ha producido un error al eliminar el recurso. Por favor, inténtelo de nuevo.'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('De acuerdo.'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ));
+    
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
 }
