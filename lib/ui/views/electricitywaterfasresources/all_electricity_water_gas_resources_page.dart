@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/electricitywaterfasresources/electricity_water_gas_resources_detail_page.dart';
 import 'package:hueveria_nieto_interna/utils/Utils.dart';
 import 'package:hueveria_nieto_interna/utils/constants.dart';
 
@@ -73,7 +74,9 @@ class _AllElectricityWaterGasResourcesPageState extends State<AllElectricityWate
                                             ewgModel.expenseDatetime,
                                             Utils().getKey(Constants().ewgTypes, ewgModel.type),
                                             ewgModel.totalPrice,
-                                            onTap: () {}),
+                                            onTap: () {
+                                              navigateToEWGResourceDetail(ewgModel);
+                                            }),
                                       );
                                   } else {
                                     if (i == (ewgList.length - 1) && list.isEmpty) {
@@ -132,5 +135,12 @@ class _AllElectricityWaterGasResourcesPageState extends State<AllElectricityWate
           onPressed: () {}
         ),
     );
+  }
+
+  navigateToEWGResourceDetail(ElectricityWaterGasResourcesModel ewgModel) {
+    Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => ElectricityWaterGasResourcesDetailPage(currentUser, ewgModel)));
   }
 }
