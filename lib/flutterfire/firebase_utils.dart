@@ -268,7 +268,7 @@ class FirebaseUtils {
   Stream<QuerySnapshot<Map<String, dynamic>>> getAllResourceDocuments(String collection) {
     return FirebaseFirestore.instance
         .collection(collection)
-        .where("deleted", isEqualTo: false)
+        .orderBy("expense_datetime", descending: false)
         .snapshots();
   }
 
