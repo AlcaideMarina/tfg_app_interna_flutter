@@ -8,7 +8,7 @@ class BoxesAndCartonsResourcesModel {
   final Timestamp creationDatetime;
   final bool deleted;
   final Timestamp expenseDatetime;
-  final Map<String, int> order;
+  final Map<String, dynamic> order;
   final double totalPrice;
   final String? documentId;
 
@@ -28,12 +28,18 @@ class BoxesAndCartonsResourcesModel {
   String toJson() => jsonEncode(toMap());
 
   factory BoxesAndCartonsResourcesModel.fromMap(Map<String, dynamic> json, String? docId) {
+    Map<String, int> orderFromJson = {};
+    for (var key in (json['order'] as Map<String, dynamic>).keys) {
+      int? value = json['order'][key] is int ? json['order'][key] : null;
+      if (value != null) orderFromJson[key] = value;
+    }
+
     return BoxesAndCartonsResourcesModel(
         json['created_by'],
         json['creation_datetime'],
         json['deleted'],
         json['expense_datetime'],
-        json['order'],
+        orderFromJson,
         json['total_price'],
         docId,
     );
