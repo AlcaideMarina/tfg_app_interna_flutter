@@ -155,7 +155,7 @@ class _ElectricityWaterGasResourcesDetailPageState extends State<ElectricityWate
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                 textInputType: TextInputType.multiline,
                 isEnabled: false,
-                labelText: ewgModel.totalPrice.toString(),
+                labelText: ewgModel.notes,
                 maxLines: 5,
                 minLines: 5,
                 textAlignVertical: TextAlignVertical.top,
