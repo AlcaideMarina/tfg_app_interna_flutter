@@ -164,10 +164,16 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
                 'Cancelar', 
                 null, 
                 null, 
-                () {}, 
+                goBack,
                 null, 
               ),
         ])
     );
   }
+
+  goBack() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    Navigator.of(context).pop();
+  }
+
 }
