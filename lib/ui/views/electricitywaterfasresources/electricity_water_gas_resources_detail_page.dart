@@ -78,7 +78,7 @@ class _ElectricityWaterGasResourcesDetailPageState extends State<ElectricityWate
     double bottomMargin = 4;
 
     return HNComponentTableFormWithoutLabel(
-      TableCellVerticalAlignment.middle,
+      TableCellVerticalAlignment.top,
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
@@ -140,20 +140,25 @@ class _ElectricityWaterGasResourcesDetailPageState extends State<ElectricityWate
       ),
       TableRow(
         children: [
-          Container(
-            child: Text("Notas:"),
-            margin: const EdgeInsets.only(right: 16, top: 4),
+          TableCell(
+            verticalAlignment: TableCellVerticalAlignment.top,
+            child: Container(
+              child: Text("Notas:"),
+              margin: const EdgeInsets.only(right: 16, top: 16),
+            ),
           ),
           Container(
-              height: 40,
               margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              // TODO: Hacer este componente más ancho y multilínea
               child: HNComponentTextInput(
                 contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                textInputType: TextInputType.multiline,
                 isEnabled: false,
                 labelText: ewgModel.totalPrice.toString(),
+                maxLines: 5,
+                minLines: 5,
+                textAlignVertical: TextAlignVertical.top,
+                alignLabelWithHint: true,
               ),
             ),
         ]
