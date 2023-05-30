@@ -188,11 +188,16 @@ class _NewFeedResourcePageState extends State<NewFeedResourcePage> {
                 'Cancelar', 
                 null, 
                 null, 
-                () {},
+                goBack,
                 null, 
               ),
         ])
     );
+  }
+
+  goBack() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    Navigator.of(context).pop();
   }
 }
 
