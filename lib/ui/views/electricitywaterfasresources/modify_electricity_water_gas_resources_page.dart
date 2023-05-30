@@ -10,6 +10,7 @@ import '../../../utils/constants.dart';
 import '../../components/component_dropdown.dart';
 import '../../components/component_table_form_without_label.dart';
 import '../../components/component_text_input.dart';
+import '../../components/component_text_input_multiline.dart';
 import '../../components/constants/hn_button.dart';
 
 class ModifyElectricityWaterGasResourcesPage extends StatefulWidget {
@@ -173,7 +174,7 @@ class _ModifyElectricityWaterGasResourcesPageState extends State<ModifyElectrici
           ),
           Container(
               margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
+              child: HNComponentTextInputMultiline(
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                 textInputType: TextInputType.multiline,

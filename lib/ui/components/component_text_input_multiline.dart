@@ -3,11 +3,14 @@ import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 
 /// Custom TextInput component
 
-class HNComponentTextInput extends StatelessWidget {
+class HNComponentTextInputMultiline extends StatelessWidget {
   final bool autofocus;
   final String? initialValue;
   final TextCapitalization textCapitalization;
   final TextInputType? textInputType;
+  final int? maxLines;
+  final int? minLines;
+  final TextAlignVertical? textAlignVertical;
   final bool obscureText;
   final Function(String)? onChange;
   final Future Function()? onTap;
@@ -24,14 +27,18 @@ class HNComponentTextInput extends StatelessWidget {
   final TextEditingController? textEditingController;
   final Color? backgroundColor;
   final Color? textColor;
+  final bool? alignLabelWithHint;
 
-  const HNComponentTextInput(
+  const HNComponentTextInputMultiline(
       {Key? key,
       this.autofocus = false,
       this.initialValue,
       this.textCapitalization = TextCapitalization.sentences,
       this.obscureText = false,
       this.textInputType,
+      this.maxLines = null,
+      this.minLines = 1,
+      this.textAlignVertical,
       this.onChange,
       this.onTap,
       // this.validator,
@@ -46,7 +53,8 @@ class HNComponentTextInput extends StatelessWidget {
       this.contentPadding, 
       this.textEditingController,
       this.backgroundColor,
-      this.textColor})
+      this.textColor,
+      this.alignLabelWithHint})
       : super(key: key);
 
   @override
@@ -56,6 +64,9 @@ class HNComponentTextInput extends StatelessWidget {
       initialValue: initialValue,
       textCapitalization: textCapitalization,
       keyboardType: textInputType,
+      maxLines: maxLines,
+      minLines: minLines,
+      textAlignVertical: textAlignVertical,
       obscureText: obscureText,
       controller: textEditingController,
       onChanged: (value) => onChange != null ? onChange!(value) : null,
@@ -75,6 +86,7 @@ class HNComponentTextInput extends StatelessWidget {
         fillColor: backgroundColor,
         isDense: isDense,
         contentPadding: contentPadding,
+        alignLabelWithHint: alignLabelWithHint,
         hintText: hintText,
         labelText: labelText,
         helperText: helperText,
