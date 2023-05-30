@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/data/models/electricity_water_gas_resources_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:intl/intl.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../../utils/Utils.dart';
 import '../../../utils/constants.dart';
 import '../../components/component_dropdown.dart';
@@ -219,7 +221,7 @@ class _NewElectricityWaterGasResourcesPageState extends State<NewElectricityWate
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, null),
+              .getTypedButton('Guardar', null, null, saveEWGResource, null),
           const SizedBox(
             height: 8,
           ),
@@ -228,7 +230,7 @@ class _NewElectricityWaterGasResourcesPageState extends State<NewElectricityWate
                 'Cancelar', 
                 null, 
                 null, 
-                () {}, 
+                goBack, 
                 null, 
               ),
         ])
@@ -237,5 +239,91 @@ class _NewElectricityWaterGasResourcesPageState extends State<NewElectricityWate
 
   goBack() {
     Navigator.of(context).pop();
+  }
+
+  saveEWGResource() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+
+    if (datePickerTimestamp != null && typeStr != null && Constants().ewgTypes.keys.contains(typeStr) && totalPrice != null) {
+      ElectricityWaterGasResourcesModel updateEWGModel = ElectricityWaterGasResourcesModel(
+        currentUser.documentId!, 
+        Timestamp.now(), 
+        false, 
+        datePickerTimestamp!, 
+        notes ?? "", 
+        totalPrice!, 
+        Constants().ewgTypes[typeStr]!, 
+        null
+      );
+      bool firestoreConf = await FirebaseUtils.instance.addDocument("material_electricity_water_gas", updateEWGModel.toMap());
+      if (firestoreConf) {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Recurso guardado'),
+                    content: Text(
+                        'La información sobre ${typeStr!.toLowerCase()} ha sido guardada correctamente en la base de datos.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(this.context)
+                              ..pop()
+                              ..pop();
+                        }, 
+                        child: const Text("De acuerdo")
+                      ),
+                    ],
+                  ));
+        } else {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Error'),
+                    content: Text(
+                        'Se ha producido un error al guardar el recurso. Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(this.context).pop();
+                        }, 
+                        child: const Text("De acuerdo")
+                      ),
+                    ],
+                  ));
+        }
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formualrio incompleto'),
+                content: Text(
+                    'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(this.context).pop();
+                    }, 
+                    child: const Text("De acuerdo")
+                  ),
+                ],
+              ));
+
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 }
