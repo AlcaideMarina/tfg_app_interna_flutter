@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/boxesandcartonsresources/boxes_and_cartons_resources_detail_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/boxesandcartonsresources/new_boxes_and_cartons_resources_page.dart';
 import 'package:hueveria_nieto_interna/utils/material_utils.dart';
 
@@ -55,31 +56,33 @@ class _AllBoxesAndCartonsResourcesPageState extends State<AllBoxesAndCartonsReso
                   if (snapshot.connectionState == ConnectionState.active) {
                     if (snapshot.hasData) {
                       final data = snapshot.data;
-                      final List hensList = data.docs;
-                      if (hensList.isNotEmpty) {
+                      final List bcList = data.docs;
+                      if (bcList.isNotEmpty) {
                         return Expanded(
                             child: ListView.builder(
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
-                                itemCount: hensList.length,
+                                itemCount: bcList.length,
                                 itemBuilder: (context, i) {
-                                  final BoxesAndCartonsResourcesModel hensModel =
-                                      BoxesAndCartonsResourcesModel.fromMap(hensList[i].data()
-                                          as Map<String, dynamic>, hensList[i].id);
-                                  if (!hensModel.deleted) {
-                                      list.add(hensModel);
+                                  final BoxesAndCartonsResourcesModel bcResourceModel =
+                                      BoxesAndCartonsResourcesModel.fromMap(bcList[i].data()
+                                          as Map<String, dynamic>, bcList[i].id);
+                                  if (!bcResourceModel.deleted) {
+                                      list.add(bcResourceModel);
                                       return Container(
                                         margin: const EdgeInsets.symmetric(
                                             horizontal: 32, vertical: 8),
                                         child: HNComponentTicket(
-                                            hensModel.expenseDatetime,
-                                            MaterialUtils().getBCOrderSummary(MaterialUtils().bcOrderToDBBoxesAndCartonsOrderModel(hensModel)),
-                                            hensModel.totalPrice,
+                                            bcResourceModel.expenseDatetime,
+                                            MaterialUtils().getBCOrderSummary(MaterialUtils().bcOrderToDBBoxesAndCartonsOrderModel(bcResourceModel)),
+                                            bcResourceModel.totalPrice,
                                             units: "",
-                                            onTap: () {}),
+                                            onTap: () {
+                                              navigateToBoxesAndCartonsResourceDetail(bcResourceModel);
+                                            }),
                                       );
                                   } else {
-                                    if (i == (hensList.length - 1) && list.isEmpty) {
+                                    if (i == (bcList.length - 1) && list.isEmpty) {
                                       return Container(
                                         margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                                         child: const HNComponentPanel(
@@ -142,6 +145,13 @@ class _AllBoxesAndCartonsResourcesPageState extends State<AllBoxesAndCartonsReso
       context, 
       MaterialPageRoute(
         builder: (context) => NewBoxesAndCartonsResourcesPage(currentUser)));
+  }
+
+  navigateToBoxesAndCartonsResourceDetail(BoxesAndCartonsResourcesModel bcResourceModel) {
+     Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => BoxesAndCartonsResourceDetailPage(currentUser, bcResourceModel)));
   }
   
 }
