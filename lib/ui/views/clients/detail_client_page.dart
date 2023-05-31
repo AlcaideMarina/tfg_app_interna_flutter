@@ -11,6 +11,7 @@ import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/data/models/client_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/allorders/client_all_orders_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/clients/modify_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 import 'package:provider/provider.dart';
@@ -237,7 +238,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
                                     Container(
                                       margin: const EdgeInsets.symmetric(horizontal: 8),
                                       child: HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
-                                        'Ver todos', null, null, () {}, () {}),
+                                        'Ver todos', null, null, navigateToClientAllOrders, () {}),
                                     ),
                                     const SizedBox(
                                       height: 32,
@@ -620,6 +621,14 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
           ));
     }
   } 
+
+  navigateToClientAllOrders() async {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ClientAllOrdersPage(currentUser, client),
+        ));
+  }
     
   
 }
