@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
+import '../../../utils/Utils.dart';
 import '../../components/component_simple_form.dart';
 import '../../components/component_table_form.dart';
 import '../../components/component_table_form_without_label.dart';
@@ -30,7 +31,7 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
   }
 
   TextEditingController dateController = TextEditingController();
-  DateTime minDate = DateTime.now().add(const Duration(days: 3));
+  DateTime minDate = Utils().addToDate(DateTime.now(), yearsToAdd: -1);
   late Timestamp? datePickerTimestamp;
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
   
