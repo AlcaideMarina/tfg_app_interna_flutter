@@ -5,6 +5,7 @@ import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
 import '../../../data/models/internal_user_model.dart';
 import '../../../data/models/local/db_boxes_and_cartons_order_field_data.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../../utils/Utils.dart';
 import '../../components/component_table_form_without_label.dart';
 import '../../components/component_text_input.dart';
@@ -244,19 +245,102 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, null),
+              .getTypedButton('Modificar', null, null, () {}, null),
           const SizedBox(
             height: 8,
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
               .getTypedButton(
-                'Cancelar', 
+                'Eliminar', 
                 null, 
                 null, 
-                () {},
+                warningDeleteBCResource,
                 null, 
               ),
         ])
     );
   }
+
+  warningDeleteBCResource() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+            title: const Text('Aviso importante'),
+            content: Text(
+                'Esta acción es irreversible. Va a eliminar este ticket, y puede conllevar consecuencias para la empresa. ¿Está seguro de que quiere continuar?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(this.context).pop();
+                }, 
+                child: const Text("Atrás")
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(this.context).pop();
+                  deleteBCResource();
+                }, 
+                child: const Text("Continuar")
+              ),
+            ],
+          ));
+  }
+
+  deleteBCResource() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+    bool conf = await FirebaseUtils.instance.deleteDocument("material_boxes_and_cartons", bcResourcesModel.documentId!);
+    
+    Navigator.pop(context);
+    if(conf) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text('Recurso eliminado'),
+              content: const Text(
+                  'El recurso ha sido eliminado correctamente.'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('De acuerdo.'),
+                  onPressed: () {
+                    Navigator.of(context)
+                        ..pop()
+                        ..pop();
+                  },
+                )
+              ],
+            ));
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text('Error'),
+              content: const Text(
+                  'Se ha producido un error al eliminar el recurso. Por favor, inténtelo de nuevo.'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('De acuerdo.'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ));
+    
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
 }
