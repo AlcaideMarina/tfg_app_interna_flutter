@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/boxesandcartonsresources/new_boxes_and_cartons_resources_page.dart';
 import 'package:hueveria_nieto_interna/utils/material_utils.dart';
 
 import '../../../custom/app_theme.dart';
@@ -131,9 +132,16 @@ class _AllBoxesAndCartonsResourcesPageState extends State<AllBoxesAndCartonsReso
         floatingActionButton: FloatingActionButton(
           backgroundColor: CustomColors.redPrimaryColor,
           child: const Icon(Icons.add_rounded),
-          onPressed: () {}
+          onPressed: navigateToNewBoxesAndCartonsResource
         ),
     );
+  }
+
+  navigateToNewBoxesAndCartonsResource() async {
+     Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => NewBoxesAndCartonsResourcesPage(currentUser)));
   }
   
 }
