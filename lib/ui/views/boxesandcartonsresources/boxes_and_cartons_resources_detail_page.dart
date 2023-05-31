@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/boxes_and_cartons_resources_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/boxesandcartonsresources/modify_boxes_and_cartons_resources_page.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
@@ -245,7 +246,7 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, () {}, null),
+              .getTypedButton('Modificar', null, null, navigateToNewHensTicker, null),
           const SizedBox(
             height: 8,
           ),
@@ -341,6 +342,14 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
         );
       },
     );
+  }
+
+  navigateToNewHensTicker() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ModifyBoxesAndCartonsResourcesPage(currentUser, bcResourcesModel),
+        ));
   }
 
 }
