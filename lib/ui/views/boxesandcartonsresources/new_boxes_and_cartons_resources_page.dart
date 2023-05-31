@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/data/models/boxes_and_cartons_resources_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/data/models/local/db_boxes_and_cartons_order_field_data.dart';
 import 'package:intl/intl.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../../utils/Utils.dart';
 import '../../components/component_simple_form.dart';
 import '../../components/component_table_form.dart';
@@ -28,6 +31,9 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
   void initState() {
     super.initState();
     currentUser = widget.currentUser;
+    
+    dateController.text = dateFormat.format(minDate);
+    datePickerTimestamp = Timestamp.fromDate(minDate);
   }
 
   TextEditingController dateController = TextEditingController();
@@ -286,7 +292,7 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, null),
+              .getTypedButton('Guardar', null, null, saveBCResource, null),
           const SizedBox(
             height: 8,
           ),
@@ -302,8 +308,108 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
     );
   }
 
-  goBack() async {
+  goBack() {
     FocusManager.instance.primaryFocus?.unfocus();
     Navigator.of(context).pop();
   }
+
+  saveBCResource() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+
+    if (datePickerTimestamp != null && totalPrice != null && hasOrder()) {
+      DBBoxesAndCartonsOrderFieldData data = DBBoxesAndCartonsOrderFieldData(
+        box: box == 0 ? null : box,
+        xlCarton: xlCarton == 0 ? null : xlCarton,
+        lCarton: lCarton == 0 ? null : lCarton,
+        mCarton: mCarton == 0 ? null : mCarton,
+        sCarton: sCarton == 0 ? null : sCarton,
+      );
+      BoxesAndCartonsResourcesModel bcResourcesModel = BoxesAndCartonsResourcesModel(
+        currentUser.documentId!, 
+        Timestamp.now(), 
+        false, 
+        datePickerTimestamp!, 
+        data.toMap(), 
+        totalPrice!, 
+        null
+      );
+      bool firestoreConf = await FirebaseUtils.instance.addDocument("material_boxes_and_cartons", bcResourcesModel.toMap());
+      if (firestoreConf) {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Recurso guardado'),
+                  content: Text(
+                      'La información sobre cajas y cartones ha sido guardada correctamente en la base de datos.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            ..pop()
+                            ..pop();
+                      }, 
+                      child: const Text("De acuerdo")
+                    ),
+                  ],
+                ));
+      } else {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Error'),
+                  content: Text(
+                      'Se ha producido un error al guardar el recurso. Por favor, revise los datos e inténtelo de nuevo.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(this.context).pop();
+                      }, 
+                      child: const Text("De acuerdo")
+                    ),
+                  ],
+                ));
+      }
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formulario incompleto'),
+                content: Text(
+                    'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(this.context).pop();
+                    }, 
+                    child: const Text("De acuerdo")
+                  ),
+                ],
+              ));
+    }
+  }
+
+  bool hasOrder() {
+    if ((box != null && box != 0) || (xlCarton != null && xlCarton != 0) || (lCarton != null && lCarton != 0) || (mCarton != null && mCarton != 0) || (sCarton != null && sCarton != 0)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
 }
