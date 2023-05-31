@@ -40,7 +40,7 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Detalle - Pienso',
+              'Pienso - Detalle',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),

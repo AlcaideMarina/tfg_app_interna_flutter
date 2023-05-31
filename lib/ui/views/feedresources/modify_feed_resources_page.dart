@@ -44,7 +44,7 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Modificar - Pienso',
+              'Pienso - Modificar',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),

@@ -55,7 +55,7 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Detalle - Electr...',
+              'Cajas y cartones - Añadir',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),

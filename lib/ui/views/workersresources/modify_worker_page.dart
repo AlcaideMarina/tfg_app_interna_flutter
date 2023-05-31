@@ -40,7 +40,7 @@ class _ModifyWorkerPageState extends State<ModifyWorkerPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Detalle de trabajador',
+              'Modificar trabajador',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),

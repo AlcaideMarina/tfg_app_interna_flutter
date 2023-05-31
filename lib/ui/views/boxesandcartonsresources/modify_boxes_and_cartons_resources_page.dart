@@ -58,7 +58,7 @@ class _ModifyBoxesAndCartonsResourcesPageState extends State<ModifyBoxesAndCarto
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Añadir Cajas/Cartones',
+              'Modificar Cajas/Cartones',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),

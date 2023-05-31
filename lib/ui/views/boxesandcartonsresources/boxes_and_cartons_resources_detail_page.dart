@@ -42,9 +42,9 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Añadir Cajas/Cartones',
+              'Cajas y cartones - Detalle',
               style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+                  color: AppTheme.primary, fontSize: 18),
             )),
         body: SafeArea(
           top: false,

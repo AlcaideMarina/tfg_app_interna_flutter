@@ -52,7 +52,7 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Detalle de trabajador',
+              'Gallinas - Añadir',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),

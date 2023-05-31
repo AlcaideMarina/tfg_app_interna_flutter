@@ -86,9 +86,9 @@ class _AllBoxesAndCartonsResourcesPageState extends State<AllBoxesAndCartonsReso
                                       return Container(
                                         margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                                         child: const HNComponentPanel(
-                                          title: 'No hay usuarios',
+                                          title: 'No hay recursos',
                                           text:
-                                              "No hay registro de usuarios internos activos en la base de datos.",
+                                              "No hay registro de recursos de cajas y cartones no eliminados en la base de datos.",
                                         ));
                                     } else {
                                       return Container();
@@ -99,9 +99,9 @@ class _AllBoxesAndCartonsResourcesPageState extends State<AllBoxesAndCartonsReso
                         return Container(
                             margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                             child: const HNComponentPanel(
-                              title: 'No hay usuarios',
+                              title: 'No hay recursos',
                               text:
-                                  "No hay registro de usuarios internos activos en la base de datos.",
+                                  "No hay registro de recursos de cajas y cartones no eliminados en la base de datos.",
                             ));
                       }
                     } else if (snapshot.hasError) {
@@ -116,9 +116,9 @@ class _AllBoxesAndCartonsResourcesPageState extends State<AllBoxesAndCartonsReso
                       return Container(
                           margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                           child: const HNComponentPanel(
-                            title: 'No hay usuarios',
+                            title: 'No hay recursos',
                             text:
-                                "No hay registro de usuarios internos activos en la base de datos.",
+                                "No hay registro de recursos de cajas y cartones no eliminados en la base de datos.",
                           ));
                     }
                   }

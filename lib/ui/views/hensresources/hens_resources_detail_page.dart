@@ -41,7 +41,7 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Detalle - Gallinas',
+              'Gallinas - Detalle',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),

@@ -44,7 +44,7 @@ class _ElectricityWaterGasResourcesDetailPageState extends State<ElectricityWate
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Detalle - Electr...',
+              'Elec., luz, agua - Detalle',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),

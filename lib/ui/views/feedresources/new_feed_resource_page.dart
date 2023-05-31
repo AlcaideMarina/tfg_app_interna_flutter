@@ -49,7 +49,7 @@ class _NewFeedResourcePageState extends State<NewFeedResourcePage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Añadir pienso',
+              'Pienso - Añadir',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
@@ -223,7 +223,7 @@ class _NewFeedResourcePageState extends State<NewFeedResourcePage> {
             builder: (_) => AlertDialog(
                   title: const Text('Recurso guardado'),
                   content: Text(
-                      'La información sobre las gallinas ha sido guardada correctamente en la base de datos.'),
+                      'La información sobre el pienso ha sido guardada correctamente en la base de datos.'),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () {

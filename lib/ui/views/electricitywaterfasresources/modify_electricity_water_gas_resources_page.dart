@@ -60,7 +60,7 @@ class _ModifyElectricityWaterGasResourcesPageState extends State<ModifyElectrici
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Modificar - Elect...',
+              'Elec., luz, agua - Modificar',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
@@ -269,7 +269,7 @@ class _ModifyElectricityWaterGasResourcesPageState extends State<ModifyElectrici
               builder: (_) => AlertDialog(
                     title: const Text('Recurso actualizado'),
                     content: Text(
-                        'La información sobre las gallinas ha sido actualizada correctamente en la base de datos.'),
+                        'La información sobre la luz, agua y gas ha sido actualizada correctamente en la base de datos.'),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () {
