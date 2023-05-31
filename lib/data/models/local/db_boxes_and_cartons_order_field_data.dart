@@ -37,7 +37,7 @@ class DBBoxesAndCartonsOrderFieldData {
     return map;
   }
 
-  factory DBBoxesAndCartonsOrderFieldData.fromMap(Map<String, int> json) {
+  factory DBBoxesAndCartonsOrderFieldData.fromMap(Map<String, dynamic> json) {
     
     int? box;
     int? xlCarton;
@@ -45,19 +45,19 @@ class DBBoxesAndCartonsOrderFieldData {
     int? mCarton;
     int? sCarton;
 
-    if (json.containsKey("box")) {
+    if (json.containsKey("box") && json["box"] is int) {
       box = json["box"]!;
     }
-    if (json.containsKey("xl_carton")) {
+    if (json.containsKey("xl_carton") && json["xl_carton"] is int) {
       xlCarton = json["xl_carton"]!;
     }
-    if (json.containsKey("l_carton")) {
+    if (json.containsKey("l_carton") && json["l_carton"] is int) {
       lCarton = json["l_carton"]!;
     }
-    if (json.containsKey("m_carton")) {
+    if (json.containsKey("m_carton") && json["m_carton"] is int) {
       mCarton = json["m_carton"]!;
     }
-    if (json.containsKey("s_carton")) {
+    if (json.containsKey("s_carton") && json["s_carton"] is int) {
       sCarton = json["s_carton"]!;
     }
 
