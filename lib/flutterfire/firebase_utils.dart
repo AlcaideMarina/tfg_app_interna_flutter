@@ -152,6 +152,17 @@ class FirebaseUtils {
     }
   }
 
+  Future<bool> addDocument(String collection, Map<String, Object?> data) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(collection)
+          .add(data);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getAllDocumentsFromCollection(String collection) {
     return FirebaseFirestore.instance
         .collection(collection)
@@ -252,6 +263,13 @@ class FirebaseUtils {
         .collection("user_info")
         .doc(documentId)
         .get();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllResourceDocuments(String collection) {
+    return FirebaseFirestore.instance
+        .collection(collection)
+        .orderBy("expense_datetime", descending: false)
+        .snapshots();
   }
 
 }

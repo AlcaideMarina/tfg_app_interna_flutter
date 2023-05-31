@@ -25,4 +25,10 @@ class Constants {
 
   List<String> productClasses = ["XL", "L", "M", "S"];
 
+  Map<String, int> ewgTypes = {
+    "Luz": 0,
+    "Agua": 1, 
+    "Gas": 2
+  };
+
 }

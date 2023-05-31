@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/economy_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/main/mainpages/material_and_resources_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/orders_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/users_and_clients_page.dart';
 import 'lateral_menu_header.dart';
@@ -64,7 +65,7 @@ class _LateralMenuState extends State<LateralMenu> {
             leading: const Icon(Icons.book_outlined),
             title: const Text('Material'),
             onTap: () {
-              print("Se ha pulsado el botón de material del menú lateral");
+              navigateToMaterial();
             },
           ),
           ListTile(
@@ -99,5 +100,12 @@ class _LateralMenuState extends State<LateralMenu> {
       context, 
       MaterialPageRoute(
         builder: (context) => EconomyPage(currentUser)));
+  }
+
+  navigateToMaterial() {
+    Navigator.pushReplacement(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => MaterialAndResourcesPage(currentUser)));
   }
 }
