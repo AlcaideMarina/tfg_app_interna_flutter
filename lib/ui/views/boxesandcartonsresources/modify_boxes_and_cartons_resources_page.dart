@@ -7,6 +7,7 @@ import 'package:hueveria_nieto_interna/utils/order_utils.dart';
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
 import '../../../data/models/local/db_boxes_and_cartons_order_field_data.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../../utils/Utils.dart';
 import '../../components/component_table_form_without_label.dart';
 import '../../components/component_text_input.dart';
@@ -281,20 +282,149 @@ class _ModifyBoxesAndCartonsResourcesPageState extends State<ModifyBoxesAndCarto
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, () {}, null),
+              .getTypedButton('Guardar', null, null, warningUpdateBCResource, null),
           const SizedBox(
             height: 8,
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
               .getTypedButton(
-                'Eliminar', 
+                'Cancelar', 
                 null, 
                 null, 
-                () {},
+                goBack,
                 null, 
               ),
         ])
     );
+  }
+
+  goBack() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    Navigator.of(context).pop();
+  }
+
+  warningUpdateBCResource() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+          title: const Text('Aviso'),
+          content: const Text(
+              'Va a modificar este ticket. ¿Quiere continuar con el proceso?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('Continuar'),
+              onPressed: () {
+                Navigator.pop(context);
+                updateBCResource();
+              },
+            )
+          ],
+        ));
+  }
+
+  updateBCResource() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+
+    if (totalPrice != null && hasOrder()) {
+      DBBoxesAndCartonsOrderFieldData data = DBBoxesAndCartonsOrderFieldData(
+        box: box == 0 ? null : box,
+        xlCarton: xlCarton == 0 ? null : xlCarton,
+        lCarton: lCarton == 0 ? null : lCarton,
+        mCarton: mCarton == 0 ? null : mCarton,
+        sCarton: sCarton == 0 ? null : sCarton,
+      );
+
+      BoxesAndCartonsResourcesModel updateBCResource = BoxesAndCartonsResourcesModel(
+        bcResourcesModel.createdBy, 
+        bcResourcesModel.creationDatetime, 
+        bcResourcesModel.deleted, 
+        bcResourcesModel.expenseDatetime, 
+        data.toMap(), 
+        totalPrice!, 
+        bcResourcesModel.documentId);
+      bool firestoreConf = await FirebaseUtils.instance.updateDocument("material_boxes_and_cartons", updateBCResource.documentId!, updateBCResource.toMap());
+      if (firestoreConf) {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Recurso actualizado'),
+                    content: Text(
+                        'La información sobre las cajas y cartones ha sido actualizada correctamente en la base de datos.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.pop(context, bcResourcesModel);
+                        }, 
+                        child: const Text("De acuerdo")
+                      ),
+                    ],
+                  ));
+        } else {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Error'),
+                    content: Text(
+                        'Se ha producido un error al actualizar el recurso. Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(this.context).pop();
+                        }, 
+                        child: const Text("De acuerdo")
+                      ),
+                    ],
+                  ));
+        }
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formualrio incompleto'),
+                content: Text(
+                    'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(this.context).pop();
+                    }, 
+                    child: const Text("De acuerdo")
+                  ),
+                ],
+              ));
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
+  bool hasOrder() {
+    if ((box != null && box != 0) || (xlCarton != null && xlCarton != 0) || (lCarton != null && lCarton != 0) || (mCarton != null && mCarton != 0) || (sCarton != null && sCarton != 0)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }
