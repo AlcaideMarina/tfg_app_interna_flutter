@@ -286,19 +286,24 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, () {}, null),
+              .getTypedButton('Guardar', null, null, () {}, null),
           const SizedBox(
             height: 8,
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
               .getTypedButton(
-                'Eliminar', 
+                'Cancelar', 
                 null, 
                 null, 
-                () {}, 
+                goBack, 
                 null, 
               ),
         ])
     );
+  }
+
+  goBack() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    Navigator.of(context).pop();
   }
 }
