@@ -363,7 +363,7 @@ class _ModifyBoxesAndCartonsResourcesPageState extends State<ModifyBoxesAndCarto
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
-                          Navigator.pop(context, bcResourcesModel);
+                          Navigator.pop(context, updateBCResource);
                         }, 
                         child: const Text("De acuerdo")
                       ),

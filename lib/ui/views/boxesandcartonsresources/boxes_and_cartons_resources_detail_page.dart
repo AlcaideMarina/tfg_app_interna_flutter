@@ -25,6 +25,7 @@ class BoxesAndCartonsResourceDetailPage extends StatefulWidget {
 class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResourceDetailPage> {
   late InternalUserModel currentUser;
   late BoxesAndCartonsResourcesModel bcResourcesModel;
+  late DBBoxesAndCartonsOrderFieldData fieldData;
 
   @override
   void initState() {
@@ -32,6 +33,7 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
     
     currentUser = widget.currentUser;
     bcResourcesModel = widget.bcResourcesModel;
+    fieldData = DBBoxesAndCartonsOrderFieldData.fromMap(bcResourcesModel.order);
   }
   @override
   Widget build(BuildContext context) {
@@ -86,9 +88,6 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
   }
 
   List<TableRow> getCells() {
-
-    DBBoxesAndCartonsOrderFieldData fieldData = DBBoxesAndCartonsOrderFieldData.fromMap(bcResourcesModel.order);
-
     return [
       TableRow(
         children: [
@@ -344,12 +343,20 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
     );
   }
 
-  navigateToNewHensTicker() {
-    Navigator.push(
+  navigateToNewHensTicker() async {
+    final result = await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => ModifyBoxesAndCartonsResourcesPage(currentUser, bcResourcesModel),
         ));
+
+    if (result != null) {
+      bcResourcesModel = result;
+      setState(() {
+        bcResourcesModel = result;
+        fieldData = DBBoxesAndCartonsOrderFieldData.fromMap(result.order);
+      });
+    }
   }
 
 }
