@@ -152,17 +152,6 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
                                       CrossAxisAlignment.start,
                                   children: [
                                     getAllFormElements(),
-                                    const SizedBox(
-                                      height: 32,
-                                    ),
-                                    const Text(
-                                      'Últimos pedidos:',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
                                     Flexible(
                                       fit: FlexFit.loose,
                                       child: StreamBuilder(
@@ -187,31 +176,56 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
                                                     return b.orderDatetime.compareTo(a.orderDatetime);
                                                   });
                                                   if (list.isNotEmpty) {
-                                                    return ListView.builder(
-                                                        physics: const NeverScrollableScrollPhysics(),
-                                                        shrinkWrap: true,
-                                                        scrollDirection: Axis.vertical,
-                                                        itemCount: orders.length > 3 ? 3 : orders.length,
-                                                        itemBuilder: ((context, index) {
-                                                          final OrderModel orderModel = list[index];
-                                                          return Container(
-                                                              margin: const EdgeInsets.symmetric(
-                                                                horizontal: 32, vertical: 8),
-                                                              child: HNComponentOrders(
-                                                                orderModel.orderDatetime,
-                                                                orderModel.orderId!,
-                                                                orderModel.company,
-                                                                OrderUtils().getOrderSummary(OrderUtils().orderDataToBDOrderModel(orderModel)),        // TODO
-                                                                orderModel.totalPrice,
-                                                                orderModel.status,
-                                                                orderModel.deliveryDni,
-                                                                onTap: () async {
-                                                                  navigateToOrderDetail(orderModel);
-                                                                }
-                                                              ),
-                                                            );
-                                                        }
-                                                      ),
+                                                    return Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment.start,
+                                                      children: [
+                                                        const SizedBox(
+                                                          height: 32,
+                                                        ),
+                                                        const Text(
+                                                          'Últimos pedidos:',
+                                                          style: TextStyle(
+                                                              fontWeight: FontWeight.bold),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 16,
+                                                        ),
+                                                        ListView.builder(
+                                                            physics: const NeverScrollableScrollPhysics(),
+                                                            shrinkWrap: true,
+                                                            scrollDirection: Axis.vertical,
+                                                            itemCount: orders.length > 3 ? 3 : orders.length,
+                                                            itemBuilder: ((context, index) {
+                                                              final OrderModel orderModel = list[index];
+                                                              return Container(
+                                                                  margin: const EdgeInsets.symmetric(
+                                                                    horizontal: 32, vertical: 8),
+                                                                  child: HNComponentOrders(
+                                                                    orderModel.orderDatetime,
+                                                                    orderModel.orderId!,
+                                                                    orderModel.company,
+                                                                    OrderUtils().getOrderSummary(OrderUtils().orderDataToBDOrderModel(orderModel)),        // TODO
+                                                                    orderModel.totalPrice,
+                                                                    orderModel.status,
+                                                                    orderModel.deliveryDni,
+                                                                    onTap: () async {
+                                                                      navigateToOrderDetail(orderModel);
+                                                                    }
+                                                                  ),
+                                                                );
+                                                            }
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 16,
+                                                        ),
+                                                        Container(
+                                                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                                                          child: HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
+                                                            'Ver todos', null, null, navigateToClientAllOrders, () {}),
+                                                        ),
+                                                      ],
                                                     );
                                                   } else {
                                                     return Container();
@@ -231,14 +245,6 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
                                             }
                                           },
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                                      child: HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
-                                        'Ver todos', null, null, navigateToClientAllOrders, () {}),
                                     ),
                                     const SizedBox(
                                       height: 32,
