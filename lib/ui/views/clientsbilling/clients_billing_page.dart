@@ -121,11 +121,11 @@ class _ClientsBillingPageState extends State<ClientsBillingPage> {
       );
   }
 
-  navigateToBillingPerMonth(ClientModel) {
+  navigateToBillingPerMonth(ClientModel clientModel) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => BillingPerMonthPage(currentUser, ClientModel)));
+            builder: (context) => BillingPerMonthPage(currentUser, clientModel)));
   }
 
 }
