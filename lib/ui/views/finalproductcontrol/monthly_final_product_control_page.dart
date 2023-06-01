@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/fpc_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/data/models/local/monthly_fpc_container_data.dart';
+import 'package:hueveria_nieto_interna/ui/views/finalproductcontrol/daily_final_product_control_page.dart';
 import 'package:hueveria_nieto_interna/utils/farm_utils.dart';
 
 import '../../../custom/app_theme.dart';
@@ -70,9 +71,7 @@ class _MonthlyFinalProductControlPageState extends State<MonthlyFinalProductCont
                                     child: HNComponentFPCMonthlyContainerItem(
                                       data,
                                       onTap: () {
-                                        //int dataMonth = data.initDate.toDate().month;
-                                        //int thisMonth = DateTime.now().month;
-                                        //navigateToMonthlyBillingDetail(data.billingData!, dataMonth == thisMonth);
+                                        navigateToDailyFPC(data);
                                       }),
                                     );
                                 }
@@ -109,5 +108,13 @@ class _MonthlyFinalProductControlPageState extends State<MonthlyFinalProductCont
           ],
         ),
       );
+  }
+
+  navigateToDailyFPC(MonthlyFPCContainerData data) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DailyFinalProductControlPage(currentUser, data),
+        ));
   }
 }
