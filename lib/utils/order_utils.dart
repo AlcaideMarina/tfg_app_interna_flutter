@@ -297,91 +297,92 @@ class OrderUtils {
 
     List<BillingPerMonthData> list = [];
 
-    double paymentByCash = 0.0;
-    double paymentByReceipt = 0.0;
-    double paymentByTransfer = 0.0;
-    double paid = 0.0;
-    double toBePaid = 0.0;
-    double totalPrice = 0.0;
+    if (orderBillingDataList.isNotEmpty){
 
-    List<OrderBillingData> orderBillingDataMonthlyList = [];
+      double paymentByCash = 0.0;
+      double paymentByReceipt = 0.0;
+      double paymentByTransfer = 0.0;
+      double paid = 0.0;
+      double toBePaid = 0.0;
+      double totalPrice = 0.0;
 
-    // Ordernamos la lista pro fecha de pedido en desc.
-    orderBillingDataList.sort((a, b) => a.orderDatetime.compareTo(b.orderDatetime));
+      List<OrderBillingData> orderBillingDataMonthlyList = [];
 
-    // Cogemos la primera posición -> Es la más reciente -> Último mes
-    OrderBillingData firstOrder = orderBillingDataList[0];
-    DateTime firstDate = firstOrder.orderDatetime.toDate();
+      // Ordernamos la lista pro fecha de pedido en desc.
+      orderBillingDataList.sort((a, b) => a.orderDatetime.compareTo(b.orderDatetime));
 
-    String m = firstDate.month.toString();
-    while(m.length < 2) {
-      m = '0' + m;
+      // Cogemos la primera posición -> Es la más reciente -> Último mes
+      OrderBillingData firstOrder = orderBillingDataList[0];
+      DateTime firstDate = firstOrder.orderDatetime.toDate();
+
+      String m = firstDate.month.toString();
+      while(m.length < 2) {
+        m = '0' + m;
+      }
+      String y = firstDate.year.toString();
+      while(y.length < 4) {
+        y = '0' + y;
+      }
+
+      // Creamos fecha inicial y final
+      Timestamp initDateTimestamp = Utils().parseStringToTimestamp('01/$m/$y');
+      Timestamp endDateTimestamp = Timestamp.fromDate(
+        Utils().addToDate(initDateTimestamp.toDate(), monthsToAdd: 1)
+      );
+
+      for (OrderBillingData item in orderBillingDataList) {
+        if (initDateTimestamp.compareTo(item.orderDatetime) > 1) {
+          // Añadimos el elemento a la list a de retorno
+          BillingData billingData = BillingData(
+            paymentByCash, paymentByReceipt, paymentByTransfer, paid, 
+            toBePaid, totalPrice);
+          BillingPerMonthData billingContainerData = BillingPerMonthData(
+            initDateTimestamp, endDateTimestamp, billingData);
+          
+          list.add(billingContainerData);
+          // Reseteamos todas las variables y guardamos
+          endDateTimestamp = initDateTimestamp;
+          initDateTimestamp = Timestamp.fromDate(
+            Utils().addToDate(initDateTimestamp.toDate(), monthsToAdd: -1)
+          );
+          paymentByCash = 0.0;
+          paymentByReceipt = 0.0;
+          paymentByTransfer = 0.0;
+          paid = 0.0;
+          toBePaid = 0.0;
+          totalPrice = 0.0;
+          orderBillingDataMonthlyList = [];
+        }
+
+        // Actualizamos métodos de pago
+        if (item.paymentMethod == 0) {
+          paymentByCash += (item.totalPrice ?? 0).toDouble();
+        } else if(item.paymentMethod == 0) {
+          paymentByReceipt += (item.totalPrice ?? 0).toDouble();
+        } else if(item.paymentMethod == 0) {
+          paymentByTransfer += (item.totalPrice ?? 0).toDouble();
+        }
+        //Actualizamos si es un pedido pagado o por pagar
+        if (item.paid) {
+          paid += (item.totalPrice ?? 0).toDouble();
+        } else {
+          toBePaid += (item.totalPrice ?? 0).toDouble();
+        }
+        totalPrice += (item.totalPrice ?? 0).toDouble();
+        orderBillingDataMonthlyList.add(item);
+
+        if (orderBillingDataList.last == item) {
+          BillingData billingData = BillingData(
+            paymentByCash, paymentByReceipt, paymentByTransfer, paid, toBePaid,
+            totalPrice
+          );
+          BillingPerMonthData billingPerMonthData = BillingPerMonthData(
+            initDateTimestamp, endDateTimestamp, billingData);
+          list.add(billingPerMonthData);
+        }
+      }
     }
-    String y = firstDate.year.toString();
-    while(y.length < 4) {
-      y = '0' + y;
-    }
-
-    // Creamos fecha inicial y final
-    Timestamp initDateTimestamp = Utils().parseStringToTimestamp('01/$m/$y');
-    Timestamp endDateTimestamp = Timestamp.fromDate(
-      Utils().addToDate(initDateTimestamp.toDate(), monthsToAdd: 1)
-    );
-
-    for (OrderBillingData item in orderBillingDataList) {
-      if (initDateTimestamp.compareTo(item.orderDatetime) > 1) {
-        // Añadimos el elemento a la list a de retorno
-        BillingData billingData = BillingData(
-          paymentByCash, paymentByReceipt, paymentByTransfer, paid, 
-          toBePaid, totalPrice);
-        BillingPerMonthData billingContainerData = BillingPerMonthData(
-          initDateTimestamp, endDateTimestamp, billingData);
-        
-        list.add(billingContainerData);
-        // Reseteamos todas las variables y guardamos
-        endDateTimestamp = initDateTimestamp;
-        initDateTimestamp = Timestamp.fromDate(
-          Utils().addToDate(initDateTimestamp.toDate(), monthsToAdd: -1)
-        );
-        paymentByCash = 0.0;
-        paymentByReceipt = 0.0;
-        paymentByTransfer = 0.0;
-        paid = 0.0;
-        toBePaid = 0.0;
-        totalPrice = 0.0;
-        orderBillingDataMonthlyList = [];
-      }
-
-      // Actualizamos métodos de pago
-      if (item.paymentMethod == 0) {
-        paymentByCash += (item.totalPrice ?? 0).toDouble();
-      } else if(item.paymentMethod == 0) {
-        paymentByReceipt += (item.totalPrice ?? 0).toDouble();
-      } else if(item.paymentMethod == 0) {
-        paymentByTransfer += (item.totalPrice ?? 0).toDouble();
-      }
-      //Actualizamos si es un pedido pagado o por pagar
-      if (item.paid) {
-        paid += (item.totalPrice ?? 0).toDouble();
-      } else {
-        toBePaid += (item.totalPrice ?? 0).toDouble();
-      }
-      totalPrice += (item.totalPrice ?? 0).toDouble();
-      orderBillingDataMonthlyList.add(item);
-
-      if (orderBillingDataList.last == item) {
-        BillingData billingData = BillingData(
-          paymentByCash, paymentByReceipt, paymentByTransfer, paid, toBePaid,
-          totalPrice
-        );
-        BillingPerMonthData billingPerMonthData = BillingPerMonthData(
-          initDateTimestamp, endDateTimestamp, billingData);
-        list.add(billingPerMonthData);
-      }
-    }
-
     return list;
-
   }
-
+  
 }
