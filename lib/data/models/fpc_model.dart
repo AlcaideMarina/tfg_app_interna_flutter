@@ -39,7 +39,7 @@ class FPCModel {
     return FPCModel(
         json['accepted_eggs'],
         json['best_before_datetime'],
-        json['createdby'],
+        json['created_by'],
         json['creation_datetime'],
         json['deleted'],
         json['issue_datetime'],
