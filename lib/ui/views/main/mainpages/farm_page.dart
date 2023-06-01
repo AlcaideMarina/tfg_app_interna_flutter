@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/data/models/local/monthly_fpc_container_data.dart';
+import 'package:hueveria_nieto_interna/ui/views/clientsbilling/montly_billing_detail_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/finalproductcontrol/monthly_final_product_control_page.dart';
 
 import '../../../../custom/app_theme.dart';
 import '../../../../custom/custom_sizes.dart';
@@ -45,7 +48,7 @@ class _FarmPageState extends State<FarmPage> {
           children: [
             Container(
               child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Control prod. final", null, null, () {}, () {}),
+                  "Control prod. final", null, null, navigateToFPC, () {}),
             ),
             const SizedBox(
               height: 16,
@@ -58,5 +61,12 @@ class _FarmPageState extends State<FarmPage> {
         ),
       ),
     );
+  }
+
+  navigateToFPC() {
+     Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MonthlyFinalProductControlPage(currentUser)));
   }
 }
