@@ -358,9 +358,9 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
 
-    if (layingTimestamp != null && packingTimtestamp != null && acceptedEggs != null && rejectedEggs != null && bestBeforeTimestamp != null && issueTimestamp != null) {
+    if (layingTimestamp != null && packingTimtestamp != null && bestBeforeTimestamp != null && issueTimestamp != null) {
       FPCModel fpcModel = FPCModel(
-        acceptedEggs!, 
+        acceptedEggs ?? 0, 
         bestBeforeTimestamp!, 
         currentUser.documentId!, 
         Timestamp.now(), 
@@ -369,7 +369,7 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
         layingTimestamp!, 
         nextLot, 
         packingTimtestamp!, 
-        rejectedEggs!, 
+        rejectedEggs ?? 0, 
         null
       );
       bool firestoreConf = await FirebaseUtils.instance.addDocument("final_product_control", fpcModel.toMap());
@@ -410,6 +410,23 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
                   ],
                 ));
       }
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formualrio incompleto'),
+                content: Text(
+                    'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }, 
+                    child: const Text("De acuerdo")
+                  ),
+                ],
+              ));
     }
 
   }
