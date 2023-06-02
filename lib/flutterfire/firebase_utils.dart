@@ -192,6 +192,14 @@ class FirebaseUtils {
         .get();
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getNextLot() async {
+    return FirebaseFirestore.instance
+        .collection('final_product_control')
+        .orderBy("lot", descending: true)
+        .limit(1)
+        .get();
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getAllDocumentsFromCollectionFuture(String collection) {
     return FirebaseFirestore.instance
         .collection(collection)
