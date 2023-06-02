@@ -47,9 +47,9 @@ class _DailyDeletedFinalProdcutControlPageState
             style: TextStyle(
                 color: AppTheme.primary, fontSize: CustomSizes.textSize24),
           )),
-      body: Container(
-          child: monthlyFPCContainerData.list.isNotEmpty
+      body: monthlyFPCContainerData.list.isNotEmpty
               ? ListView.builder(
+                  physics: NeverScrollableScrollPhysics(), 
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   itemCount: monthlyFPCContainerData.list.length,
@@ -69,7 +69,7 @@ class _DailyDeletedFinalProdcutControlPageState
                     title: 'No hay recursos',
                     text:
                         "No hay registro de recursos de cajas y cartones no eliminados en la base de datos.",
-                  ))),
+                  )),
     );
   }
 }
