@@ -54,7 +54,7 @@ class FPCModel {
   Map<String, Object?> toMap() => {
     'accepted_eggs': acceptedEggs,
     'best_before_datetime': bestBeforeDatetime,
-    'createdby': createdBy,
+    'created_by': createdBy,
     'creation_datetime': creationDatetime,
     'deleted': deleted,
     'issue_datetime': issueDatetime,
