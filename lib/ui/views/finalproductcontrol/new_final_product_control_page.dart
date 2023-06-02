@@ -129,7 +129,7 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
                 'Cancelar', 
                 null, 
                 null, 
-                () {},
+                goBack,
                 null, 
               ),
         ])
@@ -345,6 +345,11 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
     ];
     return list;
 
+  }
+
+  goBack() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    Navigator.of(context).pop();
   }
 
 }
