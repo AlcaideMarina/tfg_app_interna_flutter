@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
+import '../../../flutterfire/firebase_utils.dart';
 import '../../../utils/Utils.dart';
 import '../../components/component_table_form_without_label.dart';
 import '../../components/component_text_input.dart';
@@ -125,7 +126,7 @@ class _ModifyFinalProductControlPageState extends State<ModifyFinalProductContro
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, null),
+              .getTypedButton('Guardar', null, null, warningUpdateFPCResource, null),
           const SizedBox(
             height: 8,
           ),
@@ -230,7 +231,10 @@ class _ModifyFinalProductControlPageState extends State<ModifyFinalProductContro
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
                 initialValue: acceptedEggs.toString(),
-                isEnabled: true
+                isEnabled: true,
+                onChange: (value) {
+                  acceptedEggs = int.tryParse(value) ?? 0;
+                },
               ),
             ),
           ],
@@ -249,6 +253,9 @@ class _ModifyFinalProductControlPageState extends State<ModifyFinalProductContro
                 textInputType: const TextInputType.numberWithOptions(),
                 initialValue: rejectedEggs.toString(),
                 isEnabled: true,
+                onChange: (value) {
+                  rejectedEggs = int.tryParse(value) ?? 0;
+                },
               ),
             ),
           ],
@@ -267,6 +274,9 @@ class _ModifyFinalProductControlPageState extends State<ModifyFinalProductContro
                 textInputType: const TextInputType.numberWithOptions(),
                 initialValue: lot.toString(),
                 isEnabled: true,
+                onChange: (value) {
+                  lot = int.tryParse(value) ?? 0;
+                },
               ),
             ),
           ],
@@ -345,6 +355,101 @@ class _ModifyFinalProductControlPageState extends State<ModifyFinalProductContro
   goBack() {
     FocusManager.instance.primaryFocus?.unfocus();
     Navigator.of(context).pop();
+  }
+
+  warningUpdateFPCResource() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+          title: const Text('Aviso'),
+          content: Text(
+              'Va a modificar la información de la fecha de expedición ${Utils().parseTimestmpToString(fpcModel.issueDatetime) ?? "-"}. ¿Quiere continuar con el proceso?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text('Continuar'),
+              onPressed: () {
+                Navigator.pop(context);
+                updateFPCResource();
+              },
+            )
+          ],
+        ));
+  }
+
+  updateFPCResource() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+
+    FPCModel updatedFPC = FPCModel(
+      acceptedEggs,
+      bestBeforeTimestamp,
+      fpcModel.createdBy,
+      fpcModel.creationDatetime, 
+      fpcModel.deleted, 
+      issueTimestamp,
+      layingTimestamp,
+      lot,
+      packingTimtestamp,
+      rejectedEggs,
+      fpcModel.documentId);
+
+    bool firestoreConf = await FirebaseUtils.instance.updateDocument("final_product_control", updatedFPC.documentId!, updatedFPC.toMap());
+    if (firestoreConf) {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('FPC actualizado'),
+                  content: Text(
+                      'Los datos del producto final se han actualizado correctamente.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.pop(context, updatedFPC);
+                      }, 
+                      child: const Text("De acuerdo")
+                    ),
+                  ],
+                ));
+      } else {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Error'),
+                  content: Text(
+                      'Se ha producido un error cuando se estaban actualizado los datos del producto final. Por favor, revise los datos e inténtelo de nuevo.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(this.context).pop();
+                      }, 
+                      child: const Text("De acuerdo")
+                    ),
+                  ],
+                ));
+      }
+    
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 
 }
