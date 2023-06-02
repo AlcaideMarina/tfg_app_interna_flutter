@@ -3,6 +3,7 @@ import 'package:hueveria_nieto_interna/data/models/fpc_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/data/models/local/monthly_fpc_container_data.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_daily_final_product_control.dart';
+import 'package:hueveria_nieto_interna/ui/views/finalproductcontrol/daily_deleted_final_product_control_page.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_colors.dart';
@@ -54,7 +55,7 @@ class _DailyFinalProductControlPageState extends State<DailyFinalProductControlP
               margin: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
               child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
                       .getTypedButton(
-                          "Eliminados", null, null, () {}, () {}),
+                          "Eliminados", null, null, navigateToDeleted, () {}),
             ),
             const SizedBox(
               height: 16,
@@ -77,6 +78,8 @@ class _DailyFinalProductControlPageState extends State<DailyFinalProductControlP
                                 FPCModel fpc = FPCModel.fromMap(item.data(), item.id);
                                 if (!fpc.deleted) {
                                   fpcDataList.add(fpc);
+                                } else {
+                                  deletedList.add(fpc);
                                 }
                               }
                             }
@@ -158,5 +161,13 @@ class _DailyFinalProductControlPageState extends State<DailyFinalProductControlP
         ),
       );
   }
-  
+
+  navigateToDeleted() {
+    MonthlyFPCContainerData deleted = MonthlyFPCContainerData(monthlyFPCContainerData.initDate, monthlyFPCContainerData.endDate, deletedList);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DailyDeletedFinalProdcutControlPage(currentUser, deleted),
+        ));
+  }  
 }
