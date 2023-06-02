@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/finalproductcontrol/modify_final_product_control_page.dart';
 import 'package:hueveria_nieto_interna/utils/utils.dart';
 
 import '../../../custom/app_theme.dart';
@@ -90,7 +91,7 @@ class _FinalProductControlDetailPageState extends State<FinalProductControlDetai
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, () {}, null),
+              .getTypedButton('Modificar', null, null, navigateToModifyFeedResource, null),
           const SizedBox(
             height: 8,
           ),
@@ -317,6 +318,19 @@ class _FinalProductControlDetailPageState extends State<FinalProductControlDetai
     
     }
   }
+
+  navigateToModifyFeedResource() async {
+    final result = await Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => ModifyFinalProductControlPage(currentUser, fpcModel)));
+
+    if (result != null) {
+      fpcModel = result;
+      setState(() {});
+    }
+  }
+
 
   showAlertDialog(BuildContext context) {
     showDialog(
