@@ -64,8 +64,20 @@ class FarmUtils {
             initDateTimestamp, endDateTimestamp, monthlyFPCDataList);
           list.add(monthlyFPCContainerData);
 
-          endDateTimestamp = initDateTimestamp;
-          initDateTimestamp = Timestamp.fromDate(Utils().addToDate(initDateTimestamp.toDate(), monthsToAdd: -1));
+          String m = item.layingDatetime.toDate().month.toString();
+          while(m.length < 2) {
+            m = '0' + m;
+          }
+          String y = item.layingDatetime.toDate().year.toString();
+          while(y.length < 4) {
+            y = '0' + y;
+          }
+
+          // Creamos fecha inicial y final
+          initDateTimestamp = Utils().parseStringToTimestamp('01/$m/$y');
+          endDateTimestamp = Timestamp.fromDate(
+            Utils().addToDate(initDateTimestamp.toDate(), monthsToAdd: 1)
+          );
           monthlyFPCDataList = [];
         }
         monthlyFPCDataList.add(item);
