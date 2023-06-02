@@ -37,7 +37,7 @@ class Utils {
   }
 
   DateTime addToDate(DateTime date, {int daysToAdd = 0, int monthsToAdd = 0, int yearsToAdd = 0}) {
-    return DateTime(date.year + yearsToAdd, date.month + 1 + monthsToAdd, date.day + daysToAdd, date.hour, date.minute, date.second, date.millisecond, date.microsecond);
+    return DateTime(date.year + yearsToAdd, date.month + monthsToAdd, date.day + daysToAdd, date.hour, date.minute, date.second, date.millisecond, date.microsecond);
   }
 
   double roundDouble(double value, int places){ 

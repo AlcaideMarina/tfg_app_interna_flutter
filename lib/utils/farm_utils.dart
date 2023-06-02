@@ -12,23 +12,21 @@ class FarmUtils {
     if (mapList != null) {
       for (var item in mapList) {
         FPCModel fpcModel = FPCModel.fromMap(item.data(), item.id);
-        if (!fpcModel.deleted) {
-          list.add(
-            FPCModel(
-              fpcModel.acceptedEggs, 
-              fpcModel.bestBeforeDatetime, 
-              fpcModel.createdBy, 
-              fpcModel.creationDatetime, 
-              fpcModel.deleted, 
-              fpcModel.issueDatetime, 
-              fpcModel.layingDatetime, 
-              fpcModel.lot, 
-              fpcModel.packingDatetime, 
-              fpcModel.rejectedEggs, 
-              fpcModel.documentId
-            )
-          );
-        }
+        list.add(
+          FPCModel(
+            fpcModel.acceptedEggs, 
+            fpcModel.bestBeforeDatetime, 
+            fpcModel.createdBy, 
+            fpcModel.creationDatetime, 
+            fpcModel.deleted, 
+            fpcModel.issueDatetime, 
+            fpcModel.layingDatetime, 
+            fpcModel.lot, 
+            fpcModel.packingDatetime, 
+            fpcModel.rejectedEggs, 
+            fpcModel.documentId
+          )
+        );
       }
     }
     return list;
@@ -61,7 +59,7 @@ class FarmUtils {
 
       List<FPCModel> monthlyFPCDataList = [];
       for (FPCModel item in fpcModelList) {
-        if(initDateTimestamp.compareTo(item.layingDatetime) > 1) {
+        if(initDateTimestamp.compareTo(item.layingDatetime) > 0) {
           MonthlyFPCContainerData monthlyFPCContainerData = MonthlyFPCContainerData(
             initDateTimestamp, endDateTimestamp, monthlyFPCDataList);
           list.add(monthlyFPCContainerData);
