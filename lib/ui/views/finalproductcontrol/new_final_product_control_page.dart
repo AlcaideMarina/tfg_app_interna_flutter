@@ -31,14 +31,14 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
     currentUser = widget.currentUser;
     nextLot = widget.nextLot;
     
-    bestBeforeDatetimeController.text = dateFormat.format(bestBeforeDatetimeMinDate);
-    bestBeforeDatetime = Timestamp.fromDate(bestBeforeDatetimeMinDate);
-    issueDatetimeController.text = dateFormat.format(issueDatetimeMinDate);
-    issueDatetime = Timestamp.fromDate(issueDatetimeMinDate);
-    layingDatetimeController.text = dateFormat.format(layingDatetimeMinDate);
-    layingDatetime = Timestamp.fromDate(layingDatetimeMinDate);
-    packingDatetimeController.text = dateFormat.format(packingDatetimeMinDate);
-    packingDatetime = Timestamp.fromDate(packingDatetimeMinDate);
+    bestBeforeTimestampController.text = dateFormat.format(bestBeforeTimestampMinDate);
+    bestBeforeTimestamp = Timestamp.fromDate(bestBeforeTimestampMinDate);
+    issueTimestampController.text = dateFormat.format(issueTimestampMinDate);
+    issueTimestamp = Timestamp.fromDate(issueTimestampMinDate);
+    layingTimestampController.text = dateFormat.format(layingTimestampMinDate);
+    layingTimestamp = Timestamp.fromDate(layingTimestampMinDate);
+    packingTimestampController.text = dateFormat.format(packingTimestampMinDate);
+    packingTimtestamp = Timestamp.fromDate(packingTimestampMinDate);
   }
 
   int? acceptedEggs;
@@ -46,21 +46,21 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
 
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
-  TextEditingController bestBeforeDatetimeController = TextEditingController();
-  DateTime bestBeforeDatetimeMinDate = Utils().addToDate(DateTime.now(), yearsToAdd: -1);
-  late Timestamp? bestBeforeDatetime;
+  TextEditingController bestBeforeTimestampController = TextEditingController();
+  DateTime bestBeforeTimestampMinDate = Utils().addToDate(DateTime.now(), yearsToAdd: -1);
+  late Timestamp? bestBeforeTimestamp;
 
-  TextEditingController issueDatetimeController = TextEditingController();
-  DateTime issueDatetimeMinDate = Utils().addToDate(DateTime.now(), yearsToAdd: -1);
-  late Timestamp? issueDatetime;
+  TextEditingController issueTimestampController = TextEditingController();
+  DateTime issueTimestampMinDate = Utils().addToDate(DateTime.now(), yearsToAdd: -1);
+  late Timestamp? issueTimestamp;
 
-  TextEditingController layingDatetimeController = TextEditingController();
-  DateTime layingDatetimeMinDate = Utils().addToDate(DateTime.now(), yearsToAdd: -1);
-  late Timestamp? layingDatetime;
+  TextEditingController layingTimestampController = TextEditingController();
+  DateTime layingTimestampMinDate = Utils().addToDate(DateTime.now(), yearsToAdd: -1);
+  late Timestamp? layingTimestamp;
 
-  TextEditingController packingDatetimeController = TextEditingController();
-  DateTime packingDatetimeMinDate = Utils().addToDate(DateTime.now(), yearsToAdd: -1);
-  late Timestamp? packingDatetime;
+  TextEditingController packingTimestampController = TextEditingController();
+  DateTime packingTimestampMinDate = Utils().addToDate(DateTime.now(), yearsToAdd: -1);
+  late Timestamp? packingTimtestamp;
 
   @override
   Widget build(BuildContext context) {
@@ -156,17 +156,17 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
                   DateTime? pickedDate = await showDatePicker(
                     context: context, 
                     initialDate: DateTime.now(), 
-                    firstDate: layingDatetimeMinDate, 
+                    firstDate: layingTimestampMinDate, 
                     lastDate: DateTime.now()
                   );
                   if (pickedDate != null) {
                     setState(() {
-                      layingDatetime = Timestamp.fromDate(pickedDate);
-                      layingDatetimeController.text = dateFormat.format(pickedDate);
+                      layingTimestamp = Timestamp.fromDate(pickedDate);
+                      layingTimestampController.text = dateFormat.format(pickedDate);
                     });
                   }
                 },
-                textEditingController: layingDatetimeController
+                textEditingController: layingTimestampController
               ),
             ),
           ],
@@ -189,17 +189,17 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
                   DateTime? pickedDate = await showDatePicker(
                     context: context, 
                     initialDate: DateTime.now(), 
-                    firstDate: packingDatetimeMinDate, 
+                    firstDate: packingTimestampMinDate, 
                     lastDate: DateTime.now()
                   );
                   if (pickedDate != null) {
                     setState(() {
-                      packingDatetime = Timestamp.fromDate(pickedDate);
-                      packingDatetimeController.text = dateFormat.format(pickedDate);
+                      packingTimtestamp = Timestamp.fromDate(pickedDate);
+                      packingTimestampController.text = dateFormat.format(pickedDate);
                     });
                   }
                 },
-                textEditingController: packingDatetimeController
+                textEditingController: packingTimestampController
               ),
             ),
           ]
@@ -294,17 +294,17 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
                   DateTime? pickedDate = await showDatePicker(
                     context: context, 
                     initialDate: DateTime.now(), 
-                    firstDate: layingDatetimeMinDate, 
+                    firstDate: layingTimestampMinDate, 
                     lastDate: DateTime.now()
                   );
                   if (pickedDate != null) {
                     setState(() {
-                      layingDatetime = Timestamp.fromDate(pickedDate);
-                      layingDatetimeController.text = dateFormat.format(pickedDate);
+                      layingTimestamp = Timestamp.fromDate(pickedDate);
+                      layingTimestampController.text = dateFormat.format(pickedDate);
                     });
                   }
                 },
-                textEditingController: layingDatetimeController
+                textEditingController: layingTimestampController
               ),
             ),
           ],
@@ -327,17 +327,17 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
                   DateTime? pickedDate = await showDatePicker(
                     context: context, 
                     initialDate: DateTime.now(), 
-                    firstDate: layingDatetimeMinDate, 
+                    firstDate: layingTimestampMinDate, 
                     lastDate: DateTime.now()
                   );
                   if (pickedDate != null) {
                     setState(() {
-                      layingDatetime = Timestamp.fromDate(pickedDate);
-                      layingDatetimeController.text = dateFormat.format(pickedDate);
+                      layingTimestamp = Timestamp.fromDate(pickedDate);
+                      layingTimestampController.text = dateFormat.format(pickedDate);
                     });
                   }
                 },
-                textEditingController: layingDatetimeController
+                textEditingController: layingTimestampController
               ),
             ),
           ]
