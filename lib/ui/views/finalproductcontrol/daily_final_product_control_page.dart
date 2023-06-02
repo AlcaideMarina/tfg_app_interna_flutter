@@ -38,7 +38,7 @@ class _DailyFinalProductControlPageState extends State<DailyFinalProductControlP
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+    deletedList = [];
     return Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
