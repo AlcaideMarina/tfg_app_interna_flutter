@@ -4,6 +4,7 @@ import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/data/models/local/monthly_fpc_container_data.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_daily_final_product_control.dart';
 import 'package:hueveria_nieto_interna/ui/views/finalproductcontrol/daily_deleted_final_product_control_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/finalproductcontrol/final_product_control_detail_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/finalproductcontrol/new_final_product_control_page.dart';
 
 import '../../../custom/app_theme.dart';
@@ -100,7 +101,9 @@ class _DailyFinalProductControlPageState extends State<DailyFinalProductControlP
                                               horizontal: 32, vertical: 8),
                                           child: HNComponentDailyFPC(
                                             fpcDataList[i],
-                                            onTap: () {},
+                                            onTap: () {
+                                              navigateToDetail(fpcDataList[i]);
+                                            },
                                           ),
                                         );
                                         
@@ -182,6 +185,14 @@ class _DailyFinalProductControlPageState extends State<DailyFinalProductControlP
         context,
         MaterialPageRoute(
           builder: (context) => NewFinalProductControlPage(currentUser, nextLot),
+        ));
+  }  
+
+  navigateToDetail(FPCModel fpcModel) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => FinalProductControlDetailPage(currentUser, fpcModel),
         ));
   }  
 }
