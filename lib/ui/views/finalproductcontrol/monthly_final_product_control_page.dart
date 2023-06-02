@@ -11,6 +11,7 @@ import '../../../custom/custom_sizes.dart';
 import '../../../flutterfire/firebase_utils.dart';
 import '../../components/component_fpc_monthly_container_item.dart';
 import '../../components/component_panel.dart';
+import 'new_final_product_control_page.dart';
 
 class MonthlyFinalProductControlPage extends StatefulWidget {
   const MonthlyFinalProductControlPage(this.currentUser, {Key? key}) : super(key: key);
@@ -107,6 +108,11 @@ class _MonthlyFinalProductControlPageState extends State<MonthlyFinalProductCont
                 }),
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: CustomColors.redPrimaryColor,
+          child: const Icon(Icons.add_rounded),
+          onPressed: navigateToNewFPC
+        ),
       );
   }
 
@@ -117,4 +123,17 @@ class _MonthlyFinalProductControlPageState extends State<MonthlyFinalProductCont
           builder: (context) => DailyFinalProductControlPage(currentUser, data),
         ));
   }
+
+  navigateToNewFPC() async {
+    var futureGetNextLot = await FirebaseUtils.instance.getNextLot();
+    int nextLot = 0;
+    if (futureGetNextLot.docs.isNotEmpty) {
+      nextLot = futureGetNextLot.docs[0].data()['lot'] + 1;
+    }
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NewFinalProductControlPage(currentUser, nextLot),
+        ));
+  }  
 }
