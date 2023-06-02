@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/data/models/fpc_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 import 'package:intl/intl.dart';
 
 import '../../../custom/app_theme.dart';
@@ -120,7 +122,7 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
       child: Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, null),
+              .getTypedButton('Guardar', null, null, saveFPC, null),
           const SizedBox(
             height: 8,
           ),
@@ -294,17 +296,17 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
                   DateTime? pickedDate = await showDatePicker(
                     context: context, 
                     initialDate: DateTime.now(), 
-                    firstDate: layingTimestampMinDate, 
-                    lastDate: DateTime.now()
+                    firstDate: bestBeforeTimestampMinDate, 
+                    lastDate: Utils().addToDate(DateTime.now(), yearsToAdd: 1)
                   );
                   if (pickedDate != null) {
                     setState(() {
-                      layingTimestamp = Timestamp.fromDate(pickedDate);
-                      layingTimestampController.text = dateFormat.format(pickedDate);
+                      bestBeforeTimestamp = Timestamp.fromDate(pickedDate);
+                      bestBeforeTimestampController.text = dateFormat.format(pickedDate);
                     });
                   }
                 },
-                textEditingController: layingTimestampController
+                textEditingController: bestBeforeTimestampController
               ),
             ),
           ],
@@ -327,17 +329,17 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
                   DateTime? pickedDate = await showDatePicker(
                     context: context, 
                     initialDate: DateTime.now(), 
-                    firstDate: layingTimestampMinDate, 
-                    lastDate: DateTime.now()
+                    firstDate: issueTimestampMinDate, 
+                    lastDate: Utils().addToDate(DateTime.now(), yearsToAdd: 1)
                   );
                   if (pickedDate != null) {
                     setState(() {
-                      layingTimestamp = Timestamp.fromDate(pickedDate);
-                      layingTimestampController.text = dateFormat.format(pickedDate);
+                      issueTimestamp = Timestamp.fromDate(pickedDate);
+                      issueTimestampController.text = dateFormat.format(pickedDate);
                     });
                   }
                 },
-                textEditingController: layingTimestampController
+                textEditingController: issueTimestampController
               ),
             ),
           ]
@@ -350,6 +352,78 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
   goBack() async {
     FocusManager.instance.primaryFocus?.unfocus();
     Navigator.of(context).pop();
+  }
+
+  saveFPC() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+
+    if (layingTimestamp != null && packingTimtestamp != null && acceptedEggs != null && rejectedEggs != null && bestBeforeTimestamp != null && issueTimestamp != null) {
+      FPCModel fpcModel = FPCModel(
+        acceptedEggs!, 
+        bestBeforeTimestamp!, 
+        currentUser.documentId!, 
+        Timestamp.now(), 
+        false, 
+        issueTimestamp!, 
+        layingTimestamp!, 
+        nextLot, 
+        packingTimtestamp!, 
+        rejectedEggs!, 
+        null
+      );
+      bool firestoreConf = await FirebaseUtils.instance.addDocument("final_product_control", fpcModel.toMap());
+      if (firestoreConf) {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('FPC guardado'),
+                  content: Text(
+                      'El producto final ha sido guardado correctamente en la base de datos.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            ..pop()
+                            ..pop();
+                      }, 
+                      child: const Text("De acuerdo")
+                    ),
+                  ],
+                ));
+      } else {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Error'),
+                  content: Text(
+                      'Se ha producido un error al guardar producto final. Por favor, revise los datos e inténtelo de nuevo.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(this.context).pop();
+                      }, 
+                      child: const Text("De acuerdo")
+                    ),
+                  ],
+                ));
+      }
+    }
+
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 
 }
