@@ -172,11 +172,16 @@ class _DailyFinalProductControlPageState extends State<DailyFinalProductControlP
         ));
   }  
 
-  navigateToNewFPC() {
+  navigateToNewFPC() async {
+    var futureGetNextLot = await FirebaseUtils.instance.getNextLot();
+    int nextLot = 0;
+    if (futureGetNextLot.docs.isNotEmpty) {
+      nextLot = futureGetNextLot.docs[0].data()['lot'] + 1;
+    }
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => NewFinalProductControlPage(currentUser),
+          builder: (context) => NewFinalProductControlPage(currentUser, nextLot),
         ));
   }  
 }

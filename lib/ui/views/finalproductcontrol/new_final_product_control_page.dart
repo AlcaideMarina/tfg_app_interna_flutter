@@ -12,9 +12,10 @@ import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class NewFinalProductControlPage extends StatefulWidget {
-  const NewFinalProductControlPage(this.currentUser, {Key? key}) : super(key: key);
+  const NewFinalProductControlPage(this.currentUser, this.nextLot, {Key? key}) : super(key: key);
 
   final InternalUserModel currentUser;
+  final int nextLot;
 
   @override
   State<NewFinalProductControlPage> createState() => _NewFinalProductControlPageState();
@@ -22,11 +23,13 @@ class NewFinalProductControlPage extends StatefulWidget {
 
 class _NewFinalProductControlPageState extends State<NewFinalProductControlPage> {
   late InternalUserModel currentUser;
+  late int nextLot;
 
   @override
   void initState() {
     super.initState();
     currentUser = widget.currentUser;
+    nextLot = widget.nextLot;
     
     bestBeforeDatetimeController.text = dateFormat.format(bestBeforeDatetimeMinDate);
     bestBeforeDatetime = Timestamp.fromDate(bestBeforeDatetimeMinDate);
@@ -39,7 +42,6 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
   }
 
   int? acceptedEggs;
-  int? lot;
   int? rejectedEggs;
 
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
@@ -265,10 +267,10 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (lot ?? 0).toString(),
+                initialValue: nextLot.toString(),
                 isEnabled: true,
                 onChange: (value) {
-                  lot = int.tryParse(value) ?? 0;
+                  nextLot = int.tryParse(value) ?? 0;
                 },
               ),
             ),
