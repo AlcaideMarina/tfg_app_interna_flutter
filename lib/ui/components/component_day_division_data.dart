@@ -6,8 +6,9 @@ import '../../utils/Utils.dart';
 import '../../values/image_routes.dart';
 
 class HNComponentDayDivisionData extends StatelessWidget {
-  const HNComponentDayDivisionData(this.timestamp, {Key? key, this.onTap}) : super(key: key);
+  const HNComponentDayDivisionData(this.dayOfWeek, this.timestamp, {Key? key, this.onTap}) : super(key: key);
 
+  final String dayOfWeek;
   final Timestamp timestamp;
   final Function()? onTap;
 
@@ -27,7 +28,7 @@ class HNComponentDayDivisionData extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(Utils().parseTimestmpToString(timestamp) ?? "?"),
+                      Text(dayOfWeek + " - " + (Utils().parseTimestmpToString(timestamp, dateFormat: "dd, MMMM, yyyy") ?? "?")),
                     ],
                   ),
                 ),

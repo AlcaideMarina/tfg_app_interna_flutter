@@ -5,6 +5,7 @@ import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_day_division_data.dart';
 import 'package:hueveria_nieto_interna/ui/views/monitoringcompanysituation/monthly_monitoring_company_situation_page.dart';
 import 'package:hueveria_nieto_interna/utils/farm_utils.dart';
+import 'package:hueveria_nieto_interna/utils/utils.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_colors.dart';
@@ -125,16 +126,73 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
                 },
               ),
               Expanded(
-                child: ListView.builder(
-                  itemCount: 7, // Número de días de la semana
-                  itemBuilder: (context, index) {
-                    return Container(
+                child: ListView(
+                  children: [
+                    Container(
                       margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
                       child: HNComponentDayDivisionData(
-                        Timestamp.now(), 
-                        onTap: () {})
-                      );
-                  },
+                        "Lunes",
+                        Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 0)), 
+                        onTap: () {}
+                      )
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                      child: HNComponentDayDivisionData(
+                        "Martes",
+                        Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 1)), 
+                        onTap: () {}
+                      )
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                      child: HNComponentDayDivisionData(
+                        "Miércoles",
+                        Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 2)), 
+                        onTap: () {}
+                      )
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                      child: HNComponentDayDivisionData(
+                        "Jueves",
+                        Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 3)), 
+                        onTap: () {}
+                      )
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                      child: HNComponentDayDivisionData(
+                        "Viernes",
+                        Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 4)), 
+                        onTap: () {}
+                      )
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                      child: HNComponentDayDivisionData(
+                        "Lunes",
+                        Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 5)), 
+                        onTap: () {}
+                      )
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                      child: HNComponentDayDivisionData(
+                        "Sábado",
+                        Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 6)), 
+                        onTap: () {}
+                      )
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                      child: HNComponentDayDivisionData(
+                        "Domingo",
+                        Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 7)), 
+                        onTap: () {}
+                      )
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -143,55 +201,6 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
     );
   }
 
-  /*Widget getWeeklySummary() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 40),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          title == null
-              ? Container()
-              : Text(
-                  title!,
-                  style: const TextStyle(fontSize: 20.0),
-                  textAlign: TextAlign.center,
-                ),
-          SizedBox(height: space1),
-          subtitle == null
-              ? Container()
-              : Text(
-                  subtitle!,
-                  style: const TextStyle(
-                      fontSize: 14.0, color: CustomColors.grayColor),
-                  textAlign: TextAlign.center,
-                ),
-          SizedBox(height: space2),
-          text == null
-              ? Container()
-              : Text(
-                  text!,
-                  style: const TextStyle(fontSize: 16.0),
-                  textAlign: TextAlign.center,
-                ),
-          SizedBox(height: space3),
-          subtext == null
-              ? Container()
-              : Text(
-                  subtext!,
-                  style: const TextStyle(
-                      fontSize: 13.0, color: CustomColors.grayColor),
-                  textAlign: TextAlign.center,
-                )
-        ],
-      ),
-      decoration: BoxDecoration(
-          color: CustomColors.redGraySecondaryColor,
-          border: Border.all(
-            color: CustomColors.redGraySecondaryColor,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(20))),
-    );
-  }*/
+  
 
 }
