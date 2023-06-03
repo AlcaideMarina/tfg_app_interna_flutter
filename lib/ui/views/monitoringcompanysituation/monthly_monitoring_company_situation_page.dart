@@ -4,6 +4,7 @@ import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_week_division_data.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_year_month_alert_dialog.dart';
+import 'package:hueveria_nieto_interna/ui/views/monitoringcompanysituation/weekly_monitoring_company_situation_page.dart';
 import 'package:intl/intl.dart';
 
 import '../../../custom/app_theme.dart';
@@ -152,10 +153,24 @@ class _MonthlyMonitoringCompanySituationPageState
         HNComponentWeekDivisionData(
           Timestamp.fromDate(initDate), 
           Timestamp.fromDate(Utils().addToDate(initDate, daysToAdd: 6)),
-          onTap: () {},
+          onTap: () {
+            navigateToDailyMCS(
+              Timestamp.fromDate(initDate),
+              Timestamp.fromDate(Utils().addToDate(initDate, daysToAdd: 6))
+            );
+          },
         )
       );
       initDate = Utils().addToDate(initDate, daysToAdd: 7);
     }
   }
+
+  navigateToDailyMCS(Timestamp initTimestamp, Timestamp endTimestamp) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => WeeklyMonitoringCompanySituationPage(currentUser, initTimestamp, endTimestamp),
+        ));
+  }
+
 }
