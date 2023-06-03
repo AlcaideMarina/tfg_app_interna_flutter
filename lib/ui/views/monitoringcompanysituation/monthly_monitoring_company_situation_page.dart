@@ -68,7 +68,7 @@ class _MonthlyMonitoringCompanySituationPageState
                 children: [
                   getFilterComponent(),
                   const SizedBox(
-                    height: 16,
+                    height: 32,
                   ),
                   ListView.builder(
                     shrinkWrap: true,
@@ -121,7 +121,7 @@ class _MonthlyMonitoringCompanySituationPageState
         },
         child: Align(
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 64),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 64),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -133,7 +133,7 @@ class _MonthlyMonitoringCompanySituationPageState
                 border: Border.all(
                   color: CustomColors.redPrimaryColor,
                 ),
-                borderRadius: const BorderRadius.all(Radius.circular(20))),
+                borderRadius: const BorderRadius.all(Radius.circular(8))),
           ),
         ));
   }
