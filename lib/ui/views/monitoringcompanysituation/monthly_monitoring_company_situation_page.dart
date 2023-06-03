@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/data/models/local/component_week_division_data.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_year_month_alert_dialog.dart';
 import 'package:intl/intl.dart';
 
@@ -28,14 +29,27 @@ class _MonthlyMonitoringCompanySituationPageState
   void initState() {
     super.initState();
     currentUser = widget.currentUser;
+    String m = now.month.toString();
+    while (m.length < 2) {
+      m = '0' + m;
+    }
+    String y = now.year.toString();
+    while (y.length < 4) {
+      y = '0' + y;
+    }
+    initFilterDatetime = Utils().parseStringToTimestamp('01/' + m + "/" + y).toDate();
+    endFilterDatetime = Utils().addToDate(initFilterDatetime, monthsToAdd: 1);
   }
 
-  DateTime initialDate = DateTime.now();
-  final ValueNotifier<DateTime?> selectedDateNotifier =
-      ValueNotifier<DateTime?>(null);
+  DateTime now = DateTime.now();
+  DateTime initFilterDatetime = DateTime.now();
+  DateTime endFilterDatetime = DateTime.now();
+  
+  List<HNComponentWeekDivisionData> list = [];
 
   @override
   Widget build(BuildContext context) {
+    getList();
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -51,7 +65,23 @@ class _MonthlyMonitoringCompanySituationPageState
             child: Container(
               margin: const EdgeInsets.fromLTRB(24, 16, 24, 32),
               child: Column(
-                children: [getFilterComponent()],
+                children: [
+                  getFilterComponent(),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemCount: list.length,
+                    itemBuilder: (context, i) {
+                      return Container(
+                        margin: const EdgeInsets.all(8),
+                        child: list[i]
+                      );
+                    }
+                  )
+                ],
               ),
             ),
           ),
@@ -65,7 +95,7 @@ class _MonthlyMonitoringCompanySituationPageState
             context: context,
             builder: (BuildContext context) {
               return HNComponentYearMonthAlertDialog(
-                initialDate: initialDate,
+                initialDate: initFilterDatetime,
                 firstDate: DateTime(DateTime.now().year - 1),
                 lastDate: DateTime(DateTime.now().year + 1),
               );
@@ -74,7 +104,18 @@ class _MonthlyMonitoringCompanySituationPageState
 
           if (picked != null) {
             setState(() {
-              initialDate = DateTime(picked.year, picked.month);
+              initFilterDatetime = DateTime(picked.year, picked.month);
+              String m = picked.month.toString();
+              while (m.length < 2) {
+                m = '0' + m;
+              }
+              String y = picked.year.toString();
+              while (y.length < 4) {
+                y = '0' + y;
+              }
+              initFilterDatetime = Utils().parseStringToTimestamp('01/' + m + "/" + y).toDate();
+              endFilterDatetime = Utils().addToDate(initFilterDatetime, monthsToAdd: 1);
+              getList();
             });
           }
         },
@@ -84,7 +125,7 @@ class _MonthlyMonitoringCompanySituationPageState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(Utils().parseTimestmpToString(Timestamp.fromDate(initialDate), dateFormat: "MMMM, yyyy") ?? ""),
+                Text(Utils().parseTimestmpToString(Timestamp.fromDate(initFilterDatetime), dateFormat: "MMMM, yyyy") ?? ""),
               ],
             ),
             decoration: BoxDecoration(
@@ -95,5 +136,26 @@ class _MonthlyMonitoringCompanySituationPageState
                 borderRadius: const BorderRadius.all(Radius.circular(20))),
           ),
         ));
+  }
+
+  getList() {
+    int initDayOfWeek = initFilterDatetime.weekday;
+    DateTime initDate = Utils().addToDate(initFilterDatetime, daysToAdd: 1 - initDayOfWeek);
+
+    int endDayOfWeek = endFilterDatetime.weekday;
+    DateTime endDate = Utils().addToDate(endFilterDatetime, daysToAdd: 7 - endDayOfWeek);
+
+    list = [];
+
+    while (initDate.isBefore(endDate)) {
+      list.add(
+        HNComponentWeekDivisionData(
+          Timestamp.fromDate(initDate), 
+          Timestamp.fromDate(Utils().addToDate(initDate, daysToAdd: 6)),
+          onTap: () {},
+        )
+      );
+      initDate = Utils().addToDate(initDate, daysToAdd: 7);
+    }
   }
 }
