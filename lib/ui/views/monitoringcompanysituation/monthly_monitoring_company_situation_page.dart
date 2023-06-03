@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
-import 'package:hueveria_nieto_interna/data/models/local/component_week_division_data.dart';
+import 'package:hueveria_nieto_interna/ui/components/component_week_division_data.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_year_month_alert_dialog.dart';
 import 'package:intl/intl.dart';
 
