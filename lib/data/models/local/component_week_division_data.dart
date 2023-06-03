@@ -6,13 +6,13 @@ import '../../../custom/custom_colors.dart';
 import '../../../values/image_routes.dart';
 
 
-class ComponentWeekDivisionData extends StatelessWidget {
+class HNComponentWeekDivisionData extends StatelessWidget {
 
   final Timestamp initTimestamp;
   final Timestamp endTimestamp;
   final Function()? onTap;
 
-  const ComponentWeekDivisionData(
+  const HNComponentWeekDivisionData(
     this.initTimestamp,
     this.endTimestamp, 
     {Key? key, this.onTap}) : super(key: key);
