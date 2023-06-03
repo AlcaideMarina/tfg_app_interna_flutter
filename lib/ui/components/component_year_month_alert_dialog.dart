@@ -7,11 +7,11 @@ class HNComponentYearMonthAlertDialog extends StatefulWidget {
   final DateTime firstDate;
   final DateTime lastDate;
 
-  HNComponentYearMonthAlertDialog({
+  const HNComponentYearMonthAlertDialog({Key? key, 
     required this.initialDate,
     required this.firstDate,
     required this.lastDate,
-  });
+  }) : super(key: key);
 
   @override
   _HNComponentYearMonthAlertDialogState createState() => _HNComponentYearMonthAlertDialogState();
@@ -123,10 +123,9 @@ class _HNComponentYearMonthAlertDialogState extends State<HNComponentYearMonthAl
                       padding: const EdgeInsets.only(left: 4.0),
                       child: TextButton(
                         onPressed: () {
-                          final DateTime selectedDate = DateTime(selectedYear, selectedMonth);
-                          Navigator.of(context).pop(selectedDate);
+                          Navigator.of(context).pop();
                         },
-                        child: Text('Aceptar'),
+                        child: Text('Cancelar'),
                       ),
                     ),
                   ),
@@ -142,9 +141,10 @@ class _HNComponentYearMonthAlertDialogState extends State<HNComponentYearMonthAl
                       padding: const EdgeInsets.only(right: 4.0),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          final DateTime selectedDate = DateTime(selectedYear, selectedMonth);
+                          Navigator.pop(context, selectedDate);
                         },
-                        child: Text('Cancelar'),
+                        child: Text('Aceptar'),
                       ),
                     ),
                   ),
