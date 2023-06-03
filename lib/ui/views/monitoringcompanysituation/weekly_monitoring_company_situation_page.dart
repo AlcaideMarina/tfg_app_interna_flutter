@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_day_division_data.dart';
+import 'package:hueveria_nieto_interna/ui/views/monitoringcompanysituation/monthly_monitoring_company_situation_page.dart';
+import 'package:hueveria_nieto_interna/utils/farm_utils.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_colors.dart';
 import '../../../custom/custom_sizes.dart';
+import '../../../data/models/local/weekly_monitoring_company_situation_data.dart';
+import '../../../data/models/monitoring_company_situation_model.dart';
 
 class WeeklyMonitoringCompanySituationPage extends StatefulWidget {
   const WeeklyMonitoringCompanySituationPage(this.currentUser, this.initTimestamp, this.endTimestamp, {Key? key}) : super(key: key);
@@ -51,29 +55,55 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
         body: Column(
             children: [
               StreamBuilder(
-                stream: FirebaseUtils.instance.getAllDocumentsFromCollection("user_info"), // Reemplaza "myDataStream" con tu propio stream
-                builder: (context, snapshot) {
-                  /*if (snapshot.hasData) {
+                stream: FirebaseUtils.instance.getDocumentsBetweenDates("farm_situation", "situation_datetime", initTimestamp, endTimestamp),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasData) {
                     // Datos disponibles
                     final data = snapshot.data!;
+
+                    WeeklyMonitoringCompanySituationData weeklyData = FarmUtils().parseFromFarmSituationToModel(snapshot.data!);
         
-                    return Container(
-                      color: Colors.red,
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          Text(
-                            'Hola',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    return Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(24, 8, 24, 16),
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 4),
+                                child: Center(
+                                  child: Text("Información semanal")
+                                ),
+                                width: double.infinity,
+                                decoration: const BoxDecoration(
+                                  color: CustomColors.redPrimaryColor,
+                                  borderRadius: BorderRadius.vertical(top: Radius.circular(16))
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(16),
+                                width: double.infinity,
+                                decoration: const BoxDecoration(
+                                  color: CustomColors.redGrayLightSecondaryColor,
+                                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Puesta semanal:   " + weeklyData.weeklyLaying.toString()),
+                                    Text("Porcentaje de puesta semanal:   " + weeklyData.weeklyLayingRate.toString() + "%")
+                                  ],
+                                )
+                              )
+                            ],
                           ),
-                          for (var item in data)
-                            Text(item),
-                        ],
-                      ),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 1,
+                          color: CustomColors.redPrimaryColor,
+                        )
+                      ],
                     );
                   } else if (snapshot.hasError) {
                     // Error al obtener los datos
@@ -85,47 +115,13 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
                   } else {
                     // Datos aún no disponibles
                     return Container(
-                      color: Colors.red,
                       padding: EdgeInsets.all(16),
-                      child: Text('Cargando datos...'),
-                    );
-                  }*/
-                  return Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.symmetric(vertical: 4),
-                              child: Center(
-                                child: Text("Información semanal")
-                              ),
-                              width: double.infinity,
-                              decoration: const BoxDecoration(
-                                color: CustomColors.redPrimaryColor,
-                                borderRadius: BorderRadius.vertical(top: Radius.circular(16))
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                              width: double.infinity,
-                              decoration: const BoxDecoration(
-                                color: CustomColors.redGrayLightSecondaryColor,
-                                borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))
-                              ),
-                              child: Text("hola")
-                            )
-                          ],
-                        ),
+                      child: Center(
+                        child: CircularProgressIndicator(),
                       ),
-                      Container(
-                        width: double.infinity,
-                        height: 1,
-                        color: CustomColors.redPrimaryColor,
-                      )
-                    ],
-                  );
+                    );
+                  }
+                  
                 },
               ),
               Expanded(
