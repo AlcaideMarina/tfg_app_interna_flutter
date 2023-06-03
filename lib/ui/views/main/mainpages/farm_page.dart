@@ -3,6 +3,7 @@ import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/data/models/local/monthly_fpc_container_data.dart';
 import 'package:hueveria_nieto_interna/ui/views/clientsbilling/montly_billing_detail_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/finalproductcontrol/monthly_final_product_control_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/monitoringcompanysituation/monthly_monitoring_company_situation_page.dart';
 
 import '../../../../custom/app_theme.dart';
 import '../../../../custom/custom_sizes.dart';
@@ -37,7 +38,7 @@ class _FarmPageState extends State<FarmPage> {
       appBar: AppBar(
           toolbarHeight: 56.0,
           title: const Text(
-            "Material",
+            "Granja",
             style: TextStyle(
                 color: AppTheme.primary, fontSize: CustomSizes.textSize24),
           )),
@@ -55,7 +56,7 @@ class _FarmPageState extends State<FarmPage> {
             ),
             Container(
               child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Seg. siguación granja", null, null, () {}, () {}),
+                  "Seg. siguación granja", null, null, navigateToMCS, () {}),
             ),
           ],
         ),
@@ -69,4 +70,12 @@ class _FarmPageState extends State<FarmPage> {
         MaterialPageRoute(
             builder: (context) => MonthlyFinalProductControlPage(currentUser)));
   }
+
+  navigateToMCS() {
+     Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MonthlyMonitoringCompanySituationPage(currentUser)));
+  }
+
 }
