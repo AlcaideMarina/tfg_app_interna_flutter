@@ -152,15 +152,14 @@ class _MonthlyMonitoringCompanySituationPageState
     list = [];
 
     while (initDate.isBefore(endDate)) {
+      Timestamp init = Timestamp.fromDate(initDate);
+      Timestamp end = Timestamp.fromDate(Utils().addToDate(initDate, daysToAdd: 6));
       list.add(
         HNComponentWeekDivisionData(
-          Timestamp.fromDate(initDate), 
-          Timestamp.fromDate(Utils().addToDate(initDate, daysToAdd: 6)),
+          init, 
+          end,
           onTap: () {
-            navigateToDailyMCS(
-              Timestamp.fromDate(initDate),
-              Timestamp.fromDate(Utils().addToDate(initDate, daysToAdd: 6))
-            );
+            navigateToDailyMCS(init,end);
           },
         )
       );
