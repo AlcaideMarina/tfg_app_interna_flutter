@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hueveria_nieto_interna/data/models/fpc_model.dart';
 
 import '../data/models/local/monthly_fpc_container_data.dart';
+import '../data/models/local/weekly_monitoring_company_situation_data.dart';
+import '../data/models/monitoring_company_situation_model.dart';
 import 'Utils.dart';
 
 class FarmUtils {
@@ -93,6 +95,36 @@ class FarmUtils {
       }
     }
     return list;
+  }
+
+  WeeklyMonitoringCompanySituationData parseFromFarmSituationToModel(QuerySnapshot<Object?> data) {
+    double averageNumberHensWeek = 0;
+    int totalNumberHensWeek = 0;
+    int weeklyLaying = 0;
+    double weeklyLayingRate = 0;
+
+    if (data.docs.isNotEmpty) {
+      for (var r in data.docs) {
+        if (r.data() != null) {
+          MonitoringCompanySituationModel mcsModel = 
+              MonitoringCompanySituationModel.fromMap(
+                r.data() as Map<String, dynamic>, r.id);
+          totalNumberHensWeek += mcsModel.hens["alive"] as int;
+          weeklyLaying += (mcsModel.xlEggs as int) + (mcsModel.lEggs as int) + (mcsModel.mEggs as int) + (mcsModel.sEggs as int);
+        }
+      }
+      averageNumberHensWeek = totalNumberHensWeek / data.docs.length;
+      if (averageNumberHensWeek == 0) {
+        averageNumberHensWeek = 1;
+      }
+      weeklyLayingRate = weeklyLaying / data.docs.length / averageNumberHensWeek.toDouble();
+    }
+    
+    return WeeklyMonitoringCompanySituationData(
+      averageNumberHensWeek,
+      weeklyLaying,
+      weeklyLayingRate
+    );
   }
 
 }
