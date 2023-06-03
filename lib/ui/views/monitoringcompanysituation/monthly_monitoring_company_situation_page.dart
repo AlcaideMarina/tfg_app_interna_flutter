@@ -64,12 +64,15 @@ class _MonthlyMonitoringCompanySituationPageState
           top: false,
           child: SingleChildScrollView(
             child: Container(
-              margin: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+              //margin: const EdgeInsets.fromLTRB(24, 16, 24, 32),
               child: Column(
                 children: [
+                  const SizedBox(
+                    height: 24,
+                  ),
                   getFilterComponent(),
                   const SizedBox(
-                    height: 32,
+                    height: 24,
                   ),
                   ListView.builder(
                     shrinkWrap: true,
@@ -77,7 +80,7 @@ class _MonthlyMonitoringCompanySituationPageState
                     itemCount: list.length,
                     itemBuilder: (context, i) {
                       return Container(
-                        margin: const EdgeInsets.all(8),
+                        margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
                         child: list[i]
                       );
                     }
