@@ -32,10 +32,12 @@ class _LateralMenuState extends State<LateralMenu> {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        padding: EdgeInsets.zero,
         children: [
-          const LateralMenuHeader(),
-          ListTile(
+      Container(
+        height: 128, // Establece la altura mínima deseada
+        child: LateralMenuHeader(currentUser)
+      ),
+      ListTile(
             leading: const Icon(Icons.home_outlined),
             title: const Text('Inicio', style: TextStyle(color: CustomColors.blackColor),),
             onTap: () {
