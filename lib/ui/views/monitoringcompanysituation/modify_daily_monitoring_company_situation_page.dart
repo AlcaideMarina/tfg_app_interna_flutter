@@ -403,7 +403,7 @@ class _ModifyDailyMonitoringCompanySituationPageState extends State<ModifyDailyM
   saveMCS() async {
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
-    // TODO: Comprobar campos
+    
     bool firestoreConf = false;
     MonitoringCompanySituationModel updatedMCS;
     if (mcsModel.documentId != null) {

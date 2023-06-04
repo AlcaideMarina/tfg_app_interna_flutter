@@ -50,7 +50,7 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Ver clientes",
+              "Seg. sit. empresa",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
