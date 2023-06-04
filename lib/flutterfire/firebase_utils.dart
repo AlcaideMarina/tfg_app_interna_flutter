@@ -189,7 +189,7 @@ class FirebaseUtils {
     return FirebaseFirestore.instance
         .collection(collection)
         .where(field, isGreaterThanOrEqualTo: initTimestamp)
-        .where(field, isLessThanOrEqualTo: endTimestamp)
+        .where(field, isLessThan: endTimestamp)
         .get();
   }
 
