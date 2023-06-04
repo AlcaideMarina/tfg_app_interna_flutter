@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/main/main_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/economy_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/farm_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/material_and_resources_page.dart';
@@ -38,7 +39,7 @@ class _LateralMenuState extends State<LateralMenu> {
             leading: const Icon(Icons.home_outlined),
             title: const Text('Inicio', style: TextStyle(color: CustomColors.blackColor),),
             onTap: () {
-              print("Se ha pulsado el botón de inicio del menú lateral");
+              navigateToHome();
             },
           ),
           ListTile(
@@ -115,6 +116,13 @@ class _LateralMenuState extends State<LateralMenu> {
       context, 
       MaterialPageRoute(
         builder: (context) => FarmPage(currentUser)));
+  }
+
+  navigateToHome() {
+    Navigator.pushReplacement(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => HomePage(currentUser)));
   }
 
 }
