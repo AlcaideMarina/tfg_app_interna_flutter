@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
@@ -261,7 +262,7 @@ class _ModifyDailyMonitoringCompanySituationPageState extends State<ModifyDailyM
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                initialValue: mEggs.toString(),
+                initialValue: mBox.toString(),
                 isEnabled: true,
                 onChange: (value) {
                   mBox = int.tryParse(value) ?? 0;
@@ -394,7 +395,99 @@ class _ModifyDailyMonitoringCompanySituationPageState extends State<ModifyDailyM
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
         .getTypedButton(
-          "Guardar", null, null, () {}, null),
+          "Guardar", null, null, saveMCS, null),
     );
   }
+
+  saveMCS() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+    // TODO: Comprobar campos
+    if (mcsModel.documentId != null) {
+      // Actualizar
+      MonitoringCompanySituationModel updatedMCS = MonitoringCompanySituationModel(
+        brokenEggs,
+        mcsModel.createdBy,
+        mcsModel.creationDatetime,
+        {
+          "alive": 0,
+          "losses": lostHens,
+        },
+        {
+          "boxes": lBox,
+          "cartons": lCartons,
+          "eggs": lEggs,
+        },
+        {
+          "boxes": mBox,
+          "cartons": mCartons,
+          "eggs": mEggs,
+        },
+        {
+          "boxes": sBox,
+          "cartons": sCartons,
+          "eggs": sEggs,
+        },
+        mcsModel.situationDatetime,
+        {
+          "boxes": xlBox,
+          "cartons": xlCartons,
+          "eggs": xlEggs,
+        },
+        mcsModel.documentId
+      );
+      bool firestoreConf = await FirebaseUtils.instance.updateDocument("farm_situation", updatedMCS.documentId!, updatedMCS.toMap());
+      if (firestoreConf) {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Situación guardada'),
+                  content: Text(
+                      'La información sobre la situación de la empresa diaría ha sido guardada correctamente en la base de datos.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.pop(context, updatedMCS);
+                      }, 
+                      child: const Text("De acuerdo")
+                    ),
+                  ],
+                ));
+      } else {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Error'),
+                  content: Text(
+                      'Se ha producido un error al guardar la situación de la empresa diaria. Por favor, revise los datos e inténtelo de nuevo.'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      }, 
+                      child: const Text("De acuerdo")
+                    ),
+                  ],
+                ));
+      }
+    } else {
+      // Guardar nuevo
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
 }
