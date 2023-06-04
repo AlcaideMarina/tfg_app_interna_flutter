@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
+import 'package:hueveria_nieto_interna/ui/views/login/login_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/main/main_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/economy_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/farm_page.dart';
@@ -93,8 +95,9 @@ class _LateralMenuState extends State<LateralMenu> {
           ListTile(
         leading: const Icon(Icons.logout_outlined),
         title: const Text('Cerrar sesión'),
-        onTap: () {
-          
+        onTap: () async {
+          await FirebaseAuth.instance.signOut();
+          navegateToLogin();
         },
       ),
         ],
@@ -143,6 +146,13 @@ class _LateralMenuState extends State<LateralMenu> {
       context, 
       MaterialPageRoute(
         builder: (context) => HomePage(currentUser)));
+  }
+
+  navegateToLogin() {
+    Navigator.pushReplacement(
+      context, 
+      MaterialPageRoute(
+        builder: ((context) => const LoginPage())));
   }
 
 }
