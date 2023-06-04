@@ -185,6 +185,14 @@ class FirebaseUtils {
         .snapshots();
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getDocumentsBetweenDatesFuture(String collection, String field, Timestamp initTimestamp, Timestamp endTimestamp) {
+    return FirebaseFirestore.instance
+        .collection(collection)
+        .where(field, isGreaterThanOrEqualTo: initTimestamp)
+        .where(field, isLessThanOrEqualTo: endTimestamp)
+        .get();
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getEggPrices() async {
     return FirebaseFirestore.instance
         .collection('default_constants')
