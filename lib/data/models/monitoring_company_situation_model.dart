@@ -34,16 +34,26 @@ class MonitoringCompanySituationModel {
   String toJson() => jsonEncode(toMap());
 
   factory MonitoringCompanySituationModel.fromMap(Map<String, dynamic> json, String? docId) {
+    Map<String, int> hens = {};
+    (json['hens'] as Map<String, dynamic>).forEach((key, value) => hens[key] = value as int);
+    Map<String, int> xlEggs = {};
+    (json['xl_eggs'] as Map<String, dynamic>).forEach((key, value) => xlEggs[key] = value as int);
+    Map<String, int> lEggs = {};
+    (json['l_eggs'] as Map<String, dynamic>).forEach((key, value) => lEggs[key] = value as int);
+    Map<String, int> mEggs = {};
+    (json['m_eggs'] as Map<String, dynamic>).forEach((key, value) => mEggs[key] = value as int);
+    Map<String, int> sEggs = {};
+    (json['s_eggs'] as Map<String, dynamic>).forEach((key, value) => sEggs[key] = value as int);
     return MonitoringCompanySituationModel(
         json['broken_eggs'],
         json['created_by'],
         json['creation_datetime'],
-        json['hens'],
-        json['l_eggs'],
-        json['m_eggs'],
-        json['s_eggs'],
+        hens,
+        lEggs,
+        mEggs,
+        sEggs,
         json['situation_datetime'],
-        json['xl_eggs'],
+        xlEggs,
         docId);
   }
 
