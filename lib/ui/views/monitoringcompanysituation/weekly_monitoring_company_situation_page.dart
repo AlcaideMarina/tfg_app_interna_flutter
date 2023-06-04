@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_day_division_data.dart';
+import 'package:hueveria_nieto_interna/ui/views/monitoringcompanysituation/daily_monitoring_company_situation_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/monitoringcompanysituation/monthly_monitoring_company_situation_page.dart';
 import 'package:hueveria_nieto_interna/utils/farm_utils.dart';
 import 'package:hueveria_nieto_interna/utils/utils.dart';
@@ -133,7 +134,9 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
                       child: HNComponentDayDivisionData(
                         "Lunes",
                         Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 0)), 
-                        onTap: () {}
+                        onTap: () {
+                          navigateToDailyMCS(0);
+                        }
                       )
                     ),
                     Container(
@@ -141,7 +144,9 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
                       child: HNComponentDayDivisionData(
                         "Martes",
                         Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 1)), 
-                        onTap: () {}
+                        onTap: () {
+                          navigateToDailyMCS(1);
+                        }
                       )
                     ),
                     Container(
@@ -149,7 +154,9 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
                       child: HNComponentDayDivisionData(
                         "Miércoles",
                         Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 2)), 
-                        onTap: () {}
+                        onTap: () {
+                          navigateToDailyMCS(2);
+                        }
                       )
                     ),
                     Container(
@@ -157,7 +164,9 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
                       child: HNComponentDayDivisionData(
                         "Jueves",
                         Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 3)), 
-                        onTap: () {}
+                        onTap: () {
+                          navigateToDailyMCS(3);
+                        }
                       )
                     ),
                     Container(
@@ -165,7 +174,9 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
                       child: HNComponentDayDivisionData(
                         "Viernes",
                         Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 4)), 
-                        onTap: () {}
+                        onTap: () {
+                          navigateToDailyMCS(4);
+                        }
                       )
                     ),
                     Container(
@@ -173,7 +184,9 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
                       child: HNComponentDayDivisionData(
                         "Lunes",
                         Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 5)), 
-                        onTap: () {}
+                        onTap: () {
+                          navigateToDailyMCS(5);
+                        }
                       )
                     ),
                     Container(
@@ -181,7 +194,9 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
                       child: HNComponentDayDivisionData(
                         "Sábado",
                         Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 6)), 
-                        onTap: () {}
+                        onTap: () {
+                          navigateToDailyMCS(6);
+                        }
                       )
                     ),
                     Container(
@@ -189,7 +204,9 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
                       child: HNComponentDayDivisionData(
                         "Domingo",
                         Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 7)), 
-                        onTap: () {}
+                        onTap: () {
+                          navigateToDailyMCS(7);
+                        }
                       )
                     ),
                   ],
@@ -201,6 +218,25 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
     );
   }
 
-  
+  navigateToDailyMCS(int daysToAdd) async {
+
+    DateTime date = Utils().addToDate(initTimestamp.toDate(), daysToAdd: daysToAdd);
+    var future = await FirebaseUtils.instance.getDocumentsBetweenDatesFuture(
+      "farm_situation", 
+      "situation_datetime", 
+      Timestamp.fromDate(date), 
+      Timestamp.fromDate(Utils().addToDate(date, daysToAdd: 1)));
+    
+    MonitoringCompanySituationModel mcsModel = MonitoringCompanySituationModel(0, null, null, {}, {}, {}, {}, Timestamp.fromDate(date), {}, null);
+
+    if (future.docs.isNotEmpty) {
+      mcsModel = MonitoringCompanySituationModel.fromMap(future.docs[0].data(), future.docs[0].id);
+    }
+    Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => DailyMonitoringCompanySituationPage(currentUser, mcsModel)));
+    
+  }
 
 }
