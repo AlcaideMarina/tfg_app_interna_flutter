@@ -31,55 +31,73 @@ class _LateralMenuState extends State<LateralMenu> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
+      child: Column(
         children: [
-      Container(
-        height: 128, // Establece la altura mínima deseada
-        child: LateralMenuHeader(currentUser)
+          Expanded(
+            child: ListView(
+              children: [
+            Container(
+              height: 128, // Establece la altura mínima deseada
+              child: LateralMenuHeader(currentUser)
+            ),
+            ListTile(
+                  leading: const Icon(Icons.home_outlined),
+                  title: const Text('Inicio', style: TextStyle(color: CustomColors.blackColor),),
+                  onTap: () {
+                    navigateToHome();
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.note_add_outlined),
+                  title: const Text('Pedidos y repartos'),
+                  onTap: () {
+                    navegateToOrderAndDelivery();
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.money_outlined),
+                  title: const Text('Economía'),
+                  onTap: () {
+                    navigateToEconomy();
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.pets_outlined),
+                  title: const Text('Granja'),
+                  onTap: () {
+                    navigateToFarm();
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.book_outlined),
+                  title: const Text('Material'),
+                  onTap: () {
+                    navigateToMaterial();
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.person_outline),
+                  title: const Text('Usuarios y clientes'),
+                  onTap: () {
+                    navigateToUsersAndClientsPage();
+                  },
+                )
+              ]
+            ),
+          ),
+          Container(
+            height: 1,
+            width: double.infinity,
+            color: CustomColors.redPrimaryColor,
+          ),
+          ListTile(
+        leading: const Icon(Icons.logout_outlined),
+        title: const Text('Cerrar sesión'),
+        onTap: () {
+          
+        },
       ),
-      ListTile(
-            leading: const Icon(Icons.home_outlined),
-            title: const Text('Inicio', style: TextStyle(color: CustomColors.blackColor),),
-            onTap: () {
-              navigateToHome();
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.note_add_outlined),
-            title: const Text('Pedidos y repartos'),
-            onTap: () {
-              navegateToOrderAndDelivery();
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.money_outlined),
-            title: const Text('Economía'),
-            onTap: () {
-              navigateToEconomy();
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.pets_outlined),
-            title: const Text('Granja'),
-            onTap: () {
-              navigateToFarm();
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.book_outlined),
-            title: const Text('Material'),
-            onTap: () {
-              navigateToMaterial();
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.person_outline),
-            title: const Text('Usuarios y clientes'),
-            onTap: () {
-              navigateToUsersAndClientsPage();
-            },
-          )
-        ]
+        ],
       ),
     );
   }
