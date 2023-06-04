@@ -92,8 +92,12 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Puesta semanal:   " + weeklyData.weeklyLaying.toString()),
-                                    Text("Porcentaje de puesta semanal:   " + weeklyData.weeklyLayingRate.toString() + "%")
+                                    Text("Puesta semanal - XL:   " + weeklyData.xlEggs.toString()),
+                                    Text("Puesta semanal - L:   " + weeklyData.lEggs.toString()),
+                                    Text("Puesta semanal - M:   " + weeklyData.mEggs.toString()),
+                                    Text("Puesta semanal - S:   " + weeklyData.sEggs.toString()),
+                                    Text("Puesta semanal (total):   " + weeklyData.weeklyLaying.toString()),
+                                    Text("Bajas de gallinas esta semana:   " + weeklyData.hensLosses.toString())
                                   ],
                                 )
                               )

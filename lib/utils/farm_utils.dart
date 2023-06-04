@@ -98,10 +98,12 @@ class FarmUtils {
   }
 
   WeeklyMonitoringCompanySituationData parseFromFarmSituationToModel(QuerySnapshot<Object?> data) {
-    double averageNumberHensWeek = 0;
-    int totalNumberHensWeek = 0;
+    int hensLosses = 0;
     int weeklyLaying = 0;
-    double weeklyLayingRate = 0;
+    int xlEggs = 0;
+    int lEggs = 0;
+    int mEggs = 0;
+    int sEggs = 0;
 
     if (data.docs.isNotEmpty) {
       for (var r in data.docs) {
@@ -109,21 +111,24 @@ class FarmUtils {
           MonitoringCompanySituationModel mcsModel = 
               MonitoringCompanySituationModel.fromMap(
                 r.data() as Map<String, dynamic>, r.id);
-          totalNumberHensWeek += mcsModel.hens["alive"] as int;
+          hensLosses += mcsModel.hens["losses"] as int;
+          xlEggs += mcsModel.xlEggs["eggs"] as int;
+          lEggs += mcsModel.lEggs["eggs"] as int;
+          mEggs += mcsModel.mEggs["eggs"] as int;
+          sEggs += mcsModel.sEggs["eggs"] as int;
+
           weeklyLaying += (mcsModel.xlEggs["eggs"] as int) + (mcsModel.lEggs["eggs"] as int) + (mcsModel.mEggs["eggs"] as int) + (mcsModel.sEggs["eggs"] as int);
         }
       }
-      averageNumberHensWeek = totalNumberHensWeek / data.docs.length;
-      if (averageNumberHensWeek == 0) {
-        averageNumberHensWeek = 1;
-      }
-      weeklyLayingRate = weeklyLaying / data.docs.length / averageNumberHensWeek.toDouble();
     }
     
     return WeeklyMonitoringCompanySituationData(
-      averageNumberHensWeek,
+      hensLosses,
       weeklyLaying,
-      weeklyLayingRate
+      xlEggs,
+      lEggs,
+      mEggs,
+      sEggs
     );
   }
 
