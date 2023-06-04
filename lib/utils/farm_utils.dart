@@ -110,7 +110,7 @@ class FarmUtils {
               MonitoringCompanySituationModel.fromMap(
                 r.data() as Map<String, dynamic>, r.id);
           totalNumberHensWeek += mcsModel.hens["alive"] as int;
-          weeklyLaying += (mcsModel.xlEggs as int) + (mcsModel.lEggs as int) + (mcsModel.mEggs as int) + (mcsModel.sEggs as int);
+          weeklyLaying += (mcsModel.xlEggs["eggs"] as int) + (mcsModel.lEggs["eggs"] as int) + (mcsModel.mEggs["eggs"] as int) + (mcsModel.sEggs["eggs"] as int);
         }
       }
       averageNumberHensWeek = totalNumberHensWeek / data.docs.length;
