@@ -182,20 +182,10 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
                       child: HNComponentDayDivisionData(
-                        "Lunes",
-                        Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 5)), 
-                        onTap: () {
-                          navigateToDailyMCS(5);
-                        }
-                      )
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-                      child: HNComponentDayDivisionData(
                         "Sábado",
                         Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 6)), 
                         onTap: () {
-                          navigateToDailyMCS(6);
+                          navigateToDailyMCS(5);
                         }
                       )
                     ),
@@ -205,7 +195,7 @@ class _WeeklyMonitoringCompanySituationPageState extends State<WeeklyMonitoringC
                         "Domingo",
                         Timestamp.fromDate(Utils().addToDate(initTimestamp.toDate(), daysToAdd: 7)), 
                         onTap: () {
-                          navigateToDailyMCS(7);
+                          navigateToDailyMCS(6);
                         }
                       )
                     ),
