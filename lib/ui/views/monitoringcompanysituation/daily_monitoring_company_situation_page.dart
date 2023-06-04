@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/data/models/monitoring_company_situation_model.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_table_form_without_label.dart';
+import 'package:hueveria_nieto_interna/ui/views/monitoringcompanysituation/modify_daily_monitoring_company_situation_page.dart';
 import 'package:hueveria_nieto_interna/utils/utils.dart';
 
 import '../../../custom/app_theme.dart';
@@ -122,7 +123,7 @@ class _DailyMonitoringCompanySituationPageState extends State<DailyMonitoringCom
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                labelText: (mcsModel.xlEggs['box'] ?? 0).toString(),
+                labelText: (mcsModel.xlEggs['boxes'] ?? 0).toString(),
                 isEnabled: false,
               ),
             ),
@@ -162,7 +163,7 @@ class _DailyMonitoringCompanySituationPageState extends State<DailyMonitoringCom
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                labelText: (mcsModel.lEggs['box'] ?? 0).toString(),
+                labelText: (mcsModel.lEggs['boxes'] ?? 0).toString(),
                 isEnabled: false,
               ),
             ),
@@ -202,7 +203,7 @@ class _DailyMonitoringCompanySituationPageState extends State<DailyMonitoringCom
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                labelText: (mcsModel.mEggs['box'] ?? 0).toString(),
+                labelText: (mcsModel.mEggs['boxes'] ?? 0).toString(),
                 isEnabled: false,
               ),
             ),
@@ -242,7 +243,7 @@ class _DailyMonitoringCompanySituationPageState extends State<DailyMonitoringCom
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
-                labelText: (mcsModel.sEggs['box'] ?? 0).toString(),
+                labelText: (mcsModel.sEggs['boxes'] ?? 0).toString(),
                 isEnabled: false,
               ),
             ),
@@ -317,8 +318,22 @@ class _DailyMonitoringCompanySituationPageState extends State<DailyMonitoringCom
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
         .getTypedButton(
-          mcsModel.documentId == null ? 'Añadir' : 'Modificar', null, null, () {}, null),
+          mcsModel.documentId == null ? 'Añadir' : 'Modificar', null, null, navigateToAddModifyMCS, null),
     );
+  }
+
+  navigateToAddModifyMCS() async {
+    final result = await Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => ModifyDailyMonitoringCompanySituationPage(currentUser, mcsModel)));
+
+    if (result != null) {
+      mcsModel = result;
+      setState(() {
+        mcsModel = result;
+      });
+    }
   }
 
 }
