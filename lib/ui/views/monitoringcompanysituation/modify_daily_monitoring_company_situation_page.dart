@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
@@ -403,9 +404,11 @@ class _ModifyDailyMonitoringCompanySituationPageState extends State<ModifyDailyM
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
     // TODO: Comprobar campos
+    bool firestoreConf = false;
+    MonitoringCompanySituationModel updatedMCS;
     if (mcsModel.documentId != null) {
       // Actualizar
-      MonitoringCompanySituationModel updatedMCS = MonitoringCompanySituationModel(
+      updatedMCS = MonitoringCompanySituationModel(
         brokenEggs,
         mcsModel.createdBy,
         mcsModel.creationDatetime,
@@ -436,45 +439,78 @@ class _ModifyDailyMonitoringCompanySituationPageState extends State<ModifyDailyM
         },
         mcsModel.documentId
       );
-      bool firestoreConf = await FirebaseUtils.instance.updateDocument("farm_situation", updatedMCS.documentId!, updatedMCS.toMap());
-      if (firestoreConf) {
-        Navigator.of(context).pop();
-        showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-                  title: const Text('Situación guardada'),
-                  content: Text(
-                      'La información sobre la situación de la empresa diaría ha sido guardada correctamente en la base de datos.'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.pop(context, updatedMCS);
-                      }, 
-                      child: const Text("De acuerdo")
-                    ),
-                  ],
-                ));
-      } else {
-        Navigator.of(context).pop();
-        showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-                  title: const Text('Error'),
-                  content: Text(
-                      'Se ha producido un error al guardar la situación de la empresa diaria. Por favor, revise los datos e inténtelo de nuevo.'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      }, 
-                      child: const Text("De acuerdo")
-                    ),
-                  ],
-                ));
-      }
+      firestoreConf = await FirebaseUtils.instance.updateDocument("farm_situation", updatedMCS.documentId!, updatedMCS.toMap());
     } else {
       // Guardar nuevo
+      updatedMCS = MonitoringCompanySituationModel(
+        brokenEggs,
+        currentUser.documentId!,
+        Timestamp.now(),
+        {
+          "alive": 0,
+          "losses": lostHens,
+        },
+        {
+          "boxes": lBox,
+          "cartons": lCartons,
+          "eggs": lEggs,
+        },
+        {
+          "boxes": mBox,
+          "cartons": mCartons,
+          "eggs": mEggs,
+        },
+        {
+          "boxes": sBox,
+          "cartons": sCartons,
+          "eggs": sEggs,
+        },
+        mcsModel.situationDatetime,
+        {
+          "boxes": xlBox,
+          "cartons": xlCartons,
+          "eggs": xlEggs,
+        },
+        null
+      );
+      firestoreConf = await FirebaseUtils.instance.addDocument("farm_situation", updatedMCS.toMap());
+    }
+    
+    if (firestoreConf) {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Situación guardada'),
+                content: Text(
+                    'La información sobre la situación de la empresa diaría ha sido guardada correctamente en la base de datos.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.pop(context, updatedMCS);
+                    }, 
+                    child: const Text("De acuerdo")
+                  ),
+                ],
+              ));
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Error'),
+                content: Text(
+                    'Se ha producido un error al guardar la situación de la empresa diaria. Por favor, revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }, 
+                    child: const Text("De acuerdo")
+                  ),
+                ],
+              ));
     }
   }
 
