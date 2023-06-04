@@ -114,10 +114,11 @@ class _HomePageState extends State<HomePage> {
                                   for (OrderModel item in orderModelList) {
                                     // TODO: Comprobar si quitamos los cancelado en Android
                                     if (item.status != Constants().orderStatus["Cancelado"]) {
-                                      if (item.orderDatetime.compareTo(Timestamp.fromDate(todayDate)) >= 1) {
+                                      if (item.orderDatetime.compareTo(Timestamp.fromDate(todayDate)) >= 0) {
                                         todayOrders.add(item);
                                       }
-                                      if (item.approxDeliveryDatetime.compareTo(Timestamp.fromDate(todayDate)) == 1) {
+                                      if (item.approxDeliveryDatetime.compareTo(Timestamp.fromDate(todayDate)) >= 0 
+                                        && item.approxDeliveryDatetime.compareTo(Timestamp.fromDate(Utils().addToDate(todayDate, daysToAdd: 1))) == -1) {
                                         todayDelivery.add(item);
                                       }
                                     }
