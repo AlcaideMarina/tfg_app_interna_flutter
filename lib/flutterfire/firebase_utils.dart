@@ -177,10 +177,34 @@ class FirebaseUtils {
         .snapshots();
   }
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getDocumentsBetweenDates(String collection, String field, Timestamp initTimestamp, Timestamp endTimestamp) {
+    return FirebaseFirestore.instance
+        .collection(collection)
+        .where(field, isGreaterThanOrEqualTo: initTimestamp)
+        .where(field, isLessThanOrEqualTo: endTimestamp)
+        .snapshots();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getDocumentsBetweenDatesFuture(String collection, String field, Timestamp initTimestamp, Timestamp endTimestamp) {
+    return FirebaseFirestore.instance
+        .collection(collection)
+        .where(field, isGreaterThanOrEqualTo: initTimestamp)
+        .where(field, isLessThan: endTimestamp)
+        .get();
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getEggPrices() async {
     return FirebaseFirestore.instance
         .collection('default_constants')
         .where('constant_name', isEqualTo: 'egg_prices')
+        .get();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getNextLot() async {
+    return FirebaseFirestore.instance
+        .collection('final_product_control')
+        .orderBy("lot", descending: true)
+        .limit(1)
         .get();
   }
 
