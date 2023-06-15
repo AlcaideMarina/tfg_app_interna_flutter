@@ -93,13 +93,25 @@ class _LateralMenuState extends State<LateralMenu> {
             color: CustomColors.redPrimaryColor,
           ),
           ListTile(
-        leading: const Icon(Icons.logout_outlined),
-        title: const Text('Cerrar sesión'),
-        onTap: () async {
-          await FirebaseAuth.instance.signOut();
-          navegateToLogin();
-        },
-      ),
+            leading: const Icon(Icons.logout_outlined),
+            title: const Text('Ajustes'),
+            onTap: () async {
+              // TODO
+            },
+          ),
+          Container(
+            height: 1,
+            width: double.infinity,
+            color: CustomColors.redGraySecondaryColor,
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout_outlined),
+            title: const Text('Cerrar sesión'),
+            onTap: () async {
+              await FirebaseAuth.instance.signOut();
+              navegateToLogin();
+            },
+          ),
         ],
       ),
     );
