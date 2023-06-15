@@ -8,6 +8,7 @@ import 'package:hueveria_nieto_interna/ui/views/main/mainpages/economy_page.dart
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/farm_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/material_and_resources_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/orders_page.dart';
+import 'package:hueveria_nieto_interna/ui/views/main/mainpages/settings_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/users_and_clients_page.dart';
 import 'lateral_menu_header.dart';
 
@@ -96,7 +97,7 @@ class _LateralMenuState extends State<LateralMenu> {
             leading: const Icon(Icons.logout_outlined),
             title: const Text('Ajustes'),
             onTap: () async {
-              // TODO
+              navegateToSettings();
             },
           ),
           Container(
@@ -158,6 +159,13 @@ class _LateralMenuState extends State<LateralMenu> {
       context, 
       MaterialPageRoute(
         builder: (context) => HomePage(currentUser)));
+  }
+
+  navegateToSettings() {
+    Navigator.pushReplacement(
+      context, 
+      MaterialPageRoute(
+        builder: ((context) => SettingsPage(currentUser))));
   }
 
   navegateToLogin() {
