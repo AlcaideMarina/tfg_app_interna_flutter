@@ -100,17 +100,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   Widget getButtonsComponent() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        children: [
-          HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, () {}, () {}),
-          const SizedBox(
-            height: 8,
-          ),
-          HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Cancelar', null, null, () {}, () {}),
-        ],
-      ),
+      child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
+              .getTypedButton('Cambiar contraseña', null, null, () {}, () {}),
     );
   }
 
