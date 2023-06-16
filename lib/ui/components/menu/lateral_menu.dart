@@ -96,7 +96,7 @@ class _LateralMenuState extends State<LateralMenu> {
           ListTile(
             leading: const Icon(Icons.logout_outlined),
             title: const Text('Ajustes'),
-            onTap: () async {
+            onTap: () {
               navegateToSettings();
             },
           ),
