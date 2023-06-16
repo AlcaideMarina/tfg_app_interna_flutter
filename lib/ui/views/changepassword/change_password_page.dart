@@ -92,6 +92,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         componentTextInput: HNComponentTextInput(
           textCapitalization: textCapitalization,
           labelText: labelInputText,
+          obscureText: true,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           textInputType: textInputType,
