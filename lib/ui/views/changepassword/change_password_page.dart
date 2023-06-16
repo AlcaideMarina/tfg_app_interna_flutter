@@ -119,9 +119,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           showDialog(
               context: context,
               builder: (_) => AlertDialog(
-                    title: const Text('Cliente guardado'),
+                    title: const Text('Contraseña actualizada'),
                     content: const Text(
-                        'La información del usuario se ha guardado correctamente'),
+                        'La información se ha actualizado correctamente. A partir de ahora, cuando inicie sesión, hágalo con la nueva contraseña.'),
                     actions: <Widget>[
                       TextButton(
                         child: const Text('De acuerdo.'),
