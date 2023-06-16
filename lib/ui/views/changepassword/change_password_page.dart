@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
@@ -36,7 +38,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Gallinas - Añadir',
+              'Cambiar contraseña',
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
@@ -101,7 +103,100 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Cambiar contraseña', null, null, () {}, () {}),
+              .getTypedButton('Cambiar contraseña', null, null, updatePassword, () {}),
+    );
+  }
+
+  updatePassword() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+
+    if (oldPass != "" && newPass1 != "" && newPass2 != null) {
+      if (newPass1 == newPass2) {
+        bool? firebaseAuthConf = await FirebaseUtils.instance.changePassword(oldPass, newPass1);
+        if (firebaseAuthConf == true) {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Cliente guardado'),
+                    content: const Text(
+                        'La información del usuario se ha guardado correctamente'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.of(context)
+                              ..pop()
+                              ..pop();
+                        },
+                      )
+                    ],
+                  ));
+        } else {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Error'),
+                    content: const Text(
+                        'Ha ocurrido un problema al guardar el usuario en la base de datos. Por favor, revise los datos e inténtelo de nuevo.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('De acuerdo.'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ));
+        }
+      } else {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Las contraseñas no coinciden'),
+                content: const Text(
+                    'El campo de repetición de contraseña debe ser exactamente igual que el de "Nuevva contraseña". Por favor, revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
+      }
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formulario incompleto'),
+                content: const Text(
+                    'Por favor, revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
+      }
+  }
+
+  showAlertDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 
