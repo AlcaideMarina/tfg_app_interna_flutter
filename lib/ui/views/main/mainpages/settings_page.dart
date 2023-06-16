@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hueveria_nieto_interna/ui/views/changepassword/change_password_page.dart';
 
 import '../../../../custom/app_theme.dart';
 import '../../../../custom/custom_sizes.dart';
@@ -43,17 +44,28 @@ class _SettingsPageState extends State<SettingsPage> {
                 color: AppTheme.primary, fontSize: CustomSizes.textSize24),
           )),
       body: ListView(
-          children: const [
+          children: [
             HNComponentListData(
               "Cambiar contraseña", 
               true,
+              onTap: () { 
+                navegateToChangePassword(); 
+              }
             ),
-            HNComponentListData(
-              "Cambiar contraseña", 
+            const HNComponentListData(
+              "Cambiar idioma", 
               false,
             ),
           ],
         )
     );
   }
+
+  navegateToChangePassword() {
+    Navigator.pushReplacement(
+      context, 
+      MaterialPageRoute(
+        builder: ((context) => ChangePasswordPage(currentUser))));
+  }
+
 }
