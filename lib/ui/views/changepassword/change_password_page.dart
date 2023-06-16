@@ -140,7 +140,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               builder: (_) => AlertDialog(
                     title: const Text('Error'),
                     content: const Text(
-                        'Ha ocurrido un problema al guardar el usuario en la base de datos. Por favor, revise los datos e inténtelo de nuevo.'),
+                        'Se ha producido un error cuando se estaban actualizado los datos. Por favor, revise los datos e inténtelo de nuevo.'),
                     actions: <Widget>[
                       TextButton(
                         child: const Text('De acuerdo.'),
