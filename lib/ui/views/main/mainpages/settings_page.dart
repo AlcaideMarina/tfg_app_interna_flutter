@@ -62,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   navegateToChangePassword() {
-    Navigator.pushReplacement(
+    Navigator.push(
       context, 
       MaterialPageRoute(
         builder: ((context) => ChangePasswordPage(currentUser))));
