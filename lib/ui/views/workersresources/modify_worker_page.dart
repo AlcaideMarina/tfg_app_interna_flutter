@@ -211,9 +211,28 @@ class _ModifyWorkerPageState extends State<ModifyWorkerPage> {
   Widget getButtonsComponent() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
+      child: Column(
+        children: [
+          HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
               .getTypedButton('Guardar', null, null, updateUserWarning, null),
+          const SizedBox(
+            height: 8,
+          ),
+          HNButton(ButtonTypes.redWhiteBoldRoundedButton)
+              .getTypedButton(
+                'Cancelar', 
+                null, 
+                null, 
+                goBack,
+                null, 
+              ),
+        ]) 
     );
+  }
+
+  goBack() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    Navigator.of(context).pop();
   }
 
   updateUserWarning() {
