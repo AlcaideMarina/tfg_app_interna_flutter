@@ -118,7 +118,8 @@ class _HomePageState extends State<HomePage> {
                                         todayOrders.add(item);
                                       }
                                       if (item.approxDeliveryDatetime.compareTo(Timestamp.fromDate(todayDate)) >= 0 
-                                        && item.approxDeliveryDatetime.compareTo(Timestamp.fromDate(Utils().addToDate(todayDate, daysToAdd: 1))) == -1) {
+                                        && item.approxDeliveryDatetime.compareTo(Timestamp.fromDate(Utils().addToDate(todayDate, daysToAdd: 1))) == -1
+                                        && item.status != Constants().orderStatus["Cancelado"]) {
                                         todayDelivery.add(item);
                                       }
                                     }
