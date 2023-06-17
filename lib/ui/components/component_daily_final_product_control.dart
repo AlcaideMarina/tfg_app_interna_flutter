@@ -64,7 +64,7 @@ class HNComponentDailyFPC extends StatelessWidget {
                     SizedBox(
                       width: 8,
                     ),
-                    Text(fpcModel.acceptedEggs.toString() + " rechazados"),
+                    Text(fpcModel.rejectedEggs.toString() + " rechazados"),
                   ],
                 ),
               ],
