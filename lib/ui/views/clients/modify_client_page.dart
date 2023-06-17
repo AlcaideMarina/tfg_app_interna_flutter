@@ -169,7 +169,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
             'Correo', clientData.email, null, TextInputType.emailAddress,
             (value) {
           email = value;
-        }, textCapitalization: TextCapitalization.none),
+        }, textCapitalization: TextCapitalization.none, isEnabled: false),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
         clientData.hasAccount ? Container() : getClientUserContainerComponent(),
       ],
@@ -199,7 +199,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
       String? labelInputText,
       TextInputType textInputType,
       Function(String)? onChange,
-      {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
+      {TextCapitalization textCapitalization = TextCapitalization.sentences, bool isEnabled = true}) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (contCompany == 0) {
@@ -223,8 +223,9 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           textInputType: textInputType,
           onChange: onChange,
-          isEnabled: true,
+          isEnabled: isEnabled,
           textColor: CustomColors.darkGrayColor,
+          backgroundColor: isEnabled ? CustomColors.whiteColor : CustomColors.backgroundTextFieldDisabled,
         ),);
   }
 

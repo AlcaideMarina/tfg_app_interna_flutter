@@ -147,7 +147,7 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
         getCompanyComponentSimpleForm(
             'Correo', internalUserModel.email, TextInputType.emailAddress, (value) {
           email = value;
-        }, textCapitalization: TextCapitalization.none),
+        }, textCapitalization: TextCapitalization.none, isEnabled: false),
         getCompanyComponentSimpleForm('Dirección', internalUserModel.direction, TextInputType.text, (value) {
           direction = value;
         }),
@@ -217,7 +217,7 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
 
   Widget getCompanyComponentSimpleForm(String label, String initialValue,
       TextInputType textInputType, Function(String)? onChange,
-      {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
+      {TextCapitalization textCapitalization = TextCapitalization.sentences, bool isEnabled = true}) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (contCompany == 0) {
@@ -239,8 +239,9 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           textInputType: textInputType,
           onChange: onChange,
-          isEnabled: true,
+          isEnabled: isEnabled,
           initialValue: initialValue,
+          backgroundColor: isEnabled ? CustomColors.whiteColor : CustomColors.backgroundTextFieldDisabled,
         ),);
   }
 
