@@ -478,14 +478,30 @@ class _NewClientPageState extends State<NewClientPage> {
                     ],
                   ));
         }
+      } else {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Error'),
+                  content: const Text('Se ha producido un error al crear el usuario de la aplicación. Revise los datos e inténtelo de nuevo. Recuerde que no se puede tener dos cuentas con el mismo correo y que el usuario debe tener, al menos, 6 caracteres.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo.'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ));
       }
     } catch (e) {
       Navigator.of(context).pop();
       showDialog(
           context: context,
           builder: (_) => AlertDialog(
-                title: const Text('Vaya...'),
-                content: const Text('Se ha producido un error'),
+                title: const Text('Error'),
+                content: const Text('Se ha producido un error al guardar los cambios. Revise los datos e inténtelo de nuevo.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),
