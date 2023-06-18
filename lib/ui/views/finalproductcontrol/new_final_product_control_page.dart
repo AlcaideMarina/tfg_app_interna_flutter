@@ -33,14 +33,14 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
     currentUser = widget.currentUser;
     nextLot = widget.nextLot;
     
-    bestBeforeTimestampController.text = dateFormat.format(bestBeforeTimestampMinDate);
-    bestBeforeTimestamp = Timestamp.fromDate(bestBeforeTimestampMinDate);
-    issueTimestampController.text = dateFormat.format(issueTimestampMinDate);
-    issueTimestamp = Timestamp.fromDate(issueTimestampMinDate);
-    layingTimestampController.text = dateFormat.format(layingTimestampMinDate);
-    layingTimestamp = Timestamp.fromDate(layingTimestampMinDate);
-    packingTimestampController.text = dateFormat.format(packingTimestampMinDate);
-    packingTimtestamp = Timestamp.fromDate(packingTimestampMinDate);
+    bestBeforeTimestampController.text = dateFormat.format(DateTime.now());
+    bestBeforeTimestamp = Timestamp.fromDate(DateTime.now());
+    issueTimestampController.text = dateFormat.format(DateTime.now());
+    issueTimestamp = Timestamp.fromDate(DateTime.now());
+    layingTimestampController.text = dateFormat.format(DateTime.now());
+    layingTimestamp = Timestamp.fromDate(DateTime.now());
+    packingTimestampController.text = dateFormat.format(DateTime.now());
+    packingTimtestamp = Timestamp.fromDate(DateTime.now());
   }
 
   int? acceptedEggs;
