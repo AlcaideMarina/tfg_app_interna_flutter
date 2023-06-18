@@ -10,9 +10,7 @@ import '../data/models/local/billing_per_month_data.dart';
 import '../data/models/local/egg_prices_data.dart';
 
 class OrderUtils {
-
   DBOrderFieldData orderDataToBDOrderModel(OrderModel orderData) {
-
     Map<String, Map<String, num?>> order = orderData.order;
     DBOrderFieldData dbOrderFieldData = DBOrderFieldData();
 
@@ -57,11 +55,10 @@ class OrderUtils {
       dbOrderFieldData.sDozenQuantity = sDozen["quantity"]!.toInt();
     }
     return dbOrderFieldData;
-
   }
 
-  DBOrderFieldData dbOrderModelFromTwoSources(OrderModel orderData, EggPricesData eggPricesData) {
-
+  DBOrderFieldData dbOrderModelFromTwoSources(
+      OrderModel orderData, EggPricesData eggPricesData) {
     Map<String, Map<String, num?>> order = orderData.order;
     DBOrderFieldData dbOrderFieldData = DBOrderFieldData();
 
@@ -106,21 +103,43 @@ class OrderUtils {
       dbOrderFieldData.sDozenQuantity = sDozen["quantity"]!.toInt();
     }
     return dbOrderFieldData;
-
   }
 
   String getOrderSummary(DBOrderFieldData dbOrderFieldData) {
-
     List<String> list = [];
 
-    if (dbOrderFieldData.xlBoxQuantity != null && dbOrderFieldData.xlBoxQuantity != 0) list.add(dbOrderFieldData.xlBoxQuantity.toString() + " cajas XL");
-    if (dbOrderFieldData.xlDozenQuantity != null && dbOrderFieldData.xlDozenQuantity != 0) list.add(dbOrderFieldData.xlDozenQuantity.toString() + " docenas XL");
-    if (dbOrderFieldData.lBoxQuantity != null && dbOrderFieldData.lBoxQuantity != 0) list.add(dbOrderFieldData.lBoxQuantity.toString() + " cajas L");
-    if (dbOrderFieldData.lDozenQuantity != null && dbOrderFieldData.lDozenQuantity != 0) list.add(dbOrderFieldData.lDozenQuantity.toString() + " docenas L");
-    if (dbOrderFieldData.mBoxQuantity != null && dbOrderFieldData.mBoxQuantity != 0) list.add(dbOrderFieldData.mBoxQuantity.toString() + " cajas M");
-    if (dbOrderFieldData.mDozenQuantity != null && dbOrderFieldData.mDozenQuantity != 0) list.add(dbOrderFieldData.mDozenQuantity.toString() + " docenas M");
-    if (dbOrderFieldData.sBoxQuantity != null && dbOrderFieldData.sBoxQuantity != 0) list.add(dbOrderFieldData.sBoxQuantity.toString() + " cajas S");
-    if (dbOrderFieldData.sDozenQuantity != null && dbOrderFieldData.sDozenQuantity != 0) list.add(dbOrderFieldData.sDozenQuantity.toString() + " docenas S");
+    if (dbOrderFieldData.xlBoxQuantity != null &&
+        dbOrderFieldData.xlBoxQuantity != 0) {
+      list.add(dbOrderFieldData.xlBoxQuantity.toString() + " cajas XL");
+    }
+    if (dbOrderFieldData.xlDozenQuantity != null &&
+        dbOrderFieldData.xlDozenQuantity != 0) {
+      list.add(dbOrderFieldData.xlDozenQuantity.toString() + " docenas XL");
+    }
+    if (dbOrderFieldData.lBoxQuantity != null &&
+        dbOrderFieldData.lBoxQuantity != 0) {
+      list.add(dbOrderFieldData.lBoxQuantity.toString() + " cajas L");
+    }
+    if (dbOrderFieldData.lDozenQuantity != null &&
+        dbOrderFieldData.lDozenQuantity != 0) {
+      list.add(dbOrderFieldData.lDozenQuantity.toString() + " docenas L");
+    }
+    if (dbOrderFieldData.mBoxQuantity != null &&
+        dbOrderFieldData.mBoxQuantity != 0) {
+      list.add(dbOrderFieldData.mBoxQuantity.toString() + " cajas M");
+    }
+    if (dbOrderFieldData.mDozenQuantity != null &&
+        dbOrderFieldData.mDozenQuantity != 0) {
+      list.add(dbOrderFieldData.mDozenQuantity.toString() + " docenas M");
+    }
+    if (dbOrderFieldData.sBoxQuantity != null &&
+        dbOrderFieldData.sBoxQuantity != 0) {
+      list.add(dbOrderFieldData.sBoxQuantity.toString() + " cajas S");
+    }
+    if (dbOrderFieldData.sDozenQuantity != null &&
+        dbOrderFieldData.sDozenQuantity != 0) {
+      list.add(dbOrderFieldData.sDozenQuantity.toString() + " docenas S");
+    }
 
     String summary = "";
     for (var item in list) {
@@ -131,7 +150,8 @@ class OrderUtils {
     return summary;
   }
 
-  DBOrderFieldData getOrderStructure(Map<String, int> productQuantities, EggPricesData eggPrices) {
+  DBOrderFieldData getOrderStructure(
+      Map<String, int> productQuantities, EggPricesData eggPrices) {
     int xlBox = 0;
     int xlBoxPrice = 0;
     int xlDozen = 0;
@@ -149,28 +169,36 @@ class OrderUtils {
     int sDozen = 0;
     int sDozenPrice = 0;
 
-    if (productQuantities.containsKey("xl_box") && productQuantities['xl_box'] != null){
+    if (productQuantities.containsKey("xl_box") &&
+        productQuantities['xl_box'] != null) {
       xlBox = productQuantities['xl_box']!;
     }
-    if (productQuantities.containsKey("xl_dozen") && productQuantities['xl_dozen'] != null){
+    if (productQuantities.containsKey("xl_dozen") &&
+        productQuantities['xl_dozen'] != null) {
       xlDozen = productQuantities['xl_dozen']!;
     }
-    if (productQuantities.containsKey("l_box") && productQuantities['l_box'] != null){
+    if (productQuantities.containsKey("l_box") &&
+        productQuantities['l_box'] != null) {
       lBox = productQuantities['l_box']!;
     }
-    if (productQuantities.containsKey("l_dozen") && productQuantities['l_dozen'] != null){
+    if (productQuantities.containsKey("l_dozen") &&
+        productQuantities['l_dozen'] != null) {
       lDozen = productQuantities['l_dozen']!;
     }
-    if (productQuantities.containsKey("m_box") && productQuantities['m_box'] != null){
+    if (productQuantities.containsKey("m_box") &&
+        productQuantities['m_box'] != null) {
       mBox = productQuantities['m_box']!;
     }
-    if (productQuantities.containsKey("m_dozen") && productQuantities['m_dozen'] != null){
+    if (productQuantities.containsKey("m_dozen") &&
+        productQuantities['m_dozen'] != null) {
       mDozen = productQuantities['m_dozen']!;
     }
-    if (productQuantities.containsKey("s_box") && productQuantities['s_box'] != null){
+    if (productQuantities.containsKey("s_box") &&
+        productQuantities['s_box'] != null) {
       sBox = productQuantities['s_box']!;
     }
-    if (productQuantities.containsKey("s_dozen") && productQuantities['s_dozen'] != null){
+    if (productQuantities.containsKey("s_dozen") &&
+        productQuantities['s_dozen'] != null) {
       sDozen = productQuantities['s_dozen']!;
     }
 
@@ -210,10 +238,7 @@ class OrderUtils {
       };
     }
     if (data.lBoxQuantity != null && data.lBoxPrice != null) {
-      map["l_box"] = {
-        "quantity": data.lBoxQuantity!,
-        "price": data.lBoxPrice!
-      };
+      map["l_box"] = {"quantity": data.lBoxQuantity!, "price": data.lBoxPrice!};
     }
     if (data.lDozenQuantity != null && data.lDozenPrice != null) {
       map["l_dozen"] = {
@@ -222,10 +247,7 @@ class OrderUtils {
       };
     }
     if (data.mBoxQuantity != null && data.mBoxPrice != null) {
-      map["m_box"] = {
-        "quantity": data.mBoxQuantity!,
-        "price": data.mBoxPrice!
-      };
+      map["m_box"] = {"quantity": data.mBoxQuantity!, "price": data.mBoxPrice!};
     }
     if (data.mDozenQuantity != null && data.mDozenPrice != null) {
       map["m_dozen"] = {
@@ -234,10 +256,7 @@ class OrderUtils {
       };
     }
     if (data.sBoxQuantity != null && data.sBoxPrice != null) {
-      map["s_box"] = {
-        "quantity": data.sBoxQuantity!,
-        "price": data.sBoxPrice!
-      };
+      map["s_box"] = {"quantity": data.sBoxQuantity!, "price": data.sBoxPrice!};
     }
     if (data.sDozenQuantity != null && data.sDozenPrice != null) {
       map["s_dozen"] = {
@@ -262,43 +281,37 @@ class OrderUtils {
   }
 
   String? orderStatusIntToString(int status) {
-    var key = Constants().orderStatus.keys.firstWhere(
-      (k) => Constants().orderStatus[k] == status);
+    var key = Constants()
+        .orderStatus
+        .keys
+        .firstWhere((k) => Constants().orderStatus[k] == status);
     return key;
   }
 
   List<OrderBillingData> getOrderBillingData(List? mapList) {
     List<OrderBillingData> list = [];
     List<OrderModel> orderModelList = [];
-    
+
     if (mapList != null) {
       for (var item in mapList) {
         if (item != null) {
           OrderModel order = OrderModel.fromMap(item.data(), item.id);
           if (order.status != Constants().orderStatus["Cancelado"]) {
-            list.add(
-              OrderBillingData(
-                order.orderId, 
-                order.orderDatetime, 
-                order.paymentMethod, 
-                order.totalPrice, 
-                order.paid)
-            );
+            list.add(OrderBillingData(order.orderId, order.orderDatetime,
+                order.paymentMethod, order.totalPrice, order.paid));
           }
         }
       }
     }
 
     return list;
-
   }
 
-  List<BillingPerMonthData> getBillingContainerFromOrderModel(List<OrderBillingData> orderBillingDataList) {
-
+  List<BillingPerMonthData> getBillingContainerFromOrderModel(
+      List<OrderBillingData> orderBillingDataList) {
     List<BillingPerMonthData> list = [];
 
-    if (orderBillingDataList.isNotEmpty){
-
+    if (orderBillingDataList.isNotEmpty) {
       double paymentByCash = 0.0;
       double paymentByReceipt = 0.0;
       double paymentByTransfer = 0.0;
@@ -309,42 +322,40 @@ class OrderUtils {
       List<OrderBillingData> orderBillingDataMonthlyList = [];
 
       // Ordernamos la lista pro fecha de pedido en desc.
-      orderBillingDataList.sort((a, b) => a.orderDatetime.compareTo(b.orderDatetime));
+      orderBillingDataList
+          .sort((a, b) => a.orderDatetime.compareTo(b.orderDatetime));
 
       // Cogemos la primera posición -> Es la más reciente -> Último mes
       OrderBillingData firstOrder = orderBillingDataList[0];
       DateTime firstDate = firstOrder.orderDatetime.toDate();
 
       String m = firstDate.month.toString();
-      while(m.length < 2) {
+      while (m.length < 2) {
         m = '0' + m;
       }
       String y = firstDate.year.toString();
-      while(y.length < 4) {
+      while (y.length < 4) {
         y = '0' + y;
       }
 
       // Creamos fecha inicial y final
       Timestamp initDateTimestamp = Utils().parseStringToTimestamp('01/$m/$y');
       Timestamp endDateTimestamp = Timestamp.fromDate(
-        Utils().addToDate(initDateTimestamp.toDate(), monthsToAdd: 1)
-      );
+          Utils().addToDate(initDateTimestamp.toDate(), monthsToAdd: 1));
 
       for (OrderBillingData item in orderBillingDataList) {
         if (initDateTimestamp.compareTo(item.orderDatetime) > 1) {
           // Añadimos el elemento a la list a de retorno
-          BillingData billingData = BillingData(
-            paymentByCash, paymentByReceipt, paymentByTransfer, paid, 
-            toBePaid, totalPrice);
+          BillingData billingData = BillingData(paymentByCash, paymentByReceipt,
+              paymentByTransfer, paid, toBePaid, totalPrice);
           BillingPerMonthData billingContainerData = BillingPerMonthData(
-            initDateTimestamp, endDateTimestamp, billingData);
-          
+              initDateTimestamp, endDateTimestamp, billingData);
+
           list.add(billingContainerData);
           // Reseteamos todas las variables y guardamos
           endDateTimestamp = initDateTimestamp;
           initDateTimestamp = Timestamp.fromDate(
-            Utils().addToDate(initDateTimestamp.toDate(), monthsToAdd: -1)
-          );
+              Utils().addToDate(initDateTimestamp.toDate(), monthsToAdd: -1));
           paymentByCash = 0.0;
           paymentByReceipt = 0.0;
           paymentByTransfer = 0.0;
@@ -357,9 +368,9 @@ class OrderUtils {
         // Actualizamos métodos de pago
         if (item.paymentMethod == 0) {
           paymentByCash += (item.totalPrice ?? 0).toDouble();
-        } else if(item.paymentMethod == 0) {
+        } else if (item.paymentMethod == 0) {
           paymentByReceipt += (item.totalPrice ?? 0).toDouble();
-        } else if(item.paymentMethod == 0) {
+        } else if (item.paymentMethod == 0) {
           paymentByTransfer += (item.totalPrice ?? 0).toDouble();
         }
         //Actualizamos si es un pedido pagado o por pagar
@@ -372,17 +383,14 @@ class OrderUtils {
         orderBillingDataMonthlyList.add(item);
 
         if (orderBillingDataList.last == item) {
-          BillingData billingData = BillingData(
-            paymentByCash, paymentByReceipt, paymentByTransfer, paid, toBePaid,
-            totalPrice
-          );
+          BillingData billingData = BillingData(paymentByCash, paymentByReceipt,
+              paymentByTransfer, paid, toBePaid, totalPrice);
           BillingPerMonthData billingPerMonthData = BillingPerMonthData(
-            initDateTimestamp, endDateTimestamp, billingData);
+              initDateTimestamp, endDateTimestamp, billingData);
           list.add(billingPerMonthData);
         }
       }
     }
     return list;
   }
-  
 }

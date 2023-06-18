@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 
@@ -13,7 +12,7 @@ class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage(this.currentUser, {Key? key}) : super(key: key);
 
   final InternalUserModel currentUser;
-  
+
   @override
   State<ChangePasswordPage> createState() => _ChangePasswordPageState();
 }
@@ -51,16 +50,18 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getComponentSimpleForm('Contraseña actual', null, TextInputType.text,
+                      getComponentSimpleForm(
+                          'Contraseña actual', null, TextInputType.text,
                           (value) {
                         oldPass = value;
                       }),
-                      getComponentSimpleForm('Nueva contraseña', null, TextInputType.text,
+                      getComponentSimpleForm(
+                          'Nueva contraseña', null, TextInputType.text,
                           (value) {
                         newPass1 = value;
                       }),
-                      getComponentSimpleForm('Repita la nueva contraseña', null, TextInputType.text,
-                          (value) {
+                      getComponentSimpleForm('Repita la nueva contraseña', null,
+                          TextInputType.text, (value) {
                         newPass2 = value;
                       }),
                       const SizedBox(
@@ -84,27 +85,27 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     double bottomMargin = 4;
 
     return HNComponentSimpleForm(
-        label + ':',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
-        componentTextInput: HNComponentTextInput(
-          textCapitalization: textCapitalization,
-          labelText: labelInputText,
-          obscureText: true,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          textInputType: textInputType,
-          onChange: onChange,
-        ),);
+      label + ':',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
+        textCapitalization: textCapitalization,
+        labelText: labelInputText,
+        obscureText: true,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textInputType: textInputType,
+        onChange: onChange,
+      ),
+    );
   }
-  
+
   Widget getButtonsComponent() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Cambiar contraseña', null, null, updatePassword, () {}),
+      child: HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
+          'Cambiar contraseña', null, null, updatePassword, () {}),
     );
   }
 
@@ -114,7 +115,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
     if (oldPass != "" && newPass1 != "" && newPass2 != null) {
       if (newPass1 == newPass2) {
-        bool? firebaseAuthConf = await FirebaseUtils.instance.changePassword(oldPass, newPass1);
+        bool? firebaseAuthConf =
+            await FirebaseUtils.instance.changePassword(oldPass, newPass1);
         if (firebaseAuthConf == true) {
           Navigator.of(context).pop();
           showDialog(
@@ -128,8 +130,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         child: const Text('De acuerdo.'),
                         onPressed: () {
                           Navigator.of(context)
-                              ..pop()
-                              ..pop();
+                            ..pop()
+                            ..pop();
                         },
                       )
                     ],
@@ -154,20 +156,20 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         }
       } else {
         showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-                title: const Text('Las contraseñas no coinciden'),
-                content: const Text(
-                    'El campo de repetición de contraseña debe ser exactamente igual que el de "Nueva contraseña". Por favor, revise los datos e inténtelo de nuevo.'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('De acuerdo.'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              ));
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Las contraseñas no coinciden'),
+                  content: const Text(
+                      'El campo de repetición de contraseña debe ser exactamente igual que el de "Nueva contraseña". Por favor, revise los datos e inténtelo de nuevo.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo.'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ));
       }
     } else {
       Navigator.of(context).pop();
@@ -186,7 +188,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   )
                 ],
               ));
-      }
+    }
   }
 
   showAlertDialog(BuildContext context) {
@@ -200,5 +202,4 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       },
     );
   }
-
 }

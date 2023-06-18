@@ -13,9 +13,7 @@ class StringsTranslation {
 
   static final Map<String, Map<String, String>> _localizedValues = {
     ///Español
-    'es': {
-      "hueveria_nieto": "Huevería Nieto"
-    },
+    'es': {"hueveria_nieto": "Huevería Nieto"},
 
     ///Francés
     'gl': {

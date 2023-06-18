@@ -8,7 +8,6 @@ import '../../../custom/custom_sizes.dart';
 import '../../../flutterfire/firebase_utils.dart';
 import '../../components/component_panel.dart';
 import '../../components/component_worker.dart';
-import '../../components/constants/hn_button.dart';
 
 class PendingWorkersResourcesPage extends StatefulWidget {
   const PendingWorkersResourcesPage(this.currentUser, this.pendingWorkersList,

@@ -12,10 +12,10 @@ import '../../components/component_panel.dart';
 import '../../components/constants/hn_button.dart';
 
 class AllWorkersResources extends StatefulWidget {
-  AllWorkersResources(this.currentUser, {Key? key}) : super(key: key);
+  const AllWorkersResources(this.currentUser, {Key? key}) : super(key: key);
 
   final InternalUserModel currentUser;
-  
+
   @override
   State<AllWorkersResources> createState() => _AllWorkersResourcesState();
 }
@@ -34,11 +34,10 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
 
   @override
   Widget build(BuildContext context) {
-    
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     workerList = [];
     pendingWorkersList = [];
-    
+
     return Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
@@ -54,8 +53,8 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
               child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-                  .getTypedButton(
-                      "Sueldos pendientes", null, null, navigateToPendingWorkers, () {}),
+                  .getTypedButton("Sueldos pendientes", null, null,
+                      navigateToPendingWorkers, () {}),
             ),
             const SizedBox(
               height: 16,
@@ -76,8 +75,10 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
                                 itemCount: userList.length,
                                 itemBuilder: (context, i) {
                                   final InternalUserModel internalUser =
-                                      InternalUserModel.fromMap(userList[i].data()
-                                          as Map<String, dynamic>, userList[i].id);
+                                      InternalUserModel.fromMap(
+                                          userList[i].data()
+                                              as Map<String, dynamic>,
+                                          userList[i].id);
                                   if (!internalUser.deleted) {
                                     if (internalUser.salary != null) {
                                       workerList.add(internalUser);
@@ -88,34 +89,37 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
                                             internalUser.id,
                                             internalUser.name,
                                             internalUser.surname,
-                                            internalUser.salary,
-                                            onTap: () {
-                                              navigateToWorkerDetail(internalUser);
-                                            }),
+                                            internalUser.salary, onTap: () {
+                                          navigateToWorkerDetail(internalUser);
+                                        }),
                                       );
                                     } else {
                                       pendingWorkersList.add(internalUser);
-                                      if (i == (userList.length - 1) && workerList.isEmpty) {
+                                      if (i == (userList.length - 1) &&
+                                          workerList.isEmpty) {
                                         return Container(
-                                          margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                                          child: const HNComponentPanel(
-                                            title: 'No hay usuarios',
-                                            text:
-                                                "No hay registro de usuarios internos activos en la base de datos.",
-                                          ));
+                                            margin: const EdgeInsets.fromLTRB(
+                                                32, 56, 32, 8),
+                                            child: const HNComponentPanel(
+                                              title: 'No hay usuarios',
+                                              text:
+                                                  "No hay registro de usuarios internos activos en la base de datos.",
+                                            ));
                                       } else {
                                         return Container();
                                       }
                                     }
                                   } else {
-                                    if (i == (userList.length - 1) && workerList.isEmpty) {
+                                    if (i == (userList.length - 1) &&
+                                        workerList.isEmpty) {
                                       return Container(
-                                        margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                                        child: const HNComponentPanel(
-                                          title: 'No hay usuarios',
-                                          text:
-                                              "No hay registro de usuarios internos activos en la base de datos.",
-                                        ));
+                                          margin: const EdgeInsets.fromLTRB(
+                                              32, 56, 32, 8),
+                                          child: const HNComponentPanel(
+                                            title: 'No hay usuarios',
+                                            text:
+                                                "No hay registro de usuarios internos activos en la base de datos.",
+                                          ));
                                     } else {
                                       return Container();
                                     }
@@ -164,7 +168,8 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => PendingWorkersResourcesPage(currentUser, pendingWorkersList),
+          builder: (context) =>
+              PendingWorkersResourcesPage(currentUser, pendingWorkersList),
         ));
   }
 

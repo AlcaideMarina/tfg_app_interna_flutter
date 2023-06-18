@@ -10,11 +10,12 @@ import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class SellingPricePage extends StatefulWidget {
-  const SellingPricePage(this.currentUser, this.eggPricesData, {Key? key}) : super(key: key);
+  const SellingPricePage(this.currentUser, this.eggPricesData, {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
   final EggPricesData eggPricesData;
-  
+
   @override
   State<SellingPricePage> createState() => _SellingPricePageState();
 }
@@ -51,19 +52,18 @@ class _SellingPricePageState extends State<SellingPricePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
-                        width: double.infinity,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Precio actual"),
-                          ],
-                        )
-                      ),
-                      getComponentTableForm('Pedido', getPricePerUnitTableRow(), 
-                        columnWidhts: {
-                          0: const IntrinsicColumnWidth(),
-                          2: const IntrinsicColumnWidth()
-                        }),
+                          width: double.infinity,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Precio actual"),
+                            ],
+                          )),
+                      getComponentTableForm('Pedido', getPricePerUnitTableRow(),
+                          columnWidhts: {
+                            0: const IntrinsicColumnWidth(),
+                            2: const IntrinsicColumnWidth()
+                          }),
                       const SizedBox(
                         height: 32,
                       ),
@@ -95,235 +95,219 @@ class _SellingPricePageState extends State<SellingPricePage> {
       columnWidths: columnWidhts,
     );
   }
-  
+
   List<TableRow> getPricePerUnitTableRow() {
     List<TableRow> list = [
-        TableRow(
-          children: [
-            Container(
-              child: Text("XL"),
-              margin: const EdgeInsets.only(left: 12, right: 16),
-            ),
-            Container(),
-            Container()
-          ]
+      TableRow(children: [
+        Container(
+          child: Text("XL"),
+          margin: const EdgeInsets.only(left: 12, right: 16),
         ),
-        TableRow(
-          children: [
-            Container(
+        Container(),
+        Container()
+      ]),
+      TableRow(
+        children: [
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("Docena")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                labelText: (eggPricesData.xlDozen ?? 0).toString(),
-                isEnabled: false,
-              ),
+          Container(
+            height: 40,
+            margin: const EdgeInsets.only(left: 8, bottom: 0),
+            child: HNComponentTextInput(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              textInputType: const TextInputType.numberWithOptions(),
+              labelText: (eggPricesData.xlDozen ?? 0).toString(),
+              isEnabled: false,
             ),
-            Container(
+          ),
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("€")),
-          ],
+        ],
+      ),
+      TableRow(children: [
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("Caja")),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            labelText: (eggPricesData.xlBox ?? 0).toString(),
+            isEnabled: false,
+          ),
         ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Caja")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                labelText: (eggPricesData.xlBox ?? 0).toString(),
-                isEnabled: false,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ]
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("€")),
+      ]),
+      TableRow(children: [
+        Container(
+          child: Text("L"),
+          margin: const EdgeInsets.only(left: 12, right: 16),
         ),
-        TableRow(
-          children: [
-            Container(
-              child: Text("L"),
-              margin: const EdgeInsets.only(left: 12, right: 16),
-            ),
-            Container(),
-            Container()
-          ]
-        ),
-        TableRow(
-          children: [
-            Container(
+        Container(),
+        Container()
+      ]),
+      TableRow(
+        children: [
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("Docena")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                labelText: (eggPricesData.lDozen ?? 0).toString(),
-                isEnabled: false,
-              ),
+          Container(
+            height: 40,
+            margin: const EdgeInsets.only(left: 8, bottom: 0),
+            child: HNComponentTextInput(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              textInputType: const TextInputType.numberWithOptions(),
+              labelText: (eggPricesData.lDozen ?? 0).toString(),
+              isEnabled: false,
             ),
-            Container(
+          ),
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("€")),
-          ],
+        ],
+      ),
+      TableRow(children: [
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("Caja")),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            labelText: (eggPricesData.lBox ?? 0).toString(),
+            isEnabled: false,
+          ),
         ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Caja")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                labelText: (eggPricesData.lBox ?? 0).toString(),
-                isEnabled: false,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ]
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("€")),
+      ]),
+      TableRow(children: [
+        Container(
+          child: Text("M"),
+          margin: const EdgeInsets.only(left: 12, right: 16),
         ),
-        TableRow(
-          children: [
-            Container(
-              child: Text("M"),
-              margin: const EdgeInsets.only(left: 12, right: 16),
-            ),
-            Container(),
-            Container()
-          ]
-        ),
-        TableRow(
-          children: [
-            Container(
+        Container(),
+        Container()
+      ]),
+      TableRow(
+        children: [
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("Docena")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                labelText: (eggPricesData.mDozen ?? 0).toString(),
-                isEnabled: false,
-              ),
+          Container(
+            height: 40,
+            margin: const EdgeInsets.only(left: 8, bottom: 0),
+            child: HNComponentTextInput(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              textInputType: const TextInputType.numberWithOptions(),
+              labelText: (eggPricesData.mDozen ?? 0).toString(),
+              isEnabled: false,
             ),
-            Container(
+          ),
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("€")),
-          ],
+        ],
+      ),
+      TableRow(children: [
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("Caja")),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            labelText: (eggPricesData.mBox ?? 0).toString(),
+            isEnabled: false,
+          ),
         ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Caja")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                labelText: (eggPricesData.mBox ?? 0).toString(),
-                isEnabled: false,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ]
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("€")),
+      ]),
+      TableRow(children: [
+        Container(
+          child: Text("L"),
+          margin: const EdgeInsets.only(left: 12, right: 16),
         ),
-        TableRow(
-          children: [
-            Container(
-              child: Text("L"),
-              margin: const EdgeInsets.only(left: 12, right: 16),
-            ),
-            Container(),
-            Container()
-          ]
-        ),
-        TableRow(
-          children: [
-            Container(
+        Container(),
+        Container()
+      ]),
+      TableRow(
+        children: [
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("Docena")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                labelText: (eggPricesData.sDozen ?? 0).toString(),
-                isEnabled: false,
-              ),
+          Container(
+            height: 40,
+            margin: const EdgeInsets.only(left: 8, bottom: 0),
+            child: HNComponentTextInput(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              textInputType: const TextInputType.numberWithOptions(),
+              labelText: (eggPricesData.sDozen ?? 0).toString(),
+              isEnabled: false,
             ),
-            Container(
+          ),
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("€")),
-          ],
+        ],
+      ),
+      TableRow(children: [
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("Caja")),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            labelText: (eggPricesData.sBox ?? 0).toString(),
+            isEnabled: false,
+          ),
         ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Caja")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                labelText: (eggPricesData.sBox ?? 0).toString(),
-                isEnabled: false,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ]
-        ),
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("€")),
+      ]),
     ];
     return list;
-
   }
 
   Widget getButtonsComponent() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, navigateToSellingPrice, null),
+      child: HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
+          'Modificar', null, null, navigateToSellingPrice, null),
     );
   }
 
   navigateToSellingPrice() async {
     final result = await Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => ModifySellingPricePage(currentUser, eggPricesData)));
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                ModifySellingPricePage(currentUser, eggPricesData)));
 
     if (result != null) {
       eggPricesData = result;
@@ -332,5 +316,4 @@ class _SellingPricePageState extends State<SellingPricePage> {
       });
     }
   }
-
 }

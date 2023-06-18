@@ -6,10 +6,5 @@ class BillingPerMonthData {
   final Timestamp endDate;
   final BillingData? billingData;
 
-  BillingPerMonthData(
-    this.initDate,
-    this.endDate,
-    this.billingData
-  );
-
+  BillingPerMonthData(this.initDate, this.endDate, this.billingData);
 }

@@ -7,7 +7,6 @@ import '../../utils/constants.dart';
 import '../../values/image_routes.dart';
 
 class HNComponentOrders extends StatelessWidget {
-
   final Timestamp orderDate;
   final int orderId;
   final String company;
@@ -17,55 +16,51 @@ class HNComponentOrders extends StatelessWidget {
   final String? deliveryDni;
   final Function()? onTap;
 
-  const HNComponentOrders(
-    this.orderDate,
-    this.orderId,
-    this.company,
-    this.orderSummary,
-    this.price,
-    this.status,
-    this.deliveryDni,
-    {Key? key, this.onTap}) : super(key: key);
+  const HNComponentOrders(this.orderDate, this.orderId, this.company,
+      this.orderSummary, this.price, this.status, this.deliveryDni,
+      {Key? key, this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: onTap,
         child: Container(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Flexible(
-            child: Container(
-              margin: const EdgeInsets.only(right: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('ID Pedido: ' + orderId.toString()),
-                  Text(company),
-                  Text(orderSummary),
-                  Text("Precio: " + (price ?? "-").toString() + " €"),
-                  Text(Utils().getKey(Constants().orderStatus, status))
-                ],
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                child: Container(
+                  margin: const EdgeInsets.only(right: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('ID Pedido: ' + orderId.toString()),
+                      Text(company),
+                      Text(orderSummary),
+                      Text("Precio: " + (price ?? "-").toString() + " €"),
+                      Text(Utils().getKey(Constants().orderStatus, status))
+                    ],
+                  ),
+                ),
               ),
-            ),
+              onTap != null
+                  ? Image.asset(
+                      ImageRoutes.getRoute('ic_next_arrow'),
+                      width: 16,
+                      height: 24,
+                    )
+                  : Container()
+            ],
           ),
-          onTap != null ? Image.asset(
-            ImageRoutes.getRoute('ic_next_arrow'), 
-            width: 16,
-            height: 24,)
-          : Container()
-        ],
-      ),
-      decoration: BoxDecoration(
-        color: CustomColors.redGraySecondaryColor,
-        border: Border.all(
-          color: CustomColors.redGraySecondaryColor,
-        ),
-        borderRadius: const BorderRadius.all(Radius.circular(20))
-      ),
-    ));
+          decoration: BoxDecoration(
+              color: CustomColors.redGraySecondaryColor,
+              border: Border.all(
+                color: CustomColors.redGraySecondaryColor,
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(20))),
+        ));
   }
 }

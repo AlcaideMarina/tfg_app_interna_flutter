@@ -11,14 +11,9 @@ import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
-import 'package:provider/provider.dart';
-import 'dart:developer' as developer;
 
 import '../../../flutterfire/firebase_utils.dart';
 import '../../../data/models/internal_user_model.dart';
-
-// TODO: Cuidado - todo esta clase está hardcodeada
-// TODO: Intentar reducir código
 
 class NewClientPage extends StatefulWidget {
   const NewClientPage(this.currentUser, {Key? key}) : super(key: key);
@@ -29,7 +24,6 @@ class NewClientPage extends StatefulWidget {
   State<NewClientPage> createState() => _NewClientPageState();
 }
 
-// TODO: Faltan todas las validaciones
 class _NewClientPageState extends State<NewClientPage> {
   late InternalUserModel currentUser;
 
@@ -53,7 +47,6 @@ class _NewClientPageState extends State<NewClientPage> {
   late String namePhone2;
   Map<String, double> prices = {};
   bool hasAccount = false;
-  // TODO: Mirar otra forma de contar - ¿mapas?
   String? user;
 
   List<String> labelList = [
@@ -193,19 +186,19 @@ class _NewClientPageState extends State<NewClientPage> {
     contCompany++;
 
     return HNComponentSimpleForm(
-        label + ':',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
-        componentTextInput: HNComponentTextInput(
-          textCapitalization: textCapitalization,
-          labelText: labelInputText,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          textInputType: textInputType,
-          onChange: onChange,
-        ),);
+      label + ':',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
+        textCapitalization: textCapitalization,
+        labelText: labelInputText,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textInputType: textInputType,
+        onChange: onChange,
+      ),
+    );
   }
 
   Widget getComponentTableForm(String label, List<TableRow> children,
@@ -233,8 +226,7 @@ class _NewClientPageState extends State<NewClientPage> {
     return [
       TableRow(children: [
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8, bottom: 8),
+            40, const EdgeInsets.only(left: 16, right: 8, bottom: 8),
             componentTextInput: HNComponentTextInput(
               labelText: 'Contacto',
               textCapitalization: TextCapitalization.words,
@@ -245,8 +237,7 @@ class _NewClientPageState extends State<NewClientPage> {
               },
             )),
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16, bottom: 8),
+            40, const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             componentTextInput: HNComponentTextInput(
               labelText: 'Teléfono',
               textInputType: TextInputType.number,
@@ -258,9 +249,7 @@ class _NewClientPageState extends State<NewClientPage> {
             )),
       ]),
       TableRow(children: [
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8),
+        HNComponentCellTableForm(40, const EdgeInsets.only(left: 16, right: 8),
             componentTextInput: HNComponentTextInput(
               labelText: 'Contacto',
               textCapitalization: TextCapitalization.words,
@@ -270,9 +259,7 @@ class _NewClientPageState extends State<NewClientPage> {
                 namePhone2 = value;
               },
             )),
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16),
+        HNComponentCellTableForm(40, const EdgeInsets.only(left: 8, right: 16),
             componentTextInput: HNComponentTextInput(
               labelText: 'Teléfono',
               textInputType: TextInputType.number,
@@ -484,7 +471,8 @@ class _NewClientPageState extends State<NewClientPage> {
             context: context,
             builder: (_) => AlertDialog(
                   title: const Text('Error'),
-                  content: const Text('Se ha producido un error al crear el usuario de la aplicación. Revise los datos e inténtelo de nuevo. Recuerde que no se puede tener dos cuentas con el mismo correo y que el usuario debe tener, al menos, 6 caracteres.'),
+                  content: const Text(
+                      'Se ha producido un error al crear el usuario de la aplicación. Revise los datos e inténtelo de nuevo. Recuerde que no se puede tener dos cuentas con el mismo correo y que el usuario debe tener, al menos, 6 caracteres.'),
                   actions: <Widget>[
                     TextButton(
                       child: const Text('De acuerdo.'),
@@ -501,7 +489,8 @@ class _NewClientPageState extends State<NewClientPage> {
           context: context,
           builder: (_) => AlertDialog(
                 title: const Text('Error'),
-                content: const Text('Se ha producido un error al guardar los cambios. Revise los datos e inténtelo de nuevo.'),
+                content: const Text(
+                    'Se ha producido un error al guardar los cambios. Revise los datos e inténtelo de nuevo.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),

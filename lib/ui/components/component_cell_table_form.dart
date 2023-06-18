@@ -4,7 +4,7 @@ import 'component_dropdown.dart';
 import 'component_text_input.dart';
 
 /// Forms HNComponentTextInput component (to use it in HNComponentSimpleForm or HNComponentTableForm)
-/// This set the Container in which the HNComponentTextInput is wrapped. 
+/// This set the Container in which the HNComponentTextInput is wrapped.
 
 class HNComponentCellTableForm extends StatelessWidget {
   final double height;
@@ -12,18 +12,15 @@ class HNComponentCellTableForm extends StatelessWidget {
   final HNComponentTextInput? componentTextInput;
   final HNComponentDropdown? componentDropdown;
 
-  const HNComponentCellTableForm(
-      this.height, this.containerMargin,
-      {Key? key,
-      this.componentTextInput,
-      this.componentDropdown})
+  const HNComponentCellTableForm(this.height, this.containerMargin,
+      {Key? key, this.componentTextInput, this.componentDropdown})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: height, 
-        margin: containerMargin, 
+        height: height,
+        margin: containerMargin,
         child: componentTextInput ?? componentDropdown);
   }
 }

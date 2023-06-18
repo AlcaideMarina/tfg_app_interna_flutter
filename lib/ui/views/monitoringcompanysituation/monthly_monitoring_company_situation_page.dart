@@ -5,7 +5,6 @@ import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_week_division_data.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_year_month_alert_dialog.dart';
 import 'package:hueveria_nieto_interna/ui/views/monitoringcompanysituation/weekly_monitoring_company_situation_page.dart';
-import 'package:intl/intl.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
@@ -38,14 +37,15 @@ class _MonthlyMonitoringCompanySituationPageState
     while (y.length < 4) {
       y = '0' + y;
     }
-    initFilterDatetime = Utils().parseStringToTimestamp('01/' + m + "/" + y).toDate();
+    initFilterDatetime =
+        Utils().parseStringToTimestamp('01/' + m + "/" + y).toDate();
     endFilterDatetime = Utils().addToDate(initFilterDatetime, monthsToAdd: 1);
   }
 
   DateTime now = DateTime.now();
   DateTime initFilterDatetime = DateTime.now();
   DateTime endFilterDatetime = DateTime.now();
-  
+
   List<HNComponentWeekDivisionData> list = [];
 
   @override
@@ -64,7 +64,6 @@ class _MonthlyMonitoringCompanySituationPageState
           top: false,
           child: SingleChildScrollView(
             child: Container(
-              //margin: const EdgeInsets.fromLTRB(24, 16, 24, 32),
               child: Column(
                 children: [
                   const SizedBox(
@@ -75,16 +74,15 @@ class _MonthlyMonitoringCompanySituationPageState
                     height: 24,
                   ),
                   ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: list.length,
-                    itemBuilder: (context, i) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-                        child: list[i]
-                      );
-                    }
-                  )
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: list.length,
+                      itemBuilder: (context, i) {
+                        return Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 32, vertical: 8),
+                            child: list[i]);
+                      })
                 ],
               ),
             ),
@@ -117,8 +115,10 @@ class _MonthlyMonitoringCompanySituationPageState
               while (y.length < 4) {
                 y = '0' + y;
               }
-              initFilterDatetime = Utils().parseStringToTimestamp('01/' + m + "/" + y).toDate();
-              endFilterDatetime = Utils().addToDate(initFilterDatetime, monthsToAdd: 1);
+              initFilterDatetime =
+                  Utils().parseStringToTimestamp('01/' + m + "/" + y).toDate();
+              endFilterDatetime =
+                  Utils().addToDate(initFilterDatetime, monthsToAdd: 1);
               getList();
             });
           }
@@ -129,7 +129,10 @@ class _MonthlyMonitoringCompanySituationPageState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(Utils().parseTimestmpToString(Timestamp.fromDate(initFilterDatetime), dateFormat: "MMMM, yyyy") ?? ""),
+                Text(Utils().parseTimestmpToString(
+                        Timestamp.fromDate(initFilterDatetime),
+                        dateFormat: "MMMM, yyyy") ??
+                    ""),
               ],
             ),
             decoration: BoxDecoration(
@@ -144,25 +147,26 @@ class _MonthlyMonitoringCompanySituationPageState
 
   getList() {
     int initDayOfWeek = initFilterDatetime.weekday;
-    DateTime initDate = Utils().addToDate(initFilterDatetime, daysToAdd: 1 - initDayOfWeek);
+    DateTime initDate =
+        Utils().addToDate(initFilterDatetime, daysToAdd: 1 - initDayOfWeek);
 
     int endDayOfWeek = endFilterDatetime.weekday;
-    DateTime endDate = Utils().addToDate(endFilterDatetime, daysToAdd: 7 - endDayOfWeek);
+    DateTime endDate =
+        Utils().addToDate(endFilterDatetime, daysToAdd: 7 - endDayOfWeek);
 
     list = [];
 
     while (initDate.isBefore(endDate)) {
       Timestamp init = Timestamp.fromDate(initDate);
-      Timestamp end = Timestamp.fromDate(Utils().addToDate(initDate, daysToAdd: 6));
-      list.add(
-        HNComponentWeekDivisionData(
-          init, 
-          end,
-          onTap: () {
-            navigateToDailyMCS(init,end);
-          },
-        )
-      );
+      Timestamp end =
+          Timestamp.fromDate(Utils().addToDate(initDate, daysToAdd: 6));
+      list.add(HNComponentWeekDivisionData(
+        init,
+        end,
+        onTap: () {
+          navigateToDailyMCS(init, end);
+        },
+      ));
       initDate = Utils().addToDate(initDate, daysToAdd: 7);
     }
   }
@@ -171,8 +175,8 @@ class _MonthlyMonitoringCompanySituationPageState
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => WeeklyMonitoringCompanySituationPage(currentUser, initTimestamp, endTimestamp),
+          builder: (context) => WeeklyMonitoringCompanySituationPage(
+              currentUser, initTimestamp, endTimestamp),
         ));
   }
-
 }

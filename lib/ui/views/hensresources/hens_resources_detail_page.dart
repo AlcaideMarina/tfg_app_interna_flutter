@@ -12,13 +12,16 @@ import '../../components/constants/hn_button.dart';
 import 'modify_hens_resources_page.dart';
 
 class HensResourcesDetailPage extends StatefulWidget {
-  const HensResourcesDetailPage(this.currentUser, this.hensResourcesModel, {Key? key}) : super(key: key);
+  const HensResourcesDetailPage(this.currentUser, this.hensResourcesModel,
+      {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
   final HensResourcesModel hensResourcesModel;
 
   @override
-  State<HensResourcesDetailPage> createState() => _HensResourcesStateDetailPage();
+  State<HensResourcesDetailPage> createState() =>
+      _HensResourcesStateDetailPage();
 }
 
 class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
@@ -31,7 +34,6 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
 
     currentUser = widget.currentUser;
     hensResourcesModel = widget.hensResourcesModel;
-
   }
 
   @override
@@ -54,10 +56,10 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getComponentTableFormWithoutLable(getCells(), 
-                        columnWidhts: {
-                          0: const IntrinsicColumnWidth(),
-                        }),
+                      getComponentTableFormWithoutLable(getCells(),
+                          columnWidhts: {
+                            0: const IntrinsicColumnWidth(),
+                          }),
                       const SizedBox(
                         height: 16,
                       ),
@@ -87,162 +89,152 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
 
   List<TableRow> getCells() {
     return [
-      TableRow(
-        children: [
-          Container(
-            child: Text("Fecha:"),
-            margin: const EdgeInsets.only(right: 16),
+      TableRow(children: [
+        Container(
+          child: Text("Fecha:"),
+          margin: const EdgeInsets.only(right: 16),
+        ),
+        Container(
+          child: Text(Utils()
+                  .parseTimestmpToString(hensResourcesModel.expenseDatetime) ??
+              ""),
+          margin: const EdgeInsets.only(left: 16),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: Text("Cantidad:"),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            isEnabled: false,
+            labelText: hensResourcesModel.hensNumber.toString(),
           ),
-          Container(
-            child: Text(Utils().parseTimestmpToString(hensResourcesModel.expenseDatetime) ?? ""),
-            margin: const EdgeInsets.only(left: 16),
-          ),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Cantidad:"),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: false,
-                labelText: hensResourcesModel.hensNumber.toString(),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: Text("Precio total:"),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: Row(
+            children: [
+              Flexible(
+                child: HNComponentTextInput(
+                  contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  textInputType: const TextInputType.numberWithOptions(),
+                  isEnabled: false,
+                  labelText: hensResourcesModel.totalPrice.toString(),
+                ),
               ),
-            ),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Precio total:"),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: Row(
-                children: [
-                  Flexible(
-                    child: HNComponentTextInput(
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      textInputType: const TextInputType.numberWithOptions(),
-                      isEnabled: false,
-                      labelText: hensResourcesModel.totalPrice.toString(),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  const Text("€"),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                ],
+              const SizedBox(
+                width: 16,
               ),
-            ),
-        ]
-      ),
-      
+              const Text("€"),
+              const SizedBox(
+                width: 8,
+              ),
+            ],
+          ),
+        ),
+      ]),
     ];
   }
 
   Widget getButtonsComponent() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        children: [
-          HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, navigateToModifyHensResource, null),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(children: [
+          HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
+              'Modificar', null, null, navigateToModifyHensResource, null),
           const SizedBox(
             height: 8,
           ),
-          HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton(
-                'Eliminar', 
-                null, 
-                null, 
-                warningDeleteHensResource, 
-                null, 
-              ),
-        ])
-    );
+          HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
+            'Eliminar',
+            null,
+            null,
+            warningDeleteHensResource,
+            null,
+          ),
+        ]));
   }
 
   warningDeleteHensResource() {
     FocusManager.instance.primaryFocus?.unfocus();
     showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-            title: const Text('Aviso importante'),
-            content: Text(
-                'Esta acción es irreversible. Va a eliminar este ticket, y puede conllevar consecuencias para la empresa. ¿Está seguro de que quiere continuar?'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(this.context).pop();
-                }, 
-                child: const Text("Atrás")
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(this.context).pop();
-                  deleteHensResource();
-                }, 
-                child: const Text("Continuar")
-              ),
-            ],
-          ));
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text('Aviso importante'),
+              content: Text(
+                  'Esta acción es irreversible. Va a eliminar este ticket, y puede conllevar consecuencias para la empresa. ¿Está seguro de que quiere continuar?'),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(this.context).pop();
+                    },
+                    child: const Text("Atrás")),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(this.context).pop();
+                      deleteHensResource();
+                    },
+                    child: const Text("Continuar")),
+              ],
+            ));
   }
 
   deleteHensResource() async {
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
-    bool conf = await FirebaseUtils.instance.deleteDocument("material_hens", hensResourcesModel.documentId!);
-    
+    bool conf = await FirebaseUtils.instance
+        .deleteDocument("material_hens", hensResourcesModel.documentId!);
+
     Navigator.pop(context);
-    if(conf) {
+    if (conf) {
       showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-              title: const Text('Recurso eliminado'),
-              content: const Text(
-                  'El recurso ha sido eliminado correctamente.'),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('De acuerdo.'),
-                  onPressed: () {
-                    Navigator.of(context)
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Recurso eliminado'),
+                content:
+                    const Text('El recurso ha sido eliminado correctamente.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context)
                         ..pop()
                         ..pop();
-                  },
-                )
-              ],
-            ));
+                    },
+                  )
+                ],
+              ));
     } else {
       showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-              title: const Text('Error'),
-              content: const Text(
-                  'Se ha producido un error al eliminar el recurso. Por favor, inténtelo de nuevo.'),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('De acuerdo.'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            ));
-    
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Error'),
+                content: const Text(
+                    'Se ha producido un error al eliminar el recurso. Por favor, inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
     }
   }
 
@@ -260,9 +252,10 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
 
   navigateToModifyHensResource() async {
     final result = await Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => ModifyHensResourcesPage(currentUser, hensResourcesModel)));
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                ModifyHensResourcesPage(currentUser, hensResourcesModel)));
 
     if (result != null) {
       hensResourcesModel = result;

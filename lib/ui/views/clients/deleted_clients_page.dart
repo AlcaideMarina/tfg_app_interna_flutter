@@ -1,15 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_clients.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_panel.dart';
-import 'package:hueveria_nieto_interna/ui/components/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 import 'package:hueveria_nieto_interna/data/models/client_model.dart';
-import 'package:hueveria_nieto_interna/ui/views/clients/new_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
 import '../../../data/models/internal_user_model.dart';
@@ -39,11 +36,6 @@ class _DeletedClientsPageState extends State<DeletedClientsPage> {
     final double _height = MediaQuery.of(context).size.height;
 
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-    if (StringsTranslation.of(context) == null) {
-      print("NULO");
-    } else {
-      print("NO NULO");
-    }
 
     return Scaffold(
         key: _scaffoldKey,

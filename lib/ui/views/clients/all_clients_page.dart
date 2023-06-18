@@ -35,8 +35,6 @@ class _AllClientsPageState extends State<AllClientsPage> {
 
   @override
   Widget build(BuildContext context) {
-    Firebase
-        .initializeApp(); // TODO: Investigar si esto se puede quitar o poner de forma global
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
 

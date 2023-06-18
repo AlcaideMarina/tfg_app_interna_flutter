@@ -21,9 +21,8 @@ class HNComponentDropdown extends StatelessWidget {
   final List<String> items;
   final Color? textColor;
 
-  const HNComponentDropdown(
-    this.items,
-    {Key? key,
+  const HNComponentDropdown(this.items,
+      {Key? key,
       this.autofocus = false,
       this.initialValue,
       this.textInputType,
@@ -37,58 +36,55 @@ class HNComponentDropdown extends StatelessWidget {
       this.isDense,
       this.isExpanded = true,
       this.isEnabled,
-      this.contentPadding = const EdgeInsets.symmetric(vertical: 8, horizontal: 16), 
+      this.contentPadding =
+          const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       this.backgroundColor,
-      this.textColor}) : super(key: key);
+      this.textColor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
-            autofocus: autofocus,
-            value: initialValue,
-            icon: dropdownIcon == null ? null : const Icon(Icons.keyboard_arrow_down_rounded),
-            isExpanded: isExpanded,
-            style: TextStyle(color: textColor),
-            decoration: InputDecoration(
-              filled: backgroundColor != null,
-              fillColor: backgroundColor,
-              isDense: isDense,
-              contentPadding: contentPadding,
-              hintText: hintText,
-              labelText: labelText,
-              helperText: helperText,
-              icon: leftIcon == null ? null : Icon(leftIcon),
-              border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                  borderSide: BorderSide(color: CustomColors.redPrimaryColor)),
-              enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                  borderSide: BorderSide(color: CustomColors.redGraySecondaryColor)),
-              focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                  borderSide: BorderSide(color: CustomColors.redPrimaryColor)),
+      autofocus: autofocus,
+      value: initialValue,
+      icon: dropdownIcon == null
+          ? null
+          : const Icon(Icons.keyboard_arrow_down_rounded),
+      isExpanded: isExpanded,
+      style: TextStyle(color: textColor),
+      decoration: InputDecoration(
+        filled: backgroundColor != null,
+        fillColor: backgroundColor,
+        isDense: isDense,
+        contentPadding: contentPadding,
+        hintText: hintText,
+        labelText: labelText,
+        helperText: helperText,
+        icon: leftIcon == null ? null : Icon(leftIcon),
+        border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+            borderSide: BorderSide(color: CustomColors.redPrimaryColor)),
+        enabledBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+            borderSide: BorderSide(color: CustomColors.redGraySecondaryColor)),
+        focusedBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+            borderSide: BorderSide(color: CustomColors.redPrimaryColor)),
+      ),
+      items: items.map((e) {
+        return DropdownMenuItem(
+          value: e,
+          child: SizedBox(
+            width: double.infinity,
+            child: Text(
+              e,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: CustomColors.blackColor),
             ),
-            items: items.map((e){
-              return DropdownMenuItem(
-                value: e,
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Text(
-                    e,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: CustomColors.blackColor
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
-            onChanged: (value) => onChange != null ? onChange!(value) : null,
-            /*onChanged: (String? newValue) { 
-              setState(() {
-                dropdownvalue = newValue!;
-              });
-            },*/
-          );
+          ),
+        );
+      }).toList(),
+      onChanged: (value) => onChange != null ? onChange!(value) : null,
+    );
   }
 }

@@ -6,51 +6,47 @@ import '../../values/image_routes.dart';
 /// Component to use when listing all clients (e.g: AllClientsPage)
 
 class HNComponentClients extends StatelessWidget {
-  
   final String id;
   final String name;
   final String cif;
   final Function()? onTap;
-  // TODO: Falta por añadir en onClick
 
-  const HNComponentClients(
-    this.id, 
-    this.name, 
-    this.cif, 
-    {Key? key, this.onTap}) : super(key: key);
+  const HNComponentClients(this.id, this.name, this.cif, {Key? key, this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: onTap,
         child: Container(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('ID: ' + id),
-              Text(name),
-              Text("CIF: " + cif),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('ID: ' + id),
+                  Text(name),
+                  Text("CIF: " + cif),
+                ],
+              ),
+              onTap != null
+                  ? Image.asset(
+                      ImageRoutes.getRoute('ic_next_arrow'),
+                      width: 16,
+                      height: 24,
+                    )
+                  : Container()
             ],
           ),
-          onTap != null ? Image.asset(
-            ImageRoutes.getRoute('ic_next_arrow'), 
-            width: 16,
-            height: 24,)
-          : Container()
-        ],
-      ),
-      decoration: BoxDecoration(
-        color: CustomColors.redGraySecondaryColor,
-        border: Border.all(
-          color: CustomColors.redGraySecondaryColor,
-        ),
-        borderRadius: const BorderRadius.all(Radius.circular(20))
-      ),
-    ));
+          decoration: BoxDecoration(
+              color: CustomColors.redGraySecondaryColor,
+              border: Border.all(
+                color: CustomColors.redGraySecondaryColor,
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(20))),
+        ));
   }
 }

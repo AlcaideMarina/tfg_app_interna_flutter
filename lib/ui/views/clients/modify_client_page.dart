@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 
@@ -9,7 +8,6 @@ import '../../../data/models/client_model.dart';
 import '../../../data/models/internal_user_model.dart';
 import '../../components/component_cell_table_form.dart';
 import '../../components/component_container_border_check_title.dart';
-import '../../components/component_container_border_text.dart';
 import '../../components/component_simple_form.dart';
 import '../../components/component_table_form.dart';
 import '../../components/component_text_input.dart';
@@ -199,7 +197,8 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
       String? labelInputText,
       TextInputType textInputType,
       Function(String)? onChange,
-      {TextCapitalization textCapitalization = TextCapitalization.sentences, bool isEnabled = true}) {
+      {TextCapitalization textCapitalization = TextCapitalization.sentences,
+      bool isEnabled = true}) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (contCompany == 0) {
@@ -210,23 +209,25 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
     contCompany++;
 
     return HNComponentSimpleForm(
-        label + ':',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
-        componentTextInput: HNComponentTextInput(
-          textCapitalization: textCapitalization,
-          labelText: labelInputText,
-          initialValue: initialValue,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          textInputType: textInputType,
-          onChange: onChange,
-          isEnabled: isEnabled,
-          textColor: CustomColors.darkGrayColor,
-          backgroundColor: isEnabled ? CustomColors.whiteColor : CustomColors.backgroundTextFieldDisabled,
-        ),);
+      label + ':',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
+        textCapitalization: textCapitalization,
+        labelText: labelInputText,
+        initialValue: initialValue,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textInputType: textInputType,
+        onChange: onChange,
+        isEnabled: isEnabled,
+        textColor: CustomColors.darkGrayColor,
+        backgroundColor: isEnabled
+            ? CustomColors.whiteColor
+            : CustomColors.backgroundTextFieldDisabled,
+      ),
+    );
   }
 
   Widget getComponentTableForm(String label, List<TableRow> children,
@@ -254,8 +255,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
     return [
       TableRow(children: [
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8, bottom: 8),
+            40, const EdgeInsets.only(left: 16, right: 8, bottom: 8),
             componentTextInput: HNComponentTextInput(
               labelText: 'Teléfono',
               initialValue: phone1.toString(),
@@ -269,8 +269,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
               textColor: CustomColors.darkGrayColor,
             )),
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16, bottom: 8),
+            40, const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             componentTextInput: HNComponentTextInput(
               labelText: 'Nombre contacto',
               initialValue: namePhone1,
@@ -285,9 +284,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
             )),
       ]),
       TableRow(children: [
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8),
+        HNComponentCellTableForm(40, const EdgeInsets.only(left: 16, right: 8),
             componentTextInput: HNComponentTextInput(
               labelText: 'Teléfono',
               initialValue: phone2.toString(),
@@ -300,9 +297,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
               isEnabled: true,
               textColor: CustomColors.darkGrayColor,
             )),
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16),
+        HNComponentCellTableForm(40, const EdgeInsets.only(left: 8, right: 16),
             componentTextInput: HNComponentTextInput(
               labelText: 'Nombre contacto',
               initialValue: namePhone2,

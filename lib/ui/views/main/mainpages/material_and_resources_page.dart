@@ -12,12 +12,14 @@ import '../../../components/constants/hn_button.dart';
 import '../../../components/menu/lateral_menu.dart';
 
 class MaterialAndResourcesPage extends StatefulWidget {
-  const MaterialAndResourcesPage(this.currentUser, {Key? key}) : super(key: key);
+  const MaterialAndResourcesPage(this.currentUser, {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
 
   @override
-  State<MaterialAndResourcesPage> createState() => _MaterialAndResourcesPageState();
+  State<MaterialAndResourcesPage> createState() =>
+      _MaterialAndResourcesPageState();
 }
 
 class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
@@ -50,7 +52,11 @@ class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
           children: [
             Container(
               child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Trabajadores y sueldos", null, null, navigateToWorkerResources, () {}),
+                  "Trabajadores y sueldos",
+                  null,
+                  null,
+                  navigateToWorkerResources,
+                  () {}),
             ),
             const SizedBox(
               height: 16,
@@ -78,7 +84,11 @@ class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
             ),
             Container(
               child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Cajas y cartones", null, null, navigateToBoxesAndCartonsResources, () {}),
+                  "Cajas y cartones",
+                  null,
+                  null,
+                  navigateToBoxesAndCartonsResources,
+                  () {}),
             ),
           ],
         ),
@@ -106,7 +116,8 @@ class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => AllElectricityWaterGasResourcesPage(currentUser),
+          builder: (context) =>
+              AllElectricityWaterGasResourcesPage(currentUser),
         ));
   }
 
@@ -125,5 +136,4 @@ class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
           builder: (context) => AllBoxesAndCartonsResourcesPage(currentUser),
         ));
   }
-
 }

@@ -12,27 +12,31 @@ import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class FinalProductControlDetailPage extends StatefulWidget {
-  const FinalProductControlDetailPage(this.currentUser, this.fpcModel, {Key? key}) : super(key: key);
+  const FinalProductControlDetailPage(this.currentUser, this.fpcModel,
+      {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
   final FPCModel fpcModel;
 
   @override
-  State<FinalProductControlDetailPage> createState() => _FinalProductControlDetailPageState();
+  State<FinalProductControlDetailPage> createState() =>
+      _FinalProductControlDetailPageState();
 }
 
-class _FinalProductControlDetailPageState extends State<FinalProductControlDetailPage> {
+class _FinalProductControlDetailPageState
+    extends State<FinalProductControlDetailPage> {
   late InternalUserModel currentUser;
   late FPCModel fpcModel;
 
   @override
   void initState() {
     super.initState();
-    
+
     currentUser = widget.currentUser;
     fpcModel = widget.fpcModel;
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,11 +57,12 @@ class _FinalProductControlDetailPageState extends State<FinalProductControlDetai
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getComponentTableFormWithoutLabel(getPricePerUnitTableRow(), 
-                        columnWidhts: {
-                          0: const IntrinsicColumnWidth(),
-                          2: const IntrinsicColumnWidth()
-                        }),
+                      getComponentTableFormWithoutLabel(
+                          getPricePerUnitTableRow(),
+                          columnWidhts: {
+                            0: const IntrinsicColumnWidth(),
+                            2: const IntrinsicColumnWidth()
+                          }),
                       const SizedBox(
                         height: 32,
                       ),
@@ -87,250 +92,241 @@ class _FinalProductControlDetailPageState extends State<FinalProductControlDetai
 
   Widget getButtonsComponent() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        children: [
-          HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, navigateToModifyFeedResource, null),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(children: [
+          HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
+              'Modificar', null, null, navigateToModifyFeedResource, null),
           const SizedBox(
             height: 8,
           ),
-          HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton(
-                'Eliminar', 
-                null, 
-                null, 
-                warningDeleteFPCResource,
-                null, 
-              ),
-        ])
-    );
+          HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
+            'Eliminar',
+            null,
+            null,
+            warningDeleteFPCResource,
+            null,
+          ),
+        ]));
   }
 
   List<TableRow> getPricePerUnitTableRow() {
     List<TableRow> list = [
-        TableRow(
-          children: [
-            Container(
+      TableRow(
+        children: [
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("Fch. puesta:")),
-            Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: TextInputType.none,
-                isEnabled: false,
-                labelText: Utils().parseTimestmpToString(fpcModel.layingDatetime),
-              ),
+          Container(
+            height: 40,
+            margin: const EdgeInsets.only(left: 8, bottom: 0),
+            child: HNComponentTextInput(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              textInputType: TextInputType.none,
+              isEnabled: false,
+              labelText: Utils().parseTimestmpToString(fpcModel.layingDatetime),
             ),
-          ],
+          ),
+        ],
+      ),
+      TableRow(children: [
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("Fch. envasado:")),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: TextInputType.none,
+            isEnabled: false,
+            labelText: Utils().parseTimestmpToString(fpcModel.layingDatetime),
+          ),
         ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Fch. envasado:")),
-            Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: TextInputType.none,
-                isEnabled: false,
-                labelText: Utils().parseTimestmpToString(fpcModel.layingDatetime),
-              ),
-            ),
-          ]
+      ]),
+      TableRow(children: [
+        Container(
+          child: Text("Control de huevos:"),
+          margin: const EdgeInsets.only(left: 12, right: 16, top: 16),
         ),
-        TableRow(
-          children: [
-            Container(
-              child: Text("Control de huevos:"),
-              margin: const EdgeInsets.only(left: 12, right: 16, top: 16),
-            ),
-            Container(),
-          ]
-        ),
-        TableRow(
-          children: [
-            Container(
+        Container(),
+      ]),
+      TableRow(
+        children: [
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("Aceptados:")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0, top: 8),
-              child: HNComponentTextInput(
+          Container(
+            height: 40,
+            margin: EdgeInsets.only(left: 8, bottom: 0, top: 8),
+            child: HNComponentTextInput(
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 textInputType: const TextInputType.numberWithOptions(),
                 labelText: fpcModel.acceptedEggs.toString(),
-                isEnabled: false
-              ),
-            ),
-          ],
-        ),
-        TableRow(
-          children: [
-            Container(
+                isEnabled: false),
+          ),
+        ],
+      ),
+      TableRow(
+        children: [
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("Rechazados:")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                labelText: fpcModel.rejectedEggs.toString(),
-                isEnabled: false,
-              ),
+          Container(
+            height: 40,
+            margin: EdgeInsets.only(left: 8, bottom: 0, top: 4),
+            child: HNComponentTextInput(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              textInputType: const TextInputType.numberWithOptions(),
+              labelText: fpcModel.rejectedEggs.toString(),
+              isEnabled: false,
             ),
-          ],
-        ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16,),
+          ),
+        ],
+      ),
+      TableRow(
+        children: [
+          Container(
+              margin: const EdgeInsets.only(
+                left: 24,
+                right: 16,
+              ),
               child: Text("Lote:")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0, top: 16),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                labelText: fpcModel.lot.toString(),
-                isEnabled: false,
-              ),
+          Container(
+            height: 40,
+            margin: EdgeInsets.only(left: 8, bottom: 0, top: 16),
+            child: HNComponentTextInput(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              textInputType: const TextInputType.numberWithOptions(),
+              labelText: fpcModel.lot.toString(),
+              isEnabled: false,
             ),
-          ],
-        ),
-        TableRow(
-          children: [
-            Container(
+          ),
+        ],
+      ),
+      TableRow(
+        children: [
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("F. C. Pref.:")),
-            Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: TextInputType.none,
-                isEnabled: false,
-                labelText: Utils().parseTimestmpToString(fpcModel.bestBeforeDatetime),
-              ),
+          Container(
+            height: 40,
+            margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+            child: HNComponentTextInput(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              textInputType: TextInputType.none,
+              isEnabled: false,
+              labelText:
+                  Utils().parseTimestmpToString(fpcModel.bestBeforeDatetime),
             ),
-          ],
+          ),
+        ],
+      ),
+      TableRow(children: [
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("Fch. expedición:")),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: TextInputType.none,
+            isEnabled: false,
+            labelText: Utils().parseTimestmpToString(fpcModel.issueDatetime),
+          ),
         ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Fch. expedición:")),
-            Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: TextInputType.none,
-                isEnabled: false,
-                labelText: Utils().parseTimestmpToString(fpcModel.issueDatetime),
-              ),
-            ),
-          ]
-        ),
+      ]),
     ];
     return list;
-
   }
 
   warningDeleteFPCResource() {
     FocusManager.instance.primaryFocus?.unfocus();
     showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-            title: const Text('Aviso importante'),
-            content: Text(
-                'Esta acción es irreversible. Va a eliminar esta información, y puede conllevar consecuencias para la empresa. ¿Está seguro de que quiere continuar?'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }, 
-                child: const Text("Atrás")
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  deleteFPCResource();
-                }, 
-                child: const Text("Continuar")
-              ),
-            ],
-          ));
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text('Aviso importante'),
+              content: Text(
+                  'Esta acción es irreversible. Va a eliminar esta información, y puede conllevar consecuencias para la empresa. ¿Está seguro de que quiere continuar?'),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Atrás")),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      deleteFPCResource();
+                    },
+                    child: const Text("Continuar")),
+              ],
+            ));
   }
 
   deleteFPCResource() async {
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
-    bool conf = await FirebaseUtils.instance.deleteDocument("final_product_control", fpcModel.documentId!);
-    
+    bool conf = await FirebaseUtils.instance
+        .deleteDocument("final_product_control", fpcModel.documentId!);
+
     Navigator.pop(context);
-    if(conf) {
+    if (conf) {
       showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-              title: const Text('CPF eliminado'),
-              content: const Text(
-                  'La información del control de producto final ha sido eliminado correctamente.'),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('De acuerdo.'),
-                  onPressed: () {
-                    Navigator.of(context)
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('CPF eliminado'),
+                content: const Text(
+                    'La información del control de producto final ha sido eliminado correctamente.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context)
                         ..pop()
                         ..pop();
-                  },
-                )
-              ],
-            ));
+                    },
+                  )
+                ],
+              ));
     } else {
       showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-              title: const Text('Error'),
-              content: const Text(
-                  'Se ha producido un error al eliminar el registro. Por favor, inténtelo de nuevo.'),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('De acuerdo.'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            ));
-    
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Error'),
+                content: const Text(
+                    'Se ha producido un error al eliminar el registro. Por favor, inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
     }
   }
 
   navigateToModifyFeedResource() async {
     final result = await Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => ModifyFinalProductControlPage(currentUser, fpcModel)));
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                ModifyFinalProductControlPage(currentUser, fpcModel)));
 
     if (result != null) {
       fpcModel = result;
       setState(() {});
     }
   }
-
 
   showAlertDialog(BuildContext context) {
     showDialog(
@@ -343,5 +339,4 @@ class _FinalProductControlDetailPageState extends State<FinalProductControlDetai
       },
     );
   }
-
 }

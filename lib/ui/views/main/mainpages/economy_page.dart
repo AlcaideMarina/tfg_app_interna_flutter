@@ -14,13 +14,12 @@ class EconomyPage extends StatefulWidget {
   const EconomyPage(this.currentUser, {Key? key}) : super(key: key);
 
   final InternalUserModel currentUser;
-  
+
   @override
   State<EconomyPage> createState() => _EconomyPageState();
 }
 
 class _EconomyPageState extends State<EconomyPage> {
-
   late InternalUserModel currentUser;
 
   @override
@@ -28,11 +27,11 @@ class _EconomyPageState extends State<EconomyPage> {
     super.initState();
     currentUser = widget.currentUser;
   }
+
   @override
   Widget build(BuildContext context) {
-
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-    
+
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
@@ -51,7 +50,11 @@ class _EconomyPageState extends State<EconomyPage> {
           children: [
             Container(
               child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Facturación de clientes", null, null, navigateToBilling, () {}),
+                  "Facturación de clientes",
+                  null,
+                  null,
+                  navigateToBilling,
+                  () {}),
             ),
             const SizedBox(
               height: 24,
@@ -72,20 +75,26 @@ class _EconomyPageState extends State<EconomyPage> {
     if (futureEggPrices.docs.isNotEmpty) {
       Map<String, dynamic> valuesMap = futureEggPrices.docs[0].data()["values"];
       eggPricesData = EggPricesData(
-      valuesMap['xl_box'], valuesMap['xl_dozen'], valuesMap['l_box'], 
-      valuesMap['l_dozen'], valuesMap['m_box'], valuesMap['m_dozen'], 
-      valuesMap['s_box'], valuesMap['s_dozen']);
+          valuesMap['xl_box'],
+          valuesMap['xl_dozen'],
+          valuesMap['l_box'],
+          valuesMap['l_dozen'],
+          valuesMap['m_box'],
+          valuesMap['m_dozen'],
+          valuesMap['s_box'],
+          valuesMap['s_dozen']);
     }
     Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => SellingPricePage(currentUser, eggPricesData)));
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                SellingPricePage(currentUser, eggPricesData)));
   }
 
   navigateToBilling() async {
     Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => ClientsBillingPage(currentUser)));
+        context,
+        MaterialPageRoute(
+            builder: (context) => ClientsBillingPage(currentUser)));
   }
 }

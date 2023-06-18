@@ -76,17 +76,14 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
             const SizedBox(
               height: 16,
             ),
-            Container(
-              child: Column(children: [
-                HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                    "Usuarios internos", null, null, navigateToInternalUsersPage, () {}),
-                /* const SizedBox(
-                  height: 16,
-                ),
-                HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                    "Usuarios externos", null, null, () {}, () {}) */
-              ]),
-            ),
+            Column(children: [
+              HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
+                  "Usuarios internos",
+                  null,
+                  null,
+                  navigateToInternalUsersPage,
+                  () {}),
+            ]),
           ],
         ),
       ),
@@ -103,7 +100,7 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
 
   navigateToInternalUsersPage() {
     Navigator.push(
-        context, 
+        context,
         MaterialPageRoute(
           builder: (context) => InternalUsersPage(currentUser),
         ));

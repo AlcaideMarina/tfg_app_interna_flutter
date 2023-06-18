@@ -17,7 +17,7 @@ import '../../components/component_panel.dart';
 
 class AllOrdersPage extends StatefulWidget {
   const AllOrdersPage(this.currentUser, {Key? key}) : super(key: key);
-  
+
   final InternalUserModel currentUser;
 
   @override
@@ -38,133 +38,136 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-            toolbarHeight: 56.0,
-            title: const Text(
-              "Todos los pedidos",
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
-            )),
-        body: Column(
-          children: [
-            Container(
-                child: StreamBuilder(
-                  stream: FirebaseUtils.instance.getAllDocumentsFromCollection("client_info"),
-                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              
-                      // TODO: Pop-up del error
-                      if (snapshot.hasError) return const Text("error");
-                      if (snapshot.connectionState == ConnectionState.waiting) {
+      key: _scaffoldKey,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+          toolbarHeight: 56.0,
+          title: const Text(
+            "Todos los pedidos",
+            style: TextStyle(
+                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+          )),
+      body: Column(
+        children: [
+          StreamBuilder(
+              stream: FirebaseUtils.instance
+                  .getAllDocumentsFromCollection("client_info"),
+              builder:
+                  (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasError) return const Text("error");
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: CustomColors.redPrimaryColor,
+                      ),
+                    ),
+                  );
+                }
+
+                return StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collectionGroup('orders')
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> orderSnapshot) {
+                      if (orderSnapshot.hasError) return const Text("error");
+                      if (orderSnapshot.connectionState ==
+                          ConnectionState.waiting) {
                         return const Expanded(
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color: CustomColors.redPrimaryColor,
-                              ),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: CustomColors.redPrimaryColor,
                             ),
-                          );
+                          ),
+                        );
                       }
-              
-                      return StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance.collectionGroup('orders').snapshots(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> orderSnapshot) {
-                              
-                                // TODO: Pop-up del error
-                                if (orderSnapshot.hasError) return const Text("error");
-                                if (orderSnapshot.connectionState == ConnectionState.waiting) {
-                                  return const Expanded(
-                                      child: Center(
-                                        child: CircularProgressIndicator(
-                                          color: CustomColors.redPrimaryColor,
-                                        ),
-                                      ),
-                                    );
-                                }
-              
-                                List<dynamic>? orderModelList = orderSnapshot.data?.docs
-                                  .map((e) => OrderModel.fromMap(e.data() as Map<String, dynamic>,e.id)).toList() ?? [];
-                                
-                                List<OrderModel> list = [];
-                                final DateTime todayDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-                                for (OrderModel item in orderModelList) {
-                                  if (item.status != Constants().orderStatus["Cancelado"]) {
-                                    list.add(item);
-                                  }
-                                }
-                                list.sort((a, b) {
-                                  return b.orderDatetime.compareTo(a.orderDatetime);
-                                });
-              
-                                if (list.isNotEmpty) {
-                                  return Expanded(
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.vertical,
-                                        itemCount: list.length,
-                                        itemBuilder: (context, i) {
-                                          final OrderModel orderModel = list[i];
-                                                  
-                                          return Container(
-                                              margin: const EdgeInsets.symmetric(
-                                                  horizontal: 32, vertical: 8),
-                                              child: HNComponentOrders(
-                                                orderModel.orderDatetime,
-                                                orderModel.orderId!,
-                                                orderModel.company,
-                                                OrderUtils().getOrderSummary(OrderUtils().orderDataToBDOrderModel(orderModel)),        // TODO
-                                                orderModel.totalPrice,
-                                                orderModel.status,
-                                                orderModel.deliveryDni,
-                                                onTap: () async {
-                                                  navigateToOrderDetail(orderModel);
-                                                }
-                                              ),
-                                            );
-                                          
-                                        }),
-                                    );
-                                } else {
-                                  return Expanded(
-                                    child: Container(
-                                      width: double.infinity,
-                                      decoration: const BoxDecoration(
-                                        color: CustomColors.redGrayLightSecondaryColor,
-                                        borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))
-                                      ),
-                                      child: SingleChildScrollView(
-                                          child: Container(
-                                                  margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                                                  child: const HNComponentPanel(
-                                                    title: 'No hay pedidos',
-                                                    text:
-                                                        "No hay registro de pedidos en la base de datos.",
-                                                  )),
-                                        ),
-                                    ));
-                                }
-                                
-                            });
-                  }
-                ),
-              ),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
+
+                      List<dynamic>? orderModelList = orderSnapshot.data?.docs
+                              .map((e) => OrderModel.fromMap(
+                                  e.data() as Map<String, dynamic>, e.id))
+                              .toList() ??
+                          [];
+
+                      List<OrderModel> list = [];
+                      final DateTime todayDate = DateTime(DateTime.now().year,
+                          DateTime.now().month, DateTime.now().day);
+                      for (OrderModel item in orderModelList) {
+                        if (item.status !=
+                            Constants().orderStatus["Cancelado"]) {
+                          list.add(item);
+                        }
+                      }
+                      list.sort((a, b) {
+                        return b.orderDatetime.compareTo(a.orderDatetime);
+                      });
+
+                      if (list.isNotEmpty) {
+                        return Expanded(
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: list.length,
+                              itemBuilder: (context, i) {
+                                final OrderModel orderModel = list[i];
+
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 32, vertical: 8),
+                                  child: HNComponentOrders(
+                                      orderModel.orderDatetime,
+                                      orderModel.orderId!,
+                                      orderModel.company,
+                                      OrderUtils().getOrderSummary(
+                                          OrderUtils()
+                                              .orderDataToBDOrderModel(
+                                                  orderModel)), // TODO
+                                      orderModel.totalPrice,
+                                      orderModel.status,
+                                      orderModel.deliveryDni,
+                                      onTap: () async {
+                                    navigateToOrderDetail(orderModel);
+                                  }),
+                                );
+                              }),
+                        );
+                      } else {
+                        return Expanded(
+                            child: Container(
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                              color: CustomColors.redGrayLightSecondaryColor,
+                              borderRadius: BorderRadius.vertical(
+                                  bottom: Radius.circular(16))),
+                          child: SingleChildScrollView(
+                            child: Container(
+                                margin:
+                                    const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                                child: const HNComponentPanel(
+                                  title: 'No hay pedidos',
+                                  text:
+                                      "No hay registro de pedidos en la base de datos.",
+                                )),
+                          ),
+                        ));
+                      }
+                    });
+              }),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
           backgroundColor: CustomColors.redPrimaryColor,
           child: const Icon(Icons.add_rounded),
-          onPressed: navigateToNewOrder
-        ),
-      );
+          onPressed: navigateToNewOrder),
+    );
   }
-  
+
   navigateToNewOrder() async {
-    
     var futureEggPrices = await FirebaseUtils.instance.getEggPrices();
     Map<String, dynamic> valuesMap = futureEggPrices.docs[0].data()["values"];
 
-    var futureClients = await FirebaseUtils.instance.getAllDocumentsFromCollectionFuture("client_info");
+    var futureClients = await FirebaseUtils.instance
+        .getAllDocumentsFromCollectionFuture("client_info");
     List<ClientModel> clientModelList = [];
     for (var client in futureClients.docs) {
       try {
@@ -174,32 +177,38 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
       }
     }
 
-    if (context.mounted){
+    if (context.mounted) {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => NewOrderPage(currentUser, valuesMap, clientModelList),
+            builder: (context) =>
+                NewOrderPage(currentUser, valuesMap, clientModelList),
           ));
     }
   }
-  
-  navigateToOrderDetail(OrderModel orderModel) async {
 
-    var future = await FirebaseUtils.instance.getClientById(orderModel.clientId);
+  navigateToOrderDetail(OrderModel orderModel) async {
+    var future =
+        await FirebaseUtils.instance.getClientById(orderModel.clientId);
     InternalUserModel? deliveryPerson;
     if (future.docs.isNotEmpty) {
-      ClientModel clientModel = ClientModel.fromMap(future.docs[0].data(), future.docs[0].id);
-      if(orderModel.deliveryPerson != null) {
-        var futureDeliveryPerson = await FirebaseUtils.instance.getInternalUserWithDocumentId(orderModel.deliveryPerson!);
-        if(futureDeliveryPerson.exists && futureDeliveryPerson.data() != null) {
-          deliveryPerson = InternalUserModel.fromMap(futureDeliveryPerson.data()!, futureDeliveryPerson.id);
+      ClientModel clientModel =
+          ClientModel.fromMap(future.docs[0].data(), future.docs[0].id);
+      if (orderModel.deliveryPerson != null) {
+        var futureDeliveryPerson = await FirebaseUtils.instance
+            .getInternalUserWithDocumentId(orderModel.deliveryPerson!);
+        if (futureDeliveryPerson.exists &&
+            futureDeliveryPerson.data() != null) {
+          deliveryPerson = InternalUserModel.fromMap(
+              futureDeliveryPerson.data()!, futureDeliveryPerson.id);
         }
       }
-      if (context.mounted){
+      if (context.mounted) {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => OrderDetailPage(currentUser, clientModel, orderModel, deliveryPerson),
+              builder: (context) => OrderDetailPage(
+                  currentUser, clientModel, orderModel, deliveryPerson),
             ));
       }
     } else {
@@ -219,7 +228,5 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
                 ],
               ));
     }
-
-    
   }
 }

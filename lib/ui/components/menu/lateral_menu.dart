@@ -21,12 +21,10 @@ class LateralMenu extends StatefulWidget {
 }
 
 class _LateralMenuState extends State<LateralMenu> {
-
   late InternalUserModel currentUser;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     currentUser = widget.currentUser;
   }
@@ -37,56 +35,54 @@ class _LateralMenuState extends State<LateralMenu> {
       child: Column(
         children: [
           Expanded(
-            child: ListView(
-              children: [
-            Container(
-              height: 128, // Establece la altura mínima deseada
-              child: LateralMenuHeader(currentUser)
-            ),
-            ListTile(
-                  leading: const Icon(Icons.home_outlined),
-                  title: const Text('Inicio', style: TextStyle(color: CustomColors.blackColor),),
-                  onTap: () {
-                    navigateToHome();
-                  },
+            child: ListView(children: [
+              Container(height: 128, child: LateralMenuHeader(currentUser)),
+              ListTile(
+                leading: const Icon(Icons.home_outlined),
+                title: const Text(
+                  'Inicio',
+                  style: TextStyle(color: CustomColors.blackColor),
                 ),
-                ListTile(
-                  leading: const Icon(Icons.note_add_outlined),
-                  title: const Text('Pedidos y repartos'),
-                  onTap: () {
-                    navegateToOrderAndDelivery();
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.money_outlined),
-                  title: const Text('Economía'),
-                  onTap: () {
-                    navigateToEconomy();
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.pets_outlined),
-                  title: const Text('Granja'),
-                  onTap: () {
-                    navigateToFarm();
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.book_outlined),
-                  title: const Text('Material'),
-                  onTap: () {
-                    navigateToMaterial();
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.person_outline),
-                  title: const Text('Usuarios y clientes'),
-                  onTap: () {
-                    navigateToUsersAndClientsPage();
-                  },
-                )
-              ]
-            ),
+                onTap: () {
+                  navigateToHome();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.note_add_outlined),
+                title: const Text('Pedidos y repartos'),
+                onTap: () {
+                  navegateToOrderAndDelivery();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.money_outlined),
+                title: const Text('Economía'),
+                onTap: () {
+                  navigateToEconomy();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.pets_outlined),
+                title: const Text('Granja'),
+                onTap: () {
+                  navigateToFarm();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.book_outlined),
+                title: const Text('Material'),
+                onTap: () {
+                  navigateToMaterial();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.person_outline),
+                title: const Text('Usuarios y clientes'),
+                onTap: () {
+                  navigateToUsersAndClientsPage();
+                },
+              )
+            ]),
           ),
           Container(
             height: 1,
@@ -120,59 +116,46 @@ class _LateralMenuState extends State<LateralMenu> {
 
   navigateToUsersAndClientsPage() {
     Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => UsersAndClientsPage(currentUser),
-      ));
+        context,
+        MaterialPageRoute(
+          builder: (context) => UsersAndClientsPage(currentUser),
+        ));
   }
 
   navegateToOrderAndDelivery() {
-    Navigator.pushReplacement(
-      context, 
-      MaterialPageRoute(
-        builder: ((context) => OrdersPage(currentUser))));
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: ((context) => OrdersPage(currentUser))));
   }
 
   navigateToEconomy() {
-    Navigator.pushReplacement(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => EconomyPage(currentUser)));
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => EconomyPage(currentUser)));
   }
 
   navigateToMaterial() {
     Navigator.pushReplacement(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => MaterialAndResourcesPage(currentUser)));
+        context,
+        MaterialPageRoute(
+            builder: (context) => MaterialAndResourcesPage(currentUser)));
   }
 
   navigateToFarm() {
-    Navigator.pushReplacement(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => FarmPage(currentUser)));
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => FarmPage(currentUser)));
   }
 
   navigateToHome() {
-    Navigator.pushReplacement(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => HomePage(currentUser)));
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => HomePage(currentUser)));
   }
 
   navegateToSettings() {
-    Navigator.pushReplacement(
-      context, 
-      MaterialPageRoute(
-        builder: ((context) => SettingsPage(currentUser))));
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: ((context) => SettingsPage(currentUser))));
   }
 
   navegateToLogin() {
     Navigator.pushReplacement(
-      context, 
-      MaterialPageRoute(
-        builder: ((context) => const LoginPage())));
+        context, MaterialPageRoute(builder: ((context) => const LoginPage())));
   }
-
 }

@@ -15,7 +15,7 @@ class NewInternalUserPage extends StatefulWidget {
   const NewInternalUserPage(this.currentUser, {Key? key}) : super(key: key);
 
   final InternalUserModel currentUser;
-  
+
   @override
   State<NewInternalUserPage> createState() => _NewInternalUserPageState();
 }
@@ -42,21 +42,16 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
   bool sameDniDirecion = false;
   int ssNumber = -1;
   String bankAccount = "";
-  String jobPosition = "";   // TODO: Esto va a tener que ser un dropdown
+  String jobPosition = "";
   String user = "";
-  bool internalApplication = false;
-  // TODO: Lista de persisos de la app interna
-  late bool deliveryApplication;
-  // TODO: Lista de persisos de la app de repartos
-  
+
   int contCompany = 0;
   int contUser = 0;
-  
+
   List<String> items = [];
-  
+
   @override
   Widget build(BuildContext context) {
-
     if (items.isEmpty) {
       for (String key in Constants().roles.keys) {
         items.add(key);
@@ -86,7 +81,8 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
                         height: 32,
                       ),
                       Text("El usuario debe tener más de 6 dígitos."),
-                      Text('La contraseña será igual que el usuario. Por favor, cámbiela en cuanto sea posible. Para hacer login, se necesitará el correo y la contraseña.'),
+                      Text(
+                          'La contraseña será igual que el usuario. Por favor, cámbiela en cuanto sea posible. Para hacer login, se necesitará el correo y la contraseña.'),
                       const SizedBox(
                         height: 32,
                       ),
@@ -113,8 +109,7 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
             (value) {
           surname = value;
         }),
-        getCompanyComponentSimpleForm('DNI', null, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm('DNI', null, TextInputType.text, (value) {
           dni = value;
         }, textCapitalization: TextCapitalization.characters),
         getCompanyComponentSimpleForm('Teléfono', null, TextInputType.number,
@@ -129,7 +124,8 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
             'Correo', null, TextInputType.emailAddress, (value) {
           email = value;
         }, textCapitalization: TextCapitalization.none),
-        getCompanyComponentSimpleForm('Dirección', null, TextInputType.text, (value) {
+        getCompanyComponentSimpleForm('Dirección', null, TextInputType.text,
+            (value) {
           direction = value;
         }),
         getCompanyComponentSimpleForm(
@@ -140,15 +136,16 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
             (value) {
           province = value;
         }),
-        getCompanyComponentSimpleForm('Código postal', null, TextInputType.number,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Código postal', null, TextInputType.number, (value) {
           try {
             postalCode = int.parse(value);
           } catch (e) {
             postalCode = -1;
           }
         }),
-        getCompanyComponentSimpleForm('Nº Afiliación de la Seguridad Social', null, TextInputType.number,
+        getCompanyComponentSimpleForm(
+            'Nº Afiliación de la Seguridad Social', null, TextInputType.number,
             (value) {
           try {
             ssNumber = int.parse(value);
@@ -156,15 +153,13 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
             ssNumber = -1;
           }
         }),
-        getCompanyComponentSimpleForm('Cuenta bancaria', null, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Cuenta bancaria', null, TextInputType.text, (value) {
           bankAccount = value;
         }),
         // TODO: Este va a ser un dropdown
         getDropdownComponentSimpleForm('Puesto', null, TextInputType.text,
-            (value) => {
-          jobPosition = value!
-        }),
+            (value) => {jobPosition = value!}),
         getCompanyComponentSimpleForm('Usuario', null, TextInputType.text,
             (value) {
           user = value;
@@ -203,53 +198,54 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
     contCompany++;
 
     return HNComponentSimpleForm(
-        label + ':',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
-        componentTextInput: HNComponentTextInput(
-          textCapitalization: textCapitalization,
-          labelText: labelInputText,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          textInputType: textInputType,
-          onChange: onChange,
-        ),);
+      label + ':',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
+        textCapitalization: textCapitalization,
+        labelText: labelInputText,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textInputType: textInputType,
+        onChange: onChange,
+      ),
+    );
   }
 
-  Widget getDropdownComponentSimpleForm(String label, String? labelInputText, 
-      TextInputType textInputType, Function(dynamic)? onChange, 
+  Widget getDropdownComponentSimpleForm(String label, String? labelInputText,
+      TextInputType textInputType, Function(dynamic)? onChange,
       {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
-        double topMargin = 4;
-        double bottomMargin = 4;
-        if (contCompany == 0) {
-          topMargin = 8;
-        } else if (contCompany == 12) {
-          bottomMargin = 32;
-        }
-        contCompany++;
-        
-        return HNComponentSimpleForm(
-        '$label:',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin,),
-        componentDropdown: 
-          HNComponentDropdown(
-            items,
-            labelText: labelInputText,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            textInputType: textInputType,
-            onChange: onChange,
-          ),
-        );
+    double topMargin = 4;
+    double bottomMargin = 4;
+    if (contCompany == 0) {
+      topMargin = 8;
+    } else if (contCompany == 12) {
+      bottomMargin = 32;
+    }
+    contCompany++;
+
+    return HNComponentSimpleForm(
+      '$label:',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(
+        top: topMargin,
+        bottom: bottomMargin,
+      ),
+      componentDropdown: HNComponentDropdown(
+        items,
+        labelText: labelInputText,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textInputType: textInputType,
+        onChange: onChange,
+      ),
+    );
   }
 
   ////// Functions
-  
+
   saveUser() async {
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
@@ -273,10 +269,9 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
         ssNumber != -1 &&
         surname != "" &&
         user != "") {
-      
       uid = await FirebaseUtils.instance.createAuthAccount(email, user);
 
-      if(uid != null) {
+      if (uid != null) {
         InternalUserModel internalUser = InternalUserModel(
             bankAccount,
             city,
@@ -312,8 +307,8 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
                         child: const Text('De acuerdo.'),
                         onPressed: () {
                           Navigator.of(context)
-                              ..pop()
-                              ..pop();
+                            ..pop()
+                            ..pop();
                         },
                       )
                     ],
@@ -338,41 +333,40 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
         }
       } else {
         Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Formulario incompleto'),
-                    content: const Text(
-                        'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('De acuerdo.'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
-                  ));
-          }
-      } else {
-          Navigator.of(context).pop();
-            showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                      title: const Text('Formulario incompleto'),
-                      content: const Text(
-                          'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
-                      actions: <Widget>[
-                        TextButton(
-                          child: const Text('De acuerdo.'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        )
-                      ],
-                    ));
-            }
-    
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Formulario incompleto'),
+                  content: const Text(
+                      'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo.'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ));
+      }
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formulario incompleto'),
+                content: const Text(
+                    'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
+    }
   }
 
   goBack() {
@@ -390,5 +384,4 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
       },
     );
   }
-
 }

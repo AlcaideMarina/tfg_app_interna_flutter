@@ -11,11 +11,12 @@ import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class ModifySellingPricePage extends StatefulWidget {
-  const ModifySellingPricePage(this.currentUser, this.eggPricesData, {Key? key}) : super(key: key);
+  const ModifySellingPricePage(this.currentUser, this.eggPricesData, {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
   final EggPricesData eggPricesData;
-  
+
   @override
   State<ModifySellingPricePage> createState() => _ModifySellingPricePageState();
 }
@@ -68,11 +69,11 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getComponentTableForm('Pedido', getPricePerUnitTableRow(), 
-                        columnWidhts: {
-                          0: const IntrinsicColumnWidth(),
-                          2: const IntrinsicColumnWidth()
-                        }),
+                      getComponentTableForm('Pedido', getPricePerUnitTableRow(),
+                          columnWidhts: {
+                            0: const IntrinsicColumnWidth(),
+                            2: const IntrinsicColumnWidth()
+                          }),
                       const SizedBox(
                         height: 32,
                       ),
@@ -104,293 +105,283 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
       columnWidths: columnWidhts,
     );
   }
-  
+
   List<TableRow> getPricePerUnitTableRow() {
     List<TableRow> list = [
-        TableRow(
-          children: [
-            Container(
-              child: Text("XL"),
-              margin: const EdgeInsets.only(left: 12, right: 16),
-            ),
-            Container(),
-            Container()
-          ]
+      TableRow(children: [
+        Container(
+          child: Text("XL"),
+          margin: const EdgeInsets.only(left: 12, right: 16),
         ),
-        TableRow(
-          children: [
-            Container(
+        Container(),
+        Container()
+      ]),
+      TableRow(
+        children: [
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("Docena")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: xlDozen.toString(),
-                isEnabled: true,
-                onChange: (value) {
-                  xlDozen = double.tryParse(value) ?? 0.0;
-                },
-              ),
+          Container(
+            height: 40,
+            margin: const EdgeInsets.only(left: 8, bottom: 0),
+            child: HNComponentTextInput(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              textInputType: const TextInputType.numberWithOptions(),
+              initialValue: xlDozen.toString(),
+              isEnabled: true,
+              onChange: (value) {
+                xlDozen = double.tryParse(value) ?? 0.0;
+              },
             ),
-            Container(
+          ),
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("€")),
-          ],
+        ],
+      ),
+      TableRow(children: [
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("Caja")),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            initialValue: xlBox.toString(),
+            isEnabled: true,
+            onChange: (value) {
+              xlBox = double.tryParse(value) ?? 0.0;
+            },
+          ),
         ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Caja")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: xlBox.toString(),
-                isEnabled: true,
-                onChange: (value) {
-                  xlBox = double.tryParse(value) ?? 0.0;
-                },
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ]
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("€")),
+      ]),
+      TableRow(children: [
+        Container(
+          child: Text("L"),
+          margin: const EdgeInsets.only(left: 12, right: 16),
         ),
-        TableRow(
-          children: [
-            Container(
-              child: Text("L"),
-              margin: const EdgeInsets.only(left: 12, right: 16),
-            ),
-            Container(),
-            Container()
-          ]
-        ),
-        TableRow(
-          children: [
-            Container(
+        Container(),
+        Container()
+      ]),
+      TableRow(
+        children: [
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("Docena")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: lDozen.toString(),
-                isEnabled: true,
-                onChange: (value) {
-                  lDozen = double.tryParse(value) ?? 0.0;
-                },
-              ),
+          Container(
+            height: 40,
+            margin: const EdgeInsets.only(left: 8, bottom: 0),
+            child: HNComponentTextInput(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              textInputType: const TextInputType.numberWithOptions(),
+              initialValue: lDozen.toString(),
+              isEnabled: true,
+              onChange: (value) {
+                lDozen = double.tryParse(value) ?? 0.0;
+              },
             ),
-            Container(
+          ),
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("€")),
-          ],
+        ],
+      ),
+      TableRow(children: [
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("Caja")),
+        Container(
+          height: 40,
+          margin: EdgeInsets.only(left: 8, bottom: 0),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            initialValue: lBox.toString(),
+            isEnabled: true,
+            onChange: (value) {
+              lBox = double.tryParse(value) ?? 0.0;
+            },
+          ),
         ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Caja")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: lBox.toString(),
-                isEnabled: true,
-                onChange: (value) {
-                  lBox = double.tryParse(value) ?? 0.0;
-                },
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ]
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("€")),
+      ]),
+      TableRow(children: [
+        Container(
+          child: Text("M"),
+          margin: const EdgeInsets.only(left: 12, right: 16),
         ),
-        TableRow(
-          children: [
-            Container(
-              child: Text("M"),
-              margin: const EdgeInsets.only(left: 12, right: 16),
-            ),
-            Container(),
-            Container()
-          ]
-        ),
-        TableRow(
-          children: [
-            Container(
+        Container(),
+        Container()
+      ]),
+      TableRow(
+        children: [
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("Docena")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: mDozen.toString(),
-                isEnabled: true,
-                onChange: (value) {
-                  mDozen = double.tryParse(value) ?? 0.0;
-                },
-              ),
+          Container(
+            height: 40,
+            margin: const EdgeInsets.only(left: 8, bottom: 0),
+            child: HNComponentTextInput(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              textInputType: const TextInputType.numberWithOptions(),
+              initialValue: mDozen.toString(),
+              isEnabled: true,
+              onChange: (value) {
+                mDozen = double.tryParse(value) ?? 0.0;
+              },
             ),
-            Container(
+          ),
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("€")),
-          ],
+        ],
+      ),
+      TableRow(children: [
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("Caja")),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            initialValue: mBox.toString(),
+            isEnabled: true,
+            onChange: (value) {
+              mBox = double.tryParse(value) ?? 0.0;
+            },
+          ),
         ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Caja")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: mBox.toString(),
-                isEnabled: true,
-                onChange: (value) {
-                  mBox = double.tryParse(value) ?? 0.0;
-                },
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ]
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("€")),
+      ]),
+      TableRow(children: [
+        Container(
+          child: Text("L"),
+          margin: const EdgeInsets.only(left: 12, right: 16),
         ),
-        TableRow(
-          children: [
-            Container(
-              child: Text("L"),
-              margin: const EdgeInsets.only(left: 12, right: 16),
-            ),
-            Container(),
-            Container()
-          ]
-        ),
-        TableRow(
-          children: [
-            Container(
+        Container(),
+        Container()
+      ]),
+      TableRow(
+        children: [
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("Docena")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: sDozen.toString(),
-                isEnabled: true,
-                onChange: (value) {
-                  sDozen = double.tryParse(value) ?? 0.0;
-                },
-              ),
+          Container(
+            height: 40,
+            margin: const EdgeInsets.only(left: 8, bottom: 0),
+            child: HNComponentTextInput(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              textInputType: const TextInputType.numberWithOptions(),
+              initialValue: sDozen.toString(),
+              isEnabled: true,
+              onChange: (value) {
+                sDozen = double.tryParse(value) ?? 0.0;
+              },
             ),
-            Container(
+          ),
+          Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
               child: Text("€")),
-          ],
+        ],
+      ),
+      TableRow(children: [
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("Caja")),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            initialValue: sBox.toString(),
+            isEnabled: true,
+            onChange: (value) {
+              sBox = double.tryParse(value) ?? 0.0;
+            },
+          ),
         ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Caja")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: sBox.toString(),
-                isEnabled: true,
-                onChange: (value) {
-                  sBox = double.tryParse(value) ?? 0.0;
-                },
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ]
-        ),
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: Text("€")),
+      ]),
     ];
     return list;
-
   }
 
   Widget getButtonsComponent() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, warningUpdatePrices, null),
+          .getTypedButton('Guardar', null, null, warningUpdatePrices, null),
     );
   }
 
   warningUpdatePrices() {
     showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-                title: const Text('Aviso'),
-                content: const Text(
-                    'Esta acción cambiará los precios de los productos a partir de este momento, dejando todos los pedidos anteriores tal y como están.\nEs una ación que puede tener grandes consecuencias.\n¿Está seguro de que quiere continuar?'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Atrás'),
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pop();
-                    },
-                  ),
-                  TextButton(
-                    child: const Text('Continuar'),
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pop();
-                      updatePrices();
-                    },
-                  )
-                ],
-              ));
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text('Aviso'),
+              content: const Text(
+                  'Esta acción cambiará los precios de los productos a partir de este momento, dejando todos los pedidos anteriores tal y como están.\nEs una ación que puede tener grandes consecuencias.\n¿Está seguro de que quiere continuar?'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Atrás'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Continuar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    updatePrices();
+                  },
+                )
+              ],
+            ));
   }
 
   updatePrices() async {
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
 
-    if (xlBox != 0.0 && xlDozen != 0.0 && lBox != 0.0 && lDozen != 0.0 &&
-        mBox != 0.0 && mDozen != 0.0 && sBox != 0.0 && sDozen != 0.0) {
+    if (xlBox != 0.0 &&
+        xlDozen != 0.0 &&
+        lBox != 0.0 &&
+        lDozen != 0.0 &&
+        mBox != 0.0 &&
+        mDozen != 0.0 &&
+        sBox != 0.0 &&
+        sDozen != 0.0) {
       EggPricesData updateEggPricesData = EggPricesData(
-        xlBox, xlDozen, lBox, lDozen, mBox, mDozen, sBox, sDozen);
-      
-      QuerySnapshot<Map<String, dynamic>> futureEggPrices= await FirebaseUtils.instance.getEggPrices();
+          xlBox, xlDozen, lBox, lDozen, mBox, mDozen, sBox, sDozen);
+
+      QuerySnapshot<Map<String, dynamic>> futureEggPrices =
+          await FirebaseUtils.instance.getEggPrices();
       if (futureEggPrices.docs.isNotEmpty && futureEggPrices.docs[0].exists) {
-        bool firestoreConf = await FirebaseUtils.instance.updateDocument("default_constants", futureEggPrices.docs[0].id, 
+        bool firestoreConf = await FirebaseUtils.instance.updateDocument(
+            "default_constants",
+            futureEggPrices.docs[0].id,
             {"values": updateEggPricesData.toMap()});
 
         if (firestoreConf) {
@@ -431,25 +422,23 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
         }
       } else {
         Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Formulario incompleto'),
-                    content: const Text(
-                        'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('De acuerdo.'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
-                  ));
-          } 
-
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Formulario incompleto'),
+                  content: const Text(
+                      'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo.'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ));
+      }
     }
-
   }
 
   showAlertDialog(BuildContext context) {
@@ -463,5 +452,4 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
       },
     );
   }
-
 }

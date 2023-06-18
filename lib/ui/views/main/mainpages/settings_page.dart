@@ -8,7 +8,7 @@ import '../../../components/component_list_data.dart';
 import '../../../components/menu/lateral_menu.dart';
 
 class SettingsPage extends StatefulWidget {
-  SettingsPage(this.currentUser, {Key? key}) : super(key: key);
+  const SettingsPage(this.currentUser, {Key? key}) : super(key: key);
 
   final InternalUserModel currentUser;
 
@@ -20,7 +20,7 @@ class _SettingsPageState extends State<SettingsPage> {
   late InternalUserModel currentUser;
 
   @override
-  void  initState() {
+  void initState() {
     super.initState();
     currentUser = widget.currentUser;
   }
@@ -33,39 +33,33 @@ class _SettingsPageState extends State<SettingsPage> {
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Colors.white,
-      drawer: LateralMenu(currentUser),
-      appBar: AppBar(
-          toolbarHeight: 56.0,
-          title: const Text(
-            "Ajustes",
-            style: TextStyle(
-                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
-          )),
-      body: ListView(
+        key: _scaffoldKey,
+        backgroundColor: Colors.white,
+        drawer: LateralMenu(currentUser),
+        appBar: AppBar(
+            toolbarHeight: 56.0,
+            title: const Text(
+              "Ajustes",
+              style: TextStyle(
+                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+            )),
+        body: ListView(
           children: [
-            HNComponentListData(
-              "Cambiar contraseña", 
-              true,
-              onTap: () { 
-                navegateToChangePassword(); 
-              }
-            ),
+            HNComponentListData("Cambiar contraseña", true, onTap: () {
+              navegateToChangePassword();
+            }),
             const HNComponentListData(
-              "Cambiar idioma", 
+              "Cambiar idioma",
               false,
             ),
           ],
-        )
-    );
+        ));
   }
 
   navegateToChangePassword() {
     Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: ((context) => ChangePasswordPage(currentUser))));
+        context,
+        MaterialPageRoute(
+            builder: ((context) => ChangePasswordPage(currentUser))));
   }
-
 }

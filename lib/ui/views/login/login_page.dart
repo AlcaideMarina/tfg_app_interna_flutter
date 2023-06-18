@@ -5,10 +5,8 @@ import 'package:hueveria_nieto_interna/ui/components/component_text_input.dart';
 import 'package:hueveria_nieto_interna/ui/components/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/values/firebase_auth_constants.dart';
 import 'package:hueveria_nieto_interna/values/image_routes.dart';
-import '../../../custom/custom_colors.dart';
 import '../../../data/models/internal_user_model.dart';
 import '../main/main_page.dart';
-import 'dart:developer' as developer;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -96,7 +94,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   navigateToMainPage(InternalUserModel currentUser) {
-    // TODO: Evitar que al dar al botón de atrás, vuelva aquí - investigar
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -104,40 +101,40 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
-  // TODO: Esto debería estar en una clase aparte
   Future<InternalUserModel?>? getUserInfo() async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
         .collection('user_info')
         .where('uid', isEqualTo: uid)
         .get();
-    
+
     String id = querySnapshot.docs[0].id;
     DocumentSnapshot document =
         await FirebaseFirestore.instance.collection('user_info').doc(id).get();
 
     if (document.exists) {
-      final Map<String, dynamic>? userInfo = document.data() as Map<String, dynamic>?;
+      final Map<String, dynamic>? userInfo =
+          document.data() as Map<String, dynamic>?;
       if (userInfo != null) {
-        // TODO: hacer un .fromMap
         return InternalUserModel(
-          userInfo['bank_account'], 
-          userInfo['city'], 
+          userInfo['bank_account'],
+          userInfo['city'],
           userInfo['created_by'],
           userInfo['deleted'],
-          userInfo['direction'], 
-          userInfo['dni'], 
-          userInfo['email'], 
+          userInfo['direction'],
+          userInfo['dni'],
+          userInfo['email'],
           userInfo['id'],
-          userInfo['name'], 
-          userInfo['phone'], 
+          userInfo['name'],
+          userInfo['phone'],
           userInfo['position'],
-          userInfo['postal_code'], 
-          userInfo['province'], 
+          userInfo['postal_code'],
+          userInfo['province'],
           userInfo['salary'],
-          userInfo['ss_number'], 
-          userInfo['surname'], 
-          uid!, 
+          userInfo['ss_number'],
+          userInfo['surname'],
+          uid!,
           userInfo['user'],
           document.id,
         );
@@ -145,21 +142,17 @@ class _LoginPageState extends State<LoginPage> {
         return null;
       }
     } else {
-        return null;
-      }
+      return null;
+    }
   }
 
   Future signIn() async {
-    // TODO: añadir un Circular Progress Indicator - que no se pueda quitar
-    // TODO: hacer un componente de pop-up
-    // TODO: Fix - si hay algún error, no se quita el circular progress indicator
     try {
-
       FocusManager.instance.primaryFocus?.unfocus();
       showAlertDialog(context);
 
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: user.trim(), password: password);
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: user.trim(), password: password);
 
       InternalUserModel? currentUser = await getUserInfo();
 
@@ -168,21 +161,22 @@ class _LoginPageState extends State<LoginPage> {
         navigateToMainPage(currentUser);
       } else {
         Navigator.of(context).pop();
-        showDialog(context: context, builder: (_) => AlertDialog(
-          title: const Text('Error'),
-          content: const Text('Parece que ha habido un problema. Inténtalo de nuevo más tarde.'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('De acuerdo.'),
-              onPressed: () {
-                setState(() {
-                  // TODO: borrar contraseña
-                });
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        ));
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Error'),
+                  content: const Text(
+                      'Parece que ha habido un problema. Inténtalo de nuevo más tarde.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo.'),
+                      onPressed: () {
+                        setState(() {});
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ));
       }
     } on FirebaseAuthException catch (e) {
       String errorMessage =
@@ -195,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
       showDialog(
           context: context,
           builder: (_) => AlertDialog(
-                title: const Text('Vaya...'),
+                title: const Text('Error'),
                 content: Text(errorMessage),
                 actions: <Widget>[
                   TextButton(
