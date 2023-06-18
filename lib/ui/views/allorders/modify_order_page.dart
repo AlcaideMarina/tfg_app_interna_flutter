@@ -254,6 +254,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
                       value: paid,
                       onChanged: (newValue) {
                         paid = newValue ?? false;
+                        setState(() {});
                       },
                       dense: true,
                       controlAffinity: ListTileControlAffinity.leading,
@@ -548,33 +549,53 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
     if (checkFields()) {
-      DBOrderFieldData dbOrderFieldData = OrderUtils().getOrderStructure(productQuantities, eggPricesData);
-      double totalPrice = Utils().roundDouble(getTotalPrice(dbOrderFieldData), 2);
-      if (context.mounted) {
-          Navigator.of(context).pop();
+      if (OrderUtils().orderStatusStringToInt(status) == 3 && deliveryDni == null) {
+        DBOrderFieldData dbOrderFieldData = OrderUtils().getOrderStructure(productQuantities, eggPricesData);
+        double totalPrice = Utils().roundDouble(getTotalPrice(dbOrderFieldData), 2);
+        if (context.mounted) {
+            Navigator.of(context).pop();
+            showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                      title: const Text('Precio final'),
+                      content: Text(
+                          'El precio total del pedido será de $totalPrice €. ¿Desea continuar?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(this.context).pop();
+                          }, 
+                          child: const Text("Atrás")
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            // TODO: Guardar pedido
+                            updateOrder(dbOrderFieldData, totalPrice);
+                          }, 
+                          child: const Text("Continuar")
+                        ),
+                      ],
+                    ));
+        }
+      } else {
+        Navigator.of(context).pop();
           showDialog(
               context: context,
               builder: (_) => AlertDialog(
-                    title: const Text('Precio final'),
-                    content: Text(
-                        'El precio total del pedido será de $totalPrice €. ¿Desea continuar?'),
+                    title: const Text('Falta el DNI de entrega'),
+                    content: const Text(
+                        'No se puede marcar un pedido como entregado si falta el DNI que confirme la entrega.'),
                     actions: <Widget>[
                       TextButton(
+                        child: const Text('De acuerdo.'),
                         onPressed: () {
-                          Navigator.of(this.context).pop();
-                        }, 
-                        child: const Text("Atrás")
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // TODO: Guardar pedido
-                          updateOrder(dbOrderFieldData, totalPrice);
-                        }, 
-                        child: const Text("Continuar")
-                      ),
+                          Navigator.of(context).pop();
+                        },
+                      )
                     ],
                   ));
       }
+      
     } else {
         Navigator.of(context).pop();
           showDialog(
@@ -614,7 +635,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
       dbOrderFieldData.toMap(), 
       orderModel.orderDatetime, 
       orderModel.orderId, 
-      orderModel.paid, 
+      paid, 
       OrderUtils().paymentMethodStringToInt(paymentMethod), 
       OrderUtils().orderStatusStringToInt(status), 
       totalPrice,
