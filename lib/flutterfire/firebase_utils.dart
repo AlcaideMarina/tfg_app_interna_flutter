@@ -292,7 +292,7 @@ class FirebaseUtils {
   Stream<QuerySnapshot<Map<String, dynamic>>> getAllResourceDocuments(String collection) {
     return FirebaseFirestore.instance
         .collection(collection)
-        .orderBy("expense_datetime", descending: false)
+        .orderBy("expense_datetime", descending: true)
         .snapshots();
   }
 
