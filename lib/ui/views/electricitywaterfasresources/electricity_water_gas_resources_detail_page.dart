@@ -131,12 +131,25 @@ class _ElectricityWaterGasResourcesDetailPageState extends State<ElectricityWate
           Container(
               height: 40,
               margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: false,
-                labelText: ewgModel.totalPrice.toString(),
+              child: Row(
+                children: [
+                  Flexible(
+                    child: HNComponentTextInput(
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      textInputType: const TextInputType.numberWithOptions(),
+                      isEnabled: false,
+                      labelText: ewgModel.totalPrice.toString(),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  const Text("€"),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                ],
               ),
             ),
         ]

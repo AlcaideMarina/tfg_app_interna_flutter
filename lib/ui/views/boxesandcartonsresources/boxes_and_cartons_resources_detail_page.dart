@@ -58,7 +58,6 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
                       getComponentTableFormWithoutLable(getCells(), 
                         columnWidhts: {
                           0: const IntrinsicColumnWidth(),
-                          2: const IntrinsicColumnWidth(),
                         }),
                       const SizedBox(
                         height: 16,
@@ -99,7 +98,6 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
             child: Text(Utils().parseTimestmpToString(bcResourcesModel.expenseDatetime) ?? ""),
             margin: const EdgeInsets.only(left: 16),
           ),
-          Container(),
         ]
       ),
       TableRow(
@@ -108,7 +106,6 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
             child: Text("Pedido:"),
             margin: const EdgeInsets.only(right: 16, top: 4),
           ),
-          Container(),
           Container(),
         ]
       ),
@@ -129,7 +126,6 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
                 labelText: (fieldData.box ?? "").toString(),
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -149,7 +145,6 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
                 labelText: (fieldData.xlCarton ?? "").toString(),
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -169,7 +164,6 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
                 labelText: (fieldData.lCarton ?? "").toString(),
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -189,7 +183,6 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
                 labelText: (fieldData.mCarton ?? "").toString(),
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -209,7 +202,6 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
                 labelText: (fieldData.sCarton ?? "").toString(),
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -221,17 +213,26 @@ class _BoxesAndCartonsResourceDetailPageState extends State<BoxesAndCartonsResou
           Container(
               height: 40,
               margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: false,
-                labelText: bcResourcesModel.totalPrice.toString(),
+              child: Row(
+                children: [
+                  Flexible(
+                    child: HNComponentTextInput(
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      textInputType: const TextInputType.numberWithOptions(),
+                      isEnabled: false,
+                      labelText: bcResourcesModel.totalPrice.toString(),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  const Text("€"),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                ],
               ),
-            ),
-          Container(
-            child: Text("€"),
-            margin: const EdgeInsets.only(left: 16, right: 16, top: 4),
           ),
         ]
       ),

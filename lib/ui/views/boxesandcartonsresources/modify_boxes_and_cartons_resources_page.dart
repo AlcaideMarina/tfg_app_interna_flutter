@@ -74,7 +74,6 @@ class _ModifyBoxesAndCartonsResourcesPageState extends State<ModifyBoxesAndCarto
                       getComponentTableFormWithoutLable(getCells(), 
                         columnWidhts: {
                           0: const IntrinsicColumnWidth(),
-                          2: const IntrinsicColumnWidth(),
                         }),
                       const SizedBox(
                         height: 16,
@@ -118,7 +117,6 @@ class _ModifyBoxesAndCartonsResourcesPageState extends State<ModifyBoxesAndCarto
             child: Text(Utils().parseTimestmpToString(bcResourcesModel.expenseDatetime) ?? ""),
             margin: const EdgeInsets.only(left: 16),
           ),
-          Container(),
         ]
       ),
       TableRow(
@@ -127,7 +125,6 @@ class _ModifyBoxesAndCartonsResourcesPageState extends State<ModifyBoxesAndCarto
             child: Text("Pedido:"),
             margin: const EdgeInsets.only(right: 16, top: 4),
           ),
-          Container(),
           Container(),
         ]
       ),
@@ -151,7 +148,6 @@ class _ModifyBoxesAndCartonsResourcesPageState extends State<ModifyBoxesAndCarto
                 },
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -174,7 +170,6 @@ class _ModifyBoxesAndCartonsResourcesPageState extends State<ModifyBoxesAndCarto
                 },
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -197,7 +192,6 @@ class _ModifyBoxesAndCartonsResourcesPageState extends State<ModifyBoxesAndCarto
                 },
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -220,7 +214,6 @@ class _ModifyBoxesAndCartonsResourcesPageState extends State<ModifyBoxesAndCarto
                 },
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -243,7 +236,6 @@ class _ModifyBoxesAndCartonsResourcesPageState extends State<ModifyBoxesAndCarto
                 },
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -255,21 +247,30 @@ class _ModifyBoxesAndCartonsResourcesPageState extends State<ModifyBoxesAndCarto
           Container(
               height: 40,
               margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
-                initialValue: bcResourcesModel.totalPrice.toString(),
-                onChange: (value) {
-                  totalPrice = double.tryParse(value);
-                },
+              child: Row(
+                children: [
+                  Flexible(
+                    child: HNComponentTextInput(
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      textInputType: const TextInputType.numberWithOptions(),
+                      isEnabled: true,
+                      initialValue: bcResourcesModel.totalPrice.toString(),
+                      onChange: (value) {
+                        totalPrice = double.tryParse(value);
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  const Text("€"),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                ],
               ),
             ),
-          Container(
-            child: Text("€"),
-            margin: const EdgeInsets.only(left: 16, right: 16, top: 4),
-          ),
         ]
       ),
       

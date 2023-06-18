@@ -150,15 +150,28 @@ class _ModifyElectricityWaterGasResourcesPageState extends State<ModifyElectrici
           Container(
               height: 40,
               margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
-                initialValue: ewgModel.totalPrice.toString(),
-                onChange: (value) {
-                  totalPrice = double.tryParse(value);
-                },
+              child: Row(
+                children: [
+                  Flexible(
+                    child: HNComponentTextInput(
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      textInputType: const TextInputType.numberWithOptions(),
+                      isEnabled: true,
+                      initialValue: ewgModel.totalPrice.toString(),
+                      onChange: (value) {
+                        totalPrice = double.tryParse(value);
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  const Text("€"),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                ],
               ),
             ),
         ]

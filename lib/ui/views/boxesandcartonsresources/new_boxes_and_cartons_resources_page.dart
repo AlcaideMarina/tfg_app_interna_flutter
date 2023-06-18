@@ -71,7 +71,6 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
                       getComponentTableFormWithoutLable(getCells(), 
                         columnWidhts: {
                           0: const IntrinsicColumnWidth(),
-                          2: const IntrinsicColumnWidth(),
                         }),
                       const SizedBox(
                         height: 16,
@@ -134,7 +133,6 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
                 textEditingController: dateController
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -143,7 +141,6 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
             child: Text("Pedido:"),
             margin: const EdgeInsets.only(right: 16, top: 4),
           ),
-          Container(),
           Container(),
         ]
       ),
@@ -166,7 +163,6 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
                 },
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -188,7 +184,6 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
                 },
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -210,7 +205,6 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
                 },
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -232,7 +226,6 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
                 },
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -254,7 +247,6 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
                 },
               ),
             ),
-          Container(),
         ]
       ),
       TableRow(
@@ -266,20 +258,29 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
           Container(
               height: 40,
               margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
-                onChange: (value) {
-                  totalPrice = double.tryParse(value);
-                },
+              child: Row(
+                children: [
+                  Flexible(
+                    child: HNComponentTextInput(
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      textInputType: const TextInputType.numberWithOptions(),
+                      isEnabled: true,
+                      onChange: (value) {
+                        totalPrice = double.tryParse(value);
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  const Text("€"),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                ],
               ),
             ),
-          Container(
-            child: Text("€"),
-            margin: const EdgeInsets.only(left: 16, right: 16, top: 4),
-          ),
         ]
       ),
       
