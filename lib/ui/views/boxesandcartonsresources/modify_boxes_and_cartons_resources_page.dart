@@ -359,7 +359,7 @@ class _ModifyBoxesAndCartonsResourcesPageState extends State<ModifyBoxesAndCarto
               builder: (_) => AlertDialog(
                     title: const Text('Recurso actualizado'),
                     content: Text(
-                        'La información sobre las cajas y cartones ha sido actualizada correctamente en la base de datos.'),
+                        'La información sobre el recurso ha sido actualizada correctamente en la base de datos.'),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () {

@@ -343,7 +343,7 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
               builder: (_) => AlertDialog(
                     title: const Text('Formulario incompleto'),
                     content: const Text(
-                        'Por favor, revise los datos e inténtelo de nuevo.'),
+                        'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
                     actions: <Widget>[
                       TextButton(
                         child: const Text('De acuerdo.'),

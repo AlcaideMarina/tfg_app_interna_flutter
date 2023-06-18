@@ -582,7 +582,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
               builder: (_) => AlertDialog(
                     title: const Text('Formulario incompleto'),
                     content: const Text(
-                        'Por favor, revise los datos e inténtelo de nuevo.'),
+                        'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
                     actions: <Widget>[
                       TextButton(
                         child: const Text('De acuerdo.'),
@@ -628,7 +628,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
             context: context,
             builder: (_) => AlertDialog(
                   title: const Text("Pedido realizado"),
-                  content: const Text("Su pedido se ha realizado correctamente"),
+                  content: const Text("Los datos del pedido se han actualizado correctamente"),
                   actions: <Widget>[
                     TextButton(
                       child: const Text('De acuerdo.'),
@@ -646,8 +646,8 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
         showDialog(
             context: context,
             builder: (_) => AlertDialog(
-                  title: const Text('Se ha producido un error'),
-                  content: const Text('Sentimos comunicarle que se ha producido un error inesperado durante el pedido. Por favor, inténtelo más tarde o póngase en contacto con nosotros.'),
+                  title: const Text('Error'),
+                  content: const Text('Se ha producido un error cuando se estaban actualizado los datos del pedido. Por favor, revise los datos e inténtelo de nuevo.'),
                   actions: <Widget>[
                     TextButton(
                       child: const Text('De acuerdo.'),

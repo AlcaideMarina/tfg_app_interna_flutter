@@ -305,7 +305,7 @@ class _FinalProductControlDetailPageState extends State<FinalProductControlDetai
         builder: (_) => AlertDialog(
               title: const Text('Error'),
               content: const Text(
-                  'Se ha producido un error al eliminar el recurso. Por favor, inténtelo de nuevo.'),
+                  'Se ha producido un error al eliminar el registro. Por favor, inténtelo de nuevo.'),
               actions: <Widget>[
                 TextButton(
                   child: const Text('De acuerdo.'),

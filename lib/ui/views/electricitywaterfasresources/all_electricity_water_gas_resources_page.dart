@@ -86,7 +86,7 @@ class _AllElectricityWaterGasResourcesPageState extends State<AllElectricityWate
                                         child: const HNComponentPanel(
                                           title: 'No hay recursos',
                                           text:
-                                              "No hay registro de agua, luz o gas no eliminados en la base de datos.",
+                                              "No hay registro de agua, luz o gas sin eliminar en la base de datos.",
                                         ));
                                     } else {
                                       return Container();
@@ -99,7 +99,7 @@ class _AllElectricityWaterGasResourcesPageState extends State<AllElectricityWate
                             child: const HNComponentPanel(
                               title: 'No hay recursos',
                               text:
-                                  "No hay registro de agua, luz o gas no eliminados activos en la base de datos.",
+                                  "No hay registro de agua, luz o gas sin eliminar activos en la base de datos.",
                             ));
                       }
                     } else if (snapshot.hasError) {
@@ -116,7 +116,7 @@ class _AllElectricityWaterGasResourcesPageState extends State<AllElectricityWate
                           child: const HNComponentPanel(
                             title: 'No hay recursos',
                             text:
-                                "No hay registro de agua, luz o gas no eliminados en la base de datos.",
+                                "No hay registro de agua, luz o gas sin eliminar en la base de datos.",
                           ));
                     }
                   }

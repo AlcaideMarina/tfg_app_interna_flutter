@@ -46,7 +46,7 @@ class _BillingPerMonthPageState extends State<BillingPerMonthPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Ver clientes",
+              "Facturación de clientes",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
@@ -85,10 +85,10 @@ class _BillingPerMonthPageState extends State<BillingPerMonthPage> {
                       } else {
                         return Container(
                             margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                            child: const HNComponentPanel(
-                              title: 'No hay clientes',
+                            child: HNComponentPanel(
+                              title: 'No hay registros',
                               text:
-                                  "No hay registro de clientes activos en la base de datos.",
+                                  "Aún no hay registros de facturación para el cliente seleccionado (${clientModel.id} - {${clientModel.company})",
                             ));
                       }
                     } else if (snapshot.hasError) {
@@ -102,10 +102,10 @@ class _BillingPerMonthPageState extends State<BillingPerMonthPage> {
                     } else {
                       return Container(
                           margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                          child: const HNComponentPanel(
-                            title: 'No hay clientes',
+                          child: HNComponentPanel(
+                            title: 'No hay registros',
                             text:
-                                "No hay registro de clientes activos en la base de datos.",
+                                "Aún no hay registros de facturación para el cliente seleccionado (${clientModel.id} - {${clientModel.company})",
                           ));
                     }
                   }

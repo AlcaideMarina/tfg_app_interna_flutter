@@ -45,8 +45,8 @@ class _ClientAllOrdersPageState extends State<ClientAllOrdersPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
             toolbarHeight: 56.0,
-            title: const Text(
-              "Todos los pedidos",
+            title: Text(
+              "Pedidos del cliente ${clientModel.id}",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
@@ -100,7 +100,7 @@ class _ClientAllOrdersPageState extends State<ClientAllOrdersPage> {
                                                 orderModel.orderDatetime,
                                                 orderModel.orderId!,
                                                 orderModel.company,
-                                                OrderUtils().getOrderSummary(OrderUtils().orderDataToBDOrderModel(orderModel)),        // TODO
+                                                OrderUtils().getOrderSummary(OrderUtils().orderDataToBDOrderModel(orderModel)),
                                                 orderModel.totalPrice,
                                                 orderModel.status,
                                                 orderModel.deliveryDni,
@@ -124,9 +124,9 @@ class _ClientAllOrdersPageState extends State<ClientAllOrdersPage> {
                                           child: Container(
                                                   margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                                                   child: const HNComponentPanel(
-                                                    title: 'No hay clientes',
+                                                    title: 'No hay pedidos',
                                                     text:
-                                                        "No hay registro de clientes eliminados en la base de datos.",
+                                                        "No hay registro de pedidos para este cliente en la base de datos.",
                                                   )),
                                         ),
                                     ));
@@ -194,7 +194,7 @@ class _ClientAllOrdersPageState extends State<ClientAllOrdersPage> {
           builder: (_) => AlertDialog(
                 title: const Text('Error'),
                 content: const Text(
-                    'Ha ocurrido un error al cargar los datos del cliente. Por favor, inténtelo de nuevo.'),
+                    'Ha ocurrido un error al cargar los datos del pedido. Por favor, inténtelo de nuevo.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),

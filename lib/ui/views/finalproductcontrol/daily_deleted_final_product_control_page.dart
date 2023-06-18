@@ -43,7 +43,7 @@ class _DailyDeletedFinalProdcutControlPageState
       appBar: AppBar(
           toolbarHeight: 56.0,
           title: const Text(
-            "Todos los pedidos",
+            "CPF - Reg. eliminados",
             style: TextStyle(
                 color: AppTheme.primary, fontSize: CustomSizes.textSize24),
           )),
@@ -66,9 +66,9 @@ class _DailyDeletedFinalProdcutControlPageState
               : Container(
                   margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                   child: const HNComponentPanel(
-                    title: 'No hay recursos',
+                    title: 'No hay registros',
                     text:
-                        "No hay registro de recursos de cajas y cartones no eliminados en la base de datos.",
+                        "No hay registros de producto final eliminados para el mes seleccionado en la base de datos.",
                   )),
     );
   }

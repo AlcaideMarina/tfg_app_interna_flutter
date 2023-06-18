@@ -239,7 +239,7 @@ class _ModifyHensResourcesStatePage extends State<ModifyHensResourcesPage> {
               builder: (_) => AlertDialog(
                     title: const Text('Recurso actualizado'),
                     content: Text(
-                        'La información sobre las gallinas ha sido actualizada correctamente en la base de datos.'),
+                        'La información sobre el recurso ha sido actualizada correctamente en la base de datos.'),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () {

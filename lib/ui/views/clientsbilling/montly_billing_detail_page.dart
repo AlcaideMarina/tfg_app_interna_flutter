@@ -40,7 +40,7 @@ class _MonthlyBillingDetailPageState extends State<MonthlyBillingDetailPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Ver clientes",
+              "Detalle de facturación",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),

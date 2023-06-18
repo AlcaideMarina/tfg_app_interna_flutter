@@ -137,9 +137,9 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
                                           child: Container(
                                                   margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                                                   child: const HNComponentPanel(
-                                                    title: 'No hay clientes',
+                                                    title: 'No hay pedidos',
                                                     text:
-                                                        "No hay registro de clientes eliminados en la base de datos.",
+                                                        "No hay registro de pedidos en la base de datos.",
                                                   )),
                                         ),
                                     ));
@@ -208,7 +208,7 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
           builder: (_) => AlertDialog(
                 title: const Text('Error'),
                 content: const Text(
-                    'Ha ocurrido un error al cargar los datos del cliente. Por favor, inténtelo de nuevo.'),
+                    'Ha ocurrido un error al cargar los datos del pedido. Por favor, inténtelo de nuevo.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),

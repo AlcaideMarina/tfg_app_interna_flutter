@@ -89,7 +89,7 @@ class _PendingWorkersResourcesPageState
                                           child: const HNComponentPanel(
                                             title: 'No hay usuarios',
                                             text:
-                                                "No hay registro de usuarios internos activos en la base de datos.",
+                                                "No hay registro de usuarios internos activos en la base de datos que estén pendientes de asignar el salario.",
                                           ));
                                       } else {
                                         return Container();
@@ -102,7 +102,7 @@ class _PendingWorkersResourcesPageState
                                         child: const HNComponentPanel(
                                           title: 'No hay usuarios',
                                           text:
-                                              "No hay registro de usuarios internos activos en la base de datos.",
+                                              "No hay registro de usuarios internos activos en la base de datos que estén pendientes de asignar el salario.",
                                         ));
                                     } else {
                                       return Container();
@@ -115,7 +115,7 @@ class _PendingWorkersResourcesPageState
                             child: const HNComponentPanel(
                               title: 'No hay usuarios',
                               text:
-                                  "No hay registro de usuarios internos activos en la base de datos.",
+                                  "No hay registro de usuarios internos activos en la base de datos que estén pendientes de asignar el salario.",
                             ));
                       }
                     } else if (snapshot.hasError) {
@@ -132,7 +132,7 @@ class _PendingWorkersResourcesPageState
                           child: const HNComponentPanel(
                             title: 'No hay usuarios',
                             text:
-                                "No hay registro de usuarios internos activos en la base de datos.",
+                                "No hay registro de usuarios internos activos en la base de datos que estén pendientes de asignar el salario.",
                           ));
                     }
                   }

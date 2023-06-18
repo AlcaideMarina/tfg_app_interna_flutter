@@ -84,7 +84,7 @@ class _AllHensResourcesPageState extends State<AllHensResourcesPage> {
                                         child: const HNComponentPanel(
                                           title: 'No hay recursos',
                                           text:
-                                              "No hay registro de recursos de gallinas no eliminados en la base de datos.",
+                                              "No hay registro de recursos de gallinas sin eliminar en la base de datos.",
                                         ));
                                     } else {
                                       return Container();
@@ -97,7 +97,7 @@ class _AllHensResourcesPageState extends State<AllHensResourcesPage> {
                             child: const HNComponentPanel(
                               title: 'No hay recursos',
                               text:
-                                  "No hay registro de recursos de gallinas no eliminados en la base de datos.",
+                                  "No hay registro de recursos de gallinas sin eliminar en la base de datos.",
                             ));
                       }
                     } else if (snapshot.hasError) {
@@ -114,7 +114,7 @@ class _AllHensResourcesPageState extends State<AllHensResourcesPage> {
                           child: const HNComponentPanel(
                             title: 'No hay recursos',
                             text:
-                                "No hay registro de recursos de gallinas no eliminados en la base de datos.",
+                                "No hay registro de recursos de gallinas sin eliminar en la base de datos.",
                           ));
                     }
                   }

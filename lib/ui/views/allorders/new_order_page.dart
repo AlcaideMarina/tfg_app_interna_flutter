@@ -473,7 +473,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
               builder: (_) => AlertDialog(
                     title: const Text('Formulario incompleto'),
                     content: const Text(
-                        'Por favor, revise los datos e inténtelo de nuevo.'),
+                        'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
                     actions: <Widget>[
                       TextButton(
                         child: const Text('De acuerdo.'),
@@ -603,7 +603,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
             context: context,
             builder: (_) => AlertDialog(
                   title: const Text('Se ha producido un error'),
-                  content: const Text('Sentimos comunicarle que se ha producido un error inesperado durante el pedido. Por favor, inténtelo más tarde o póngase en contacto con nosotros.'),
+                  content: const Text('Se ha producido un error al tramitar el pedido. Por favor, inténtelo más tarde o póngase en contacto con nosotros.'),
                   actions: <Widget>[
                     TextButton(
                       child: const Text('De acuerdo.'),

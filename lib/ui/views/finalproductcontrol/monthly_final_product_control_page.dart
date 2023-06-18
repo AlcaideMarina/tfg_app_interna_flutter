@@ -41,7 +41,7 @@ class _MonthlyFinalProductControlPageState extends State<MonthlyFinalProductCont
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Todos los pedidos",
+              "Control de producto final ",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
@@ -92,9 +92,9 @@ class _MonthlyFinalProductControlPageState extends State<MonthlyFinalProductCont
                       return Container(
                           margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                           child: const HNComponentPanel(
-                            title: 'No hay clientes',
+                            title: 'No hay registros',
                             text:
-                                "No hay registro de clientes activos en la base de datos.",
+                                "No hay registros en la base de datos.",
                           ));
                     }
                   }

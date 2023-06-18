@@ -469,7 +469,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
               builder: (_) => AlertDialog(
                     title: const Text('Cliente guardado'),
                     content: const Text(
-                        'La información del cliente se ha guardado correctamente'),
+                        'La información del cliente se ha actualizado correctamente'),
                     actions: <Widget>[
                       TextButton(
                         child: const Text('De acuerdo.'),

@@ -88,7 +88,7 @@ class _AllBoxesAndCartonsResourcesPageState extends State<AllBoxesAndCartonsReso
                                         child: const HNComponentPanel(
                                           title: 'No hay recursos',
                                           text:
-                                              "No hay registro de recursos de cajas y cartones no eliminados en la base de datos.",
+                                              "No hay registro de recursos de cajas y cartones sin eliminar en la base de datos.",
                                         ));
                                     } else {
                                       return Container();
@@ -101,7 +101,7 @@ class _AllBoxesAndCartonsResourcesPageState extends State<AllBoxesAndCartonsReso
                             child: const HNComponentPanel(
                               title: 'No hay recursos',
                               text:
-                                  "No hay registro de recursos de cajas y cartones no eliminados en la base de datos.",
+                                  "No hay registro de recursos de cajas y cartones sin eliminar en la base de datos.",
                             ));
                       }
                     } else if (snapshot.hasError) {
@@ -118,7 +118,7 @@ class _AllBoxesAndCartonsResourcesPageState extends State<AllBoxesAndCartonsReso
                           child: const HNComponentPanel(
                             title: 'No hay recursos',
                             text:
-                                "No hay registro de recursos de cajas y cartones no eliminados en la base de datos.",
+                                "No hay registro de recursos de cajas y cartones sin eliminar en la base de datos.",
                           ));
                     }
                   }

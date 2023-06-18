@@ -211,7 +211,7 @@ class _ElectricityWaterGasResourcesDetailPageState extends State<ElectricityWate
       builder: (_) => AlertDialog(
             title: const Text('Aviso importante'),
             content: Text(
-                'Esta acción es irreversible. Va a eliminar este ticket,  y puede conllevar consecuencias para la empresa. ¿Está seguro de que quiere continuar?'),
+                'Esta acción es irreversible. Va a eliminar este ticket, y puede conllevar consecuencias para la empresa. ¿Está seguro de que quiere continuar?'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {

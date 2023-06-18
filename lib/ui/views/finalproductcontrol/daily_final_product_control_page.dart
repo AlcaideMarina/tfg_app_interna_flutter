@@ -47,7 +47,7 @@ class _DailyFinalProductControlPageState extends State<DailyFinalProductControlP
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Todos los pedidos",
+              "Control de producto final ",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),
@@ -112,18 +112,18 @@ class _DailyFinalProductControlPageState extends State<DailyFinalProductControlP
                               return Container(
                                   margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                                   child: const HNComponentPanel(
-                                    title: 'No hay recursos',
+                                    title: 'No hay registros',
                                     text:
-                                        "No hay registro de recursos de cajas y cartones no eliminados en la base de datos.",
+                                        "No hay registros de producto final sin eliminar para el mes seleccionado en la base de datos.",
                                   ));
                             }
                           } else {
                             Container(
                                   margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                                   child: const HNComponentPanel(
-                                    title: 'No hay recursos',
+                                    title: 'No hay registros',
                                     text:
-                                        "No hay registro de recursos de cajas y cartones no eliminados en la base de datos.",
+                                        "No hay registros de producto final sin eliminar para el mes seleccionado en la base de datos.",
                                   ));
                           }
                           
@@ -139,9 +139,9 @@ class _DailyFinalProductControlPageState extends State<DailyFinalProductControlP
                           return Container(
                               margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                               child: const HNComponentPanel(
-                                title: 'No hay recursos',
+                                title: 'No hay registros',
                                 text:
-                                    "No hay registro de recursos de cajas y cartones no eliminados en la base de datos.",
+                                    "No hay registros de producto final sin eliminar para el mes seleccionado en la base de datos.",
                               ));
                         }
                       }

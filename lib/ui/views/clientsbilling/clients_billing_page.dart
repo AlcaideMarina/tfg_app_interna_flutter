@@ -39,7 +39,7 @@ class _ClientsBillingPageState extends State<ClientsBillingPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Todos los pedidos",
+              "Facturación de clientes",
               style: TextStyle(
                   color: AppTheme.primary, fontSize: CustomSizes.textSize24),
             )),

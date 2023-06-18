@@ -160,9 +160,9 @@ class _OrdersPageState extends State<OrdersPage> {
                                           child: Container(
                                                   margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                                                   child: const HNComponentPanel(
-                                                    title: 'No hay clientes',
+                                                    title: 'No hay pedidos',
                                                     text:
-                                                        "No hay registro de clientes eliminados en la base de datos.",
+                                                        "No hay registro de pedidos realizados hoy en la base de datos.",
                                                   )),
                                         ),
                                     ));
@@ -172,7 +172,7 @@ class _OrdersPageState extends State<OrdersPage> {
                   }
                 ),
               ),
-              SizedBox(height: 32,),
+              const SizedBox(height: 32,),
               HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
                 'Ver todo', null, null, navigateToAllOrders, () {}),
             ]

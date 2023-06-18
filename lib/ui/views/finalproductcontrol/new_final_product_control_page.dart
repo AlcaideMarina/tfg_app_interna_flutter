@@ -380,7 +380,7 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
             builder: (_) => AlertDialog(
                   title: const Text('FPC guardado'),
                   content: Text(
-                      'El producto final ha sido guardado correctamente en la base de datos.'),
+                      'El registro de producto final ha sido guardado correctamente en la base de datos.'),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () {
@@ -399,7 +399,7 @@ class _NewFinalProductControlPageState extends State<NewFinalProductControlPage>
             builder: (_) => AlertDialog(
                   title: const Text('Error'),
                   content: Text(
-                      'Se ha producido un error al guardar producto final. Por favor, revise los datos e inténtelo de nuevo.'),
+                      'Se ha producido un error al guardar el registro de  producto final. Por favor, revise los datos e inténtelo de nuevo.'),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () {

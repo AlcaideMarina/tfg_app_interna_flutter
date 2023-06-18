@@ -303,7 +303,7 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
               builder: (_) => AlertDialog(
                     title: const Text('Recurso guardado'),
                     content: Text(
-                        'La información sobre las gallinas ha sido guardada correctamente en la base de datos.'),
+                        'La información sobre el recurso ha sido guardada correctamente en la base de datos.'),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () {

@@ -171,7 +171,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
                               child: const HNComponentPanel(
                                 title: 'Ha ocurrido un error',
                                 text:
-                                    "Se ha producido un error en la carga de datos del cliente. Por favor, inténtelo de nuevo.",
+                                    "Se ha producido un error al cargar los datos del cliente. Por favor, inténtelo de nuevo.",
                               ));
                         }
                       } else {
@@ -571,7 +571,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
         showDialog(
           context: context,
           builder: (_) => AlertDialog(
-                title: const Text('Vaya...'),
+                title: const Text('Error'),
                 content: const Text(
                     'Parece que ha habido un error. Por favor, inténtelo de nuevo.'),
                 actions: <Widget>[

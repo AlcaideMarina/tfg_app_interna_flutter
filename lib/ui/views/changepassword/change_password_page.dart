@@ -158,7 +158,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           builder: (_) => AlertDialog(
                 title: const Text('Las contraseñas no coinciden'),
                 content: const Text(
-                    'El campo de repetición de contraseña debe ser exactamente igual que el de "Nuevva contraseña". Por favor, revise los datos e inténtelo de nuevo.'),
+                    'El campo de repetición de contraseña debe ser exactamente igual que el de "Nueva contraseña". Por favor, revise los datos e inténtelo de nuevo.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),
@@ -176,7 +176,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           builder: (_) => AlertDialog(
                 title: const Text('Formulario incompleto'),
                 content: const Text(
-                    'Por favor, revise los datos e inténtelo de nuevo.'),
+                    'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),

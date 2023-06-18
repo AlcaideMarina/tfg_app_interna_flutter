@@ -154,28 +154,6 @@ class _LoginPageState extends State<LoginPage> {
     // TODO: hacer un componente de pop-up
     // TODO: Fix - si hay algún error, no se quita el circular progress indicator
     try {
-      if (user == 'admin' && password == 'admin') {
-        navigateToMainPage(InternalUserModel(
-          'ES65385748292238', 
-          'Madrid', 
-          'admin',
-          false,
-          'Avda. América 54, 9ºD', 
-          '74834529P', 
-          'marinaa5cinfantes@gmail.com', 
-          0,
-          'Marina', 
-          657395789, 
-          2,
-          28028, 
-          'Madrid', 
-          1324.56,
-          865993418, 
-          'Alcaide Cea', 
-          '7j8b6dEWnISVKX8112MZKQGdPA22', 
-          user,
-          'JyoaC4ZOxhv6hBgIBuJd'));
-      } else {
 
       FocusManager.instance.primaryFocus?.unfocus();
       showAlertDialog(context);
@@ -191,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         Navigator.of(context).pop();
         showDialog(context: context, builder: (_) => AlertDialog(
-          title: const Text('Vaya...'),
+          title: const Text('Error'),
           content: const Text('Parece que ha habido un problema. Inténtalo de nuevo más tarde.'),
           actions: <Widget>[
             TextButton(
@@ -205,7 +183,6 @@ class _LoginPageState extends State<LoginPage> {
             )
           ],
         ));
-      }
       }
     } on FirebaseAuthException catch (e) {
       String errorMessage =

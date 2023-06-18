@@ -334,7 +334,7 @@ class _ModifyWorkerPageState extends State<ModifyWorkerPage> {
               builder: (_) => AlertDialog(
                     title: const Text('Error'),
                     content: const Text(
-                        'Se ha producido un error cuando se estaban actualizando los datos del cliente. Por favor, revise los datos e inténtelo de nuevo.'),
+                        'Se ha producido un error cuando se estaban actualizando los datos del usuario. Por favor, revise los datos e inténtelo de nuevo.'),
                     actions: <Widget>[
                       TextButton(
                         child: const Text('De acuerdo.'),

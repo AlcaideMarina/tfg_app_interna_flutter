@@ -298,7 +298,7 @@ class _InternalUserDetailPageState extends State<InternalUserDetailPage> {
     showDialog(
           context: context,
           builder: (_) => AlertDialog(
-                title: const Text('Aviso impoertante'),
+                title: const Text('Aviso importante'),
                 content: const Text('Esta acción es irreversible. ¿Está seguro de que quiere eliminar el usuario?'),
                 actions: <Widget>[
                   TextButton(
@@ -346,7 +346,7 @@ class _InternalUserDetailPageState extends State<InternalUserDetailPage> {
         showDialog(
           context: context,
           builder: (_) => AlertDialog(
-                title: const Text('Vaya...'),
+                title: const Text('Error'),
                 content: const Text(
                     'Parece que ha habido un error. Por favor, inténtelo de nuevo.'),
                 actions: <Widget>[

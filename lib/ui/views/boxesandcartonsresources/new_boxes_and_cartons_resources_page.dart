@@ -343,7 +343,7 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
             builder: (_) => AlertDialog(
                   title: const Text('Recurso guardado'),
                   content: Text(
-                      'La información sobre cajas y cartones ha sido guardada correctamente en la base de datos.'),
+                      'La información del recurso ha sido guardada correctamente en la base de datos.'),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () {

@@ -329,7 +329,7 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
               builder: (_) => AlertDialog(
                     title: const Text('Usuario guardado'),
                     content: const Text(
-                        'La información del usuario se ha guardado correctamente'),
+                        'La información del usuario se ha actualizado correctamente'),
                     actions: <Widget>[
                       TextButton(
                         child: const Text('De acuerdo.'),
@@ -347,7 +347,7 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
               builder: (_) => AlertDialog(
                     title: const Text('Error'),
                     content: const Text(
-                        'Ha ocurrido un problema al guardar el usuario en la base de datos. Por favor, revise los datos e inténtelo de nuevo.'),
+                        'Ha ocurrido un problema al actualizar los datos del usuario en la base de datos. Por favor, revise los datos e inténtelo de nuevo.'),
                     actions: <Widget>[
                       TextButton(
                         child: const Text('De acuerdo.'),
@@ -365,7 +365,7 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
               builder: (_) => AlertDialog(
                     title: const Text('Formulario incompleto'),
                     content: const Text(
-                        'Por favor, revise los datos e inténtelo de nuevo.'),
+                        'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
                     actions: <Widget>[
                       TextButton(
                         child: const Text('De acuerdo.'),
