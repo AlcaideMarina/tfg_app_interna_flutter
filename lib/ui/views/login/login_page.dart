@@ -5,6 +5,7 @@ import 'package:hueveria_nieto_interna/ui/components/component_text_input.dart';
 import 'package:hueveria_nieto_interna/ui/components/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/values/firebase_auth_constants.dart';
 import 'package:hueveria_nieto_interna/values/image_routes.dart';
+import '../../../custom/custom_colors.dart';
 import '../../../data/models/internal_user_model.dart';
 import '../main/main_page.dart';
 
@@ -22,27 +23,49 @@ String password = '';
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    final double _width = MediaQuery.of(context).size.width;
-    final double _height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+
+    final topBackground = Container(
+      height: height * 0.55,
+      width: width,
+      color: CustomColors.redGrayLightSecondaryColor,
+    );
 
     return Scaffold(
-        body: SafeArea(
-          top: false,
-          child: SingleChildScrollView(
+      backgroundColor: CustomColors.redPrimaryColor,
+      body: Stack(
+        children: [
+          topBackground,
+          Align(
+            alignment: Alignment.topCenter,
+            child: SafeArea(
+              child: Container(
+                margin: EdgeInsets.only(top: height * 0.1),
+                child: Image.asset(ImageRoutes.getRoute('ic_logo'),
+                    width: width * 0.75),
+              ),
+            ),
+          ),
+          SingleChildScrollView(
             child: Container(
-              margin: const EdgeInsets.fromLTRB(24.0, 0, 24.0, 24.0),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+              decoration: const BoxDecoration(
+                color: CustomColors.whiteColor,
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 16.0,
+                      spreadRadius: 1.0,
+                      offset: Offset(0.0, 5.0)),
+                ],
+              ),
+              margin: EdgeInsets.only(left: 24.0, right: 24.0, top: height * 0.4),
               width: double.infinity,
               child: Form(
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(
-                      height: 96,
-                    ),
-                    Image.asset(ImageRoutes.getRoute('ic_logo'),
-                        width: 218, height: 287),
-                    const SizedBox(
-                      height: 48,
-                    ),
                     HNComponentTextInput(
                       labelText: 'Correo',
                       textInputType: TextInputType.emailAddress,
@@ -53,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                     const SizedBox(
-                      height: 24,
+                      height: 8,
                     ),
                     HNComponentTextInput(
                       labelText: 'Contraseña',
@@ -65,24 +88,19 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                     const SizedBox(
-                      height: 24,
+                      height: 32,
                     ),
-                    const SizedBox(height: 56)
+                    HNButton(ButtonTypes.redWhiteBoldRoundedButton)
+                        .getTypedButton("ACCEDER", null, null,
+                            getIsButtonEnabled() ? signIn : null, null),
                   ],
                 ),
               ),
             ),
           ),
-        ),
-        bottomSheet: Container(
-          child: HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
-              "ACCEDER",
-              null,
-              null,
-              getIsButtonEnabled() ? signIn : null,
-              null),
-          margin: const EdgeInsets.all(24),
-        ));
+        ],
+      ),
+    );
   }
 
   bool getIsButtonEnabled() {
