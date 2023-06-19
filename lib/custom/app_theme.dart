@@ -10,8 +10,8 @@ class AppTheme {
       primaryColor: primary,
       appBarTheme: const AppBarTheme(
           elevation: 0,
-          backgroundColor: CustomColors.whiteColor,
-          iconTheme: IconThemeData(color: CustomColors.redPrimaryColor)),
+          backgroundColor: CustomColors.redPrimaryColor,
+          iconTheme: IconThemeData(color: CustomColors.whiteColor)),
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(primary))));

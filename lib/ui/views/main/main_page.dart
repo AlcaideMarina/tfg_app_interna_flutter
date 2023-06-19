@@ -46,30 +46,41 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white,
       drawer: LateralMenu(currentUser),
       appBar: AppBar(
-          toolbarHeight: 56.0,
-          title: Text(
-            StringsTranslation.of(context)?.translate('hueveria_nieto') ??
-                "Huevería nieto",
-            style: const TextStyle(
-                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+          iconTheme: const IconThemeData(color: CustomColors.whiteColor),
+          title: const Text(
+            "Home",
+            style: TextStyle(fontSize: 18),
           )),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "Hola, ${currentUser.name}. Bienvenido/a de nuevo.",
-                    style: const TextStyle(fontSize: 32),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+              const SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Hola, ${currentUser.name}.",
+                style: const TextStyle(fontSize: 28),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              const Text(
+                "Bienvenido/a de nuevo.",
+                style: TextStyle(fontSize: 18),
               ),
               const SizedBox(
                 height: 40,
+              ),
+              Container(
+                color: CustomColors.redPrimaryColor,
+                height: 1,
+              ),
+              const SizedBox(
+                height: 40
               ),
               StreamBuilder(
                   stream: FirebaseUtils.instance
@@ -183,7 +194,14 @@ class _HomePageState extends State<HomePage> {
                         });
                   }),
               const SizedBox(
-                height: 32,
+                height: 40,
+              ),
+              Container(
+                color: CustomColors.redPrimaryColor,
+                height: 1,
+              ),
+              const SizedBox(
+                height: 16,
               ),
               StreamBuilder(
                 stream: FirebaseUtils.instance.getDocumentsBetweenDates(
@@ -192,10 +210,9 @@ class _HomePageState extends State<HomePage> {
                     Timestamp.fromDate(todayDate),
                     Timestamp.fromDate(Utils().addToDate(todayDate,
                         daysToAdd:
-                            1))), // Reemplaza "myStream2" con tu propio stream
+                            1))),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
-                  // TODO: Pop-up del error
                   if (snapshot.hasError) return const Text("error");
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -228,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                                     height: 24,
                                   ),
                                   const SizedBox(
-                                    width: 8,
+                                    width: 16,
                                   ),
                                   const Flexible(
                                     child: Text(
@@ -247,7 +264,7 @@ class _HomePageState extends State<HomePage> {
                                     height: 24,
                                   ),
                                   const SizedBox(
-                                    width: 8,
+                                    width: 16,
                                   ),
                                   const Flexible(
                                     child: Text(
