@@ -10,6 +10,7 @@ import 'package:hueveria_nieto_interna/ui/views/main/mainpages/material_and_reso
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/orders_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/settings_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/main/mainpages/users_and_clients_page.dart';
+import 'package:hueveria_nieto_interna/values/image_routes.dart';
 import 'lateral_menu_header.dart';
 
 class LateralMenu extends StatefulWidget {
@@ -38,7 +39,7 @@ class _LateralMenuState extends State<LateralMenu> {
             child: ListView(children: [
               Container(height: 128, child: LateralMenuHeader(currentUser)),
               ListTile(
-                leading: const Icon(Icons.home_outlined),
+                leading: Image.asset(ImageRoutes.getRoute('ic_home'), width: 24, height: 24,),
                 title: const Text(
                   'Inicio',
                   style: TextStyle(color: CustomColors.blackColor),
@@ -48,35 +49,35 @@ class _LateralMenuState extends State<LateralMenu> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.note_add_outlined),
+                leading: Image.asset(ImageRoutes.getRoute('ic_orders'), width: 24, height: 24,),
                 title: const Text('Pedidos y repartos'),
                 onTap: () {
                   navegateToOrderAndDelivery();
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.money_outlined),
+                leading: Image.asset(ImageRoutes.getRoute('ic_economy'), width: 24, height: 24,),
                 title: const Text('Economía'),
                 onTap: () {
                   navigateToEconomy();
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.pets_outlined),
+                leading: Image.asset(ImageRoutes.getRoute('ic_farm'), width: 24, height: 24,),
                 title: const Text('Granja'),
                 onTap: () {
                   navigateToFarm();
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.book_outlined),
+                leading: Image.asset(ImageRoutes.getRoute('ic_material'), width: 24, height: 24,),
                 title: const Text('Material'),
                 onTap: () {
                   navigateToMaterial();
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.person_outline),
+                leading: Image.asset(ImageRoutes.getRoute('ic_users'), width: 24, height: 24,),
                 title: const Text('Usuarios y clientes'),
                 onTap: () {
                   navigateToUsersAndClientsPage();
@@ -90,7 +91,7 @@ class _LateralMenuState extends State<LateralMenu> {
             color: CustomColors.redPrimaryColor,
           ),
           ListTile(
-            leading: const Icon(Icons.logout_outlined),
+            leading: Image.asset(ImageRoutes.getRoute('ic_settings'), width: 24, height: 24,),
             title: const Text('Ajustes'),
             onTap: () {
               navegateToSettings();
@@ -102,7 +103,7 @@ class _LateralMenuState extends State<LateralMenu> {
             color: CustomColors.redGraySecondaryColor,
           ),
           ListTile(
-            leading: const Icon(Icons.logout_outlined),
+            leading: Image.asset(ImageRoutes.getRoute('ic_logout'), width: 24, height: 24,),
             title: const Text('Cerrar sesión'),
             onTap: () async {
               await FirebaseAuth.instance.signOut();
