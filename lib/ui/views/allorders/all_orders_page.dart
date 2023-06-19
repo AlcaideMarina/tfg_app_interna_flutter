@@ -44,8 +44,7 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
           toolbarHeight: 56.0,
           title: const Text(
             "Todos los pedidos",
-            style: TextStyle(
-                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+            style: TextStyle(fontSize: 18),
           )),
       body: Column(
         children: [
@@ -110,10 +109,13 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
                               itemCount: list.length,
                               itemBuilder: (context, i) {
                                 final OrderModel orderModel = list[i];
-
+                                double top = 8;
+                                double bottom = 0;
+                                if (i == 0) top = 16;
+                                if (i == list.length - 1) bottom = 16;
+                        
                                 return Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 32, vertical: 8),
+                                  margin: EdgeInsets.fromLTRB(32, top, 32, bottom),
                                   child: HNComponentOrders(
                                       orderModel.orderDatetime,
                                       orderModel.orderId!,
@@ -121,7 +123,7 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
                                       OrderUtils().getOrderSummary(
                                           OrderUtils()
                                               .orderDataToBDOrderModel(
-                                                  orderModel)), // TODO
+                                                  orderModel)),
                                       orderModel.totalPrice,
                                       orderModel.status,
                                       orderModel.deliveryDni,
