@@ -49,8 +49,7 @@ class _OrdersPageState extends State<OrdersPage> {
           toolbarHeight: 56.0,
           title: const Text(
             "Pedidos y repartos",
-            style: TextStyle(
-                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+            style: TextStyle(fontSize: 18),
           )),
       body: Container(
         margin: const EdgeInsets.all(32),
@@ -167,11 +166,11 @@ class _OrdersPageState extends State<OrdersPage> {
                           child: SingleChildScrollView(
                             child: Container(
                                 margin:
-                                    const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                                    const EdgeInsets.all(24),
                                 child: const HNComponentPanel(
-                                  title: 'No hay pedidos',
+                                  title: 'No hay pedidos que mostrar',
                                   text:
-                                      "No hay registro de pedidos realizados hoy en la base de datos.",
+                                      "Hoy no se ha realizado ningún pedido todavía.",
                                 )),
                           ),
                         ));

@@ -32,7 +32,7 @@ class HNComponentPanel extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 40),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -40,7 +40,7 @@ class HNComponentPanel extends StatelessWidget {
               ? Container()
               : Text(
                   title!,
-                  style: const TextStyle(fontSize: 20.0),
+                  style: const TextStyle(fontSize: 16.0),
                   textAlign: TextAlign.center,
                 ),
           SizedBox(height: space1),
@@ -57,7 +57,7 @@ class HNComponentPanel extends StatelessWidget {
               ? Container()
               : Text(
                   text!,
-                  style: const TextStyle(fontSize: 16.0),
+                  style: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
           SizedBox(height: space3),
