@@ -37,10 +37,40 @@ class HNComponentOrders extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('ID Pedido: ' + orderId.toString()),
-                      Text(company),
+                      Text(Utils().parseTimestmpToString(orderDate) ?? "", style: const TextStyle(fontSize: 11)),
+                      const SizedBox(height: 4,),
+                      Row(
+                        children: [
+                          const Text('ID Pedido: ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                          Text(orderId.toString(), style: const TextStyle(fontSize: 15))
+                        ],
+                      ),
+                      Text(company, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                      const SizedBox(height: 12,),
+                      Container(
+                        width: double.infinity,
+                        height: 1,
+                        color: CustomColors.redGrayLightSecondaryColor,
+                        margin: const EdgeInsets.only(left: 12),
+                      ),
+                      const SizedBox(height: 12,),
+                      const Text('Resumen del pedido: ', style: TextStyle(fontWeight: FontWeight.bold),),
                       Text(orderSummary),
-                      Text("Precio: " + (price ?? "-").toString() + " €"),
+                      const SizedBox(height: 12,),
+                      Container(
+                        width: double.infinity,
+                        height: 1,
+                        color: CustomColors.redGrayLightSecondaryColor,
+                        margin: const EdgeInsets.only(left: 12),
+                      ),
+                      const SizedBox(height: 12,),
+                      Row(
+                        children: [
+                          const Text("Precio: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text((price ?? "-").toString() + " €", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                        ],
+                      ),
+                      const SizedBox(height: 4,),
                       Text(Utils().getKey(Constants().orderStatus, status))
                     ],
                   ),

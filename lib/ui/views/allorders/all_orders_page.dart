@@ -115,7 +115,7 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
                                 if (i == list.length - 1) bottom = 16;
                         
                                 return Container(
-                                  margin: EdgeInsets.fromLTRB(32, top, 32, bottom),
+                                  margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                   child: HNComponentOrders(
                                       orderModel.orderDatetime,
                                       orderModel.orderId!,
