@@ -127,41 +127,47 @@ class _LoginPageState extends State<LoginPage> {
         .where('uid', isEqualTo: uid)
         .get();
 
-    String id = querySnapshot.docs[0].id;
-    DocumentSnapshot document =
-        await FirebaseFirestore.instance.collection('user_info').doc(id).get();
+    if (querySnapshot.docs.isNotEmpty) {
+      String id = querySnapshot.docs[0].id;
+      DocumentSnapshot document =
+          await FirebaseFirestore.instance.collection('user_info').doc(id).get();
 
-    if (document.exists) {
-      final Map<String, dynamic>? userInfo =
-          document.data() as Map<String, dynamic>?;
-      if (userInfo != null) {
-        return InternalUserModel(
-          userInfo['bank_account'],
-          userInfo['city'],
-          userInfo['created_by'],
-          userInfo['deleted'],
-          userInfo['direction'],
-          userInfo['dni'],
-          userInfo['email'],
-          userInfo['id'],
-          userInfo['name'],
-          userInfo['phone'],
-          userInfo['position'],
-          userInfo['postal_code'],
-          userInfo['province'],
-          userInfo['salary'],
-          userInfo['ss_number'],
-          userInfo['surname'],
-          uid!,
-          userInfo['user'],
-          document.id,
-        );
+      if (document.exists) {
+        final Map<String, dynamic>? userInfo =
+            document.data() as Map<String, dynamic>?;
+        if (userInfo != null) {
+          return InternalUserModel(
+            userInfo['bank_account'],
+            userInfo['city'],
+            userInfo['created_by'],
+            userInfo['deleted'],
+            userInfo['direction'],
+            userInfo['dni'],
+            userInfo['email'],
+            userInfo['id'],
+            userInfo['name'],
+            userInfo['phone'],
+            userInfo['position'],
+            userInfo['postal_code'],
+            userInfo['province'],
+            userInfo['salary'],
+            userInfo['ss_number'],
+            userInfo['surname'],
+            uid!,
+            userInfo['user'],
+            document.id,
+          );
+        } else {
+          return null;
+        }
       } else {
         return null;
       }
     } else {
       return null;
     }
+
+    
   }
 
   Future signIn() async {
