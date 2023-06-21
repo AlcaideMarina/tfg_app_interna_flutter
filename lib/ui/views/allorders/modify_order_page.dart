@@ -369,9 +369,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
   }
 
   Widget getButtonsComponent() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
+    return Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
               'Guardar', null, null, updateGetPriceButton, null),
@@ -381,7 +379,6 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
               .getTypedButton('Cancelar', null, null, goBack, null),
         ],
-      ),
     );
   }
 
@@ -452,7 +449,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
     double bottomMargin = 4;
 
     return HNComponentTableForm(
-      label,
+      label + ":",
       8,
       TableCellVerticalAlignment.middle,
       children,

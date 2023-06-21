@@ -17,6 +17,7 @@ import '../../components/component_cell_table_form.dart';
 import '../../components/component_dropdown.dart';
 import '../../components/component_simple_form.dart';
 import '../../components/component_table_form.dart';
+import '../../components/component_table_form_with_subtitles.dart';
 import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
@@ -128,8 +129,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
             toolbarHeight: 56.0,
             title: const Text(
               'Nuevo pedido',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -142,10 +142,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                     children: [
                       getAllFormElements(),
                       const SizedBox(
-                        height: 32,
-                      ),
-                      const SizedBox(
-                        height: 32,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -176,11 +173,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
           cif = value;
         }, textEditingController: cifController, isEnabled: false),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
-        getComponentTableForm('Pedido', getPricePerUnitTableRow(),
-            columnWidhts: {
-              0: const IntrinsicColumnWidth(),
-              2: const IntrinsicColumnWidth()
-            }),
+        getComponentTableWithSubtitlesForm('Pedido', getPricePerUnitTableRow()),
+        const SizedBox(height: 16,),
         getDropdownComponentSimpleForm(
             'Método de pago',
             null,
@@ -209,9 +203,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
   }
 
   Widget getButtonsComponent() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
+    return Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
               .getTypedButton('Guardar', null, null, saveGetPriceButton, () {}),
@@ -221,7 +213,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
               .getTypedButton('Cancelar', null, null, goBack, () {}),
         ],
-      ),
     );
   }
 
@@ -257,6 +248,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
         textInputType: textInputType,
         onChange: onChange,
       ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -271,8 +263,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
     double bottomMargin = 4;
     if (cont == 0) {
       topMargin = 8;
-    } else if (cont == 14) {
-      bottomMargin = 32;
     }
     cont++;
 
@@ -292,6 +282,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
         isEnabled: isEnabled,
         onTap: onTap,
       ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -307,71 +298,101 @@ class _NewOrderPageState extends State<NewOrderPage> {
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
-  List<TableRow> getPricePerUnitTableRow() {
-    List<TableRow> list = [];
+  Widget getComponentTableWithSubtitlesForm(String label, List<Widget> children,) {
+    double topMargin = 4;
+    double bottomMargin = 4;
+
+    return HNComponentTableFormWithSubtitles(
+      label + ":",
+      8,
+      TableCellVerticalAlignment.middle,
+      children,
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    );
+  }
+
+  List<Widget> getPricePerUnitTableRow() {
+    List<Widget> list = [];
 
     for (var item in Constants().productClasses) {
-      list.add(TableRow(children: [
+
+      list.add(
         Container(
-          child: Text(item),
+          child: Text("Huevos tamaño " + item + ":", style: const TextStyle(fontWeight: FontWeight.bold)),
           margin: const EdgeInsets.only(left: 12, right: 16),
-        ),
-        Container(),
-        Container()
-      ]));
+        ));
+      list.add(
+        const SizedBox(height: 4,)
+      );
 
-      list.add(TableRow(
-        children: [
-          Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Docena")),
-          Container(
-            height: 40,
-            margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
-            child: HNComponentTextInput(
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              textInputType: const TextInputType.numberWithOptions(),
-              onChange: (value) {
-                String key = "${item.toLowerCase()}_dozen";
-                productQuantities[key] = int.tryParse(value) ?? 0;
-              },
-              isEnabled: true,
-            ),
-          ),
-          Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("${valuesMap["${item.toLowerCase()}_dozen"]} €")),
-        ],
-      ));
-
-      list.add(TableRow(children: [
-        Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text("Caja")),
-        Container(
-          height: 40,
-          margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
-          child: HNComponentTextInput(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            textInputType: const TextInputType.numberWithOptions(),
-            onChange: (value) {
-              String key = "${item.toLowerCase()}_box";
-              productQuantities[key] = int.tryParse(value) ?? 0;
+      list.add(
+        Table(
+          columnWidths: const {
+              0: IntrinsicColumnWidth(),
+              2: FixedColumnWidth(96)
             },
-            isEnabled: true,
-          ),
-        ),
-        Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text("${valuesMap["${item.toLowerCase()}_box"]} €")),
-      ]));
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          children: [
+            TableRow(
+              children: [
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("Docena")),
+                Container(
+                  height: 40,
+                  margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
+                  child: HNComponentTextInput(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textInputType: const TextInputType.numberWithOptions(),
+                    onChange: (value) {
+                      String key = "${item.toLowerCase()}_dozen";
+                      productQuantities[key] = int.tryParse(value) ?? 0;
+                    },
+                    isEnabled: true,
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("${valuesMap["${item.toLowerCase()}_dozen"]} €")),
+              ],
+            ),
+            TableRow(
+              children: [
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("Caja")),
+                Container(
+                  height: 40,
+                  margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
+                  child: HNComponentTextInput(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textInputType: const TextInputType.numberWithOptions(),
+                    onChange: (value) {
+                      String key = "${item.toLowerCase()}_box";
+                      productQuantities[key] = int.tryParse(value) ?? 0;
+                    },
+                    isEnabled: true,
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("${valuesMap["${item.toLowerCase()}_box"]} €")),
+              ]
+            )
+          ]
+        ));
+        
+      list.add(
+        const SizedBox(height: 4,)
+      );
     }
-
     return list;
   }
 
@@ -455,7 +476,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                   actions: <Widget>[
                     TextButton(
                         onPressed: () {
-                          Navigator.of(this.context).pop();
+                          Navigator.of(context).pop();
                         },
                         child: const Text("Atrás")),
                     TextButton(
@@ -542,9 +563,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
           (dbOrderFieldData.xlBoxPrice!.toDouble());
     }
     if (dbOrderFieldData.xlDozenQuantity != null &&
-        dbOrderFieldData.xlDozenQuantity != null) {
+        dbOrderFieldData.xlDozenPrice != null) {
       totalPrice += (dbOrderFieldData.xlDozenQuantity as int) *
-          (dbOrderFieldData.xlDozenQuantity!.toDouble());
+          (dbOrderFieldData.xlDozenPrice!.toDouble());
     }
     if (dbOrderFieldData.lBoxQuantity != null &&
         dbOrderFieldData.lBoxPrice != null) {
@@ -552,9 +573,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
           (dbOrderFieldData.lBoxPrice!.toDouble());
     }
     if (dbOrderFieldData.lDozenQuantity != null &&
-        dbOrderFieldData.lDozenQuantity != null) {
+        dbOrderFieldData.lDozenPrice != null) {
       totalPrice += (dbOrderFieldData.lDozenQuantity as int) *
-          (dbOrderFieldData.lDozenQuantity!.toDouble());
+          (dbOrderFieldData.lDozenPrice!.toDouble());
     }
     if (dbOrderFieldData.mBoxQuantity != null &&
         dbOrderFieldData.mBoxPrice != null) {
@@ -562,9 +583,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
           (dbOrderFieldData.mBoxPrice!.toDouble());
     }
     if (dbOrderFieldData.mDozenQuantity != null &&
-        dbOrderFieldData.mDozenQuantity != null) {
+        dbOrderFieldData.mDozenPrice != null) {
       totalPrice += (dbOrderFieldData.mDozenQuantity as int) *
-          (dbOrderFieldData.mDozenQuantity!.toDouble());
+          (dbOrderFieldData.mDozenPrice!.toDouble());
     }
     if (dbOrderFieldData.sBoxQuantity != null &&
         dbOrderFieldData.sBoxPrice != null) {
@@ -572,9 +593,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
           (dbOrderFieldData.sBoxPrice!.toDouble());
     }
     if (dbOrderFieldData.sDozenQuantity != null &&
-        dbOrderFieldData.sDozenQuantity != null) {
+        dbOrderFieldData.sDozenPrice != null) {
       totalPrice += (dbOrderFieldData.sDozenQuantity as int) *
-          (dbOrderFieldData.sDozenQuantity!.toDouble());
+          (dbOrderFieldData.sDozenPrice!.toDouble());
     }
     return totalPrice;
   }
