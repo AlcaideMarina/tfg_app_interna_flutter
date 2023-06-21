@@ -266,10 +266,10 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
                             child: HNComponentOrders(
                                 orderModel.orderDatetime,
                                 orderModel.orderId!,
-                                orderModel.company,
+                                orderModel.clientId.toString() + " - " + orderModel.company,
                                 OrderUtils().getOrderSummary(OrderUtils()
                                     .orderDataToBDOrderModel(
-                                        orderModel)), // TODO
+                                        orderModel)),
                                 orderModel.totalPrice,
                                 orderModel.status,
                                 orderModel.deliveryDni, onTap: () async {

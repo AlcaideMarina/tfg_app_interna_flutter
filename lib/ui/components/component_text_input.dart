@@ -71,7 +71,7 @@ class HNComponentTextInput extends StatelessWidget {
       decoration: InputDecoration(
         filled: backgroundColor != null,
         fillColor: backgroundColor,
-        isDense: isDense,
+        isDense: true,
         contentPadding: contentPadding,
         hintText: hintText,
         labelText: labelText,

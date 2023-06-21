@@ -119,7 +119,7 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
                                   child: HNComponentOrders(
                                       orderModel.orderDatetime,
                                       orderModel.orderId!,
-                                      orderModel.company,
+                                      orderModel.clientId.toString() + " - " + orderModel.company,
                                       OrderUtils().getOrderSummary(
                                           OrderUtils()
                                               .orderDataToBDOrderModel(

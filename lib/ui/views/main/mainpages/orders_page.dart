@@ -139,11 +139,11 @@ class _OrdersPageState extends State<OrdersPage> {
 
                                 return Container(
                                   margin: const EdgeInsets.symmetric(
-                                      horizontal: 32, vertical: 8),
+                                      horizontal: 16, vertical: 8),
                                   child: HNComponentOrders(
                                       orderModel.orderDatetime,
                                       orderModel.orderId!,
-                                      orderModel.company,
+                                      orderModel.clientId.toString() + " - " + orderModel.company,
                                       OrderUtils().getOrderSummary(
                                           OrderUtils()
                                               .orderDataToBDOrderModel(
@@ -151,7 +151,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                       orderModel.totalPrice,
                                       orderModel.status,
                                       orderModel.deliveryDni,
-                                      onTap: () {}),
+                                      onTap: null),
                                 );
                               }),
                         ));

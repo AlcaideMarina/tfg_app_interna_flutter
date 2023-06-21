@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 
-// Para aplicar los cambios de esta clase, hay que hacer un Restart
-
 class AppTheme {
   static const Color primary = CustomColors.redPrimaryColor;
 
