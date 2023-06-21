@@ -17,6 +17,7 @@ import '../../components/component_cell_table_form.dart';
 import '../../components/component_dropdown.dart';
 import '../../components/component_simple_form.dart';
 import '../../components/component_table_form.dart';
+import '../../components/component_table_form_with_subtitles.dart';
 import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
@@ -174,8 +175,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
             toolbarHeight: 56.0,
             title: const Text(
               'Modificar pedido',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -186,16 +186,19 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("ID: " + orderModel.orderId.toString()),
+                      Row(
+                        children: [
+                          const Text("ID pedido:", style: TextStyle(fontWeight: FontWeight.bold),),
+                          const SizedBox(width: 8,),
+                          Text(orderModel.orderId.toString()),
+                        ],
+                      ),
                       const SizedBox(
                         height: 8,
                       ),
                       getAllFormElements(),
                       const SizedBox(
-                        height: 32,
-                      ),
-                      const SizedBox(
-                        height: 32,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -209,7 +212,6 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
   }
 
   Widget getAllFormElements() {
-    // TODO: Pasar esto también a detalle de pedido
     List<int> statusApproxDeliveryDatetimeList = [0, 1, 2];
     String deliveryDatetimeAux;
 
@@ -246,7 +248,6 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // TODO: Esto no está deshabilitado
         getDropdownComponentSimpleForm('Empresa', clientModel.company, null,
             TextInputType.none, null, [], false),
         getTextComponentSimpleForm(
@@ -259,11 +260,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
           cif = value;
         }, isEnabled: false),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
-        getComponentTableForm('Pedido', getPricePerUnitTableRow(),
-            columnWidhts: {
-              0: const IntrinsicColumnWidth(),
-              2: const IntrinsicColumnWidth()
-            }),
+        getComponentTableWithSubtitlesForm('Pedido', getPricePerUnitTableRow()),
         SizedBox(
           width: double.infinity,
           child: Column(
@@ -286,7 +283,6 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
             ],
           ),
         ),
-        // TODO: Esto no se inhabilita
         orderModel.paid
             ? getDropdownComponentSimpleForm(
                 'Método de pago',
@@ -351,6 +347,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
             (value) {
           deliveryDni = value;
         }, isEnabled: !(orderModel.status == 3)),
+        const SizedBox(height: 24,),
         (orderModel.status == 3)
             ? getDropdownComponentSimpleForm(
                 'Estado',
@@ -417,6 +414,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
         isEnabled: isEnabled,
         onChange: onChange,
       ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold),
     );
   }
 
@@ -444,6 +442,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
         isEnabled: isEnabled,
         initialValue: initialValue,
       ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold),
     );
   }
 
@@ -459,11 +458,26 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
-  List<TableRow> getPricePerUnitTableRow() {
-    List<TableRow> list = [];
+  Widget getComponentTableWithSubtitlesForm(String label, List<Widget> children,) {
+    double topMargin = 4;
+    double bottomMargin = 4;
+
+    return HNComponentTableFormWithSubtitles(
+      label + ":",
+      8,
+      TableCellVerticalAlignment.middle,
+      children,
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    );
+  }
+
+  List<Widget> getPricePerUnitTableRow() {
+    List<Widget> list = [];
     bool orderEnabled = true;
     if (orderModel.paid) {
       orderEnabled = false;
@@ -499,60 +513,78 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
         }
       }
 
-      list.add(TableRow(children: [
+      list.add(
         Container(
-          child: Text(item),
+          child: Text("Huevos tamaño " + item + ":", style: const TextStyle(fontWeight: FontWeight.bold)),
           margin: const EdgeInsets.only(left: 12, right: 16),
-        ),
-        Container(),
-        Container()
-      ]));
-
-      list.add(TableRow(
-        children: [
-          Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Docena")),
-          Container(
-            height: 40,
-            margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
-            child: HNComponentTextInput(
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              textInputType: const TextInputType.numberWithOptions(),
-              initialValue: (productQuantities[dozenKey] ?? 0).toString(),
-              isEnabled: orderEnabled,
-              onChange: (value) {
-                String key = "${item.toLowerCase()}_dozen";
-                productQuantities[key] = int.tryParse(value) ?? 0;
-              },
+        ));
+      list.add(
+        const SizedBox(height: 4,)
+      );
+      list.add(
+        Table(
+          columnWidths: const {
+              0: IntrinsicColumnWidth(),
+              2: FixedColumnWidth(96)
+            },
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          children: [
+            TableRow(
+              children: [
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("Docena")),
+                Container(
+                  height: 40,
+                  margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
+                  child: HNComponentTextInput(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textInputType: const TextInputType.numberWithOptions(),
+                    initialValue: (productQuantities[dozenKey] ?? 0).toString(),
+                    isEnabled: orderEnabled,
+                    onChange: (value) {
+                      String key = "${item.toLowerCase()}_dozen";
+                      productQuantities[key] = int.tryParse(value) ?? 0;
+                    },
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("${dozenPrice ?? ""} €")),
+              ],
             ),
-          ),
-          Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("${dozenPrice ?? ""} €")),
-        ],
-      ));
-
-      list.add(TableRow(children: [
-        Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text("Caja")),
-        Container(
-          height: 40,
-          margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
-          child: HNComponentTextInput(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            textInputType: const TextInputType.numberWithOptions(),
-            initialValue: (productQuantities[boxKey] ?? 0).toString(),
-            isEnabled: orderEnabled,
-          ),
-        ),
-        Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text("${boxPrice ?? ""} €")),
-      ]));
+            TableRow(
+              children: [
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("Caja")),
+                Container(
+                  height: 40,
+                  margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
+                  child: HNComponentTextInput(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textInputType: const TextInputType.numberWithOptions(),
+                    initialValue: (productQuantities[boxKey] ?? 0).toString(),
+                    isEnabled: orderEnabled,
+                    onChange: (value) {
+                      String key = "${item.toLowerCase()}_box";
+                      productQuantities[key] = int.tryParse(value) ?? 0;
+                    },
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("${boxPrice ?? ""} €")),
+              ]
+            )
+          ]
+        ));
+        
+      list.add(
+        const SizedBox(height: 4,)
+      );
     }
 
     return list;
@@ -565,7 +597,6 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
           40,
           const EdgeInsets.only(left: 16, right: 8, bottom: 8),
           componentTextInput: HNComponentTextInput(
-            labelText: 'Contacto',
             textCapitalization: TextCapitalization.words,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -576,7 +607,6 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
         HNComponentCellTableForm(
             40, const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             componentTextInput: HNComponentTextInput(
-              labelText: 'Teléfono',
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -597,34 +627,6 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
     if (checkFields()) {
       if (OrderUtils().orderStatusStringToInt(status) == 3 &&
           deliveryDni == null) {
-        DBOrderFieldData dbOrderFieldData =
-            OrderUtils().getOrderStructure(productQuantities, eggPricesData);
-        double totalPrice =
-            Utils().roundDouble(getTotalPrice(dbOrderFieldData), 2);
-        if (context.mounted) {
-          Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Precio final'),
-                    content: Text(
-                        'El precio total del pedido será de $totalPrice €. ¿Desea continuar?'),
-                    actions: <Widget>[
-                      TextButton(
-                          onPressed: () {
-                            Navigator.of(this.context).pop();
-                          },
-                          child: const Text("Atrás")),
-                      TextButton(
-                          onPressed: () {
-                            // TODO: Guardar pedido
-                            updateOrder(dbOrderFieldData, totalPrice);
-                          },
-                          child: const Text("Continuar")),
-                    ],
-                  ));
-        }
-      } else {
         Navigator.of(context).pop();
         showDialog(
             context: context,
@@ -641,6 +643,33 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
                     )
                   ],
                 ));
+      } else {
+        DBOrderFieldData dbOrderFieldData =
+            OrderUtils().getOrderStructure(productQuantities, eggPricesData);
+        double totalPrice =
+            Utils().roundDouble(getTotalPrice(dbOrderFieldData), 2);
+        if (context.mounted) {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Precio final'),
+                    content: Text(
+                        'El precio total del pedido será de $totalPrice €. ¿Desea continuar?'),
+                    actions: <Widget>[
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("Atrás")),
+                      TextButton(
+                          onPressed: () {
+                            updateOrder(dbOrderFieldData, totalPrice);
+                          },
+                          child: const Text("Continuar")),
+                    ],
+                  ));
+        }
       }
     } else {
       Navigator.of(context).pop();
@@ -748,9 +777,9 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
           (dbOrderFieldData.xlBoxPrice!.toDouble());
     }
     if (dbOrderFieldData.xlDozenQuantity != null &&
-        dbOrderFieldData.xlDozenQuantity != null) {
+        dbOrderFieldData.xlDozenPrice != null) {
       totalPrice += (dbOrderFieldData.xlDozenQuantity as int) *
-          (dbOrderFieldData.xlDozenQuantity!.toDouble());
+          (dbOrderFieldData.xlDozenPrice!.toDouble());
     }
     if (dbOrderFieldData.lBoxQuantity != null &&
         dbOrderFieldData.lBoxPrice != null) {
@@ -758,9 +787,9 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
           (dbOrderFieldData.lBoxPrice!.toDouble());
     }
     if (dbOrderFieldData.lDozenQuantity != null &&
-        dbOrderFieldData.lDozenQuantity != null) {
+        dbOrderFieldData.lDozenPrice != null) {
       totalPrice += (dbOrderFieldData.lDozenQuantity as int) *
-          (dbOrderFieldData.lDozenQuantity!.toDouble());
+          (dbOrderFieldData.lDozenPrice!.toDouble());
     }
     if (dbOrderFieldData.mBoxQuantity != null &&
         dbOrderFieldData.mBoxPrice != null) {
@@ -768,9 +797,9 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
           (dbOrderFieldData.mBoxPrice!.toDouble());
     }
     if (dbOrderFieldData.mDozenQuantity != null &&
-        dbOrderFieldData.mDozenQuantity != null) {
+        dbOrderFieldData.mDozenPrice != null) {
       totalPrice += (dbOrderFieldData.mDozenQuantity as int) *
-          (dbOrderFieldData.mDozenQuantity!.toDouble());
+          (dbOrderFieldData.mDozenPrice!.toDouble());
     }
     if (dbOrderFieldData.sBoxQuantity != null &&
         dbOrderFieldData.sBoxPrice != null) {
@@ -778,9 +807,9 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
           (dbOrderFieldData.sBoxPrice!.toDouble());
     }
     if (dbOrderFieldData.sDozenQuantity != null &&
-        dbOrderFieldData.sDozenQuantity != null) {
+        dbOrderFieldData.sDozenPrice != null) {
       totalPrice += (dbOrderFieldData.sDozenQuantity as int) *
-          (dbOrderFieldData.sDozenQuantity!.toDouble());
+          (dbOrderFieldData.sDozenPrice!.toDouble());
     }
     return totalPrice;
   }
