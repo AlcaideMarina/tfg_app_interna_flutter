@@ -14,6 +14,7 @@ import '../../components/component_cell_table_form.dart';
 import '../../components/component_dropdown.dart';
 import '../../components/component_simple_form.dart';
 import '../../components/component_table_form.dart';
+import '../../components/component_table_form_with_subtitles.dart';
 import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
@@ -65,8 +66,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             toolbarHeight: 56.0,
             title: const Text(
               'Detalle de pedido',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -77,16 +77,19 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("ID: " + orderModel.orderId.toString()),
+                      Row(
+                        children: [
+                          const Text("ID pedido:", style: TextStyle(fontWeight: FontWeight.bold),),
+                          const SizedBox(width: 8,),
+                          Text(orderModel.orderId.toString()),
+                        ],
+                      ),
                       const SizedBox(
-                        height: 8,
+                        height: 12,
                       ),
                       getAllFormElements(),
                       const SizedBox(
-                        height: 32,
-                      ),
-                      const SizedBox(
-                        height: 32,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -138,11 +141,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         getTextComponentSimpleForm('Dirección', null, clientModel.direction),
         getTextComponentSimpleForm('CIF', null, clientModel.cif),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
-        getComponentTableForm('Pedido', getPricePerUnitTableRow(),
-            columnWidhts: {
-              0: const IntrinsicColumnWidth(),
-              2: const IntrinsicColumnWidth()
-            }),
+        getComponentTableWithSubtitlesForm('Pedido', getPricePerUnitTableRow()),
+        const SizedBox(height: 16,),
         getTextComponentSimpleForm(
             'Precio total', null, (orderModel.totalPrice ?? "").toString()),
         SizedBox(
@@ -177,6 +177,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             'Lote', null, (orderModel.lot ?? "").toString()),
         getTextComponentSimpleForm(
             'DNI de entrega', null, orderModel.deliveryDni ?? ""),
+        const SizedBox(height: 24,),
         getDropdownComponentSimpleForm('Estado',
             OrderUtils().orderStatusIntToString(orderModel.status) ?? ""),
       ],
@@ -192,9 +193,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     } else if (orderModel.status == Constants().orderStatus["Entregado"]) {
       isDeleteEnabled = false;
     }
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
+    return Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
               'Modificar',
@@ -212,7 +211,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               isDeleteEnabled ? deleteWarningOrder : null,
               null),
         ],
-      ),
     );
   }
 
@@ -237,6 +235,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         isEnabled: false,
         onChange: null,
       ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -256,6 +255,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         isEnabled: false,
       ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -265,17 +265,32 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     double bottomMargin = 4;
 
     return HNComponentTableForm(
-      label,
+      label + ":",
       8,
       TableCellVerticalAlignment.middle,
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
-  List<TableRow> getPricePerUnitTableRow() {
-    List<TableRow> list = [];
+  Widget getComponentTableWithSubtitlesForm(String label, List<Widget> children,) {
+    double topMargin = 4;
+    double bottomMargin = 4;
+
+    return HNComponentTableFormWithSubtitles(
+      label + ":",
+      8,
+      TableCellVerticalAlignment.middle,
+      children,
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    );
+  }
+
+  List<Widget> getPricePerUnitTableRow() {
+    List<Widget> list = [];
 
     for (var item in Constants().productClasses) {
       String dozenKey = "${item.toLowerCase()}_dozen";
@@ -306,58 +321,72 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         }
       }
 
-      list.add(TableRow(children: [
+      list.add(
         Container(
-          child: Text(item),
+          child: Text("Huevos tamaño " + item + ":", style: const TextStyle(fontWeight: FontWeight.bold)),
           margin: const EdgeInsets.only(left: 12, right: 16),
-        ),
-        Container(),
-        Container()
-      ]));
+        ));
+      list.add(
+        const SizedBox(height: 4,)
+      );
 
-      list.add(TableRow(
-        children: [
-          Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Docena")),
-          Container(
-            height: 40,
-            margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
-            child: HNComponentTextInput(
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              textInputType: const TextInputType.numberWithOptions(),
-              labelText: dozenQuantity.toString(),
-              isEnabled: false,
+      list.add(
+        Table(
+          columnWidths: const {
+              0: IntrinsicColumnWidth(),
+              2: FixedColumnWidth(96)
+            },
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          children: [
+            TableRow(
+              children: [
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: const Text("Docena")),
+                Container(
+                  height: 40,
+                  margin: const EdgeInsets.only(left: 0, right: 4, bottom: 0),
+                  child: HNComponentTextInput(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textInputType: const TextInputType.numberWithOptions(),
+                    labelText: dozenQuantity.toString(),
+                    isEnabled: false,
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only( right: 16),
+                    child: Text("${dozenPrice ?? "-"} €/ud", textAlign: TextAlign.end,)),
+              ],
             ),
-          ),
-          Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("${dozenPrice ?? ""} €")),
-        ],
-      ));
-
-      list.add(TableRow(children: [
-        Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text("Caja")),
-        Container(
-          height: 40,
-          margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
-          child: HNComponentTextInput(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            textInputType: const TextInputType.numberWithOptions(),
-            labelText: boxQuantity.toString(),
-            isEnabled: false,
-          ),
-        ),
-        Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text("${boxPrice ?? ""} €")),
-      ]));
+            TableRow(
+              children: [
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: const Text("Caja")),
+                Container(
+                  height: 40,
+                  margin: const EdgeInsets.only(left: 0, right: 4, bottom: 0),
+                  child: HNComponentTextInput(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textInputType: const TextInputType.numberWithOptions(),
+                    labelText: boxQuantity.toString(),
+                    isEnabled: false,
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only(right: 16),
+                    child: Text("${boxPrice ?? "-"} €/ud", textAlign: TextAlign.end,)),
+              ]
+            )
+          ]
+        ));
+        
+      list.add(
+        const SizedBox(height: 4,)
+      );
     }
-
     return list;
   }
 
@@ -368,7 +397,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           40,
           const EdgeInsets.only(left: 16, right: 8, bottom: 8),
           componentTextInput: HNComponentTextInput(
-            labelText: 'Contacto',
             textCapitalization: TextCapitalization.words,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -379,7 +407,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         HNComponentCellTableForm(
             40, const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             componentTextInput: HNComponentTextInput(
-              labelText: 'Teléfono',
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
