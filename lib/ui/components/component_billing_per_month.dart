@@ -34,7 +34,7 @@ class HNComponentBillingPerMonth extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(orderDatetimeSpanish),
+                  Text(" " + orderDatetimeSpanish, style: const TextStyle(fontStyle: FontStyle.italic),),
                 ],
               ),
               onTap != null
