@@ -6,8 +6,11 @@ import 'package:hueveria_nieto_interna/ui/views/hensresources/all_hens_resources
 import 'package:hueveria_nieto_interna/ui/views/workersresources/all_workers_resources_page.dart';
 
 import '../../../../custom/app_theme.dart';
+import '../../../../custom/custom_colors.dart';
 import '../../../../custom/custom_sizes.dart';
 import '../../../../data/models/internal_user_model.dart';
+import '../../../../utils/constants.dart';
+import '../../../components/component_single_table_card.dart';
 import '../../../components/constants/hn_button.dart';
 import '../../../components/menu/lateral_menu.dart';
 
@@ -33,6 +36,9 @@ class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double _width = MediaQuery.of(context).size.width;
+    final double _height = MediaQuery.of(context).size.height;
+
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
       key: _scaffoldKey,
@@ -45,51 +51,59 @@ class _MaterialAndResourcesPageState extends State<MaterialAndResourcesPage> {
             style: TextStyle(
                 color: AppTheme.primary, fontSize: CustomSizes.textSize24),
           )),
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+      body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Trabajadores y sueldos",
-                  null,
-                  null,
-                  navigateToWorkerResources,
-                  () {}),
+              margin: const EdgeInsets.only(top: 16),
+              child: Table(
+                children: [
+                  TableRow(children: [
+                    SingleTableCard(
+                        Icons.person_outline_outlined,
+                        CustomColors.blackColor,
+                        MenuOptions.workers,
+                        currentUser.id.toString(),
+                        SingleTableCardPositions.leftPosition,
+                        currentUser),
+                    SingleTableCard(
+                        Icons.person_outline_outlined,
+                        CustomColors.blackColor,
+                        MenuOptions.hens,
+                        currentUser.id.toString(),
+                        SingleTableCardPositions.rightPosition,
+                        currentUser)
+                  ]),
+                  TableRow(children: [
+                    SingleTableCard(
+                        Icons.person_outline_outlined,
+                        CustomColors.blackColor,
+                        MenuOptions.ewg,
+                        currentUser.id.toString(),
+                        SingleTableCardPositions.leftPosition,
+                        currentUser),
+                    SingleTableCard(
+                        Icons.person_outline_outlined,
+                        CustomColors.blackColor,
+                        MenuOptions.feed,
+                        currentUser.id.toString(),
+                        SingleTableCardPositions.rightPosition,
+                        currentUser)
+                  ]),
+                ],
+              ),
             ),
-            const SizedBox(
-              height: 16,
+            SizedBox(
+              width: _width / 2 - 16,
+              child: SingleTableCard(
+                  Icons.person_outline_outlined,
+                  CustomColors.blackColor,
+                  MenuOptions.boxes,
+                  currentUser.id.toString(),
+                  SingleTableCardPositions.centerPosition,
+                  currentUser),
             ),
-            Container(
-              child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Gallinas", null, null, navigateToHensResources, () {}),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Container(
-              child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Luz, agua, gas", null, null, navigateToEWGResources, () {}),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Container(
-              child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Pienso", null, null, navigateToFeedResources, () {}),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Container(
-              child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Cajas y cartones",
-                  null,
-                  null,
-                  navigateToBoxesAndCartonsResources,
-                  () {}),
-            ),
+            const SizedBox(height: 16,)
           ],
         ),
       ),

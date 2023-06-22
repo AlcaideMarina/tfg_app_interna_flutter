@@ -97,7 +97,7 @@ class SingleTableCard extends StatelessWidget {
     }
     else if (homeMenuOption == MenuOptions.feed) {
       image = Image.asset(
-        ImageRoutes.getRoute('id_feed'),
+        ImageRoutes.getRoute('ic_feed'),
         width: 64, 
         height: 64,
         color: CustomColors.redGrayLightSecondaryColor,
