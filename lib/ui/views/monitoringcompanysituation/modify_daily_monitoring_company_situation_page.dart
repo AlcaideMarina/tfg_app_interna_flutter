@@ -91,15 +91,14 @@ class _ModifyDailyMonitoringCompanySituationPageState
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Seg. sit. empresa - Detalle',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Seguimiento sit. empresa',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
           child: SingleChildScrollView(
             child: Container(
-                margin: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+                margin: const EdgeInsets.fromLTRB(24, 24, 24, 8),
                 child: Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,10 +108,7 @@ class _ModifyDailyMonitoringCompanySituationPageState
                         2: const IntrinsicColumnWidth()
                       }),
                       const SizedBox(
-                        height: 32,
-                      ),
-                      const SizedBox(
-                        height: 32,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -142,30 +138,33 @@ class _ModifyDailyMonitoringCompanySituationPageState
     List<TableRow> list = [
       TableRow(children: [
         Container(
-          child: Text("Fecha:"),
-          margin: const EdgeInsets.only(left: 12, right: 16),
+          child: const Text("Fecha:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(left: 0, right: 16),
         ),
         Container(
           child: Text(
               Utils().parseTimestmpToString(mcsModel.situationDatetime) ?? "-"),
-          margin: const EdgeInsets.only(left: 12, right: 16),
+          margin: const EdgeInsets.only(left: 0, right: 16),
         ),
       ]),
       TableRow(children: [
         Container(
-          child: Text("Huevos:"),
-          margin: const EdgeInsets.only(left: 12, right: 16, top: 16),
+          child: const Text("Huevos:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(left: 0, right: 16, top: 16),
         ),
         Container()
       ]),
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Cajas XL:")),
+              margin: const EdgeInsets.only(left: 12, right: 16),
+              child: const Text("Cajas XL:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic))),
           Container(
             height: 40,
-            margin: const EdgeInsets.only(left: 8, bottom: 0),
+            margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
             child: HNComponentTextInput(
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -185,8 +184,9 @@ class _ModifyDailyMonitoringCompanySituationPageState
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 32, right: 16, top: 8),
-              child: Text("Huevos:")),
+              margin: const EdgeInsets.only(left: 24, right: 16, top: 8),
+              child: const Text("Huevos:", 
+                style: TextStyle(fontStyle: FontStyle.italic))),
           Container(
             margin: const EdgeInsets.only(left: 24, bottom: 0, top: 8),
             child: Text(xlEggs.toString()),
@@ -196,10 +196,11 @@ class _ModifyDailyMonitoringCompanySituationPageState
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 32, right: 16, top: 8),
-              child: Text("Cartones:")),
+              margin: const EdgeInsets.only(left: 24, right: 16, top: 8),
+              child: const Text("Cartones:", 
+                style: TextStyle(fontStyle: FontStyle.italic))),
           Container(
-            margin: const EdgeInsets.only(left: 24, bottom: 8, top: 8),
+            margin: const EdgeInsets.only(left: 24, top: 8),
             child: Text(xlCartons.toString()),
           ),
         ],
@@ -207,11 +208,12 @@ class _ModifyDailyMonitoringCompanySituationPageState
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Cajas L:")),
+              margin: const EdgeInsets.only(left: 12, right: 16, top: 8),
+              child: const Text("Cajas L:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic))),
           Container(
             height: 40,
-            margin: const EdgeInsets.only(left: 8, bottom: 0),
+            margin: const EdgeInsets.only(left: 8, bottom: 0, top: 12),
             child: HNComponentTextInput(
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -231,8 +233,9 @@ class _ModifyDailyMonitoringCompanySituationPageState
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 32, right: 16, top: 8),
-              child: Text("Huevos:")),
+              margin: const EdgeInsets.only(left: 24, right: 16, top: 8),
+              child: const Text("Huevos:", 
+                style: TextStyle(fontStyle: FontStyle.italic))),
           Container(
             margin: const EdgeInsets.only(left: 24, bottom: 0, top: 8),
             child: Text(lEggs.toString()),
@@ -242,10 +245,11 @@ class _ModifyDailyMonitoringCompanySituationPageState
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 32, right: 16, top: 8),
-              child: Text("Cartones:")),
+              margin: const EdgeInsets.only(left: 24, right: 16, top: 8),
+              child: const Text("Cartones:", 
+                style: TextStyle(fontStyle: FontStyle.italic))),
           Container(
-            margin: const EdgeInsets.only(left: 24, bottom: 8, top: 8),
+            margin: const EdgeInsets.only(left: 24, top: 8),
             child: Text(lCartons.toString()),
           ),
         ],
@@ -253,11 +257,12 @@ class _ModifyDailyMonitoringCompanySituationPageState
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Cajas M:")),
+              margin: const EdgeInsets.only(left: 12, right: 16, top: 8),
+              child: const Text("Cajas M:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic))),
           Container(
             height: 40,
-            margin: const EdgeInsets.only(left: 8, bottom: 0),
+            margin: const EdgeInsets.only(left: 8, bottom: 0, top: 12),
             child: HNComponentTextInput(
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -277,8 +282,9 @@ class _ModifyDailyMonitoringCompanySituationPageState
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 32, right: 16, top: 8),
-              child: Text("Huevos:")),
+              margin: const EdgeInsets.only(left: 24, right: 16, top: 8),
+              child: const Text("Huevos:", 
+                style: TextStyle(fontStyle: FontStyle.italic))),
           Container(
             margin: const EdgeInsets.only(left: 24, bottom: 0, top: 8),
             child: Text(mEggs.toString()),
@@ -288,10 +294,11 @@ class _ModifyDailyMonitoringCompanySituationPageState
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 32, right: 16, top: 8),
-              child: Text("Cartones:")),
+              margin: const EdgeInsets.only(left: 24, right: 16, top: 8),
+              child: const Text("Cartones:", 
+                style: TextStyle(fontStyle: FontStyle.italic))),
           Container(
-            margin: const EdgeInsets.only(left: 24, bottom: 8, top: 8),
+            margin: const EdgeInsets.only(left: 24, top: 8),
             child: Text(mCartons.toString()),
           ),
         ],
@@ -299,11 +306,12 @@ class _ModifyDailyMonitoringCompanySituationPageState
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Cajas S:")),
+              margin: const EdgeInsets.only(left: 12, right: 16, top: 8),
+              child: const Text("Cajas S:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic))),
           Container(
             height: 40,
-            margin: const EdgeInsets.only(left: 8, bottom: 0),
+            margin: const EdgeInsets.only(left: 8, bottom: 0, top: 12),
             child: HNComponentTextInput(
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -323,8 +331,9 @@ class _ModifyDailyMonitoringCompanySituationPageState
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 32, right: 16, top: 8),
-              child: Text("Huevos:")),
+              margin: const EdgeInsets.only(left: 24, right: 16, top: 8),
+              child: const Text("Huevos:", 
+                style: TextStyle(fontStyle: FontStyle.italic))),
           Container(
             margin: const EdgeInsets.only(left: 24, bottom: 0, top: 8),
             child: Text(sEggs.toString()),
@@ -334,10 +343,11 @@ class _ModifyDailyMonitoringCompanySituationPageState
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 32, right: 16, top: 8),
-              child: Text("Cartones:")),
+              margin: const EdgeInsets.only(left: 24, right: 16, top: 8),
+              child: const Text("Cartones:", 
+                style: TextStyle(fontStyle: FontStyle.italic))),
           Container(
-            margin: const EdgeInsets.only(left: 24, bottom: 8, top: 8),
+            margin: const EdgeInsets.only(left: 24, top: 8),
             child: Text(sCartons.toString()),
           ),
         ],
@@ -345,11 +355,12 @@ class _ModifyDailyMonitoringCompanySituationPageState
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Bajas gallinas:")),
+              margin: const EdgeInsets.only(left: 0, right: 16, top: 8),
+              child: const Text("Bajas gallinas:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
           Container(
             height: 40,
-            margin: const EdgeInsets.only(left: 8, bottom: 0),
+            margin: const EdgeInsets.only(left: 8, bottom: 0, top: 12),
             child: HNComponentTextInput(
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -367,8 +378,9 @@ class _ModifyDailyMonitoringCompanySituationPageState
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 24, right: 16, top: 8),
-              child: Text("Huevos rotos:")),
+              margin: const EdgeInsets.only(left: 0, right: 16, top: 4),
+              child: const Text("Huevos rotos:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
           Container(
             height: 40,
             margin: const EdgeInsets.only(left: 8, bottom: 0, top: 8),
@@ -390,11 +402,8 @@ class _ModifyDailyMonitoringCompanySituationPageState
   }
 
   Widget getButtonsComponent() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-          .getTypedButton("Guardar", null, null, saveMCS, null),
-    );
+    return HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
+          .getTypedButton("Guardar", null, null, saveMCS, null);
   }
 
   saveMCS() async {

@@ -53,9 +53,8 @@ class _WeeklyMonitoringCompanySituationPageState
       appBar: AppBar(
           toolbarHeight: 56.0,
           title: const Text(
-            "Seg. sit. empresa",
-            style: TextStyle(
-                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+            "Seguimiento sit. empresa",
+            style: TextStyle( fontSize: 18),
           )),
       body: Column(
         children: [
@@ -76,12 +75,12 @@ class _WeeklyMonitoringCompanySituationPageState
                 return Column(
                   children: [
                     Container(
-                      margin: const EdgeInsets.fromLTRB(24, 8, 24, 16),
+                      margin: const EdgeInsets.all(24),
                       child: Column(
                         children: [
                           Container(
-                            padding: EdgeInsets.symmetric(vertical: 4),
-                            child: Center(child: Text("Información semanal")),
+                            padding: const EdgeInsets.symmetric(vertical: 6),
+                            child: const Center(child: Text("INFORMACIÓN SEMANAL", style: TextStyle(fontSize: 18, color: CustomColors.whiteColor),)),
                             width: double.infinity,
                             decoration: const BoxDecoration(
                                 color: CustomColors.redPrimaryColor,
@@ -89,7 +88,7 @@ class _WeeklyMonitoringCompanySituationPageState
                                     top: Radius.circular(16))),
                           ),
                           Container(
-                              padding: EdgeInsets.all(16),
+                              padding: const EdgeInsets.fromLTRB(16, 15, 16, 16),
                               width: double.infinity,
                               decoration: const BoxDecoration(
                                   color:
@@ -99,18 +98,48 @@ class _WeeklyMonitoringCompanySituationPageState
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Puesta semanal - XL:   " +
-                                      weeklyData.xlEggs.toString()),
-                                  Text("Puesta semanal - L:   " +
-                                      weeklyData.lEggs.toString()),
-                                  Text("Puesta semanal - M:   " +
-                                      weeklyData.mEggs.toString()),
-                                  Text("Puesta semanal - S:   " +
-                                      weeklyData.sEggs.toString()),
-                                  Text("Puesta semanal (total):   " +
-                                      weeklyData.weeklyLaying.toString()),
-                                  Text("Bajas de gallinas esta semana:   " +
-                                      weeklyData.hensLosses.toString())
+                                  Row(
+                                    children: [
+                                      const Text("Puesta semanal - XL:", style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),),
+                                      const SizedBox(width: 8,),
+                                      Text(weeklyData.xlEggs.toString(), style: const TextStyle(fontSize: 16)),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Text("Puesta semanal - L:", style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic)),
+                                      const SizedBox(width: 8,),
+                                      Text(weeklyData.lEggs.toString(), style: const TextStyle(fontSize: 16)),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Text("Puesta semanal - M:", style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic)),
+                                      const SizedBox(width: 8,),
+                                      Text(weeklyData.mEggs.toString(), style: const TextStyle(fontSize: 16)),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Text("Puesta semanal - S:", style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic)),
+                                      const SizedBox(width: 8,),
+                                      Text(weeklyData.sEggs.toString(), style: const TextStyle(fontSize: 16)),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Text("PUESTA SEMANAL (TOTAL):", style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic)),
+                                      const SizedBox(width: 8,),
+                                      Text(weeklyData.weeklyLaying.toString(), style: const TextStyle(fontSize: 16)),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Text("Bajas de gallinas esta semana:", style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic)),
+                                      const SizedBox(width: 8,),
+                                      Text(weeklyData.hensLosses.toString(), style: const TextStyle(fontSize: 16)),
+                                    ],
+                                  )
                                 ],
                               ))
                         ],
@@ -126,13 +155,13 @@ class _WeeklyMonitoringCompanySituationPageState
               } else if (snapshot.hasError) {
                 return Container(
                   color: Colors.red,
-                  padding: EdgeInsets.all(16),
-                  child: Text('Error al obtener los datos'),
+                  padding: const EdgeInsets.all(16),
+                  child: const Text('Error al obtener los datos'),
                 );
               } else {
                 return Container(
-                  padding: EdgeInsets.all(16),
-                  child: Center(
+                  padding: const EdgeInsets.all(16),
+                  child: const Center(
                     child: CircularProgressIndicator(),
                   ),
                 );
@@ -144,7 +173,7 @@ class _WeeklyMonitoringCompanySituationPageState
               children: [
                 Container(
                     margin:
-                        const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                        const EdgeInsets.fromLTRB(24, 24, 24, 0),
                     child: HNComponentDayDivisionData(
                         "Lunes",
                         Timestamp.fromDate(Utils()
@@ -154,7 +183,7 @@ class _WeeklyMonitoringCompanySituationPageState
                     })),
                 Container(
                     margin:
-                        const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                        const EdgeInsets.fromLTRB(24, 8, 24, 0),
                     child: HNComponentDayDivisionData(
                         "Martes",
                         Timestamp.fromDate(Utils()
@@ -164,7 +193,7 @@ class _WeeklyMonitoringCompanySituationPageState
                     })),
                 Container(
                     margin:
-                        const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                        const EdgeInsets.fromLTRB(24, 8, 24, 0),
                     child: HNComponentDayDivisionData(
                         "Miércoles",
                         Timestamp.fromDate(Utils()
@@ -174,7 +203,7 @@ class _WeeklyMonitoringCompanySituationPageState
                     })),
                 Container(
                     margin:
-                        const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                        const EdgeInsets.fromLTRB(24, 8, 24, 0),
                     child: HNComponentDayDivisionData(
                         "Jueves",
                         Timestamp.fromDate(Utils()
@@ -184,7 +213,7 @@ class _WeeklyMonitoringCompanySituationPageState
                     })),
                 Container(
                     margin:
-                        const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                        const EdgeInsets.fromLTRB(24, 8, 24, 0),
                     child: HNComponentDayDivisionData(
                         "Viernes",
                         Timestamp.fromDate(Utils()
@@ -194,7 +223,7 @@ class _WeeklyMonitoringCompanySituationPageState
                     })),
                 Container(
                     margin:
-                        const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                        const EdgeInsets.fromLTRB(24, 8, 24, 0),
                     child: HNComponentDayDivisionData(
                         "Sábado",
                         Timestamp.fromDate(Utils()
@@ -204,7 +233,7 @@ class _WeeklyMonitoringCompanySituationPageState
                     })),
                 Container(
                     margin:
-                        const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                        const EdgeInsets.fromLTRB(24, 8, 24, 0),
                     child: HNComponentDayDivisionData(
                         "Domingo",
                         Timestamp.fromDate(Utils()

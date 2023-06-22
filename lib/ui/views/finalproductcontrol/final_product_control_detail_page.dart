@@ -51,7 +51,7 @@ class _FinalProductControlDetailPageState
           top: false,
           child: SingleChildScrollView(
             child: Container(
-                margin: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+                margin: const EdgeInsets.fromLTRB(24, 16, 24, 8),
                 child: Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

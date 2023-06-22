@@ -32,7 +32,7 @@ class HNComponentWeekDivisionData extends StatelessWidget {
                     children: [
                       Text((Utils().parseTimestmpToString(initTimestamp) ??
                               "?") +
-                          " - " +
+                          "   -   " +
                           (Utils().parseTimestmpToString(endTimestamp) ?? "?")),
                     ],
                   ),

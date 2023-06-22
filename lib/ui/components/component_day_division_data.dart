@@ -31,10 +31,11 @@ class HNComponentDayDivisionData extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(dayOfWeek +
-                          " - " +
+                          "  -  " +
                           (Utils().parseTimestmpToString(timestamp,
                                   dateFormat: "dd, MMMM, yyyy") ??
-                              "?")),
+                              "?"),
+                          style: const TextStyle(fontSize: 16),),
                     ],
                   ),
                 ),
