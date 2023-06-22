@@ -48,7 +48,7 @@ class _DailyDeletedFinalProdcutControlPageState
           )),
       body: monthlyFPCContainerData.list.isNotEmpty
           ? ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               itemCount: monthlyFPCContainerData.list.length,
@@ -60,8 +60,7 @@ class _DailyDeletedFinalProdcutControlPageState
                 return Container(
                   margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                   child: HNComponentDailyFPC(
-                    monthlyFPCContainerData.list[i],
-                    onTap: () {},
+                    monthlyFPCContainerData.list[i]
                   ),
                 );
               })
