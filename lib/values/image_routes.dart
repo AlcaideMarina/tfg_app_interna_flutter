@@ -16,5 +16,12 @@ class ImageRoutes {
     'ic_users': 'assets/ic_users.png',
     'ic_logout': 'assets/ic_logout.png',
     'ic_settings': 'assets/ic_settings.png',
+    'ic_box': 'assets/ic_box.png',
+    'ic_ewg': 'assets/ic_ewg.png',
+    'ic_feed': 'assets/ic_feed.png',
+    'ic_fpc': 'assets/ic_fpc.png',
+    'ic_hens': 'assets/ic_hens.png',
+    'ic_internal_user': 'assets/ic_internal_user.png',
+    'ic_mcs': 'assets/ic_mcs.png',
   };
 }

@@ -40,4 +40,22 @@ class Constants {
     "11": "Noviembre",
     "12": "Diciembre",
   };
+
+  final Map<MenuOptions, String> mapMenuOptions = {
+    MenuOptions.billing: "Facturación",
+    MenuOptions.selingPrice: "Precio de venta",
+    MenuOptions.fpc: "Control prod. final",
+    MenuOptions.mcs: "Seg. situación granja",
+    MenuOptions.workers: "Trabajadores y salarios",
+    MenuOptions.hens: "Gallinas",
+    MenuOptions.ewg: "Luz, agua, gas",
+    MenuOptions.feed: "Pienso",
+    MenuOptions.boxes: "Cajas y cartones",
+    MenuOptions.clients: "Clientes",
+    MenuOptions.users: "Usuarios internos",
+  };
+
 }
+
+enum MenuOptions { billing, selingPrice, fpc, mcs, workers, hens, ewg, feed, boxes, clients, users} 
+enum SingleTableCardPositions { leftPosition, rightPosition, centerPosition }

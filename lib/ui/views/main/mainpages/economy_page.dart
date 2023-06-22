@@ -5,8 +5,11 @@ import 'package:hueveria_nieto_interna/ui/views/clientsbilling/clients_billing_p
 import 'package:hueveria_nieto_interna/ui/views/selingprice/selling_price_page.dart';
 
 import '../../../../custom/app_theme.dart';
+import '../../../../custom/custom_colors.dart';
 import '../../../../custom/custom_sizes.dart';
 import '../../../../data/models/internal_user_model.dart';
+import '../../../../utils/constants.dart';
+import '../../../components/component_single_table_card.dart';
 import '../../../components/constants/hn_button.dart';
 import '../../../components/menu/lateral_menu.dart';
 
@@ -43,7 +46,42 @@ class _EconomyPageState extends State<EconomyPage> {
             style: TextStyle(
                 color: AppTheme.primary, fontSize: CustomSizes.textSize24),
           )),
-      body: Container(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 16),
+              child: Table(
+                children: [
+                  TableRow(children: [
+                    SingleTableCard(
+                        Icons.person_outline_outlined,
+                        CustomColors.blackColor,
+                        MenuOptions.billing,
+                        currentUser.id.toString(),
+                        SingleTableCardPositions.leftPosition,
+                        currentUser),
+                    SingleTableCard(
+                        Icons.person_outline_outlined,
+                        CustomColors.blackColor,
+                        MenuOptions.selingPrice,
+                        currentUser.id.toString(),
+                        SingleTableCardPositions.rightPosition,
+                        currentUser)
+                  ]),
+                ],
+              ),
+            ),
+            SizedBox(height: 16,)
+          ],
+        ),
+      ),
+    );
+      
+      
+      
+      
+     /* Container(
         margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +104,7 @@ class _EconomyPageState extends State<EconomyPage> {
           ],
         ),
       ),
-    );
+    );*/
   }
 
   navigateToSellingPrice() async {
