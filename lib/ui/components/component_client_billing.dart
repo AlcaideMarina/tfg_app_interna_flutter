@@ -23,7 +23,17 @@ class HNComponentClientBilling extends StatelessWidget {
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [Text('ID: ' + id), Text(company)],
+                children: [
+                  Row(
+                    children: [
+                      const Text('ID: ', style: TextStyle(fontWeight: FontWeight.bold),),
+                      Text(id),
+                    ],
+                  ), 
+                  const SizedBox(height: 4,),
+                  Text(company, 
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),)
+                ],
               ),
               onTap != null
                   ? Image.asset(

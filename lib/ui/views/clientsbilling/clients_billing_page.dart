@@ -39,8 +39,7 @@ class _ClientsBillingPageState extends State<ClientsBillingPage> {
           toolbarHeight: 56.0,
           title: const Text(
             "Facturación de clientes",
-            style: TextStyle(
-                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+            style: TextStyle(fontSize: 18),
           )),
       body: Column(
         children: [
@@ -62,10 +61,13 @@ class _ClientsBillingPageState extends State<ClientsBillingPage> {
                                     clientList[i].data()
                                         as Map<String, dynamic>,
                                     clientList[i].id);
+                                double top = 8;
+                                double bottom = 0;
+                                if (i == 0) top = 16;
+                                if (i == clientList.length - 1) bottom = 16;
                                 if (!client.deleted) {
                                   return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 32, vertical: 8),
+                                    margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                     child: HNComponentClientBilling(
                                       client.id.toString(),
                                       client.company,
