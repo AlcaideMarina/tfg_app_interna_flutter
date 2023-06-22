@@ -79,7 +79,7 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
                 ],
               ),
             ),
-            SizedBox(height: 16,)
+            const SizedBox(height: 16,)
           ],
         ),
       ),
