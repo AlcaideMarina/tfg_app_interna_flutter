@@ -50,8 +50,7 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
           toolbarHeight: 56.0,
           title: const Text(
             "Usuarios y clientes",
-            style: TextStyle(
-                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+            style: TextStyle(fontSize: 18),
           )),
       body: SingleChildScrollView(
         child: Column(
