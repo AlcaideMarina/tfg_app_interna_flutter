@@ -71,7 +71,10 @@ class HNComponentOrders extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 4,),
-                      Text(Utils().getKey(Constants().orderStatus, status))
+                      Text(Utils().getKey(Constants().orderStatus, status)),
+                      deliveryDni != null
+                          ? Text("DNI de recogida: $deliveryDni")
+                          : const SizedBox(),
                     ],
                   ),
                 ),

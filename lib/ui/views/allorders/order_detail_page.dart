@@ -143,8 +143,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
         getComponentTableWithSubtitlesForm('Pedido', getPricePerUnitTableRow()),
         const SizedBox(height: 16,),
-        getTextComponentSimpleForm(
-            'Precio total', null, (orderModel.totalPrice ?? "").toString()),
+        getComponentTableForm(
+            'Precio total', getTotalPriceComponentSimpleForm(),
+            columnWidhts: {1: const IntrinsicColumnWidth()}),
         SizedBox(
           width: double.infinity,
           child: Column(
@@ -415,6 +416,41 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             )),
       ]),
     ];
+  }
+
+  List<TableRow> getTotalPriceComponentSimpleForm() {
+    double topMargin = 4;
+    double bottomMargin = 4;
+
+    List<TableRow> list = [];
+    bool pricePending = true;
+    String totalPriceAux = "Pendiente de precio";
+    if (orderModel.totalPrice != null) {
+      pricePending = false;
+      totalPriceAux = orderModel.totalPrice.toString();
+    }
+
+    list.add(TableRow(children: [
+      Container(
+        height: 40,
+        margin: const EdgeInsets.only(left: 8, right: 16, bottom: 0),
+        child: HNComponentTextInput(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          textInputType: const TextInputType.numberWithOptions(),
+          initialValue: totalPriceAux,
+          isEnabled: false,
+        ),
+      ),
+      pricePending
+          ? Container()
+          : Container(
+              margin: const EdgeInsets.only(left: 12, right: 16),
+              child: Text("€", style: TextStyle(fontSize: 20),),
+            )
+    ]));
+
+    return list;
   }
 
   deleteWarningOrder() {
