@@ -43,9 +43,8 @@ class _DailyDeletedFinalProdcutControlPageState
       appBar: AppBar(
           toolbarHeight: 56.0,
           title: const Text(
-            "CPF - Reg. eliminados",
-            style: TextStyle(
-                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+            "CPF - Eliminados",
+            style: TextStyle(fontSize: 18),
           )),
       body: monthlyFPCContainerData.list.isNotEmpty
           ? ListView.builder(
@@ -54,9 +53,12 @@ class _DailyDeletedFinalProdcutControlPageState
               scrollDirection: Axis.vertical,
               itemCount: monthlyFPCContainerData.list.length,
               itemBuilder: (context, i) {
+                double top = 8;
+                double bottom = 0;
+                if (i == 0) top = 16;
+                if (i == monthlyFPCContainerData.list.length - 1) bottom = 16;
                 return Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+                  margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                   child: HNComponentDailyFPC(
                     monthlyFPCContainerData.list[i],
                     onTap: () {},

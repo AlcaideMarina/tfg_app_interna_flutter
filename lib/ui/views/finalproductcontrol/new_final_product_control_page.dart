@@ -77,9 +77,8 @@ class _NewFinalProductControlPageState
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Añadir CPF',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Añadir control prod. final',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -97,7 +96,7 @@ class _NewFinalProductControlPageState
                             2: const IntrinsicColumnWidth()
                           }),
                       const SizedBox(
-                        height: 32,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -124,9 +123,7 @@ class _NewFinalProductControlPageState
   }
 
   Widget getButtonsComponent() {
-    return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(children: [
+    return  Column(children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
               .getTypedButton('Guardar', null, null, saveFPC, null),
           const SizedBox(
@@ -139,7 +136,7 @@ class _NewFinalProductControlPageState
             goBack,
             null,
           ),
-        ]));
+        ]);
   }
 
   List<TableRow> getPricePerUnitTableRow() {
@@ -148,7 +145,8 @@ class _NewFinalProductControlPageState
         children: [
           Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Fch. puesta:")),
+              child: const Text("Fch. puesta:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
           Container(
             height: 40,
             margin: const EdgeInsets.only(left: 8, bottom: 0),
@@ -178,7 +176,8 @@ class _NewFinalProductControlPageState
       TableRow(children: [
         Container(
             margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text("Fch. envasado:")),
+            child: const Text("Fch. envasado:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
         Container(
           height: 40,
           margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
@@ -206,7 +205,8 @@ class _NewFinalProductControlPageState
       ]),
       TableRow(children: [
         Container(
-          child: Text("Control de huevos:"),
+          child: const Text("Control de huevos:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(left: 12, right: 16, top: 16),
         ),
         Container(),
@@ -215,7 +215,8 @@ class _NewFinalProductControlPageState
         children: [
           Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Aceptados:")),
+              child: const Text("Aceptados:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic))),
           Container(
             height: 40,
             margin: const EdgeInsets.only(left: 8, bottom: 0, top: 8),
@@ -236,7 +237,8 @@ class _NewFinalProductControlPageState
         children: [
           Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Rechazados:")),
+              child: const Text("Rechazados:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic))),
           Container(
             height: 40,
             margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
@@ -260,7 +262,8 @@ class _NewFinalProductControlPageState
                 left: 24,
                 right: 16,
               ),
-              child: Text("Lote:")),
+              child: const Text("Lote:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
           Container(
             height: 40,
             margin: const EdgeInsets.only(left: 8, bottom: 0, top: 16),
@@ -281,7 +284,8 @@ class _NewFinalProductControlPageState
         children: [
           Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("F. C. Pref.:")),
+              child: const Text("F. C. Pref.:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
           Container(
             height: 40,
             margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
@@ -312,7 +316,8 @@ class _NewFinalProductControlPageState
       TableRow(children: [
         Container(
             margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text("Fch. expedición:")),
+            child: const Text("Fch. expedición:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
         Container(
           height: 40,
           margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),

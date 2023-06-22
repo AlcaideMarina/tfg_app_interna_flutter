@@ -88,9 +88,8 @@ class _ModifyFinalProductControlPageState
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Modificar FPC',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Modificar control prod. final',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -106,7 +105,7 @@ class _ModifyFinalProductControlPageState
                             0: const IntrinsicColumnWidth(),
                           }),
                       const SizedBox(
-                        height: 16,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -133,9 +132,7 @@ class _ModifyFinalProductControlPageState
   }
 
   Widget getButtonsComponent() {
-    return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(children: [
+    return Column(children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
               'Guardar', null, null, warningUpdateFPCResource, null),
           const SizedBox(
@@ -148,7 +145,7 @@ class _ModifyFinalProductControlPageState
             goBack,
             null,
           ),
-        ]));
+        ]);
   }
 
   List<TableRow> getCells() {
@@ -156,8 +153,9 @@ class _ModifyFinalProductControlPageState
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Fch. puesta:")),
+              margin: const EdgeInsets.only(left: 12, right: 16),
+              child: const Text("Fch. puesta:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
           Container(
             height: 40,
             margin: const EdgeInsets.only(left: 8, bottom: 0),
@@ -186,8 +184,9 @@ class _ModifyFinalProductControlPageState
       ),
       TableRow(children: [
         Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text("Fch. envasado:")),
+            margin: const EdgeInsets.only(left: 12, right: 16),
+            child: const Text("Fch. envasado:",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
         Container(
           height: 40,
           margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
@@ -214,7 +213,8 @@ class _ModifyFinalProductControlPageState
       ]),
       TableRow(children: [
         Container(
-          child: Text("Control de huevos:"),
+          child: const Text("Control de huevos:",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(left: 12, right: 16, top: 16),
         ),
         Container(),
@@ -223,7 +223,8 @@ class _ModifyFinalProductControlPageState
         children: [
           Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Aceptados:")),
+              child: const Text("Aceptados:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic))),
           Container(
             height: 40,
             margin: const EdgeInsets.only(left: 8, bottom: 0, top: 8),
@@ -244,7 +245,8 @@ class _ModifyFinalProductControlPageState
         children: [
           Container(
               margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Rechazados:")),
+              child: const Text("Rechazados:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic))),
           Container(
             height: 40,
             margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
@@ -265,13 +267,15 @@ class _ModifyFinalProductControlPageState
         children: [
           Container(
               margin: const EdgeInsets.only(
-                left: 24,
+                left: 12,
                 right: 16,
+                top: 16
               ),
-              child: Text("Lote:")),
+              child: const Text("Lote:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
           Container(
             height: 40,
-            margin: EdgeInsets.only(left: 8, bottom: 0, top: 16),
+            margin: const EdgeInsets.only(left: 8, bottom: 0, top: 16),
             child: HNComponentTextInput(
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -288,8 +292,9 @@ class _ModifyFinalProductControlPageState
       TableRow(
         children: [
           Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("F. C. Pref.:")),
+              margin: const EdgeInsets.only(left: 12, right: 16),
+              child: const Text("F. C. Pref.:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
           Container(
             height: 40,
             margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
@@ -320,8 +325,9 @@ class _ModifyFinalProductControlPageState
       ),
       TableRow(children: [
         Container(
-            margin: const EdgeInsets.only(left: 24, right: 16),
-            child: Text("Fch. expedición:")),
+            margin: const EdgeInsets.only(left: 12, right: 16),
+            child: const Text("Fch. expedición:", 
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
         Container(
           height: 40,
           margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),

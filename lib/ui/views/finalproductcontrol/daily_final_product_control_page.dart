@@ -52,20 +52,21 @@ class _DailyFinalProductControlPageState
       appBar: AppBar(
           toolbarHeight: 56.0,
           title: const Text(
-            "Control de producto final ",
-            style: TextStyle(
-                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+            "Control prod. final - Diario",
+            style: TextStyle(fontSize: 18),
           )),
       body: Column(
         children: [
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
+            margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
                 .getTypedButton(
                     "Eliminados", null, null, navigateToDeleted, () {}),
           ),
-          const SizedBox(
-            height: 16,
+          Container(
+            width: double.infinity,
+            height: 1,
+            color: CustomColors.redGrayLightSecondaryColor,
           ),
           Container(
             child: StreamBuilder(
@@ -109,9 +110,12 @@ class _DailyFinalProductControlPageState
                                   scrollDirection: Axis.vertical,
                                   itemCount: fpcDataList.length,
                                   itemBuilder: (context, i) {
+                                    double top = 8;
+                                    double bottom = 0;
+                                    if (i == 0) top = 16;
+                                    if (i == fpcDataList.length - 1) bottom = 16;
                                     return Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 32, vertical: 8),
+                                      margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                       child: HNComponentDailyFPC(
                                         fpcDataList[i],
                                         onTap: () {

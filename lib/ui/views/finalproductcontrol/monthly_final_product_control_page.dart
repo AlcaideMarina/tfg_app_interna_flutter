@@ -44,9 +44,8 @@ class _MonthlyFinalProductControlPageState
       appBar: AppBar(
           toolbarHeight: 56.0,
           title: const Text(
-            "Control de producto final ",
-            style: TextStyle(
-                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+            "Control prod. final - Mensual",
+            style: TextStyle(fontSize: 18),
           )),
       body: Column(
         children: [
@@ -73,9 +72,12 @@ class _MonthlyFinalProductControlPageState
                               itemBuilder: (context, i) {
                                 MonthlyFPCContainerData data =
                                     monthlyFPCContainerDataList[i];
+                                double top = 8;
+                                double bottom = 0;
+                                if (i == 0) top = 16;
+                                if (i == list.length - 1) bottom = 16;
                                 return Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 32, vertical: 8),
+                                    margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                   child: HNComponentFPCMonthlyContainerItem(
                                       data, onTap: () {
                                     navigateToDailyFPC(data);
