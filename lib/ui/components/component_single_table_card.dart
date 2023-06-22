@@ -148,6 +148,7 @@ class SingleTableCard extends StatelessWidget {
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: GestureDetector(
               child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   height: 160,
                   decoration: BoxDecoration(
                       color: CustomColors.redPrimaryColor,
@@ -163,6 +164,7 @@ class SingleTableCard extends StatelessWidget {
                               color: CustomColors.redGrayLightSecondaryColor,
                               fontSize: 15.0,
                               fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
                         )
                       ])),
               onTap: () async {
