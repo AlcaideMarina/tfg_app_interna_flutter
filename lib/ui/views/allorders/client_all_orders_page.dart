@@ -138,12 +138,7 @@ class _ClientAllOrdersPageState extends State<ClientAllOrdersPage> {
                  
               ),
           ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: CustomColors.redPrimaryColor,
-          child: const Icon(Icons.add_rounded),
-          onPressed: navigateToNewOrder
-        ),
+        )
       );
   }
   
