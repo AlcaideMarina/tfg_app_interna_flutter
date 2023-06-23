@@ -84,9 +84,8 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Detalle usuario interno',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Modificar usuario interno',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -99,13 +98,7 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
                     children: [
                       getAllFormElements(),
                       const SizedBox(
-                        height: 32,
-                      ),
-                      Text("El usuario debe tener más de 6 dígitos."),
-                      Text(
-                          'La contraseña será igual que el usuario. Por favor, cámbiela en cuanto sea posible. Para hacer login, se necesitará el correo y la contraseña.'),
-                      const SizedBox(
-                        height: 32,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -201,9 +194,7 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
   }
 
   Widget getButtonsComponent() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
+    return Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
               .getTypedButton('Guardar', null, null, updateUser, null),
@@ -218,7 +209,6 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
             null,
           ),
         ],
-      ),
     );
   }
 

@@ -64,8 +64,7 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
             toolbarHeight: 56.0,
             title: const Text(
               'Nuevo usuario interno',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -80,8 +79,8 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
                       const SizedBox(
                         height: 32,
                       ),
-                      Text("El usuario debe tener más de 6 dígitos."),
-                      Text(
+                      const Text("El usuario debe tener más de 6 dígitos."),
+                      const Text(
                           'La contraseña será igual que el usuario. Por favor, cámbiela en cuanto sea posible. Para hacer login, se necesitará el correo y la contraseña.'),
                       const SizedBox(
                         height: 32,
@@ -169,9 +168,7 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
   }
 
   Widget getButtonsComponent() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
+    return Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
               .getTypedButton('Guardar', null, null, saveUser, () {}),
@@ -181,7 +178,6 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
               .getTypedButton('Cancelar', null, null, goBack, () {}),
         ],
-      ),
     );
   }
 
@@ -210,6 +206,7 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
         textInputType: textInputType,
         onChange: onChange,
       ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -241,6 +238,7 @@ class _NewInternalUserPageState extends State<NewInternalUserPage> {
         textInputType: textInputType,
         onChange: onChange,
       ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 

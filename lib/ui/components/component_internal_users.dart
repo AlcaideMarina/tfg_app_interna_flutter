@@ -31,11 +31,42 @@ class HNComponentInternalUsers extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('ID: ' + id),
-                  Text(name),
-                  Text("DNI: " + dni),
-                  Text("Puesto: " +
-                      Utils().getKey(Constants().roles, jobPosition))
+                  Row(
+                    children: [
+                      const Text('ID:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                      const SizedBox(width: 8,),
+                      Text(id, style: const TextStyle(fontSize: 16)),
+                    ],
+                  ),
+                  const SizedBox(height: 8,),
+                  Container(
+                    width: 220, 
+                    height: 1, 
+                    color: CustomColors.redGrayLightSecondaryColor,
+                  ),
+                  const SizedBox(height: 8,),
+                  Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  Row(
+                    children: [
+                      const Text("DNI:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      const SizedBox(width: 8,),
+                      Text(dni, style: const TextStyle(fontSize: 16)),
+                    ],
+                  ),
+                  const SizedBox(height: 8,),
+                  Container(
+                    width: 220, 
+                    height: 1, 
+                    color: CustomColors.redGrayLightSecondaryColor,
+                  ),
+                  const SizedBox(height: 8,),
+                  Row(
+                    children: [
+                      const Text("Puesto:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      const SizedBox(width: 8,),
+                      Text(Utils().getKey(Constants().roles, jobPosition), style: const TextStyle(fontSize: 16)),
+                    ],
+                  ),
                 ],
               ),
               onTap != null

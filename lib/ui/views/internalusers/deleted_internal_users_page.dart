@@ -44,8 +44,7 @@ class _DeletedInternalUsersPageState extends State<DeletedInternalUsersPage> {
             toolbarHeight: 56.0,
             title: const Text(
               "Cuentas eliminadas",
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: Column(
           children: [
@@ -58,6 +57,7 @@ class _DeletedInternalUsersPageState extends State<DeletedInternalUsersPage> {
                       final data = snapshot.data;
                       final List userList = data.docs;
                       if (userList.isNotEmpty) {
+                        List<InternalUserModel> list = [];
                         return Expanded(
                             child: ListView.builder(
                                 shrinkWrap: true,
@@ -70,9 +70,13 @@ class _DeletedInternalUsersPageState extends State<DeletedInternalUsersPage> {
                                               as Map<String, dynamic>,
                                           userList[i].id);
                                   if (internalUser.deleted) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 32, vertical: 8),
+                                    list.add(internalUser);
+                                  double top = 8;
+                                  double bottom = 0;
+                                  if (list.length == 1) top = 24;
+                                  if (i == userList.length - 1) bottom = 16;
+                                  return Container(
+                                    margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                       child: HNComponentInternalUsers(
                                           internalUser.id.toString(),
                                           internalUser.name +
