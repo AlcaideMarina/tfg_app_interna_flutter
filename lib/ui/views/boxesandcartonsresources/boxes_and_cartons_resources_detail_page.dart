@@ -47,8 +47,8 @@ class _BoxesAndCartonsResourceDetailPageState
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Cajas y cartones - Detalle',
-              style: TextStyle(color: AppTheme.primary, fontSize: 18),
+              'Detalle cajas y cartones',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -64,7 +64,7 @@ class _BoxesAndCartonsResourceDetailPageState
                             0: const IntrinsicColumnWidth(),
                           }),
                       const SizedBox(
-                        height: 16,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -94,26 +94,26 @@ class _BoxesAndCartonsResourceDetailPageState
     return [
       TableRow(children: [
         Container(
-          child: Text("Fecha:"),
+          child: const Text("Fecha:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16),
         ),
         Container(
           child: Text(
               Utils().parseTimestmpToString(bcResourcesModel.expenseDatetime) ??
-                  ""),
+                  "", style: const TextStyle(fontSize: 16)),
           margin: const EdgeInsets.only(left: 16),
         ),
       ]),
       TableRow(children: [
         Container(
-          child: Text("Pedido:"),
+          child: const Text("Pedido:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16, top: 4),
         ),
         Container(),
       ]),
       TableRow(children: [
         Container(
-          child: Text("Cajas:"),
+          child: const Text("Cajas:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontStyle: FontStyle.italic)),
           margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
         ),
         Container(
@@ -130,7 +130,7 @@ class _BoxesAndCartonsResourceDetailPageState
       ]),
       TableRow(children: [
         Container(
-          child: Text("Cartones XL:"),
+          child: const Text("Cartones XL:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontStyle: FontStyle.italic)),
           margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
         ),
         Container(
@@ -147,7 +147,7 @@ class _BoxesAndCartonsResourceDetailPageState
       ]),
       TableRow(children: [
         Container(
-          child: Text("Cartones L:"),
+          child: const Text("Cartones L:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontStyle: FontStyle.italic)),
           margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
         ),
         Container(
@@ -164,7 +164,7 @@ class _BoxesAndCartonsResourceDetailPageState
       ]),
       TableRow(children: [
         Container(
-          child: Text("Cartones M:"),
+          child: const Text("Cartones M:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontStyle: FontStyle.italic)),
           margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
         ),
         Container(
@@ -181,7 +181,7 @@ class _BoxesAndCartonsResourceDetailPageState
       ]),
       TableRow(children: [
         Container(
-          child: Text("Cartones S:"),
+          child: const Text("Cartones S:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontStyle: FontStyle.italic)),
           margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
         ),
         Container(
@@ -198,7 +198,7 @@ class _BoxesAndCartonsResourceDetailPageState
       ]),
       TableRow(children: [
         Container(
-          child: Text("Precio total:"),
+          child: const Text("Precio total:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16, top: 4),
         ),
         Container(
@@ -218,7 +218,7 @@ class _BoxesAndCartonsResourceDetailPageState
               const SizedBox(
                 width: 16,
               ),
-              const Text("€"),
+              const Text("€", style: TextStyle(fontSize: 16)),
               const SizedBox(
                 width: 8,
               ),
@@ -230,9 +230,7 @@ class _BoxesAndCartonsResourceDetailPageState
   }
 
   Widget getButtonsComponent() {
-    return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(children: [
+    return Column(children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
               'Modificar', null, null, navigateToNewHensTicker, null),
           const SizedBox(
@@ -245,7 +243,7 @@ class _BoxesAndCartonsResourceDetailPageState
             warningDeleteBCResource,
             null,
           ),
-        ]));
+        ]);
   }
 
   warningDeleteBCResource() {
@@ -254,7 +252,7 @@ class _BoxesAndCartonsResourceDetailPageState
         context: context,
         builder: (_) => AlertDialog(
               title: const Text('Aviso importante'),
-              content: Text(
+              content: const Text(
                   'Esta acción es irreversible. Va a eliminar este ticket, y puede conllevar consecuencias para la empresa. ¿Está seguro de que quiere continuar?'),
               actions: <Widget>[
                 TextButton(

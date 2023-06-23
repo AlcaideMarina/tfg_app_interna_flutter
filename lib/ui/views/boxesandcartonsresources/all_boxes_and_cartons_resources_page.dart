@@ -45,9 +45,8 @@ class _AllBoxesAndCartonsResourcesPageState
       appBar: AppBar(
           toolbarHeight: 56.0,
           title: const Text(
-            "Cajas y cartones",
-            style: TextStyle(
-                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+            "Registro cajas y cartones",
+            style: TextStyle(fontSize: 18),
           )),
       body: Column(
         children: [
@@ -74,9 +73,12 @@ class _AllBoxesAndCartonsResourcesPageState
                                         bcList[i].id);
                                 if (!bcResourceModel.deleted) {
                                   list.add(bcResourceModel);
+                                  double top = 8;
+                                  double bottom = 0;
+                                  if (list.length == 1) top = 24;
+                                  if (i == bcList.length - 1) bottom = 16;
                                   return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 32, vertical: 8),
+                                    margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                     child: HNComponentTicket(
                                         bcResourceModel.expenseDatetime,
                                         MaterialUtils().getBCOrderSummary(

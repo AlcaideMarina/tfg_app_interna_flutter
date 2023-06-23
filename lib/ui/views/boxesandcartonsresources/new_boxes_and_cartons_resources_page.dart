@@ -33,8 +33,8 @@ class _NewBoxesAndCartonsResourcesPageState
     super.initState();
     currentUser = widget.currentUser;
 
-    dateController.text = dateFormat.format(minDate);
-    datePickerTimestamp = Timestamp.fromDate(minDate);
+    dateController.text = dateFormat.format(DateTime.now());
+    datePickerTimestamp = Timestamp.fromDate(DateTime.now());
   }
 
   TextEditingController dateController = TextEditingController();
@@ -56,9 +56,8 @@ class _NewBoxesAndCartonsResourcesPageState
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Cajas y cartones - Añadir',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Añadir cajas y cartones',
+              style: TextStyle(fontSize: 24),
             )),
         body: SafeArea(
           top: false,
@@ -74,7 +73,7 @@ class _NewBoxesAndCartonsResourcesPageState
                             0: const IntrinsicColumnWidth(),
                           }),
                       const SizedBox(
-                        height: 16,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -104,7 +103,7 @@ class _NewBoxesAndCartonsResourcesPageState
     return [
       TableRow(children: [
         Container(
-          child: Text("Fecha:"),
+          child: const Text("Fecha:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16),
         ),
         Container(
@@ -134,14 +133,14 @@ class _NewBoxesAndCartonsResourcesPageState
       ]),
       TableRow(children: [
         Container(
-          child: Text("Pedido:"),
+          child: const Text("Pedido:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16, top: 4),
         ),
         Container(),
       ]),
       TableRow(children: [
         Container(
-          child: Text("Cajas:"),
+          child: const Text("Cajas:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontStyle: FontStyle.italic)),
           margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
         ),
         Container(
@@ -160,7 +159,7 @@ class _NewBoxesAndCartonsResourcesPageState
       ]),
       TableRow(children: [
         Container(
-          child: Text("Cartones XL:"),
+          child: const Text("Cartones XL:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontStyle: FontStyle.italic)),
           margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
         ),
         Container(
@@ -179,7 +178,7 @@ class _NewBoxesAndCartonsResourcesPageState
       ]),
       TableRow(children: [
         Container(
-          child: Text("Cartones L:"),
+          child: const Text("Cartones L:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontStyle: FontStyle.italic)),
           margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
         ),
         Container(
@@ -198,7 +197,7 @@ class _NewBoxesAndCartonsResourcesPageState
       ]),
       TableRow(children: [
         Container(
-          child: Text("Cartones M:"),
+          child: const Text("Cartones M:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontStyle: FontStyle.italic)),
           margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
         ),
         Container(
@@ -217,7 +216,7 @@ class _NewBoxesAndCartonsResourcesPageState
       ]),
       TableRow(children: [
         Container(
-          child: Text("Cartones S:"),
+          child: const Text("Cartones S:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontStyle: FontStyle.italic)),
           margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
         ),
         Container(
@@ -236,7 +235,7 @@ class _NewBoxesAndCartonsResourcesPageState
       ]),
       TableRow(children: [
         Container(
-          child: Text("Precio total:"),
+          child: const Text("Precio total:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16, top: 4),
         ),
         Container(
@@ -258,7 +257,7 @@ class _NewBoxesAndCartonsResourcesPageState
               const SizedBox(
                 width: 16,
               ),
-              const Text("€"),
+              const Text("€", style: TextStyle(fontSize: 16)),
               const SizedBox(
                 width: 8,
               ),
@@ -270,9 +269,7 @@ class _NewBoxesAndCartonsResourcesPageState
   }
 
   Widget getButtonsComponent() {
-    return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(children: [
+    return Column(children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
               .getTypedButton('Guardar', null, null, saveBCResource, null),
           const SizedBox(
@@ -285,7 +282,7 @@ class _NewBoxesAndCartonsResourcesPageState
             goBack,
             null,
           ),
-        ]));
+        ]);
   }
 
   goBack() {
