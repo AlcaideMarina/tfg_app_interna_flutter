@@ -42,9 +42,8 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Pienso - Detalle',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Detalle registro pienso',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -60,7 +59,7 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
                             0: const IntrinsicColumnWidth(),
                           }),
                       const SizedBox(
-                        height: 16,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -90,19 +89,19 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
     return [
       TableRow(children: [
         Container(
-          child: Text("Fecha:"),
-          margin: const EdgeInsets.only(right: 16),
+          child: const Text("Fecha:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, bottom: 6),
         ),
         Container(
           child: Text(Utils()
                   .parseTimestmpToString(feedResourcesModel.expenseDatetime) ??
-              ""),
-          margin: const EdgeInsets.only(left: 16),
+              "", style: const TextStyle(fontSize: 16)),
+          margin: const EdgeInsets.only(left: 16, bottom: 4),
         ),
       ]),
       TableRow(children: [
         Container(
-          child: Text("Cantidad (kg):"),
+          child: const Text("Cantidad (kg):", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16, top: 4),
         ),
         Container(
@@ -119,7 +118,7 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
       ]),
       TableRow(children: [
         Container(
-          child: Text("Precio total:"),
+          child: const Text("Precio total:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16, top: 4),
         ),
         Container(
@@ -139,7 +138,7 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
               const SizedBox(
                 width: 16,
               ),
-              const Text("€"),
+              const Text("€", style: TextStyle(fontSize: 16)),
               const SizedBox(
                 width: 8,
               ),
@@ -151,9 +150,7 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
   }
 
   Widget getButtonsComponent() {
-    return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(children: [
+    return Column(children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
               'Modificar', null, null, navigateToModifyFeedResource, null),
           const SizedBox(
@@ -166,7 +163,7 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
             warningDeleteFeedResource,
             null,
           ),
-        ]));
+        ]);
   }
 
   warningDeleteFeedResource() {

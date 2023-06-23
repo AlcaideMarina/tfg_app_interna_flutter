@@ -47,9 +47,8 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Pienso - Modificar',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Modificar registro pienso',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -65,7 +64,7 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
                             0: const IntrinsicColumnWidth(),
                           }),
                       const SizedBox(
-                        height: 16,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -95,19 +94,19 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
     return [
       TableRow(children: [
         Container(
-          child: Text("Fecha:"),
-          margin: const EdgeInsets.only(right: 16),
+          child: const Text("Fecha:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, bottom: 6),
         ),
         Container(
           child: Text(Utils()
                   .parseTimestmpToString(feedResourcesModel.expenseDatetime) ??
-              ""),
-          margin: const EdgeInsets.only(left: 16),
+              "", style: const TextStyle(fontSize: 16)),
+          margin: const EdgeInsets.only(left: 16, bottom: 6),
         ),
       ]),
       TableRow(children: [
         Container(
-          child: Text("Cantidad (kg):"),
+          child: const Text("Cantidad (kg):", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16, top: 4),
         ),
         Container(
@@ -127,7 +126,7 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
       ]),
       TableRow(children: [
         Container(
-          child: Text("Precio total:"),
+          child: const Text("Precio total:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16, top: 4),
         ),
         Container(
@@ -150,7 +149,7 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
               const SizedBox(
                 width: 16,
               ),
-              const Text("€"),
+              const Text("€", style: TextStyle(fontSize: 16)),
               const SizedBox(
                 width: 8,
               ),

@@ -30,8 +30,8 @@ class _NewFeedResourcePageState extends State<NewFeedResourcePage> {
 
     currentUser = widget.currentUser;
 
-    dateController.text = dateFormat.format(minDate);
-    datePickerTimestamp = Timestamp.fromDate(minDate);
+    dateController.text = dateFormat.format(DateTime.now());
+    datePickerTimestamp = Timestamp.fromDate(DateTime.now());
   }
 
   TextEditingController dateController = TextEditingController();
@@ -49,9 +49,8 @@ class _NewFeedResourcePageState extends State<NewFeedResourcePage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Pienso - Añadir',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Añadir registro pienso',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -67,7 +66,7 @@ class _NewFeedResourcePageState extends State<NewFeedResourcePage> {
                             0: const IntrinsicColumnWidth(),
                           }),
                       const SizedBox(
-                        height: 16,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -97,7 +96,7 @@ class _NewFeedResourcePageState extends State<NewFeedResourcePage> {
     return [
       TableRow(children: [
         Container(
-          child: Text("Fecha:"),
+          child: Text("Fecha:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16),
         ),
         Container(
@@ -127,7 +126,7 @@ class _NewFeedResourcePageState extends State<NewFeedResourcePage> {
       ]),
       TableRow(children: [
         Container(
-          child: Text("Cantidad (kg):"),
+          child: Text("Cantidad (kg):", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16, top: 4),
         ),
         Container(
@@ -146,7 +145,7 @@ class _NewFeedResourcePageState extends State<NewFeedResourcePage> {
       ]),
       TableRow(children: [
         Container(
-          child: Text("Precio total:"),
+          child: Text("Precio total:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16, top: 4),
         ),
         Container(
@@ -168,7 +167,7 @@ class _NewFeedResourcePageState extends State<NewFeedResourcePage> {
               const SizedBox(
                 width: 16,
               ),
-              const Text("€"),
+              const Text("€", style: TextStyle(fontSize: 16)),
               const SizedBox(
                 width: 8,
               ),
@@ -180,9 +179,7 @@ class _NewFeedResourcePageState extends State<NewFeedResourcePage> {
   }
 
   Widget getButtonsComponent() {
-    return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(children: [
+    return Column(children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
               .getTypedButton('Guardar', null, null, saveFeedResource, null),
           const SizedBox(
@@ -195,7 +192,7 @@ class _NewFeedResourcePageState extends State<NewFeedResourcePage> {
             goBack,
             null,
           ),
-        ]));
+        ]);
   }
 
   goBack() async {

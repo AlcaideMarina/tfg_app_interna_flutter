@@ -36,8 +36,8 @@ class _NewElectricityWaterGasResourcesPageState
 
     currentUser = widget.currentUser;
 
-    dateController.text = dateFormat.format(minDate);
-    datePickerTimestamp = Timestamp.fromDate(minDate);
+    dateController.text = dateFormat.format(DateTime.now());
+    datePickerTimestamp = Timestamp.fromDate(DateTime.now());
   }
 
   TextEditingController dateController = TextEditingController();

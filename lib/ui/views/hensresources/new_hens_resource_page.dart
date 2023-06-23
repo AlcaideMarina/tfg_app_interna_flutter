@@ -29,8 +29,8 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
     super.initState();
     currentUser = widget.currentUser;
 
-    dateController.text = dateFormat.format(minDate);
-    datePickerTimestamp = Timestamp.fromDate(minDate);
+    dateController.text = dateFormat.format(DateTime.now());
+    datePickerTimestamp = Timestamp.fromDate(DateTime.now());
   }
 
   TextEditingController dateController = TextEditingController();
@@ -51,8 +51,8 @@ class _NewHensResourcePageState extends State<NewHensResourcePage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Gallinas - Añadir',
-              style: TextStyle(fontSize: 24),
+              'Añadir registro gallinas',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
