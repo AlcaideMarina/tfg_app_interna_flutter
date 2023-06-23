@@ -14,11 +14,15 @@ import '../../components/component_cell_table_form.dart';
 import '../../components/component_dropdown.dart';
 import '../../components/component_simple_form.dart';
 import '../../components/component_table_form.dart';
+import '../../components/component_table_form_with_subtitles.dart';
 import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class OrderDetailPage extends StatefulWidget {
-  const OrderDetailPage(this.currentUser, this.clientModel, this.orderModel, this.deliveryPerson, {Key? key}) : super(key: key);
+  const OrderDetailPage(
+      this.currentUser, this.clientModel, this.orderModel, this.deliveryPerson,
+      {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
   final ClientModel clientModel;
@@ -30,7 +34,6 @@ class OrderDetailPage extends StatefulWidget {
 }
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
-
   late InternalUserModel currentUser;
   late ClientModel clientModel;
   late OrderModel orderModel;
@@ -49,9 +52,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-
     if (deliveryPerson != null) {
-      deliveryPersonStr = deliveryPerson!.id.toString() + " - " + deliveryPerson!.name + " " + deliveryPerson!.surname;
+      deliveryPersonStr = deliveryPerson!.id.toString() +
+          " - " +
+          deliveryPerson!.name +
+          " " +
+          deliveryPerson!.surname;
     }
 
     return Scaffold(
@@ -60,8 +66,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             toolbarHeight: 56.0,
             title: const Text(
               'Detalle de pedido',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -72,16 +77,19 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("ID: " + orderModel.orderId.toString()),
+                      Row(
+                        children: [
+                          const Text("ID pedido:", style: TextStyle(fontWeight: FontWeight.bold),),
+                          const SizedBox(width: 8,),
+                          Text(orderModel.orderId.toString()),
+                        ],
+                      ),
                       const SizedBox(
-                        height: 8,
+                        height: 12,
                       ),
                       getAllFormElements(),
                       const SizedBox(
-                        height: 32,
-                      ),
-                      const SizedBox(
-                        height: 32,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -95,16 +103,19 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   }
 
   Widget getAllFormElements() {
-
     List<int> statusApproxDeliveryDatetimeList = [0, 1, 2];
     String deliveryDatetimeAux;
     if (statusApproxDeliveryDatetimeList.contains(orderModel.status)) {
-      String status = Utils().getKey(Constants().orderStatus, orderModel.status);
-      deliveryDatetimeAux = "$status - ${Utils().parseTimestmpToString(orderModel.approxDeliveryDatetime) ?? ""}";
+      String status =
+          Utils().getKey(Constants().orderStatus, orderModel.status);
+      deliveryDatetimeAux =
+          "$status - ${Utils().parseTimestmpToString(orderModel.approxDeliveryDatetime) ?? ""}";
     } else if (orderModel.status == 4) {
-      deliveryDatetimeAux = Utils().parseTimestmpToString(orderModel.deliveryDatetime!) ?? "";
+      deliveryDatetimeAux =
+          Utils().parseTimestmpToString(orderModel.deliveryDatetime!) ?? "";
     } else if (orderModel.status == 5) {
-      String status = Utils().getKey(Constants().orderStatus, orderModel.status);
+      String status =
+          Utils().getKey(Constants().orderStatus, orderModel.status);
       String dt;
       if (orderModel.deliveryDatetime != null) {
         dt = Utils().parseTimestmpToString(orderModel.deliveryDatetime!) ?? "";
@@ -117,7 +128,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       if (orderModel.deliveryDatetime != null) {
         dt = Utils().parseTimestmpToString(orderModel.deliveryDatetime!) ?? "";
       } else {
-        dt = Utils().parseTimestmpToString(orderModel.approxDeliveryDatetime) ?? "";
+        dt = Utils().parseTimestmpToString(orderModel.approxDeliveryDatetime) ??
+            "";
       }
       deliveryDatetimeAux = dt;
     }
@@ -129,12 +141,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         getTextComponentSimpleForm('Dirección', null, clientModel.direction),
         getTextComponentSimpleForm('CIF', null, clientModel.cif),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
-        getComponentTableForm('Pedido', getPricePerUnitTableRow(), 
-            columnWidhts: {
-              0: const IntrinsicColumnWidth(),
-              2: const IntrinsicColumnWidth()
-            }),
-        getTextComponentSimpleForm('Precio total', null, (orderModel.totalPrice ?? "").toString()),
+        getComponentTableWithSubtitlesForm('Pedido', getPricePerUnitTableRow()),
+        const SizedBox(height: 16,),
+        getComponentTableForm(
+            'Precio total', getTotalPriceComponentSimpleForm(),
+            columnWidhts: {1: const IntrinsicColumnWidth()}),
         SizedBox(
           width: double.infinity,
           child: Column(
@@ -142,28 +153,34 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             children: [
               SizedBox(
                 width: 150,
-                child: 
-                    CheckboxListTile(
-                      title: Text("Pagado"),
-                      enabled: false,
-                      value: orderModel.paid,
-                      onChanged: (newValue) {},
-                      dense: true,
-                      controlAffinity: ListTileControlAffinity.leading,
-                    ),
+                child: CheckboxListTile(
+                  title: Text("Pagado"),
+                  enabled: false,
+                  value: orderModel.paid,
+                  onChanged: (newValue) {},
+                  dense: true,
+                  controlAffinity: ListTileControlAffinity.leading,
+                ),
               ),
             ],
           ),
         ),
-        getDropdownComponentSimpleForm('Método de pago', 
-            OrderUtils().paymentMethodIntToString(orderModel.paymentMethod)), 
-        getTextComponentSimpleForm('Fecha de pedido', null, Utils().parseTimestmpToString(orderModel.orderDatetime) ?? ""),
-        getTextComponentSimpleForm('Fecha de entrega', null, deliveryDatetimeAux),
+        getDropdownComponentSimpleForm('Método de pago',
+            OrderUtils().paymentMethodIntToString(orderModel.paymentMethod)),
+        getTextComponentSimpleForm('Fecha de pedido', null,
+            Utils().parseTimestmpToString(orderModel.orderDatetime) ?? ""),
+        getTextComponentSimpleForm(
+            'Fecha de entrega', null, deliveryDatetimeAux),
         getDropdownComponentSimpleForm('Repartidor', deliveryPersonStr),
-        getTextComponentSimpleForm('Albarán', null, (orderModel.deliveryNote ?? "").toString()),
-        getTextComponentSimpleForm('Lote', null, (orderModel.lot ?? "").toString()),
-        getTextComponentSimpleForm('DNI de entrega', null, orderModel.deliveryDni ?? ""),
-        getDropdownComponentSimpleForm('Estado', OrderUtils().orderStatusIntToString(orderModel.status) ?? ""),
+        getTextComponentSimpleForm(
+            'Albarán', null, (orderModel.deliveryNote ?? "").toString()),
+        getTextComponentSimpleForm(
+            'Lote', null, (orderModel.lot ?? "").toString()),
+        getTextComponentSimpleForm(
+            'DNI de entrega', null, orderModel.deliveryDni ?? ""),
+        const SizedBox(height: 24,),
+        getDropdownComponentSimpleForm('Estado',
+            OrderUtils().orderStatusIntToString(orderModel.status) ?? ""),
       ],
     );
   }
@@ -177,62 +194,70 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     } else if (orderModel.status == Constants().orderStatus["Entregado"]) {
       isDeleteEnabled = false;
     }
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
+    return Column(
         children: [
-          HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, isModifyEnabled ? navigateToModifyOrder : null, null),
+          HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
+              'Modificar',
+              null,
+              null,
+              isModifyEnabled ? navigateToModifyOrder : null,
+              null),
           const SizedBox(
             height: 8,
           ),
-          HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton('Eliminar', null, null, isDeleteEnabled ? deleteWarningOrder : null, null),
+          HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
+              'Eliminar',
+              null,
+              null,
+              isDeleteEnabled ? deleteWarningOrder : null,
+              null),
         ],
-      ),
     );
   }
 
   Widget getDropdownComponentSimpleForm(String label, String value) {
-        double topMargin = 4;
-        double bottomMargin = 4;
-        
-        return HNComponentSimpleForm(
-        '$label:',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin,),
-        componentDropdown: 
-          HNComponentDropdown(
-            const [],
-            labelText: value,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            initialValue: value,
-            isEnabled: false,
-            onChange: null,
-          ),
-        );
-  }
-
-  Widget getTextComponentSimpleForm(String label, String? labelInputText,
-      String value) {
     double topMargin = 4;
     double bottomMargin = 4;
 
     return HNComponentSimpleForm(
-        label + ':',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
-        componentTextInput: HNComponentTextInput(
-          labelText: value,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          isEnabled: false,
-        ),);
+      '$label:',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(
+        top: topMargin,
+        bottom: bottomMargin,
+      ),
+      componentDropdown: HNComponentDropdown(
+        const [],
+        labelText: value,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        initialValue: value,
+        isEnabled: false,
+        onChange: null,
+      ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    );
+  }
+
+  Widget getTextComponentSimpleForm(
+      String label, String? labelInputText, String value) {
+    double topMargin = 4;
+    double bottomMargin = 4;
+
+    return HNComponentSimpleForm(
+      label + ':',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
+        labelText: value,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        isEnabled: false,
+      ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    );
   }
 
   Widget getComponentTableForm(String label, List<TableRow> children,
@@ -241,17 +266,32 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     double bottomMargin = 4;
 
     return HNComponentTableForm(
-      label,
+      label + ":",
       8,
       TableCellVerticalAlignment.middle,
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
-  
-  List<TableRow> getPricePerUnitTableRow() {
-    List<TableRow> list = [];
+
+  Widget getComponentTableWithSubtitlesForm(String label, List<Widget> children,) {
+    double topMargin = 4;
+    double bottomMargin = 4;
+
+    return HNComponentTableFormWithSubtitles(
+      label + ":",
+      8,
+      TableCellVerticalAlignment.middle,
+      children,
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    );
+  }
+
+  List<Widget> getPricePerUnitTableRow() {
+    List<Widget> list = [];
 
     for (var item in Constants().productClasses) {
       String dozenKey = "${item.toLowerCase()}_dozen";
@@ -261,109 +301,113 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       num? boxPrice;
       num boxQuantity = 0;
 
-      if (orderModel.order.containsKey(dozenKey) && orderModel.order[dozenKey] != null) {
+      if (orderModel.order.containsKey(dozenKey) &&
+          orderModel.order[dozenKey] != null) {
         if (orderModel.order[dozenKey]!.containsKey("price")) {
           dozenPrice = orderModel.order[dozenKey]!["price"];
         }
-        if (orderModel.order[dozenKey]!.containsKey("quantity") && orderModel.order[dozenKey]!["quantity"] != null) {
+        if (orderModel.order[dozenKey]!.containsKey("quantity") &&
+            orderModel.order[dozenKey]!["quantity"] != null) {
           dozenQuantity = orderModel.order[dozenKey]!["quantity"]!;
         }
       }
-      if (orderModel.order.containsKey(boxKey) && orderModel.order[boxKey] != null) {
+      if (orderModel.order.containsKey(boxKey) &&
+          orderModel.order[boxKey] != null) {
         if (orderModel.order[boxKey]!.containsKey("price")) {
           boxPrice = orderModel.order[boxKey]!["price"];
         }
-        if (orderModel.order[boxKey]!.containsKey("quantity") && orderModel.order[boxKey]!["quantity"] != null) {
+        if (orderModel.order[boxKey]!.containsKey("quantity") &&
+            orderModel.order[boxKey]!["quantity"] != null) {
           boxQuantity = orderModel.order[boxKey]!["quantity"]!;
         }
       }
 
       list.add(
-        TableRow(
-          children: [
-            Container(
-              child: Text(item),
-              margin: const EdgeInsets.only(left: 12, right: 16),
-            ),
-            Container(),
-            Container()
-          ]
-        )
+        Container(
+          child: Text("Huevos tamaño " + item + ":", style: const TextStyle(fontWeight: FontWeight.bold)),
+          margin: const EdgeInsets.only(left: 12, right: 16),
+        ));
+      list.add(
+        const SizedBox(height: 4,)
       );
 
       list.add(
-        TableRow(
+        Table(
+          columnWidths: const {
+              0: IntrinsicColumnWidth(),
+              2: FixedColumnWidth(96)
+            },
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Docena")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                labelText: dozenQuantity.toString(),
-                isEnabled: false,
-              ),
+            TableRow(
+              children: [
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: const Text("Docena")),
+                Container(
+                  height: 40,
+                  margin: const EdgeInsets.only(left: 0, right: 4, bottom: 0),
+                  child: HNComponentTextInput(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textInputType: const TextInputType.numberWithOptions(),
+                    labelText: dozenQuantity.toString(),
+                    isEnabled: false,
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only( right: 16),
+                    child: Text("${dozenPrice ?? "-"} €/ud", textAlign: TextAlign.end,)),
+              ],
             ),
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("${dozenPrice ?? ""} €")),
-          ],
-        )
-      );
-
-      list.add(
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Caja")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                labelText: boxQuantity.toString(),
-                isEnabled: false,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("${boxPrice ?? ""} €")),
+            TableRow(
+              children: [
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: const Text("Caja")),
+                Container(
+                  height: 40,
+                  margin: const EdgeInsets.only(left: 0, right: 4, bottom: 0),
+                  child: HNComponentTextInput(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textInputType: const TextInputType.numberWithOptions(),
+                    labelText: boxQuantity.toString(),
+                    isEnabled: false,
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only(right: 16),
+                    child: Text("${boxPrice ?? "-"} €/ud", textAlign: TextAlign.end,)),
+              ]
+            )
           ]
-        )
+        ));
+        
+      list.add(
+        const SizedBox(height: 4,)
       );
     }
-
     return list;
-
   }
 
   List<TableRow> getTelephoneTableRow() {
     return [
       TableRow(children: [
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8, bottom: 8),
-            componentTextInput: HNComponentTextInput(
-              labelText: 'Contacto',
-              textCapitalization: TextCapitalization.words,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              initialValue: clientModel.phone[0].keys.first,
-              isEnabled: false,
-            ),
+          40,
+          const EdgeInsets.only(left: 16, right: 8, bottom: 8),
+          componentTextInput: HNComponentTextInput(
+            textCapitalization: TextCapitalization.words,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            initialValue: clientModel.phone[0].keys.first,
+            isEnabled: false,
           ),
+        ),
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16, bottom: 8),
+            40, const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             componentTextInput: HNComponentTextInput(
-              labelText: 'Teléfono',
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -374,56 +418,93 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     ];
   }
 
+  List<TableRow> getTotalPriceComponentSimpleForm() {
+    double topMargin = 4;
+    double bottomMargin = 4;
+
+    List<TableRow> list = [];
+    bool pricePending = true;
+    String totalPriceAux = "Pendiente de precio";
+    if (orderModel.totalPrice != null) {
+      pricePending = false;
+      totalPriceAux = orderModel.totalPrice.toString();
+    }
+
+    list.add(TableRow(children: [
+      Container(
+        height: 40,
+        margin: const EdgeInsets.only(left: 8, right: 16, bottom: 0),
+        child: HNComponentTextInput(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          textInputType: const TextInputType.numberWithOptions(),
+          initialValue: totalPriceAux,
+          isEnabled: false,
+        ),
+      ),
+      pricePending
+          ? Container()
+          : Container(
+              margin: const EdgeInsets.only(left: 12, right: 16),
+              child: Text("€", style: TextStyle(fontSize: 20),),
+            )
+    ]));
+
+    return list;
+  }
+
   deleteWarningOrder() {
     showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-                title: const Text('Aviso importante'),
-                content: const Text('Esta acción es irreversible. ¿Está seguro de que quiere eliminar el pedido?'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Cancelar'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  TextButton(
-                    child: const Text('Continuar'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      deleteOrder();
-                    },
-                  )
-                ],
-              ));
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text('Aviso importante'),
+              content: const Text(
+                  'Esta acción es irreversible. ¿Está seguro de que quiere eliminar el pedido?'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancelar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Continuar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    deleteOrder();
+                  },
+                )
+              ],
+            ));
   }
 
   deleteOrder() async {
-      FocusManager.instance.primaryFocus?.unfocus();
-      showAlertDialog(context);
-      bool conf = await FirebaseUtils.instance.deleteOrder(clientModel.documentId!, orderModel.documentId!);
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+    bool conf = await FirebaseUtils.instance
+        .deleteOrder(clientModel.documentId!, orderModel.documentId!);
 
-      Navigator.pop(context);
-      if(conf) {
-        showDialog(
+    Navigator.pop(context);
+    if (conf) {
+      showDialog(
           context: context,
           builder: (_) => AlertDialog(
                 title: const Text('Pedido eliminado'),
-                content: const Text(
-                    'El pedido ha sido eliminado correctamente.'),
+                content:
+                    const Text('El pedido ha sido eliminado correctamente.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),
                     onPressed: () {
                       Navigator.of(context)
-                          ..pop()
-                          ..pop();
+                        ..pop()
+                        ..pop();
                     },
                   )
                 ],
               ));
-      } else {
-        showDialog(
+    } else {
+      showDialog(
           context: context,
           builder: (_) => AlertDialog(
                 title: const Text('Error'),
@@ -434,19 +515,19 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     child: const Text('De acuerdo.'),
                     onPressed: () {
                       Navigator.of(context)
-                          ..pop()
-                          ..pop();
+                        ..pop()
+                        ..pop();
                     },
                   )
                 ],
-              ));}
+              ));
+    }
   }
 
   navigateToModifyOrder() async {
-    
     var futureEggPrices = await FirebaseUtils.instance.getEggPrices();
     Map<String, dynamic> valuesMap = futureEggPrices.docs[0].data()["values"];
-    
+
     var futureUsers = await FirebaseUtils.instance.getAllDeliveryPersonFuture();
     List<InternalUserModel> deliveryPersonList = [];
     for (var user in futureUsers.docs) {
@@ -460,8 +541,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     final result = await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ModifyOrderPage(
-            currentUser, clientModel, orderModel, valuesMap, deliveryPersonList),
+          builder: (context) => ModifyOrderPage(currentUser, clientModel,
+              orderModel, valuesMap, deliveryPersonList),
         ));
 
     if (result != null) {
@@ -483,5 +564,4 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       },
     );
   }
-
 }

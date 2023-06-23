@@ -52,7 +52,8 @@ class FirebaseUtils {
         QueryDocumentSnapshot lastDocument = query.docs[query.docs.length - 1];
         Map<String, dynamic> lastMap =
             query.docs[query.docs.length - 1].data() as Map<String, dynamic>;
-        InternalUserModel internalUserModel = InternalUserModel.fromMap(lastMap, lastDocument.id);
+        InternalUserModel internalUserModel =
+            InternalUserModel.fromMap(lastMap, lastDocument.id);
         int newId = internalUserModel.id + 1;
         return newId;
       }
@@ -118,8 +119,8 @@ class FirebaseUtils {
   Future<bool> createInternalUser(InternalUserModel internalUserModel) async {
     try {
       await FirebaseFirestore.instance
-        .collection("user_info")
-        .add(internalUserModel.toMap());
+          .collection("user_info")
+          .add(internalUserModel.toMap());
       return true;
     } catch (e) {
       return false;
@@ -131,45 +132,42 @@ class FirebaseUtils {
       await FirebaseFirestore.instance
           .collection(collection)
           .doc(documentId)
-          .update(
-            {'deleted': true}
-          );
+          .update({'deleted': true});
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<bool> updateDocument(String collection, String documentId, Map<String, dynamic> data) async {
+  Future<bool> updateDocument(
+      String collection, String documentId, Map<String, dynamic> data) async {
     try {
       await FirebaseFirestore.instance
           .collection(collection)
           .doc(documentId)
           .update(data);
       return true;
-    } catch(e) {
+    } catch (e) {
       return false;
     }
   }
 
   Future<bool> addDocument(String collection, Map<String, Object?> data) async {
     try {
-      await FirebaseFirestore.instance
-          .collection(collection)
-          .add(data);
+      await FirebaseFirestore.instance.collection(collection).add(data);
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getAllDocumentsFromCollection(String collection) {
-    return FirebaseFirestore.instance
-        .collection(collection)
-        .snapshots();
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllDocumentsFromCollection(
+      String collection) {
+    return FirebaseFirestore.instance.collection(collection).snapshots();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getUserOrders(String clientDocumentId) {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUserOrders(
+      String clientDocumentId) {
     return FirebaseFirestore.instance
         .collection("client_info")
         .doc(clientDocumentId)
@@ -177,7 +175,11 @@ class FirebaseUtils {
         .snapshots();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getDocumentsBetweenDates(String collection, String field, Timestamp initTimestamp, Timestamp endTimestamp) {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getDocumentsBetweenDates(
+      String collection,
+      String field,
+      Timestamp initTimestamp,
+      Timestamp endTimestamp) {
     return FirebaseFirestore.instance
         .collection(collection)
         .where(field, isGreaterThanOrEqualTo: initTimestamp)
@@ -185,7 +187,11 @@ class FirebaseUtils {
         .snapshots();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getDocumentsBetweenDatesFuture(String collection, String field, Timestamp initTimestamp, Timestamp endTimestamp) {
+  Future<QuerySnapshot<Map<String, dynamic>>> getDocumentsBetweenDatesFuture(
+      String collection,
+      String field,
+      Timestamp initTimestamp,
+      Timestamp endTimestamp) {
     return FirebaseFirestore.instance
         .collection(collection)
         .where(field, isGreaterThanOrEqualTo: initTimestamp)
@@ -208,10 +214,9 @@ class FirebaseUtils {
         .get();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getAllDocumentsFromCollectionFuture(String collection) {
-    return FirebaseFirestore.instance
-        .collection(collection)
-        .get();
+  Future<QuerySnapshot<Map<String, dynamic>>>
+      getAllDocumentsFromCollectionFuture(String collection) {
+    return FirebaseFirestore.instance.collection(collection).get();
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getAllDeliveryPersonFuture() {
@@ -221,14 +226,15 @@ class FirebaseUtils {
         .get();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getUserOrdersFuture(String clientDocumentId) {
+  Future<QuerySnapshot<Map<String, dynamic>>> getUserOrdersFuture(
+      String clientDocumentId) {
     return FirebaseFirestore.instance
         .collection("client_info")
         .doc(clientDocumentId)
         .collection("orders")
         .get();
   }
-  
+
   Future<bool> saveNewOrder(String documentId, OrderModel orderModel) async {
     return await FirebaseFirestore.instance
         .collection("client_info")
@@ -236,12 +242,11 @@ class FirebaseUtils {
         .collection("orders")
         .add(orderModel.toMap())
         .then((value) {
-          var a = value;
-          return true;
-        })
-        .catchError((error) => false);
+      var a = value;
+      return true;
+    }).catchError((error) => false);
   }
-  
+
   Future<bool> updateOrder(String documentId, OrderModel orderModel) async {
     return await FirebaseFirestore.instance
         .collection("client_info")
@@ -250,50 +255,69 @@ class FirebaseUtils {
         .doc(orderModel.documentId!)
         .update(orderModel.toMap())
         .then((value) {
-          var a = value;
-          return true;
-        })
-        .catchError((error) => false);
+      var a = value;
+      return true;
+    }).catchError((error) => false);
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getClientById(int clientId) async {
-      return await FirebaseFirestore.instance
-          .collection("client_info")
-          .where("id", isEqualTo: clientId)
-          .get();
+  Future<QuerySnapshot<Map<String, dynamic>>> getClientById(
+      int clientId) async {
+    return await FirebaseFirestore.instance
+        .collection("client_info")
+        .where("id", isEqualTo: clientId)
+        .get();
   }
 
-  Future<bool> deleteOrder(String clientDocumentId, String orderDocumentId) async {
+  Future<bool> deleteOrder(
+      String clientDocumentId, String orderDocumentId) async {
     try {
       await FirebaseFirestore.instance
           .collection("client_info")
           .doc(clientDocumentId)
           .collection("orders")
           .doc(orderDocumentId)
-          .update(
-            {
-              'status': Constants().orderStatus["Cancelado"]!.toInt(),
-              'delivery_datetime': Timestamp.now()
-            }
-          );
+          .update({
+        'status': Constants().orderStatus["Cancelado"]!.toInt(),
+        'delivery_datetime': Timestamp.now()
+      });
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getInternalUserWithDocumentId(String documentId) {
+  Future<DocumentSnapshot<Map<String, dynamic>>> getInternalUserWithDocumentId(
+      String documentId) {
     return FirebaseFirestore.instance
         .collection("user_info")
         .doc(documentId)
         .get();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getAllResourceDocuments(String collection) {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllResourceDocuments(
+      String collection) {
     return FirebaseFirestore.instance
         .collection(collection)
-        .orderBy("expense_datetime", descending: false)
+        .orderBy("expense_datetime", descending: true)
         .snapshots();
   }
 
+  Future<bool?> changePassword(
+      String currentPassword, String newPassword) async {
+    final user = FirebaseAuth.instance.currentUser;
+    final cred = EmailAuthProvider.credential(
+        email: user!.email!, password: currentPassword);
+
+    bool conf = false;
+    await user.reauthenticateWithCredential(cred).then((value) async {
+      await user.updatePassword(newPassword).then((_) {
+        conf = true;
+      }).catchError((error) {
+        conf = false;
+      });
+    }).catchError((err) {
+      conf = false;
+    });
+    return conf;
+  }
 }

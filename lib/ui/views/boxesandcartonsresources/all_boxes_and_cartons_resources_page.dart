@@ -13,145 +13,158 @@ import '../../components/component_panel.dart';
 import '../../components/component_ticket.dart';
 
 class AllBoxesAndCartonsResourcesPage extends StatefulWidget {
-  const AllBoxesAndCartonsResourcesPage(this.currentUser, {Key? key}) : super(key: key);
+  const AllBoxesAndCartonsResourcesPage(this.currentUser, {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
 
   @override
-  State<AllBoxesAndCartonsResourcesPage> createState() => _AllBoxesAndCartonsResourcesPageState();
+  State<AllBoxesAndCartonsResourcesPage> createState() =>
+      _AllBoxesAndCartonsResourcesPageState();
 }
 
-class _AllBoxesAndCartonsResourcesPageState extends State<AllBoxesAndCartonsResourcesPage> {
+class _AllBoxesAndCartonsResourcesPageState
+    extends State<AllBoxesAndCartonsResourcesPage> {
   late InternalUserModel currentUser;
 
   @override
   void initState() {
     super.initState();
-    
+
     currentUser = widget.currentUser;
   }
 
   @override
   Widget build(BuildContext context) {
-
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     List<BoxesAndCartonsResourcesModel> list = [];
-    
+
     return Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-            toolbarHeight: 56.0,
-            title: const Text(
-              "Cajas y cartones",
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
-            )),
-        body: Column(
-          children: [
-            StreamBuilder(
-                stream: FirebaseUtils.instance.getAllResourceDocuments("material_boxes_and_cartons"),
-                builder:
-                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.active) {
-                    if (snapshot.hasData) {
-                      final data = snapshot.data;
-                      final List bcList = data.docs;
-                      if (bcList.isNotEmpty) {
-                        return Expanded(
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemCount: bcList.length,
-                                itemBuilder: (context, i) {
-                                  final BoxesAndCartonsResourcesModel bcResourceModel =
-                                      BoxesAndCartonsResourcesModel.fromMap(bcList[i].data()
-                                          as Map<String, dynamic>, bcList[i].id);
-                                  if (!bcResourceModel.deleted) {
-                                      list.add(bcResourceModel);
-                                      return Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 32, vertical: 8),
-                                        child: HNComponentTicket(
-                                            bcResourceModel.expenseDatetime,
-                                            MaterialUtils().getBCOrderSummary(MaterialUtils().bcOrderToDBBoxesAndCartonsOrderModel(bcResourceModel)),
-                                            bcResourceModel.totalPrice,
-                                            units: "",
-                                            onTap: () {
-                                              navigateToBoxesAndCartonsResourceDetail(bcResourceModel);
-                                            }),
-                                      );
-                                  } else {
-                                    if (i == (bcList.length - 1) && list.isEmpty) {
-                                      return Container(
-                                        margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+      key: _scaffoldKey,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+          toolbarHeight: 56.0,
+          title: const Text(
+            "Registro cajas y cartones",
+            style: TextStyle(fontSize: 18),
+          )),
+      body: Column(
+        children: [
+          StreamBuilder(
+              stream: FirebaseUtils.instance
+                  .getAllResourceDocuments("material_boxes_and_cartons"),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  if (snapshot.hasData) {
+                    final data = snapshot.data;
+                    final List bcList = data.docs;
+                    if (bcList.isNotEmpty) {
+                      return Expanded(
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: bcList.length,
+                              itemBuilder: (context, i) {
+                                final BoxesAndCartonsResourcesModel
+                                    bcResourceModel =
+                                    BoxesAndCartonsResourcesModel.fromMap(
+                                        bcList[i].data()
+                                            as Map<String, dynamic>,
+                                        bcList[i].id);
+                                if (!bcResourceModel.deleted) {
+                                  list.add(bcResourceModel);
+                                  double top = 8;
+                                  double bottom = 0;
+                                  if (list.length == 1) top = 24;
+                                  if (i == bcList.length - 1) bottom = 16;
+                                  return Container(
+                                    margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
+                                    child: HNComponentTicket(
+                                        bcResourceModel.expenseDatetime,
+                                        MaterialUtils().getBCOrderSummary(
+                                            MaterialUtils()
+                                                .bcOrderToDBBoxesAndCartonsOrderModel(
+                                                    bcResourceModel)),
+                                        bcResourceModel.totalPrice,
+                                        units: "", onTap: () {
+                                      navigateToBoxesAndCartonsResourceDetail(
+                                          bcResourceModel);
+                                    }),
+                                  );
+                                } else {
+                                  if (i == (bcList.length - 1) &&
+                                      list.isEmpty) {
+                                    return Container(
+                                        margin: const EdgeInsets.fromLTRB(
+                                            32, 56, 32, 8),
                                         child: const HNComponentPanel(
                                           title: 'No hay recursos',
                                           text:
-                                              "No hay registro de recursos de cajas y cartones no eliminados en la base de datos.",
+                                              "No hay registro de recursos de cajas y cartones sin eliminar en la base de datos.",
                                         ));
-                                    } else {
-                                      return Container();
-                                    }
+                                  } else {
+                                    return Container();
                                   }
-                                }));
-                      } else {
-                        return Container(
-                            margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                            child: const HNComponentPanel(
-                              title: 'No hay recursos',
-                              text:
-                                  "No hay registro de recursos de cajas y cartones no eliminados en la base de datos.",
-                            ));
-                      }
-                    } else if (snapshot.hasError) {
-                      return Container(
-                          margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                          child: const HNComponentPanel(
-                            title: 'Ha ocurrido un error',
-                            text:
-                                "Lo sentimos, pero ha habido un error al intentar recuperar los datos. Por favor, inténtelo de nuevo más tarde.",
-                          ));
+                                }
+                              }));
                     } else {
                       return Container(
                           margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                           child: const HNComponentPanel(
                             title: 'No hay recursos',
                             text:
-                                "No hay registro de recursos de cajas y cartones no eliminados en la base de datos.",
+                                "No hay registro de recursos de cajas y cartones sin eliminar en la base de datos.",
                           ));
                     }
+                  } else if (snapshot.hasError) {
+                    return Container(
+                        margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                        child: const HNComponentPanel(
+                          title: 'Ha ocurrido un error',
+                          text:
+                              "Lo sentimos, pero ha habido un error al intentar recuperar los datos. Por favor, inténtelo de nuevo más tarde.",
+                        ));
+                  } else {
+                    return Container(
+                        margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                        child: const HNComponentPanel(
+                          title: 'No hay recursos',
+                          text:
+                              "No hay registro de recursos de cajas y cartones sin eliminar en la base de datos.",
+                        ));
                   }
-                  return const Expanded(
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: CustomColors.redPrimaryColor,
-                      ),
+                }
+                return const Expanded(
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: CustomColors.redPrimaryColor,
                     ),
-                  );
-                }),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
+                  ),
+                );
+              }),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
           backgroundColor: CustomColors.redPrimaryColor,
           child: const Icon(Icons.add_rounded),
-          onPressed: navigateToNewBoxesAndCartonsResource
-        ),
+          onPressed: navigateToNewBoxesAndCartonsResource),
     );
   }
 
   navigateToNewBoxesAndCartonsResource() async {
-     Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => NewBoxesAndCartonsResourcesPage(currentUser)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                NewBoxesAndCartonsResourcesPage(currentUser)));
   }
 
-  navigateToBoxesAndCartonsResourceDetail(BoxesAndCartonsResourcesModel bcResourceModel) {
-     Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => BoxesAndCartonsResourceDetailPage(currentUser, bcResourceModel)));
+  navigateToBoxesAndCartonsResourceDetail(
+      BoxesAndCartonsResourcesModel bcResourceModel) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => BoxesAndCartonsResourceDetailPage(
+                currentUser, bcResourceModel)));
   }
-  
 }

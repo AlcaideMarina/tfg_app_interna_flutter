@@ -45,10 +45,9 @@ class _ClientAllOrdersPageState extends State<ClientAllOrdersPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
             toolbarHeight: 56.0,
-            title: const Text(
-              "Todos los pedidos",
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+            title: Text(
+              "Pedidos del cliente - ID: ${clientModel.id}",
+              style: const  TextStyle(fontSize: 18),
             )),
         body: Column(
           children: [
@@ -92,15 +91,18 @@ class _ClientAllOrdersPageState extends State<ClientAllOrdersPage> {
                                         itemCount: list.length,
                                         itemBuilder: (context, i) {
                                           final OrderModel orderModel = list[i];
-                                                  
+                                          double top = 8;
+                                          double bottom = 0;
+                                          if (i == 0) top = 16;
+                                          if (i == list.length - 1) bottom = 16;
+                                  
                                           return Container(
-                                              margin: const EdgeInsets.symmetric(
-                                                  horizontal: 32, vertical: 8),
+                                            margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                               child: HNComponentOrders(
                                                 orderModel.orderDatetime,
                                                 orderModel.orderId!,
-                                                orderModel.company,
-                                                OrderUtils().getOrderSummary(OrderUtils().orderDataToBDOrderModel(orderModel)),        // TODO
+                                                orderModel.clientId.toString() + " - " + orderModel.company,
+                                                OrderUtils().getOrderSummary(OrderUtils().orderDataToBDOrderModel(orderModel)),
                                                 orderModel.totalPrice,
                                                 orderModel.status,
                                                 orderModel.deliveryDni,
@@ -124,9 +126,9 @@ class _ClientAllOrdersPageState extends State<ClientAllOrdersPage> {
                                           child: Container(
                                                   margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
                                                   child: const HNComponentPanel(
-                                                    title: 'No hay clientes',
+                                                    title: 'No hay pedidos',
                                                     text:
-                                                        "No hay registro de clientes eliminados en la base de datos.",
+                                                        "No hay registro de pedidos para este cliente en la base de datos.",
                                                   )),
                                         ),
                                     ));
@@ -136,12 +138,7 @@ class _ClientAllOrdersPageState extends State<ClientAllOrdersPage> {
                  
               ),
           ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: CustomColors.redPrimaryColor,
-          child: const Icon(Icons.add_rounded),
-          onPressed: navigateToNewOrder
-        ),
+        )
       );
   }
   
@@ -194,7 +191,7 @@ class _ClientAllOrdersPageState extends State<ClientAllOrdersPage> {
           builder: (_) => AlertDialog(
                 title: const Text('Error'),
                 content: const Text(
-                    'Ha ocurrido un error al cargar los datos del cliente. Por favor, inténtelo de nuevo.'),
+                    'Ha ocurrido un error al cargar los datos del pedido. Por favor, inténtelo de nuevo.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),

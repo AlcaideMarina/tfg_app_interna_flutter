@@ -9,45 +9,46 @@ import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
 import '../../../flutterfire/firebase_utils.dart';
 import '../../../utils/Utils.dart';
-import '../../components/component_simple_form.dart';
-import '../../components/component_table_form.dart';
 import '../../components/component_table_form_without_label.dart';
 import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class NewBoxesAndCartonsResourcesPage extends StatefulWidget {
-  const NewBoxesAndCartonsResourcesPage(this.currentUser, {Key? key}) : super(key: key);
+  const NewBoxesAndCartonsResourcesPage(this.currentUser, {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
 
   @override
-  State<NewBoxesAndCartonsResourcesPage> createState() => _NewBoxesAndCartonsResourcesPageState();
+  State<NewBoxesAndCartonsResourcesPage> createState() =>
+      _NewBoxesAndCartonsResourcesPageState();
 }
 
-class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsResourcesPage> {
+class _NewBoxesAndCartonsResourcesPageState
+    extends State<NewBoxesAndCartonsResourcesPage> {
   late InternalUserModel currentUser;
 
   @override
   void initState() {
     super.initState();
     currentUser = widget.currentUser;
-    
-    dateController.text = dateFormat.format(minDate);
-    datePickerTimestamp = Timestamp.fromDate(minDate);
+
+    dateController.text = dateFormat.format(DateTime.now());
+    datePickerTimestamp = Timestamp.fromDate(DateTime.now());
   }
 
   TextEditingController dateController = TextEditingController();
   DateTime minDate = Utils().addToDate(DateTime.now(), yearsToAdd: -1);
   late Timestamp? datePickerTimestamp;
   DateFormat dateFormat = DateFormat("dd/MM/yyyy");
-  
+
   int? box;
   int? xlCarton;
   int? lCarton;
   int? mCarton;
   int? sCarton;
   double? totalPrice;
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,9 +56,8 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Cajas y cartones - Añadir',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Añadir cajas y cartones',
+              style: TextStyle(fontSize: 24),
             )),
         body: SafeArea(
           top: false,
@@ -68,13 +68,12 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getComponentTableFormWithoutLable(getCells(), 
-                        columnWidhts: {
-                          0: const IntrinsicColumnWidth(),
-                          2: const IntrinsicColumnWidth(),
-                        }),
+                      getComponentTableFormWithoutLable(getCells(),
+                          columnWidhts: {
+                            0: const IntrinsicColumnWidth(),
+                          }),
                       const SizedBox(
-                        height: 16,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -102,210 +101,188 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
 
   List<TableRow> getCells() {
     return [
-      TableRow(
-        children: [
-          Container(
-            child: Text("Fecha:"),
-            margin: const EdgeInsets.only(right: 16),
+      TableRow(children: [
+        Container(
+          child: const Text("Fecha:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16),
+        ),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0),
+          child: HNComponentTextInput(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              textInputType: TextInputType.none,
+              isEnabled: true,
+              onTap: () async {
+                // TODO: Cambiar el color
+                DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: minDate,
+                    lastDate: DateTime.now());
+                if (pickedDate != null) {
+                  setState(() {
+                    datePickerTimestamp = Timestamp.fromDate(pickedDate);
+                    dateController.text = dateFormat.format(pickedDate);
+                  });
+                }
+              },
+              textEditingController: dateController),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Pedido:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+        Container(),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Cajas:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontStyle: FontStyle.italic)),
+          margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
+        ),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            isEnabled: true,
+            onChange: (value) {
+              box = int.tryParse(value);
+            },
           ),
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: TextInputType.none,
-                isEnabled: true,
-                onTap: () async {
-                  // TODO: Cambiar el color
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context, 
-                    initialDate: DateTime.now(), 
-                    firstDate: minDate, 
-                    lastDate: DateTime.now()
-                  );
-                  if (pickedDate != null) {
-                    setState(() {
-                      datePickerTimestamp = Timestamp.fromDate(pickedDate);
-                      dateController.text = dateFormat.format(pickedDate);
-                    });
-                  }
-                },
-                textEditingController: dateController
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Cartones XL:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontStyle: FontStyle.italic)),
+          margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
+        ),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            isEnabled: true,
+            onChange: (value) {
+              xlCarton = int.tryParse(value);
+            },
+          ),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Cartones L:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontStyle: FontStyle.italic)),
+          margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
+        ),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            isEnabled: true,
+            onChange: (value) {
+              lCarton = int.tryParse(value);
+            },
+          ),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Cartones M:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontStyle: FontStyle.italic)),
+          margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
+        ),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            isEnabled: true,
+            onChange: (value) {
+              mCarton = int.tryParse(value);
+            },
+          ),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Cartones S:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, fontStyle: FontStyle.italic)),
+          margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
+        ),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            isEnabled: true,
+            onChange: (value) {
+              sCarton = int.tryParse(value);
+            },
+          ),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Precio total:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: Row(
+            children: [
+              Flexible(
+                child: HNComponentTextInput(
+                  contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  textInputType: const TextInputType.numberWithOptions(),
+                  isEnabled: true,
+                  onChange: (value) {
+                    totalPrice = double.tryParse(value);
+                  },
+                ),
               ),
-            ),
-          Container(),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Pedido:"),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-          Container(),
-          Container(),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Cajas:"),
-            margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
-          ),
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
-                onChange: (value) {
-                  box = int.tryParse(value);
-                },
+              const SizedBox(
+                width: 16,
               ),
-            ),
-          Container(),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Cartones XL:"),
-            margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
-          ),
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
-                onChange: (value) {
-                  xlCarton = int.tryParse(value);
-                },
+              const Text("€", style: TextStyle(fontSize: 16)),
+              const SizedBox(
+                width: 8,
               ),
-            ),
-          Container(),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Cartones L:"),
-            margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
+            ],
           ),
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
-                onChange: (value) {
-                  lCarton = int.tryParse(value);
-                },
-              ),
-            ),
-          Container(),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Cartones M:"),
-            margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
-          ),
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
-                onChange: (value) {
-                  mCarton = int.tryParse(value);
-                },
-              ),
-            ),
-          Container(),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Cartones S:"),
-            margin: const EdgeInsets.only(right: 16, top: 4, left: 16),
-          ),
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
-                onChange: (value) {
-                  sCarton = int.tryParse(value);
-                },
-              ),
-            ),
-          Container(),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Precio total:"),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
-                onChange: (value) {
-                  totalPrice = double.tryParse(value);
-                },
-              ),
-            ),
-          Container(
-            child: Text("€"),
-            margin: const EdgeInsets.only(left: 16, right: 16, top: 4),
-          ),
-        ]
-      ),
-      
+        ),
+      ]),
     ];
   }
 
   Widget getButtonsComponent() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        children: [
+    return Column(children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
               .getTypedButton('Guardar', null, null, saveBCResource, null),
           const SizedBox(
             height: 8,
           ),
-          HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton(
-                'Cancelar', 
-                null, 
-                null, 
-                goBack, 
-                null, 
-              ),
-        ])
-    );
+          HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
+            'Cancelar',
+            null,
+            null,
+            goBack,
+            null,
+          ),
+        ]);
   }
 
   goBack() {
@@ -325,16 +302,17 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
         mCarton: mCarton == 0 ? null : mCarton,
         sCarton: sCarton == 0 ? null : sCarton,
       );
-      BoxesAndCartonsResourcesModel bcResourcesModel = BoxesAndCartonsResourcesModel(
-        currentUser.documentId!, 
-        Timestamp.now(), 
-        false, 
-        datePickerTimestamp!, 
-        data.toMap(), 
-        totalPrice!, 
-        null
-      );
-      bool firestoreConf = await FirebaseUtils.instance.addDocument("material_boxes_and_cartons", bcResourcesModel.toMap());
+      BoxesAndCartonsResourcesModel bcResourcesModel =
+          BoxesAndCartonsResourcesModel(
+              currentUser.documentId!,
+              Timestamp.now(),
+              false,
+              datePickerTimestamp!,
+              data.toMap(),
+              totalPrice!,
+              null);
+      bool firestoreConf = await FirebaseUtils.instance
+          .addDocument("material_boxes_and_cartons", bcResourcesModel.toMap());
       if (firestoreConf) {
         Navigator.of(context).pop();
         showDialog(
@@ -342,16 +320,15 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
             builder: (_) => AlertDialog(
                   title: const Text('Recurso guardado'),
                   content: Text(
-                      'La información sobre cajas y cartones ha sido guardada correctamente en la base de datos.'),
+                      'La información del recurso ha sido guardada correctamente en la base de datos.'),
                   actions: <Widget>[
                     TextButton(
-                      onPressed: () {
-                        Navigator.of(context)
+                        onPressed: () {
+                          Navigator.of(context)
                             ..pop()
                             ..pop();
-                      }, 
-                      child: const Text("De acuerdo")
-                    ),
+                        },
+                        child: const Text("De acuerdo")),
                   ],
                 ));
       } else {
@@ -364,11 +341,10 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
                       'Se ha producido un error al guardar el recurso. Por favor, revise los datos e inténtelo de nuevo.'),
                   actions: <Widget>[
                     TextButton(
-                      onPressed: () {
-                        Navigator.of(this.context).pop();
-                      }, 
-                      child: const Text("De acuerdo")
-                    ),
+                        onPressed: () {
+                          Navigator.of(this.context).pop();
+                        },
+                        child: const Text("De acuerdo")),
                   ],
                 ));
       }
@@ -382,18 +358,21 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
                     'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
                 actions: <Widget>[
                   TextButton(
-                    onPressed: () {
-                      Navigator.of(this.context).pop();
-                    }, 
-                    child: const Text("De acuerdo")
-                  ),
+                      onPressed: () {
+                        Navigator.of(this.context).pop();
+                      },
+                      child: const Text("De acuerdo")),
                 ],
               ));
     }
   }
 
   bool hasOrder() {
-    if ((box != null && box != 0) || (xlCarton != null && xlCarton != 0) || (lCarton != null && lCarton != 0) || (mCarton != null && mCarton != 0) || (sCarton != null && sCarton != 0)) {
+    if ((box != null && box != 0) ||
+        (xlCarton != null && xlCarton != 0) ||
+        (lCarton != null && lCarton != 0) ||
+        (mCarton != null && mCarton != 0) ||
+        (sCarton != null && sCarton != 0)) {
       return true;
     } else {
       return false;
@@ -411,5 +390,4 @@ class _NewBoxesAndCartonsResourcesPageState extends State<NewBoxesAndCartonsReso
       },
     );
   }
-
 }

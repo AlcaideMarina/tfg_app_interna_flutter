@@ -1,27 +1,23 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hueveria_nieto_interna/ui/components/component_clients.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_panel.dart';
-import 'package:hueveria_nieto_interna/ui/components/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
-import 'package:hueveria_nieto_interna/data/models/client_model.dart';
-import 'package:hueveria_nieto_interna/ui/views/clients/new_client_page.dart';
-import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
 import '../../components/component_internal_users.dart';
 import '../../../data/models/internal_user_model.dart';
 
 class DeletedInternalUsersPage extends StatefulWidget {
-  const DeletedInternalUsersPage(this.currentUser, {Key? key}) : super(key: key);
+  const DeletedInternalUsersPage(this.currentUser, {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
 
   @override
-  State<DeletedInternalUsersPage> createState() => _DeletedInternalUsersPageState();
+  State<DeletedInternalUsersPage> createState() =>
+      _DeletedInternalUsersPageState();
 }
 
 class _DeletedInternalUsersPageState extends State<DeletedInternalUsersPage> {
@@ -40,11 +36,6 @@ class _DeletedInternalUsersPageState extends State<DeletedInternalUsersPage> {
     final double _height = MediaQuery.of(context).size.height;
 
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-    if (StringsTranslation.of(context) == null) {
-      print("NULO");
-    } else {
-      print("NO NULO");
-    }
 
     return Scaffold(
         key: _scaffoldKey,
@@ -53,8 +44,7 @@ class _DeletedInternalUsersPageState extends State<DeletedInternalUsersPage> {
             toolbarHeight: 56.0,
             title: const Text(
               "Cuentas eliminadas",
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: Column(
           children: [
@@ -67,6 +57,7 @@ class _DeletedInternalUsersPageState extends State<DeletedInternalUsersPage> {
                       final data = snapshot.data;
                       final List userList = data.docs;
                       if (userList.isNotEmpty) {
+                        List<InternalUserModel> list = [];
                         return Expanded(
                             child: ListView.builder(
                                 shrinkWrap: true,
@@ -74,15 +65,23 @@ class _DeletedInternalUsersPageState extends State<DeletedInternalUsersPage> {
                                 itemCount: userList.length,
                                 itemBuilder: (context, i) {
                                   final InternalUserModel internalUser =
-                                      InternalUserModel.fromMap(userList[i].data()
-                                          as Map<String, dynamic>, userList[i].id);
+                                      InternalUserModel.fromMap(
+                                          userList[i].data()
+                                              as Map<String, dynamic>,
+                                          userList[i].id);
                                   if (internalUser.deleted) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 32, vertical: 8),
+                                    list.add(internalUser);
+                                  double top = 8;
+                                  double bottom = 0;
+                                  if (list.length == 1) top = 24;
+                                  if (i == userList.length - 1) bottom = 16;
+                                  return Container(
+                                    margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                       child: HNComponentInternalUsers(
                                           internalUser.id.toString(),
-                                          internalUser.name + ' ' + internalUser.surname,
+                                          internalUser.name +
+                                              ' ' +
+                                              internalUser.surname,
                                           internalUser.dni,
                                           internalUser.position),
                                     );

@@ -25,27 +25,27 @@ class InternalUserModel {
   final String? documentId;
 
   InternalUserModel(
-    this.bankAccount, 
-    this.city, 
-    this.createdBy, 
-    this.deleted,
-    this.direction, 
-    this.dni, 
-    this.email, 
-    this.id, 
-    this.name, 
-    this.phone, 
-    this.position, 
-    this.postalCode, 
-    this.province, 
-    this.salary,
-    this.ssNumber, 
-    this.surname, 
-    this.uid, 
-    this.user,
-    this.documentId);
+      this.bankAccount,
+      this.city,
+      this.createdBy,
+      this.deleted,
+      this.direction,
+      this.dni,
+      this.email,
+      this.id,
+      this.name,
+      this.phone,
+      this.position,
+      this.postalCode,
+      this.province,
+      this.salary,
+      this.ssNumber,
+      this.surname,
+      this.uid,
+      this.user,
+      this.documentId);
 
-factory InternalUserModel.fromJson(String str, String? docId) =>
+  factory InternalUserModel.fromJson(String str, String? docId) =>
       InternalUserModel.fromMap(jsonDecode(str), docId);
 
   String toJson() => jsonEncode(toMap());
@@ -93,5 +93,4 @@ factory InternalUserModel.fromJson(String str, String? docId) =>
         'uid': uid,
         'user': user,
       };
-  
 }

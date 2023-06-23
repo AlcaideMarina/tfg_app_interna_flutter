@@ -17,24 +17,27 @@ import '../../components/component_cell_table_form.dart';
 import '../../components/component_dropdown.dart';
 import '../../components/component_simple_form.dart';
 import '../../components/component_table_form.dart';
+import '../../components/component_table_form_with_subtitles.dart';
 import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class ModifyOrderPage extends StatefulWidget {
-  const ModifyOrderPage(this.currentUser, this.clientModel, this.orderModel, this.eggPricesMap, this.internalUserModelList, {Key? key}) : super(key: key);
+  const ModifyOrderPage(this.currentUser, this.clientModel, this.orderModel,
+      this.eggPricesMap, this.internalUserModelList,
+      {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
   final ClientModel clientModel;
   final OrderModel orderModel;
   final Map<String, dynamic> eggPricesMap;
   final List<InternalUserModel> internalUserModelList;
-  
+
   @override
   State<ModifyOrderPage> createState() => _ModifyOrderPageState();
 }
 
 class _ModifyOrderPageState extends State<ModifyOrderPage> {
-  
   late InternalUserModel currentUser;
   late ClientModel clientModel;
   late OrderModel orderModel;
@@ -52,10 +55,16 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
     valuesMap = widget.eggPricesMap;
     internalUserModelList = widget.internalUserModelList;
     eggPricesData = EggPricesData(
-      valuesMap['xl_box'], valuesMap['xl_dozen'], valuesMap['l_box'], 
-      valuesMap['l_dozen'], valuesMap['m_box'], valuesMap['m_dozen'], 
-      valuesMap['s_box'], valuesMap['s_dozen']);
-    dbOrderFieldData = OrderUtils().dbOrderModelFromTwoSources(orderModel, eggPricesData);
+        valuesMap['xl_box'],
+        valuesMap['xl_dozen'],
+        valuesMap['l_box'],
+        valuesMap['l_dozen'],
+        valuesMap['m_box'],
+        valuesMap['m_dozen'],
+        valuesMap['s_box'],
+        valuesMap['s_dozen']);
+    dbOrderFieldData =
+        OrderUtils().dbOrderModelFromTwoSources(orderModel, eggPricesData);
 
     // Datos cliente
     company = clientModel.company;
@@ -75,7 +84,8 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
     // Datos pedido
     totalPrice = orderModel.totalPrice ?? 0;
     paid = orderModel.paid;
-    paymentMethod = OrderUtils().paymentMethodIntToString(orderModel.paymentMethod);
+    paymentMethod =
+        OrderUtils().paymentMethodIntToString(orderModel.paymentMethod);
     orderTimestamp = orderModel.orderDatetime;
     deliveryPerson = orderModel.deliveryPerson;
     deliveryNote = orderModel.deliveryNote ?? -1;
@@ -97,24 +107,26 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
   int mDozen = 0;
   int mBox = 0;
   int sDozen = 0;
-  int sBox = 0; 
+  int sBox = 0;
   double totalPrice = 0;
   bool paid = false;
   String paymentMethod = "";
-  Timestamp orderTimestamp = Timestamp.now();   // Esto no se setea en el initstate porque se hace más abajo.
+  Timestamp orderTimestamp = Timestamp
+      .now(); // Esto no se setea en el initstate porque se hace más abajo.
   Timestamp deliveryTimestamp = Timestamp.now();
-  String deliveryDatetimeStr = "";//Utils().parseTimestmpToString(deliveryTimestamp) ?? "";
+  String deliveryDatetimeStr =
+      ""; //Utils().parseTimestmpToString(deliveryTimestamp) ?? "";
   String? deliveryPerson;
   int? deliveryNote;
   String? lot;
   String? deliveryDni;
   String status = "";
-  
+
   List<String> paymentMethodItems = [];
   List<String> deliveryPersonItems = [];
   Map<String, String> deliveryPersonItemsMap = {};
   List<String> statusItem = [];
-  
+
   TextEditingController dateController = TextEditingController();
   DateTime minDate = DateTime.now().add(const Duration(days: 3));
   late Timestamp? datePickerTimestamp;
@@ -124,7 +136,6 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-
     if (paymentMethodItems.isEmpty) {
       for (String key in Constants().paymentMethods.keys) {
         paymentMethodItems.add(key);
@@ -135,10 +146,16 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
       for (InternalUserModel user in internalUserModelList) {
         if (deliveryPerson == user.documentId!) {
           contains = true;
-          deliveryPerson = user.id.toString() + " - " + user.name + " " + user.surname;
+          deliveryPerson =
+              user.id.toString() + " - " + user.name + " " + user.surname;
         }
-        deliveryPersonItems.add(user.id.toString() + " - " + user.name + " " + user.surname);
-        deliveryPersonItemsMap[user.id.toString() + " - " + user.name + " " + user.surname] = user.documentId!;
+        deliveryPersonItems
+            .add(user.id.toString() + " - " + user.name + " " + user.surname);
+        deliveryPersonItemsMap[user.id.toString() +
+            " - " +
+            user.name +
+            " " +
+            user.surname] = user.documentId!;
       }
       if (deliveryPerson != null && !contains) {
         deliveryPersonItems.add("Antiguo repartidor");
@@ -158,8 +175,7 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
             toolbarHeight: 56.0,
             title: const Text(
               'Modificar pedido',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -170,16 +186,19 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("ID: " + orderModel.orderId.toString()),
+                      Row(
+                        children: [
+                          const Text("ID pedido:", style: TextStyle(fontWeight: FontWeight.bold),),
+                          const SizedBox(width: 8,),
+                          Text(orderModel.orderId.toString()),
+                        ],
+                      ),
                       const SizedBox(
                         height: 8,
                       ),
                       getAllFormElements(),
                       const SizedBox(
-                        height: 32,
-                      ),
-                      const SizedBox(
-                        height: 32,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -193,20 +212,24 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
   }
 
   Widget getAllFormElements() {
-
-    // TODO: Pasar esto también a detalle de pedido 
     List<int> statusApproxDeliveryDatetimeList = [0, 1, 2];
     String deliveryDatetimeAux;
 
     if (statusApproxDeliveryDatetimeList.contains(orderModel.status)) {
-      deliveryDatetimeAux = Utils().parseTimestmpToString(orderModel.approxDeliveryDatetime) ?? "";
+      deliveryDatetimeAux =
+          Utils().parseTimestmpToString(orderModel.approxDeliveryDatetime) ??
+              "";
     } else if (orderModel.status == 4) {
-      deliveryDatetimeAux = Utils().parseTimestmpToString(orderModel.deliveryDatetime!) ?? "";
+      deliveryDatetimeAux =
+          Utils().parseTimestmpToString(orderModel.deliveryDatetime!) ?? "";
     } else if (orderModel.status == 5) {
-      String status = Utils().getKey(Constants().orderStatus, orderModel.status);
+      String status =
+          Utils().getKey(Constants().orderStatus, orderModel.status);
       String dt;
       if (orderModel.deliveryDatetime != null) {
-        dt = Utils().parseTimestmpToString(orderModel.deliveryDatetime ?? orderModel.approxDeliveryDatetime) ?? "";
+        dt = Utils().parseTimestmpToString(orderModel.deliveryDatetime ??
+                orderModel.approxDeliveryDatetime) ??
+            "";
       } else {
         dt = "";
       }
@@ -216,7 +239,8 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
       if (orderModel.deliveryDatetime != null) {
         dt = Utils().parseTimestmpToString(orderModel.deliveryDatetime!) ?? "";
       } else {
-        dt = Utils().parseTimestmpToString(orderModel.approxDeliveryDatetime) ?? "";
+        dt = Utils().parseTimestmpToString(orderModel.approxDeliveryDatetime) ??
+            "";
       }
       deliveryDatetimeAux = dt;
     }
@@ -224,22 +248,19 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // TODO: Esto no está deshabilitado
-        getDropdownComponentSimpleForm('Empresa', clientModel.company, null, TextInputType.none, null, [], false),
-        getTextComponentSimpleForm('Dirección', clientModel.direction, TextInputType.streetAddress, 
+        getDropdownComponentSimpleForm('Empresa', clientModel.company, null,
+            TextInputType.none, null, [], false),
+        getTextComponentSimpleForm(
+            'Dirección', clientModel.direction, TextInputType.streetAddress,
             (value) {
-              direction = value;
-            }, isEnabled: false),
-        getTextComponentSimpleForm('CIF', clientModel.cif, TextInputType.text, 
+          direction = value;
+        }, isEnabled: false),
+        getTextComponentSimpleForm('CIF', clientModel.cif, TextInputType.text,
             (value) {
-              cif = value;
-            }, isEnabled: false),
+          cif = value;
+        }, isEnabled: false),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
-        getComponentTableForm('Pedido', getPricePerUnitTableRow(), 
-            columnWidhts: {
-              0: const IntrinsicColumnWidth(),
-              2: const IntrinsicColumnWidth()
-            }),
+        getComponentTableWithSubtitlesForm('Pedido', getPricePerUnitTableRow()),
         SizedBox(
           width: double.infinity,
           child: Column(
@@ -247,79 +268,100 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
             children: [
               SizedBox(
                 width: 150,
-                child: 
-                    CheckboxListTile(
-                      title: Text("Pagado"),
-                      enabled: true,
-                      value: paid,
-                      onChanged: (newValue) {
-                        paid = newValue ?? false;
-                      },
-                      dense: true,
-                      controlAffinity: ListTileControlAffinity.leading,
-                    ),
+                child: CheckboxListTile(
+                  title: Text("Pagado"),
+                  enabled: true,
+                  value: paid,
+                  onChanged: (newValue) {
+                    paid = newValue ?? false;
+                    setState(() {});
+                  },
+                  dense: true,
+                  controlAffinity: ListTileControlAffinity.leading,
+                ),
               ),
             ],
           ),
         ),
-        // TODO: Esto no se inhabilita
-        orderModel.paid ?
-          getDropdownComponentSimpleForm('Método de pago', 
-              OrderUtils().paymentMethodIntToString(orderModel.paymentMethod), null, TextInputType.none,
-              null, [], false)
-          : getDropdownComponentSimpleForm('Método de pago', null,
-              OrderUtils().paymentMethodIntToString(orderModel.paymentMethod), TextInputType.none, 
-              (value) {
+        orderModel.paid
+            ? getDropdownComponentSimpleForm(
+                'Método de pago',
+                OrderUtils().paymentMethodIntToString(orderModel.paymentMethod),
+                null,
+                TextInputType.none,
+                null,
+                [],
+                false)
+            : getDropdownComponentSimpleForm(
+                'Método de pago',
+                null,
+                OrderUtils().paymentMethodIntToString(orderModel.paymentMethod),
+                TextInputType.none, (value) {
                 paymentMethod = value;
-              }, paymentMethodItems, orderModel.paid), 
-        getTextComponentSimpleForm('Fecha de pedido', Utils().parseTimestmpToString(orderModel.orderDatetime) ?? "", TextInputType.none, 
-            null, isEnabled: false),
-            
-        [2, 3, 4].contains(orderModel.status) ?
-            getTextComponentSimpleForm('Fecha de entrega', deliveryDatetimeAux, TextInputType.none, 
-                null, isReadOnly: true, isEnabled: false)
-            : getTextComponentSimpleForm('Fecha de entrega', deliveryDatetimeAux, TextInputType.none, 
-                null, isReadOnly: true, onTap: () async {
+              }, paymentMethodItems, orderModel.paid),
+        getTextComponentSimpleForm(
+            'Fecha de pedido',
+            Utils().parseTimestmpToString(orderModel.orderDatetime) ?? "",
+            TextInputType.none,
+            null,
+            isEnabled: false),
+
+        [2, 3, 4].contains(orderModel.status)
+            ? getTextComponentSimpleForm('Fecha de entrega',
+                deliveryDatetimeAux, TextInputType.none, null,
+                isReadOnly: true, isEnabled: false)
+            : getTextComponentSimpleForm('Fecha de entrega',
+                deliveryDatetimeAux, TextInputType.none, null, isReadOnly: true,
+                onTap: () async {
                 // TODO: Cambiar el color
                 DateTime? pickedDate = await showDatePicker(
-                  context: context, 
-                  initialDate: minDate, 
-                  firstDate: minDate, 
-                  lastDate: DateTime(
-                    DateTime.now().year + 1,
-                    DateTime.now().month,
-                    minDate.day
-                  )
-                );
+                    context: context,
+                    initialDate: minDate,
+                    firstDate: minDate,
+                    lastDate: DateTime(DateTime.now().year + 1,
+                        DateTime.now().month, minDate.day));
                 if (pickedDate != null) {
                   setState(() {
                     datePickerTimestamp = Timestamp.fromDate(pickedDate);
                     dateController.text = dateFormat.format(pickedDate);
                   });
                 }
-              },
-              textEditingController: dateController),
-        getDropdownComponentSimpleForm('Repartidor', null, deliveryPerson, TextInputType.none, 
+              }, textEditingController: dateController),
+        getDropdownComponentSimpleForm(
+            'Repartidor', null, deliveryPerson, TextInputType.none, (value) {
+          deliveryPerson = value;
+        }, deliveryPersonItems, true),
+        getTextComponentSimpleForm(
+            'Albarán',
+            (orderModel.deliveryNote ?? "").toString(),
+            TextInputType.number, (value) {
+          deliveryNote = int.tryParse(value);
+        }),
+        getTextComponentSimpleForm(
+            'Lote', (orderModel.lot ?? "").toString(), TextInputType.text,
             (value) {
-              deliveryPerson = value;
-            }, deliveryPersonItems, true),
-        getTextComponentSimpleForm('Albarán', (orderModel.deliveryNote ?? "").toString(), TextInputType.number, 
+          lot = value;
+        }),
+        getTextComponentSimpleForm(
+            'DNI de entrega', orderModel.deliveryDni ?? "", TextInputType.text,
             (value) {
-              deliveryNote = int.tryParse(value);
-            }),
-        getTextComponentSimpleForm('Lote', (orderModel.lot ?? "").toString(), TextInputType.text, 
-            (value) {
-              lot = value;
-            }),
-        getTextComponentSimpleForm('DNI de entrega', orderModel.deliveryDni ?? "", TextInputType.text, 
-            (value) {
-              deliveryDni = value;
-            }, isEnabled: !(orderModel.status == 3)),
-        (orderModel.status == 3) ? 
-          getDropdownComponentSimpleForm('Estado', OrderUtils().orderStatusIntToString(orderModel.status) ?? "", null, TextInputType.none,
-              null, [], false)
-          : getDropdownComponentSimpleForm('Estado', null, OrderUtils().orderStatusIntToString(orderModel.status) ?? "", TextInputType.none,
-              (value) {
+          deliveryDni = value;
+        }, isEnabled: !(orderModel.status == 3)),
+        const SizedBox(height: 24,),
+        (orderModel.status == 3)
+            ? getDropdownComponentSimpleForm(
+                'Estado',
+                OrderUtils().orderStatusIntToString(orderModel.status) ?? "",
+                null,
+                TextInputType.none,
+                null,
+                [],
+                false)
+            : getDropdownComponentSimpleForm(
+                'Estado',
+                null,
+                OrderUtils().orderStatusIntToString(orderModel.status) ?? "",
+                TextInputType.none, (value) {
                 status = value;
               }, statusItem, !(orderModel.status == 3)),
       ],
@@ -327,71 +369,78 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
   }
 
   Widget getButtonsComponent() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
+    return Column(
         children: [
-          HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, updateGetPriceButton, null),
+          HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
+              'Guardar', null, null, updateGetPriceButton, null),
           const SizedBox(
             height: 8,
           ),
           HNButton(ButtonTypes.redWhiteBoldRoundedButton)
               .getTypedButton('Cancelar', null, null, goBack, null),
         ],
-      ),
     );
   }
 
-  Widget getDropdownComponentSimpleForm(String label, String? labelText, String? value, 
-      TextInputType textInputType, Function(dynamic)? onChange, List<String> items,
+  Widget getDropdownComponentSimpleForm(
+      String label,
+      String? labelText,
+      String? value,
+      TextInputType textInputType,
+      Function(dynamic)? onChange,
+      List<String> items,
       bool isEnabled,
       {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
-        double topMargin = 4;
-        double bottomMargin = 4;
-        
-        return HNComponentSimpleForm(
-        '$label:',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin,),
-        componentDropdown: 
-          HNComponentDropdown(
-            items,
-            labelText: labelText,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            initialValue: value,
-            isEnabled: isEnabled,
-            onChange: onChange,
-          ),
-        );
+    double topMargin = 4;
+    double bottomMargin = 4;
+
+    return HNComponentSimpleForm(
+      '$label:',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(
+        top: topMargin,
+        bottom: bottomMargin,
+      ),
+      componentDropdown: HNComponentDropdown(
+        items,
+        labelText: labelText,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        initialValue: value,
+        isEnabled: isEnabled,
+        onChange: onChange,
+      ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold),
+    );
   }
 
   Widget getTextComponentSimpleForm(String label, String initialValue,
       TextInputType textInputType, Function(String)? onChange,
-      {TextCapitalization textCapitalization = TextCapitalization.sentences, 
-      TextEditingController? textEditingController, bool isEnabled = true, bool isReadOnly = false, 
+      {TextCapitalization textCapitalization = TextCapitalization.sentences,
+      TextEditingController? textEditingController,
+      bool isEnabled = true,
+      bool isReadOnly = false,
       Future<dynamic> Function()? onTap}) {
     double topMargin = 4;
     double bottomMargin = 4;
 
     return HNComponentSimpleForm(
-        label + ':',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
-        componentTextInput: HNComponentTextInput(
-          textCapitalization: textCapitalization,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          textInputType: textInputType,
-          onChange: onChange,
-          isEnabled: isEnabled,
-          initialValue: initialValue,
-        ),);
+      label + ':',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
+        textCapitalization: textCapitalization,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textInputType: textInputType,
+        onChange: onChange,
+        isEnabled: isEnabled,
+        initialValue: initialValue,
+      ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold),
+    );
   }
 
   Widget getComponentTableForm(String label, List<TableRow> children,
@@ -400,17 +449,32 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
     double bottomMargin = 4;
 
     return HNComponentTableForm(
-      label,
+      label + ":",
       8,
       TableCellVerticalAlignment.middle,
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
-  
-  List<TableRow> getPricePerUnitTableRow() {
-    List<TableRow> list = [];
+
+  Widget getComponentTableWithSubtitlesForm(String label, List<Widget> children,) {
+    double topMargin = 4;
+    double bottomMargin = 4;
+
+    return HNComponentTableFormWithSubtitles(
+      label + ":",
+      8,
+      TableCellVerticalAlignment.middle,
+      children,
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    );
+  }
+
+  List<Widget> getPricePerUnitTableRow() {
+    List<Widget> list = [];
     bool orderEnabled = true;
     if (orderModel.paid) {
       orderEnabled = false;
@@ -429,107 +493,117 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
       if (valuesMap[boxKey] != null) {
         boxPrice = valuesMap[boxKey];
       }
-      if (orderModel.order.containsKey(dozenKey) && orderModel.order[dozenKey] != null) {
-        if (orderModel.order[dozenKey]!.containsKey("quantity") && orderModel.order[dozenKey]!["quantity"] != null) {
-          productQuantities[dozenKey] = orderModel.order[dozenKey]!["quantity"]!.toInt();
+      if (orderModel.order.containsKey(dozenKey) &&
+          orderModel.order[dozenKey] != null) {
+        if (orderModel.order[dozenKey]!.containsKey("quantity") &&
+            orderModel.order[dozenKey]!["quantity"] != null) {
+          productQuantities[dozenKey] =
+              orderModel.order[dozenKey]!["quantity"]!.toInt();
         }
       }
-      if (orderModel.order.containsKey(boxKey) && orderModel.order[boxKey] != null) {
-        if (orderModel.order[boxKey]!.containsKey("quantity") && orderModel.order[boxKey]!["quantity"] != null) {
-          productQuantities[boxKey] = orderModel.order[boxKey]!["quantity"]!.toInt();
+      if (orderModel.order.containsKey(boxKey) &&
+          orderModel.order[boxKey] != null) {
+        if (orderModel.order[boxKey]!.containsKey("quantity") &&
+            orderModel.order[boxKey]!["quantity"] != null) {
+          productQuantities[boxKey] =
+              orderModel.order[boxKey]!["quantity"]!.toInt();
         }
       }
 
       list.add(
-        TableRow(
-          children: [
-            Container(
-              child: Text(item),
-              margin: const EdgeInsets.only(left: 12, right: 16),
-            ),
-            Container(),
-            Container()
-          ]
-        )
-      );
-
+        Container(
+          child: Text("Huevos tamaño " + item + ":", style: const TextStyle(fontWeight: FontWeight.bold)),
+          margin: const EdgeInsets.only(left: 12, right: 16),
+        ));
       list.add(
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Docena")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (productQuantities[dozenKey] ?? 0).toString(),
-                isEnabled: orderEnabled,
-                onChange: (value) {
-                  String key = "${item.toLowerCase()}_dozen";
-                  productQuantities[key] = int.tryParse(value) ?? 0;
-                },
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("${dozenPrice ?? ""} €")),
-          ],
-        )
+        const SizedBox(height: 4,)
       );
-
       list.add(
-        TableRow(
+        Table(
+          columnWidths: const {
+              0: IntrinsicColumnWidth(),
+              2: FixedColumnWidth(96)
+            },
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Caja")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: (productQuantities[boxKey] ?? 0).toString(),
-                isEnabled: orderEnabled,
-              ),
+            TableRow(
+              children: [
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("Docena")),
+                Container(
+                  height: 40,
+                  margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
+                  child: HNComponentTextInput(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textInputType: const TextInputType.numberWithOptions(),
+                    initialValue: (productQuantities[dozenKey] ?? 0).toString(),
+                    isEnabled: orderEnabled,
+                    onChange: (value) {
+                      String key = "${item.toLowerCase()}_dozen";
+                      productQuantities[key] = int.tryParse(value) ?? 0;
+                    },
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("${dozenPrice ?? ""} €")),
+              ],
             ),
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("${boxPrice ?? ""} €")),
+            TableRow(
+              children: [
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("Caja")),
+                Container(
+                  height: 40,
+                  margin: EdgeInsets.only(left: 8, right: 16, bottom: 0),
+                  child: HNComponentTextInput(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    textInputType: const TextInputType.numberWithOptions(),
+                    initialValue: (productQuantities[boxKey] ?? 0).toString(),
+                    isEnabled: orderEnabled,
+                    onChange: (value) {
+                      String key = "${item.toLowerCase()}_box";
+                      productQuantities[key] = int.tryParse(value) ?? 0;
+                    },
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.only(left: 24, right: 16),
+                    child: Text("${boxPrice ?? ""} €")),
+              ]
+            )
           ]
-        )
+        ));
+        
+      list.add(
+        const SizedBox(height: 4,)
       );
     }
 
     return list;
-
   }
 
   List<TableRow> getTelephoneTableRow() {
     return [
       TableRow(children: [
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8, bottom: 8),
-            componentTextInput: HNComponentTextInput(
-              labelText: 'Contacto',
-              textCapitalization: TextCapitalization.words,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              initialValue: clientModel.phone[0].keys.first,
-              isEnabled: false,
-            ),
+          40,
+          const EdgeInsets.only(left: 16, right: 8, bottom: 8),
+          componentTextInput: HNComponentTextInput(
+            textCapitalization: TextCapitalization.words,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            initialValue: clientModel.phone[0].keys.first,
+            isEnabled: false,
           ),
+        ),
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16, bottom: 8),
+            40, const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             componentTextInput: HNComponentTextInput(
-              labelText: 'Teléfono',
               textInputType: TextInputType.number,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -548,106 +622,15 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
     if (checkFields()) {
-      DBOrderFieldData dbOrderFieldData = OrderUtils().getOrderStructure(productQuantities, eggPricesData);
-      double totalPrice = Utils().roundDouble(getTotalPrice(dbOrderFieldData), 2);
-      if (context.mounted) {
-          Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Precio final'),
-                    content: Text(
-                        'El precio total del pedido será de $totalPrice €. ¿Desea continuar?'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(this.context).pop();
-                        }, 
-                        child: const Text("Atrás")
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // TODO: Guardar pedido
-                          updateOrder(dbOrderFieldData, totalPrice);
-                        }, 
-                        child: const Text("Continuar")
-                      ),
-                    ],
-                  ));
-      }
-    } else {
-        Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Formulario incompleto'),
-                    content: const Text(
-                        'Por favor, revise los datos e inténtelo de nuevo.'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('De acuerdo.'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
-                  ));
-          
-    }
-  }
-
-  updateOrder(DBOrderFieldData dbOrderFieldData, double totalPrice) async {
-    FocusManager.instance.primaryFocus?.unfocus();
-    showAlertDialog(context);
-
-    OrderModel updateOrderModel = OrderModel(
-      datePickerTimestamp!, 
-      orderModel.clientId,
-      orderModel.company,
-      orderModel.createdBy, 
-      deliveryTimestamp, 
-      deliveryDni, 
-      deliveryNote == -1 ? null : deliveryNote, 
-      deliveryPersonItemsMap[deliveryPerson], 
-      lot,
-      orderModel.notes, 
-      dbOrderFieldData.toMap(), 
-      orderModel.orderDatetime, 
-      orderModel.orderId, 
-      orderModel.paid, 
-      OrderUtils().paymentMethodStringToInt(paymentMethod), 
-      OrderUtils().orderStatusStringToInt(status), 
-      totalPrice,
-      orderModel.documentId);
-
-      bool firestoreConf =
-          await FirebaseUtils.instance.updateOrder(clientModel.documentId!, updateOrderModel);
-      if (firestoreConf) {
+      if (OrderUtils().orderStatusStringToInt(status) == 3 &&
+          deliveryDni == null) {
         Navigator.of(context).pop();
         showDialog(
             context: context,
             builder: (_) => AlertDialog(
-                  title: const Text("Pedido realizado"),
-                  content: const Text("Su pedido se ha realizado correctamente"),
-                  actions: <Widget>[
-                    TextButton(
-                      child: const Text('De acuerdo.'),
-                      onPressed: () {
-                        Navigator.of(context)
-                            ..pop()
-                            ..pop();
-                        Navigator.pop(context, updateOrderModel);
-                      },
-                    )
-                  ],
-                ));
-      } else {
-        Navigator.of(context).pop();
-        showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-                  title: const Text('Se ha producido un error'),
-                  content: const Text('Sentimos comunicarle que se ha producido un error inesperado durante el pedido. Por favor, inténtelo más tarde o póngase en contacto con nosotros.'),
+                  title: const Text('Falta el DNI de entrega'),
+                  content: const Text(
+                      'No se puede marcar un pedido como entregado si falta el DNI que confirme la entrega.'),
                   actions: <Widget>[
                     TextButton(
                       child: const Text('De acuerdo.'),
@@ -657,12 +640,125 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
                     )
                   ],
                 ));
+      } else {
+        DBOrderFieldData dbOrderFieldData =
+            OrderUtils().getOrderStructure(productQuantities, eggPricesData);
+        double totalPrice =
+            Utils().roundDouble(getTotalPrice(dbOrderFieldData), 2);
+        if (context.mounted) {
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                    title: const Text('Precio final'),
+                    content: Text(
+                        'El precio total del pedido será de $totalPrice €. ¿Desea continuar?'),
+                    actions: <Widget>[
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("Atrás")),
+                      TextButton(
+                          onPressed: () {
+                            updateOrder(dbOrderFieldData, totalPrice);
+                          },
+                          child: const Text("Continuar")),
+                    ],
+                  ));
+        }
       }
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formulario incompleto'),
+                content: const Text(
+                    'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
+    }
   }
 
+  updateOrder(DBOrderFieldData dbOrderFieldData, double totalPrice) async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+
+    OrderModel updateOrderModel = OrderModel(
+        datePickerTimestamp!,
+        orderModel.clientId,
+        orderModel.company,
+        orderModel.createdBy,
+        deliveryTimestamp,
+        deliveryDni,
+        deliveryNote == -1 ? null : deliveryNote,
+        deliveryPersonItemsMap[deliveryPerson],
+        lot,
+        orderModel.notes,
+        dbOrderFieldData.toMap(),
+        orderModel.orderDatetime,
+        orderModel.orderId,
+        paid,
+        OrderUtils().paymentMethodStringToInt(paymentMethod),
+        OrderUtils().orderStatusStringToInt(status),
+        totalPrice,
+        orderModel.documentId);
+
+    bool firestoreConf = await FirebaseUtils.instance
+        .updateOrder(clientModel.documentId!, updateOrderModel);
+    if (firestoreConf) {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text("Pedido realizado"),
+                content: const Text(
+                    "Los datos del pedido se han actualizado correctamente"),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context)
+                        ..pop()
+                        ..pop();
+                      Navigator.pop(context, updateOrderModel);
+                    },
+                  )
+                ],
+              ));
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Error'),
+                content: const Text(
+                    'Se ha producido un error cuando se estaban actualizado los datos del pedido. Por favor, revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
+    }
+  }
 
   bool checkFields() {
-    if (clientModel != null && paymentMethod != null && datePickerTimestamp != null && isOrder()) {
+    if (clientModel != null &&
+        paymentMethod != null &&
+        datePickerTimestamp != null &&
+        isOrder()) {
       return true;
     } else {
       return false;
@@ -672,42 +768,66 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
   double getTotalPrice(DBOrderFieldData dbOrderFieldData) {
     double totalPrice = 0.0;
 
-    if (dbOrderFieldData.xlBoxQuantity != null && dbOrderFieldData.xlBoxPrice != null) {
-      totalPrice += (dbOrderFieldData.xlBoxQuantity as int) * (dbOrderFieldData.xlBoxPrice!.toDouble());
+    if (dbOrderFieldData.xlBoxQuantity != null &&
+        dbOrderFieldData.xlBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.xlBoxQuantity as int) *
+          (dbOrderFieldData.xlBoxPrice!.toDouble());
     }
-    if (dbOrderFieldData.xlDozenQuantity != null && dbOrderFieldData.xlDozenQuantity != null) {
-      totalPrice += (dbOrderFieldData.xlDozenQuantity as int) * (dbOrderFieldData.xlDozenQuantity!.toDouble());
+    if (dbOrderFieldData.xlDozenQuantity != null &&
+        dbOrderFieldData.xlDozenPrice != null) {
+      totalPrice += (dbOrderFieldData.xlDozenQuantity as int) *
+          (dbOrderFieldData.xlDozenPrice!.toDouble());
     }
-    if (dbOrderFieldData.lBoxQuantity != null && dbOrderFieldData.lBoxPrice != null) {
-      totalPrice += (dbOrderFieldData.lBoxQuantity as int) * (dbOrderFieldData.lBoxPrice!.toDouble());
+    if (dbOrderFieldData.lBoxQuantity != null &&
+        dbOrderFieldData.lBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.lBoxQuantity as int) *
+          (dbOrderFieldData.lBoxPrice!.toDouble());
     }
-    if (dbOrderFieldData.lDozenQuantity != null && dbOrderFieldData.lDozenQuantity != null) {
-      totalPrice += (dbOrderFieldData.lDozenQuantity as int) * (dbOrderFieldData.lDozenQuantity!.toDouble());
+    if (dbOrderFieldData.lDozenQuantity != null &&
+        dbOrderFieldData.lDozenPrice != null) {
+      totalPrice += (dbOrderFieldData.lDozenQuantity as int) *
+          (dbOrderFieldData.lDozenPrice!.toDouble());
     }
-    if (dbOrderFieldData.mBoxQuantity != null && dbOrderFieldData.mBoxPrice != null) {
-      totalPrice += (dbOrderFieldData.mBoxQuantity as int) * (dbOrderFieldData.mBoxPrice!.toDouble());
+    if (dbOrderFieldData.mBoxQuantity != null &&
+        dbOrderFieldData.mBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.mBoxQuantity as int) *
+          (dbOrderFieldData.mBoxPrice!.toDouble());
     }
-    if (dbOrderFieldData.mDozenQuantity != null && dbOrderFieldData.mDozenQuantity != null) {
-      totalPrice += (dbOrderFieldData.mDozenQuantity as int) * (dbOrderFieldData.mDozenQuantity!.toDouble());
+    if (dbOrderFieldData.mDozenQuantity != null &&
+        dbOrderFieldData.mDozenPrice != null) {
+      totalPrice += (dbOrderFieldData.mDozenQuantity as int) *
+          (dbOrderFieldData.mDozenPrice!.toDouble());
     }
-    if (dbOrderFieldData.sBoxQuantity != null && dbOrderFieldData.sBoxPrice != null) {
-      totalPrice += (dbOrderFieldData.sBoxQuantity as int) * (dbOrderFieldData.sBoxPrice!.toDouble());
+    if (dbOrderFieldData.sBoxQuantity != null &&
+        dbOrderFieldData.sBoxPrice != null) {
+      totalPrice += (dbOrderFieldData.sBoxQuantity as int) *
+          (dbOrderFieldData.sBoxPrice!.toDouble());
     }
-    if (dbOrderFieldData.sDozenQuantity != null && dbOrderFieldData.sDozenQuantity != null) {
-      totalPrice += (dbOrderFieldData.sDozenQuantity as int) * (dbOrderFieldData.sDozenQuantity!.toDouble());
+    if (dbOrderFieldData.sDozenQuantity != null &&
+        dbOrderFieldData.sDozenPrice != null) {
+      totalPrice += (dbOrderFieldData.sDozenQuantity as int) *
+          (dbOrderFieldData.sDozenPrice!.toDouble());
     }
     return totalPrice;
   }
 
   bool isOrder() {
-    if ((productQuantities.containsKey("xl_box") && productQuantities["xl_box"] != 0) || 
-        (productQuantities.containsKey("xl_dozen") && productQuantities["xl_dozen"] != 0) || 
-        (productQuantities.containsKey("l_box") && productQuantities["l_box"] != 0) || 
-        (productQuantities.containsKey("l_dozen") && productQuantities["l_dozen"] != 0) || 
-        (productQuantities.containsKey("m_box") && productQuantities["m_box"] != 0) || 
-        (productQuantities.containsKey("m_dozen") && productQuantities["m_dozen"] != 0) || 
-        (productQuantities.containsKey("s_box") && productQuantities["s_box"] != 0) || 
-        (productQuantities.containsKey("s_dozen") && productQuantities["s_dozen"] != 0)) {
+    if ((productQuantities.containsKey("xl_box") &&
+            productQuantities["xl_box"] != 0) ||
+        (productQuantities.containsKey("xl_dozen") &&
+            productQuantities["xl_dozen"] != 0) ||
+        (productQuantities.containsKey("l_box") &&
+            productQuantities["l_box"] != 0) ||
+        (productQuantities.containsKey("l_dozen") &&
+            productQuantities["l_dozen"] != 0) ||
+        (productQuantities.containsKey("m_box") &&
+            productQuantities["m_box"] != 0) ||
+        (productQuantities.containsKey("m_dozen") &&
+            productQuantities["m_dozen"] != 0) ||
+        (productQuantities.containsKey("s_box") &&
+            productQuantities["s_box"] != 0) ||
+        (productQuantities.containsKey("s_dozen") &&
+            productQuantities["s_dozen"] != 0)) {
       return true;
     } else {
       return false;
@@ -725,5 +845,4 @@ class _ModifyOrderPageState extends State<ModifyOrderPage> {
       },
     );
   }
-
 }

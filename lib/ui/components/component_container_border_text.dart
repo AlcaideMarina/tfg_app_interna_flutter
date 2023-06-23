@@ -31,26 +31,12 @@ class HNComponentContainerBorderText extends StatelessWidget {
           right: rightPosition,
           top: topPosition,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            color: backgroundColor,
-            child: Text(
-              title,
-              style: titleStyle,
-            )
-            
-            /*CheckboxListTile(
-              contentPadding: contentPadding,
-              visualDensity: visualDensity,
-              dense: isDense,
-              title: Text(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              color: backgroundColor,
+              child: Text(
                 title,
                 style: titleStyle,
-              ),
-              value: value,
-              onChanged: (value) => onChange(value ?? false),
-              controlAffinity: controlAffinity,
-            ),*/
-          ),
+              )),
         ),
       ],
     );

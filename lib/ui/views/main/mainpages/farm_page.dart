@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
-import 'package:hueveria_nieto_interna/data/models/local/monthly_fpc_container_data.dart';
-import 'package:hueveria_nieto_interna/ui/views/clientsbilling/montly_billing_detail_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/finalproductcontrol/monthly_final_product_control_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/monitoringcompanysituation/monthly_monitoring_company_situation_page.dart';
 
 import '../../../../custom/app_theme.dart';
+import '../../../../custom/custom_colors.dart';
 import '../../../../custom/custom_sizes.dart';
+import '../../../../utils/constants.dart';
+import '../../../components/component_single_table_card.dart';
 import '../../../components/constants/hn_button.dart';
 import '../../../components/menu/lateral_menu.dart';
 
@@ -39,25 +40,35 @@ class _FarmPageState extends State<FarmPage> {
           toolbarHeight: 56.0,
           title: const Text(
             "Granja",
-            style: TextStyle(
-                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+            style: TextStyle(fontSize: 18),
           )),
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+      body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Control prod. final", null, null, navigateToFPC, () {}),
+              margin: const EdgeInsets.only(top: 16),
+              child: Table(
+                children: [
+                  TableRow(children: [
+                    SingleTableCard(
+                        Icons.person_outline_outlined,
+                        CustomColors.blackColor,
+                        MenuOptions.fpc,
+                        currentUser.id.toString(),
+                        SingleTableCardPositions.leftPosition,
+                        currentUser),
+                    SingleTableCard(
+                        Icons.person_outline_outlined,
+                        CustomColors.blackColor,
+                        MenuOptions.mcs,
+                        currentUser.id.toString(),
+                        SingleTableCardPositions.rightPosition,
+                        currentUser)
+                  ]),
+                ],
+              ),
             ),
-            const SizedBox(
-              height: 16,
-            ),
-            Container(
-              child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Seg. siguación granja", null, null, navigateToMCS, () {}),
-            ),
+            SizedBox(height: 16,)
           ],
         ),
       ),
@@ -65,17 +76,17 @@ class _FarmPageState extends State<FarmPage> {
   }
 
   navigateToFPC() {
-     Navigator.push(
+    Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => MonthlyFinalProductControlPage(currentUser)));
   }
 
   navigateToMCS() {
-     Navigator.push(
+    Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => MonthlyMonitoringCompanySituationPage(currentUser)));
+            builder: (context) =>
+                MonthlyMonitoringCompanySituationPage(currentUser)));
   }
-
 }

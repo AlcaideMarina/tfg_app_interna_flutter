@@ -7,15 +7,17 @@ import '../../../data/models/internal_user_model.dart';
 import '../../../data/models/local/egg_prices_data.dart';
 import '../../../flutterfire/firebase_utils.dart';
 import '../../components/component_table_form.dart';
+import '../../components/component_table_form_with_subtitles.dart';
 import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class ModifySellingPricePage extends StatefulWidget {
-  const ModifySellingPricePage(this.currentUser, this.eggPricesData, {Key? key}) : super(key: key);
+  const ModifySellingPricePage(this.currentUser, this.eggPricesData, {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
   final EggPricesData eggPricesData;
-  
+
   @override
   State<ModifySellingPricePage> createState() => _ModifySellingPricePageState();
 }
@@ -56,33 +58,22 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
             toolbarHeight: 56.0,
             title: const Text(
               'Precio de venta',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
           child: SingleChildScrollView(
             child: Container(
-                margin: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+                margin: const EdgeInsets.fromLTRB(24, 16, 24, 8),
                 child: Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getComponentTableForm('Pedido', getPricePerUnitTableRow(), 
-                        columnWidhts: {
-                          0: const IntrinsicColumnWidth(),
-                          2: const IntrinsicColumnWidth()
-                        }),
+                      getComponentTableWithSubtitlesForm('Modificación del precio de venta', getPricePerUnitTableRow()),
                       const SizedBox(
-                        height: 32,
-                      ),
-                      const SizedBox(
-                        height: 32,
+                        height: 40,
                       ),
                       getButtonsComponent(),
-                      const SizedBox(
-                        height: 8,
-                      )
                     ],
                   ),
                 )),
@@ -104,51 +95,72 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
       columnWidths: columnWidhts,
     );
   }
-  
-  List<TableRow> getPricePerUnitTableRow() {
-    List<TableRow> list = [
-        TableRow(
-          children: [
-            Container(
-              child: Text("XL"),
-              margin: const EdgeInsets.only(left: 12, right: 16),
-            ),
-            Container(),
-            Container()
-          ]
-        ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Docena")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: xlDozen.toString(),
-                isEnabled: true,
-                onChange: (value) {
-                  xlDozen = double.tryParse(value) ?? 0.0;
-                },
+
+  Widget getComponentTableWithSubtitlesForm(String label, List<Widget> children,) {
+    double topMargin = 4;
+    double bottomMargin = 4;
+
+    return HNComponentTableFormWithSubtitles(
+      label + ":",
+      8,
+      TableCellVerticalAlignment.middle,
+      children,
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    );
+  }
+
+  List<Widget> getPricePerUnitTableRow() {
+    List<Widget> list = [];
+
+    list.add(
+      Container(
+        child: const Text("Huevos tamaño XL:", style: TextStyle(fontWeight: FontWeight.bold)),
+        margin: const EdgeInsets.only(left: 12, right: 16),
+      ));
+    list.add(
+      const SizedBox(height: 4,)
+    );
+
+    list.add(
+      Table(
+        columnWidths: const {
+            0: IntrinsicColumnWidth(),
+            2: IntrinsicColumnWidth(),
+          },
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        children: [
+          TableRow(
+            children: [
+              Container(
+                  margin: const EdgeInsets.only(left: 24, right: 16),
+                  child: const Text("Docena")),
+              Container(
+                height: 40,
+                margin: const EdgeInsets.only(left: 8, bottom: 0),
+                child: HNComponentTextInput(
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  textInputType: const TextInputType.numberWithOptions(),
+                  initialValue: xlDozen.toString(),
+                  isEnabled: true,
+                  onChange: (value) {
+                    xlDozen = double.tryParse(value) ?? 0.0;
+                  },
+                ),
               ),
-            ),
+              Container(
+                  margin: const EdgeInsets.only(left: 24, right: 16),
+                child: const Text("€/ud")),
+            ],
+          ),
+          TableRow(children: [
             Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ],
-        ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Caja")),
+                margin: const EdgeInsets.only(left: 24, right: 16),
+                child: const Text("Caja")),
             Container(
               height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
+              margin: const EdgeInsets.only(left: 8, bottom: 0),
               child: HNComponentTextInput(
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -161,52 +173,61 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ]
-        ),
-        TableRow(
-          children: [
-            Container(
-              child: Text("L"),
-              margin: const EdgeInsets.only(left: 12, right: 16),
-            ),
-            Container(),
-            Container()
-          ]
-        ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Docena")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: lDozen.toString(),
-                isEnabled: true,
-                onChange: (value) {
-                  lDozen = double.tryParse(value) ?? 0.0;
-                },
+                margin: const EdgeInsets.only(left: 24, right: 16),
+                child: const Text("€/ud")),
+          ]),
+        ],
+      )
+    );
+
+    list.add(
+      Container(
+        child: const Text("Huevos tamaño L:", style: TextStyle(fontWeight: FontWeight.bold)),
+        margin: const EdgeInsets.only(left: 12, right: 16, top: 4),
+      ));
+    list.add(
+      const SizedBox(height: 4,)
+    );
+
+    list.add(
+      Table(
+        columnWidths: const {
+            0: IntrinsicColumnWidth(),
+            2: IntrinsicColumnWidth(),
+          },
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        children: [
+          TableRow(
+            children: [
+              Container(
+                  margin: const EdgeInsets.only(left: 24, right: 16),
+                  child: const Text("Docena")),
+              Container(
+                height: 40,
+                margin: const EdgeInsets.only(left: 8, bottom: 0),
+                child: HNComponentTextInput(
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  textInputType: const TextInputType.numberWithOptions(),
+                  initialValue: lDozen.toString(),
+                  isEnabled: true,
+                  onChange: (value) {
+                    lDozen = double.tryParse(value) ?? 0.0;
+                  },
+                ),
               ),
-            ),
+              Container(
+                  margin: const EdgeInsets.only(left: 24, right: 16),
+                child: const Text("€/ud")),
+            ],
+          ),
+          TableRow(children: [
             Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ],
-        ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Caja")),
+                margin: const EdgeInsets.only(left: 24, right: 16),
+                child: const Text("Caja")),
             Container(
               height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
+              margin: const EdgeInsets.only(left: 8, bottom: 0),
               child: HNComponentTextInput(
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -219,52 +240,61 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ]
-        ),
-        TableRow(
-          children: [
-            Container(
-              child: Text("M"),
-              margin: const EdgeInsets.only(left: 12, right: 16),
-            ),
-            Container(),
-            Container()
-          ]
-        ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Docena")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: mDozen.toString(),
-                isEnabled: true,
-                onChange: (value) {
-                  mDozen = double.tryParse(value) ?? 0.0;
-                },
+                margin: const EdgeInsets.only(left: 24, right: 16),
+                child: const Text("€/ud")),
+          ]),
+        ],
+      )
+    );
+
+    list.add(
+      Container(
+        child: const Text("Huevos tamaño M:", style: TextStyle(fontWeight: FontWeight.bold)),
+        margin: const EdgeInsets.only(left: 12, right: 16, top: 4),
+      ));
+    list.add(
+      const SizedBox(height: 4,)
+    );
+
+    list.add(
+      Table(
+        columnWidths: const {
+            0: IntrinsicColumnWidth(),
+            2: IntrinsicColumnWidth(),
+          },
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        children: [
+          TableRow(
+            children: [
+              Container(
+                  margin: const EdgeInsets.only(left: 24, right: 16),
+                  child: const Text("Docena")),
+              Container(
+                height: 40,
+                margin: const EdgeInsets.only(left: 8, bottom: 0),
+                child: HNComponentTextInput(
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  textInputType: const TextInputType.numberWithOptions(),
+                  initialValue: mDozen.toString(),
+                  isEnabled: true,
+                  onChange: (value) {
+                    mDozen = double.tryParse(value) ?? 0.0;
+                  },
+                ),
               ),
-            ),
+              Container(
+                  margin: const EdgeInsets.only(left: 24, right: 16),
+                child: const Text("€/ud")),
+            ],
+          ),
+          TableRow(children: [
             Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ],
-        ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Caja")),
+                margin: const EdgeInsets.only(left: 24, right: 16),
+                child: const Text("Caja")),
             Container(
               height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
+              margin: const EdgeInsets.only(left: 8, bottom: 0),
               child: HNComponentTextInput(
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -277,52 +307,61 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ]
-        ),
-        TableRow(
-          children: [
-            Container(
-              child: Text("L"),
-              margin: const EdgeInsets.only(left: 12, right: 16),
-            ),
-            Container(),
-            Container()
-          ]
-        ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Docena")),
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                initialValue: sDozen.toString(),
-                isEnabled: true,
-                onChange: (value) {
-                  sDozen = double.tryParse(value) ?? 0.0;
-                },
+                margin: const EdgeInsets.only(left: 24, right: 16),
+                child: const Text("€/ud")),
+          ]),
+        ],
+      )
+    );
+
+    list.add(
+      Container(
+        child: const Text("Huevos tamaño S:", style: TextStyle(fontWeight: FontWeight.bold)),
+        margin: const EdgeInsets.only(left: 12, right: 16, top: 4),
+      ));
+    list.add(
+      const SizedBox(height: 4,)
+    );
+
+    list.add(
+      Table(
+        columnWidths: const {
+            0: IntrinsicColumnWidth(),
+            2: IntrinsicColumnWidth(),
+          },
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        children: [
+          TableRow(
+            children: [
+              Container(
+                  margin: const EdgeInsets.only(left: 24, right: 16),
+                  child: const Text("Docena")),
+              Container(
+                height: 40,
+                margin: const EdgeInsets.only(left: 8, bottom: 0),
+                child: HNComponentTextInput(
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  textInputType: const TextInputType.numberWithOptions(),
+                  initialValue: sDozen.toString(),
+                  isEnabled: true,
+                  onChange: (value) {
+                    sDozen = double.tryParse(value) ?? 0.0;
+                  },
+                ),
               ),
-            ),
+              Container(
+                  margin: const EdgeInsets.only(left: 24, right: 16),
+                child: const Text("€/ud")),
+            ],
+          ),
+          TableRow(children: [
             Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ],
-        ),
-        TableRow(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("Caja")),
+                margin: const EdgeInsets.only(left: 24, right: 16),
+                child: const Text("Caja")),
             Container(
               height: 40,
-              margin: EdgeInsets.only(left: 8, bottom: 0),
+              margin: const EdgeInsets.only(left: 8, bottom: 0),
               child: HNComponentTextInput(
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -335,62 +374,70 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-          ]
-        ),
-    ];
-    return list;
+                margin: const EdgeInsets.only(left: 24, right: 16),
+                child: const Text("€/ud")),
+          ]),
+        ],
+      )
+    );
 
+    return list;
   }
 
   Widget getButtonsComponent() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, warningUpdatePrices, null),
+      child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
+          .getTypedButton('Guardar', null, null, warningUpdatePrices, null),
     );
   }
 
   warningUpdatePrices() {
     showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-                title: const Text('Aviso'),
-                content: const Text(
-                    'Esta acción cambiará los precios de los productos a partir de este momento, dejando todos los pedidos anteriores tal y como están.\nEs una ación que puede tener grandes consecuencias.\n¿Está seguro de que quiere continuar?'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Atrás'),
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pop();
-                    },
-                  ),
-                  TextButton(
-                    child: const Text('Continuar'),
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pop();
-                      updatePrices();
-                    },
-                  )
-                ],
-              ));
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text('Aviso'),
+              content: const Text(
+                  'Esta acción cambiará los precios de los productos a partir de este momento, dejando todos los pedidos anteriores tal y como están.\nEs una ación que puede tener grandes consecuencias.\n¿Está seguro de que quiere continuar?'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Atrás'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Continuar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    updatePrices();
+                  },
+                )
+              ],
+            ));
   }
 
   updatePrices() async {
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
 
-    if (xlBox != 0.0 && xlDozen != 0.0 && lBox != 0.0 && lDozen != 0.0 &&
-        mBox != 0.0 && mDozen != 0.0 && sBox != 0.0 && sDozen != 0.0) {
+    if (xlBox != 0.0 &&
+        xlDozen != 0.0 &&
+        lBox != 0.0 &&
+        lDozen != 0.0 &&
+        mBox != 0.0 &&
+        mDozen != 0.0 &&
+        sBox != 0.0 &&
+        sDozen != 0.0) {
       EggPricesData updateEggPricesData = EggPricesData(
-        xlBox, xlDozen, lBox, lDozen, mBox, mDozen, sBox, sDozen);
-      
-      QuerySnapshot<Map<String, dynamic>> futureEggPrices= await FirebaseUtils.instance.getEggPrices();
+          xlBox, xlDozen, lBox, lDozen, mBox, mDozen, sBox, sDozen);
+
+      QuerySnapshot<Map<String, dynamic>> futureEggPrices =
+          await FirebaseUtils.instance.getEggPrices();
       if (futureEggPrices.docs.isNotEmpty && futureEggPrices.docs[0].exists) {
-        bool firestoreConf = await FirebaseUtils.instance.updateDocument("default_constants", futureEggPrices.docs[0].id, 
+        bool firestoreConf = await FirebaseUtils.instance.updateDocument(
+            "default_constants",
+            futureEggPrices.docs[0].id,
             {"values": updateEggPricesData.toMap()});
 
         if (firestoreConf) {
@@ -431,25 +478,23 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
         }
       } else {
         Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Formulario incompleto'),
-                    content: const Text(
-                        'Por favor, revise los datos e inténtelo de nuevo.'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('De acuerdo.'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
-                  ));
-          } 
-
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Formulario incompleto'),
+                  content: const Text(
+                      'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo.'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ));
+      }
     }
-
   }
 
   showAlertDialog(BuildContext context) {
@@ -463,5 +508,4 @@ class _ModifySellingPricePageState extends State<ModifySellingPricePage> {
       },
     );
   }
-
 }

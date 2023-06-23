@@ -11,13 +11,16 @@ import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class ModifyFeedResourcesPage extends StatefulWidget {
-  const ModifyFeedResourcesPage(this.currentUser, this.feedResourcesModel, {Key? key}) : super(key: key);
+  const ModifyFeedResourcesPage(this.currentUser, this.feedResourcesModel,
+      {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
   final FeedResourcesModel feedResourcesModel;
 
   @override
-  State<ModifyFeedResourcesPage> createState() => _ModifyFeedResourcesPageState();
+  State<ModifyFeedResourcesPage> createState() =>
+      _ModifyFeedResourcesPageState();
 }
 
 class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
@@ -29,14 +32,14 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
   @override
   void initState() {
     super.initState();
-    
+
     currentUser = widget.currentUser;
     feedResourcesModel = widget.feedResourcesModel;
 
     totalQuantity = feedResourcesModel.kilos;
     totalPrice = feedResourcesModel.totalPrice;
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,9 +47,8 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Pienso - Modificar',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Modificar registro pienso',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -57,12 +59,12 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getComponentTableFormWithoutLable(getCells(), 
-                        columnWidhts: {
-                          0: const IntrinsicColumnWidth(),
-                        }),
+                      getComponentTableFormWithoutLable(getCells(),
+                          columnWidhts: {
+                            0: const IntrinsicColumnWidth(),
+                          }),
                       const SizedBox(
-                        height: 16,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -90,86 +92,91 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
 
   List<TableRow> getCells() {
     return [
-      TableRow(
-        children: [
-          Container(
-            child: Text("Fecha:"),
-            margin: const EdgeInsets.only(right: 16),
+      TableRow(children: [
+        Container(
+          child: const Text("Fecha:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, bottom: 6),
+        ),
+        Container(
+          child: Text(Utils()
+                  .parseTimestmpToString(feedResourcesModel.expenseDatetime) ??
+              "", style: const TextStyle(fontSize: 16)),
+          margin: const EdgeInsets.only(left: 16, bottom: 6),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Cantidad (kg):", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            isEnabled: true,
+            initialValue: feedResourcesModel.kilos.toString(),
+            onChange: (value) {
+              totalQuantity = double.tryParse(value);
+            },
           ),
-          Container(
-            child: Text(Utils().parseTimestmpToString(feedResourcesModel.expenseDatetime) ?? ""),
-            margin: const EdgeInsets.only(left: 16),
-          ),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Cantidad (kg):"),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
-                initialValue: feedResourcesModel.kilos.toString(),
-                onChange: (value) {
-                  totalQuantity = double.tryParse(value);
-                },
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Precio total:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: Row(
+            children: [
+              Flexible(
+                child: HNComponentTextInput(
+                  contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  textInputType: const TextInputType.numberWithOptions(),
+                  isEnabled: true,
+                  initialValue: feedResourcesModel.totalPrice.toString(),
+                  onChange: (value) {
+                    totalPrice = double.tryParse(value);
+                  },
+                ),
               ),
-            ),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Precio total:"),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
-                initialValue: feedResourcesModel.totalPrice.toString(),
-                onChange: (value) {
-                  totalPrice = double.tryParse(value);
-                },
+              const SizedBox(
+                width: 16,
               ),
-            ),
-        ]
-      ),
-      
+              const Text("€", style: TextStyle(fontSize: 16)),
+              const SizedBox(
+                width: 8,
+              ),
+            ],
+          ),
+        ),
+      ]),
     ];
   }
 
   Widget getButtonsComponent() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        children: [
-          HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, warningUpdateFeedResource, null),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(children: [
+          HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
+              'Guardar', null, null, warningUpdateFeedResource, null),
           const SizedBox(
             height: 8,
           ),
-          HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton(
-                'Cancelar', 
-                null, 
-                null, 
-                goBack,
-                null, 
-              ),
-        ])
-    );
+          HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
+            'Cancelar',
+            null,
+            null,
+            goBack,
+            null,
+          ),
+        ]));
   }
 
   goBack() {
@@ -180,79 +187,83 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
   warningUpdateFeedResource() {
     FocusManager.instance.primaryFocus?.unfocus();
     showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-          title: const Text('Aviso'),
-          content: const Text(
-              'Va a modificar este ticket. ¿Quiere continuar con el proceso?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancelar'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            TextButton(
-              child: const Text('Continuar'),
-              onPressed: () {
-                Navigator.pop(context);
-                updateFeedResource();
-              },
-            )
-          ],
-        ));
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text('Aviso'),
+              content: const Text(
+                  'Va a modificar este ticket. ¿Quiere continuar con el proceso?'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancelar'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                TextButton(
+                  child: const Text('Continuar'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    updateFeedResource();
+                  },
+                )
+              ],
+            ));
   }
 
   updateFeedResource() async {
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
 
-    if (totalQuantity != null && totalQuantity! > 0 && totalPrice != null && totalPrice! > 0) {
+    if (totalQuantity != null &&
+        totalQuantity! > 0 &&
+        totalPrice != null &&
+        totalPrice! > 0) {
       FeedResourcesModel updateFeedResource = FeedResourcesModel(
-        feedResourcesModel.createdBy, 
-        feedResourcesModel.creationDatetime, 
-        feedResourcesModel.deleted, 
-        feedResourcesModel.expenseDatetime, 
-        totalQuantity!, 
-        totalPrice!, 
-        feedResourcesModel.documentId);
-      bool firestoreConf = await FirebaseUtils.instance.updateDocument("material_feed", feedResourcesModel.documentId!, updateFeedResource.toMap());
+          feedResourcesModel.createdBy,
+          feedResourcesModel.creationDatetime,
+          feedResourcesModel.deleted,
+          feedResourcesModel.expenseDatetime,
+          totalQuantity!,
+          totalPrice!,
+          feedResourcesModel.documentId);
+      bool firestoreConf = await FirebaseUtils.instance.updateDocument(
+          "material_feed",
+          feedResourcesModel.documentId!,
+          updateFeedResource.toMap());
       if (firestoreConf) {
-          Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Recurso actualizado'),
-                    content: Text(
-                        'La información sobre el pienso ha sido actualizada correctamente en la base de datos.'),
-                    actions: <Widget>[
-                      TextButton(
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Recurso actualizado'),
+                  content: Text(
+                      'La información sobre el recurso ha sido actualizada correctamente en la base de datos.'),
+                  actions: <Widget>[
+                    TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                           Navigator.pop(context, updateFeedResource);
-                        }, 
-                        child: const Text("De acuerdo")
-                      ),
-                    ],
-                  ));
-        } else {
-          Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Error'),
-                    content: Text(
-                        'Se ha producido un error al actualizar el recurso. Por favor, revise los datos e inténtelo de nuevo.'),
-                    actions: <Widget>[
-                      TextButton(
+                        },
+                        child: const Text("De acuerdo")),
+                  ],
+                ));
+      } else {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Error'),
+                  content: Text(
+                      'Se ha producido un error al actualizar el recurso. Por favor, revise los datos e inténtelo de nuevo.'),
+                  actions: <Widget>[
+                    TextButton(
                         onPressed: () {
                           Navigator.of(this.context).pop();
-                        }, 
-                        child: const Text("De acuerdo")
-                      ),
-                    ],
-                  ));
-        }
+                        },
+                        child: const Text("De acuerdo")),
+                  ],
+                ));
+      }
     } else {
       Navigator.of(context).pop();
       showDialog(
@@ -263,11 +274,10 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
                     'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
                 actions: <Widget>[
                   TextButton(
-                    onPressed: () {
-                      Navigator.of(this.context).pop();
-                    }, 
-                    child: const Text("De acuerdo")
-                  ),
+                      onPressed: () {
+                        Navigator.of(this.context).pop();
+                      },
+                      child: const Text("De acuerdo")),
                 ],
               ));
     }
@@ -284,5 +294,4 @@ class _ModifyFeedResourcesPageState extends State<ModifyFeedResourcesPage> {
       },
     );
   }
-
 }

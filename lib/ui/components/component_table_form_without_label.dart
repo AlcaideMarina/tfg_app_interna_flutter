@@ -9,8 +9,8 @@ class HNComponentTableFormWithoutLabel extends StatelessWidget {
   final EdgeInsets containerMargin;
   final Map<int, TableColumnWidth>? columnWidths;
 
-  const HNComponentTableFormWithoutLabel(this.defaultVerticalAlignment, 
-      this.tableChildren, this.containerMargin,
+  const HNComponentTableFormWithoutLabel(
+      this.defaultVerticalAlignment, this.tableChildren, this.containerMargin,
       {Key? key, this.columnWidths})
       : super(key: key);
 

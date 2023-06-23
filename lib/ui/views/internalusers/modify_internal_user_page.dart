@@ -13,7 +13,9 @@ import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class ModifyInternalUserPage extends StatefulWidget {
-  const ModifyInternalUserPage(this.currentUserData, this.internalUserModel, {Key? key}) : super(key: key);
+  const ModifyInternalUserPage(this.currentUserData, this.internalUserModel,
+      {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUserData;
   final InternalUserModel internalUserModel;
@@ -39,12 +41,8 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
   late bool sameDniDirecion = false;
   late int ssNumber = -1;
   late String bankAccount = "";
-  late String jobPosition = "";   // TODO: Esto va a tener que ser un dropdown
+  late String jobPosition = "";
   late String user = "";
-  late bool internalApplication = false;
-  // TODO: Lista de persisos de la app interna
-  late bool deliveryApplication;
-  // TODO: Lista de persisos de la app de repartos
 
   @override
   void initState() {
@@ -67,15 +65,14 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
     jobPosition = Utils().getKey(Constants().roles, internalUserModel.position);
     user = internalUserModel.user;
   }
-  
+
   int contCompany = 0;
   int contUser = 0;
-  
+
   List<String> items = [];
-  
+
   @override
   Widget build(BuildContext context) {
-
     if (items.isEmpty) {
       for (String key in Constants().roles.keys) {
         items.add(key);
@@ -87,9 +84,8 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Detalle usuario interno',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Modificar usuario interno',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -102,12 +98,7 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
                     children: [
                       getAllFormElements(),
                       const SizedBox(
-                        height: 32,
-                      ),
-                      Text("El usuario debe tener más de 6 dígitos."),
-                      Text('La contraseña será igual que el usuario. Por favor, cámbiela en cuanto sea posible. Para hacer login, se necesitará el correo y la contraseña.'),
-                      const SizedBox(
-                        height: 32,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -124,20 +115,21 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        getCompanyComponentSimpleForm('Nombre', internalUserModel.name, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Nombre', internalUserModel.name, TextInputType.text, (value) {
           name = value;
         }),
-        getCompanyComponentSimpleForm('Apellidos', internalUserModel.surname, TextInputType.text,
+        getCompanyComponentSimpleForm(
+            'Apellidos', internalUserModel.surname, TextInputType.text,
             (value) {
           surname = value;
         }),
-        getCompanyComponentSimpleForm('DNI', internalUserModel.dni, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'DNI', internalUserModel.dni, TextInputType.text, (value) {
           dni = value;
         }, textCapitalization: TextCapitalization.characters),
-        getCompanyComponentSimpleForm('Teléfono', internalUserModel.phone.toString(), TextInputType.number,
-            (value) {
+        getCompanyComponentSimpleForm('Teléfono',
+            internalUserModel.phone.toString(), TextInputType.number, (value) {
           try {
             phone = int.parse(value);
           } catch (e) {
@@ -145,47 +137,56 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
           }
         }),
         getCompanyComponentSimpleForm(
-            'Correo', internalUserModel.email, TextInputType.emailAddress, (value) {
+            'Correo', internalUserModel.email, TextInputType.emailAddress,
+            (value) {
           email = value;
-        }, textCapitalization: TextCapitalization.none),
-        getCompanyComponentSimpleForm('Dirección', internalUserModel.direction, TextInputType.text, (value) {
+        }, textCapitalization: TextCapitalization.none, isEnabled: false),
+        getCompanyComponentSimpleForm(
+            'Dirección', internalUserModel.direction, TextInputType.text,
+            (value) {
           direction = value;
         }),
         getCompanyComponentSimpleForm(
-            'Ciudad', internalUserModel.city, TextInputType.emailAddress, (value) {
+            'Ciudad', internalUserModel.city, TextInputType.emailAddress,
+            (value) {
           city = value;
         }),
-        getCompanyComponentSimpleForm('Provincia', internalUserModel.province, TextInputType.text,
+        getCompanyComponentSimpleForm(
+            'Provincia', internalUserModel.province, TextInputType.text,
             (value) {
           province = value;
         }),
-        getCompanyComponentSimpleForm('Código postal', internalUserModel.postalCode.toString(), TextInputType.number,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Código postal',
+            internalUserModel.postalCode.toString(),
+            TextInputType.number, (value) {
           try {
             postalCode = int.parse(value);
           } catch (e) {
             postalCode = -1;
           }
         }),
-        getCompanyComponentSimpleForm('Nº Afiliación de la Seguridad Social', internalUserModel.ssNumber.toString(), TextInputType.number,
-            (value) {
+        getCompanyComponentSimpleForm(
+            'Nº Afiliación de la Seguridad Social',
+            internalUserModel.ssNumber.toString(),
+            TextInputType.number, (value) {
           try {
             ssNumber = int.parse(value);
           } catch (e) {
             ssNumber = -1;
           }
         }),
-        getCompanyComponentSimpleForm('Cuenta bancaria', internalUserModel.bankAccount, TextInputType.text,
-            (value) {
+        getCompanyComponentSimpleForm('Cuenta bancaria',
+            internalUserModel.bankAccount, TextInputType.text, (value) {
           bankAccount = value;
         }),
-        // TODO: Este va a ser un dropdown
-        getDropdownComponentSimpleForm('Puesto', Utils().getKey(Constants().roles, internalUserModel.position), TextInputType.text,
-            (value) => {
-          jobPosition = value!
-        }),
-        getCompanyComponentSimpleForm('Usuario', internalUserModel.user, TextInputType.text,
-            (value) {
+        getDropdownComponentSimpleForm(
+            'Puesto',
+            Utils().getKey(Constants().roles, internalUserModel.position),
+            TextInputType.text,
+            (value) => {jobPosition = value!}),
+        getCompanyComponentSimpleForm(
+            'Usuario', internalUserModel.user, TextInputType.text, (value) {
           user = value;
         }, textCapitalization: TextCapitalization.none),
       ],
@@ -193,30 +194,59 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
   }
 
   Widget getButtonsComponent() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
+    return Column(
         children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
               .getTypedButton('Guardar', null, null, updateUser, null),
           const SizedBox(
             height: 8,
           ),
-          HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton(
-                'Cancelar', 
-                null, 
-                null, 
-                goBack, 
-                null, 
-              ),
+          HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
+            'Cancelar',
+            null,
+            null,
+            goBack,
+            null,
+          ),
         ],
-      ),
     );
   }
 
   Widget getCompanyComponentSimpleForm(String label, String initialValue,
       TextInputType textInputType, Function(String)? onChange,
+      {TextCapitalization textCapitalization = TextCapitalization.sentences,
+      bool isEnabled = true}) {
+    double topMargin = 4;
+    double bottomMargin = 4;
+    if (contCompany == 0) {
+      topMargin = 8;
+    } else if (contCompany == 12) {
+      bottomMargin = 32;
+    }
+    contCompany++;
+
+    return HNComponentSimpleForm(
+      label + ':',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
+        textCapitalization: textCapitalization,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textInputType: textInputType,
+        onChange: onChange,
+        isEnabled: isEnabled,
+        initialValue: initialValue,
+        backgroundColor: isEnabled
+            ? CustomColors.whiteColor
+            : CustomColors.backgroundTextFieldDisabled,
+      ),
+    );
+  }
+
+  Widget getDropdownComponentSimpleForm(String label, String initialValue,
+      TextInputType textInputType, Function(dynamic)? onChange,
       {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
     double topMargin = 4;
     double bottomMargin = 4;
@@ -228,51 +258,23 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
     contCompany++;
 
     return HNComponentSimpleForm(
-        label + ':',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
-        componentTextInput: HNComponentTextInput(
-          textCapitalization: textCapitalization,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          textInputType: textInputType,
-          onChange: onChange,
-          isEnabled: true,
-          initialValue: initialValue,
-        ),);
-  }
-
-  Widget getDropdownComponentSimpleForm(String label, String initialValue, 
-      TextInputType textInputType, Function(dynamic)? onChange, 
-      {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
-        double topMargin = 4;
-        double bottomMargin = 4;
-        if (contCompany == 0) {
-          topMargin = 8;
-        } else if (contCompany == 12) {
-          bottomMargin = 32;
-        }
-        contCompany++;
-        
-        return HNComponentSimpleForm(
-        '$label:',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin,),
-        componentDropdown: 
-          HNComponentDropdown(
-            items,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            textInputType: textInputType,
-            onChange: onChange,
-            isEnabled: true,
-            initialValue: initialValue,
-          ),
-        );
+      '$label:',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(
+        top: topMargin,
+        bottom: bottomMargin,
+      ),
+      componentDropdown: HNComponentDropdown(
+        items,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textInputType: textInputType,
+        onChange: onChange,
+        isEnabled: true,
+        initialValue: initialValue,
+      ),
+    );
   }
 
   ///// Functions
@@ -280,7 +282,7 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
   updateUser() async {
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
-    
+
     bool firestoreConf = false;
 
     if (bankAccount != "" &&
@@ -298,83 +300,82 @@ class _ModifyInternalUserPageState extends State<ModifyInternalUserPage> {
         ssNumber != -1 &&
         surname != "" &&
         user != "") {
-
-        InternalUserModel updatedUser = InternalUserModel(
-            bankAccount,
-            city,
-            currentUser.documentId!,
-            internalUserModel.deleted,
-            direction,
-            dni,
-            email,
-            id,
-            name,
-            phone,
-            Utils().rolesStringToInt(jobPosition),
-            postalCode,
-            province,
-            internalUserModel.salary,
-            ssNumber,
-            surname,
-            internalUserModel.uid,
-            user,
-            internalUserModel.documentId);
-        firestoreConf =
-            await FirebaseUtils.instance.updateDocument("user_info", updatedUser.documentId!, updatedUser.toMap());
-        if (firestoreConf) {
-          Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Usuario guardado'),
-                    content: const Text(
-                        'La información del usuario se ha guardado correctamente'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('De acuerdo.'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pop(context, updatedUser);
-                        },
-                      )
-                    ],
-                  ));
-        } else {
-          Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Error'),
-                    content: const Text(
-                        'Ha ocurrido un problema al guardar el usuario en la base de datos. Por favor, revise los datos e inténtelo de nuevo.'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('De acuerdo.'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
-                  ));
-        }
+      InternalUserModel updatedUser = InternalUserModel(
+          bankAccount,
+          city,
+          currentUser.documentId!,
+          internalUserModel.deleted,
+          direction,
+          dni,
+          email,
+          id,
+          name,
+          phone,
+          Utils().rolesStringToInt(jobPosition),
+          postalCode,
+          province,
+          internalUserModel.salary,
+          ssNumber,
+          surname,
+          internalUserModel.uid,
+          user,
+          internalUserModel.documentId);
+      firestoreConf = await FirebaseUtils.instance.updateDocument(
+          "user_info", updatedUser.documentId!, updatedUser.toMap());
+      if (firestoreConf) {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Usuario guardado'),
+                  content: const Text(
+                      'La información del usuario se ha actualizado correctamente'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo.'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context, updatedUser);
+                      },
+                    )
+                  ],
+                ));
       } else {
         Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Formulario incompleto'),
-                    content: const Text(
-                        'Por favor, revise los datos e inténtelo de nuevo.'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('De acuerdo.'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
-                  ));
-          } 
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Error'),
+                  content: const Text(
+                      'Ha ocurrido un problema al actualizar los datos del usuario en la base de datos. Por favor, revise los datos e inténtelo de nuevo.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('De acuerdo.'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ));
+      }
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Formulario incompleto'),
+                content: const Text(
+                    'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
+    }
   }
 
   goBack() {

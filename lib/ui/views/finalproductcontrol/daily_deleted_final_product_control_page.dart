@@ -43,33 +43,34 @@ class _DailyDeletedFinalProdcutControlPageState
       appBar: AppBar(
           toolbarHeight: 56.0,
           title: const Text(
-            "Todos los pedidos",
-            style: TextStyle(
-                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+            "CPF - Eliminados",
+            style: TextStyle(fontSize: 18),
           )),
       body: monthlyFPCContainerData.list.isNotEmpty
-              ? ListView.builder(
-                  physics: NeverScrollableScrollPhysics(), 
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemCount: monthlyFPCContainerData.list.length,
-                  itemBuilder: (context, i) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 8),
-                      child: HNComponentDailyFPC(
-                        monthlyFPCContainerData.list[i],
-                        onTap: () {},
-                      ),
-                    );
-                  })
-              : Container(
-                  margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                  child: const HNComponentPanel(
-                    title: 'No hay recursos',
-                    text:
-                        "No hay registro de recursos de cajas y cartones no eliminados en la base de datos.",
-                  )),
+          ? ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: monthlyFPCContainerData.list.length,
+              itemBuilder: (context, i) {
+                double top = 8;
+                double bottom = 0;
+                if (i == 0) top = 16;
+                if (i == monthlyFPCContainerData.list.length - 1) bottom = 16;
+                return Container(
+                  margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
+                  child: HNComponentDailyFPC(
+                    monthlyFPCContainerData.list[i]
+                  ),
+                );
+              })
+          : Container(
+              margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+              child: const HNComponentPanel(
+                title: 'No hay registros',
+                text:
+                    "No hay registros de producto final eliminados para el mes seleccionado en la base de datos.",
+              )),
     );
   }
 }

@@ -7,17 +7,20 @@ class HNComponentYearMonthAlertDialog extends StatefulWidget {
   final DateTime firstDate;
   final DateTime lastDate;
 
-  const HNComponentYearMonthAlertDialog({Key? key, 
+  const HNComponentYearMonthAlertDialog({
+    Key? key,
     required this.initialDate,
     required this.firstDate,
     required this.lastDate,
   }) : super(key: key);
 
   @override
-  _HNComponentYearMonthAlertDialogState createState() => _HNComponentYearMonthAlertDialogState();
+  _HNComponentYearMonthAlertDialogState createState() =>
+      _HNComponentYearMonthAlertDialogState();
 }
 
-class _HNComponentYearMonthAlertDialogState extends State<HNComponentYearMonthAlertDialog> {
+class _HNComponentYearMonthAlertDialogState
+    extends State<HNComponentYearMonthAlertDialog> {
   late int selectedMonth;
   late int selectedYear;
 
@@ -47,11 +50,22 @@ class _HNComponentYearMonthAlertDialogState extends State<HNComponentYearMonthAl
   @override
   Widget build(BuildContext context) {
     final List<String> months = [
-      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre"
     ];
 
     return AlertDialog(
-      title: Text('Seleccionar fecha'),
+      title: const Text('Seleccionar fecha'),
       content: Row(
         children: [
           Expanded(
@@ -71,14 +85,16 @@ class _HNComponentYearMonthAlertDialogState extends State<HNComponentYearMonthAl
                   );
                 },
               ).toList(),
-              dropdownColor: Colors.white, // Cambia el color del fondo del DropdownButton
-              icon: Icon(Icons.arrow_drop_down_rounded), // Utiliza el ícono de flecha de Material Design
+              dropdownColor:
+                  Colors.white,
+              icon: const Icon(Icons
+                  .arrow_drop_down_rounded),
               iconSize: 24,
               isExpanded: true,
               underline: Container(),
             ),
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Expanded(
             child: DropdownButton<int>(
               value: selectedYear,
@@ -97,8 +113,10 @@ class _HNComponentYearMonthAlertDialogState extends State<HNComponentYearMonthAl
                   );
                 },
               ).toList(),
-              dropdownColor: Colors.white, // Cambia el color del fondo del DropdownButton
-              icon: Icon(Icons.arrow_drop_down_rounded), // Utiliza el ícono de flecha de Material Design
+              dropdownColor:
+                  Colors.white,
+              icon: const Icon(Icons
+                  .arrow_drop_down_rounded),
               iconSize: 24,
               isExpanded: true,
               underline: Container(),
@@ -106,7 +124,8 @@ class _HNComponentYearMonthAlertDialogState extends State<HNComponentYearMonthAl
           ),
         ],
       ),
-      actionsPadding: EdgeInsets.zero, // Elimina el espacio entre el contenido y los botones
+      actionsPadding: EdgeInsets
+          .zero,
       actions: [
         Padding(
           padding: const EdgeInsets.all(0),
@@ -141,7 +160,8 @@ class _HNComponentYearMonthAlertDialogState extends State<HNComponentYearMonthAl
                       padding: const EdgeInsets.only(right: 4.0),
                       child: TextButton(
                         onPressed: () {
-                          final DateTime selectedDate = DateTime(selectedYear, selectedMonth);
+                          final DateTime selectedDate =
+                              DateTime(selectedYear, selectedMonth);
                           Navigator.pop(context, selectedDate);
                         },
                         child: Text('Aceptar'),
@@ -155,7 +175,8 @@ class _HNComponentYearMonthAlertDialogState extends State<HNComponentYearMonthAl
         ),
       ],
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16), // Ajusta el valor de acuerdo a tus necesidades
+        borderRadius: BorderRadius.circular(
+            16),
       ),
     );
   }

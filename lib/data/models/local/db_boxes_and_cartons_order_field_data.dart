@@ -1,21 +1,14 @@
 class DBBoxesAndCartonsOrderFieldData {
-
   int? box;
   int? xlCarton;
   int? lCarton;
   int? mCarton;
   int? sCarton;
 
-  DBBoxesAndCartonsOrderFieldData({
-    this.box,
-    this.xlCarton,
-    this.lCarton,
-    this.mCarton,
-    this.sCarton
-  });
+  DBBoxesAndCartonsOrderFieldData(
+      {this.box, this.xlCarton, this.lCarton, this.mCarton, this.sCarton});
 
   Map<String, int> toMap() {
-    
     Map<String, int> map = {};
 
     if (box != null && box != 0) {
@@ -38,7 +31,6 @@ class DBBoxesAndCartonsOrderFieldData {
   }
 
   factory DBBoxesAndCartonsOrderFieldData.fromMap(Map<String, dynamic> json) {
-    
     int? box;
     int? xlCarton;
     int? lCarton;
@@ -62,11 +54,10 @@ class DBBoxesAndCartonsOrderFieldData {
     }
 
     return DBBoxesAndCartonsOrderFieldData(
-      box: box,
-      xlCarton: xlCarton,
-      lCarton: lCarton,
-      mCarton: mCarton,
-      sCarton: sCarton
-    );
+        box: box,
+        xlCarton: xlCarton,
+        lCarton: lCarton,
+        mCarton: mCarton,
+        sCarton: sCarton);
   }
 }

@@ -7,7 +7,10 @@ import 'package:hueveria_nieto_interna/ui/views/clients/all_clients_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/internalusers/internal_users_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
+import '../../../../custom/custom_colors.dart';
 import '../../../../data/models/internal_user_model.dart';
+import '../../../../utils/constants.dart';
+import '../../../components/component_single_table_card.dart';
 
 class UsersAndClientsPage extends StatefulWidget {
   const UsersAndClientsPage(this.currentUser, {Key? key}) : super(key: key);
@@ -47,46 +50,35 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
           toolbarHeight: 56.0,
           title: const Text(
             "Usuarios y clientes",
-            style: TextStyle(
-                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+            style: TextStyle(fontSize: 18),
           )),
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+      body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Clientes",
-              textAlign: TextAlign.start,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
             Container(
-              child: HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                  "Ver clientes", null, null, navigateToAllClientsPage, () {}),
+              margin: const EdgeInsets.only(top: 16),
+              child: Table(
+                children: [
+                  TableRow(children: [
+                    SingleTableCard(
+                        Icons.person_outline_outlined,
+                        CustomColors.blackColor,
+                        MenuOptions.clients,
+                        currentUser.id.toString(),
+                        SingleTableCardPositions.leftPosition,
+                        currentUser),
+                    SingleTableCard(
+                        Icons.person_outline_outlined,
+                        CustomColors.blackColor,
+                        MenuOptions.users,
+                        currentUser.id.toString(),
+                        SingleTableCardPositions.rightPosition,
+                        currentUser)
+                  ]),
+                ],
+              ),
             ),
-            const SizedBox(
-              height: 48,
-            ),
-            const Text(
-              "Usuarios",
-              textAlign: TextAlign.start,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Container(
-              child: Column(children: [
-                HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                    "Usuarios internos", null, null, navigateToInternalUsersPage, () {}),
-                /* const SizedBox(
-                  height: 16,
-                ),
-                HNButton(ButtonTypes.redWhiteRoundedButton).getTypedButton(
-                    "Usuarios externos", null, null, () {}, () {}) */
-              ]),
-            ),
+            const SizedBox(height: 16,)
           ],
         ),
       ),
@@ -103,7 +95,7 @@ class _UsersAndClientsPageState extends State<UsersAndClientsPage> {
 
   navigateToInternalUsersPage() {
     Navigator.push(
-        context, 
+        context,
         MaterialPageRoute(
           builder: (context) => InternalUsersPage(currentUser),
         ));

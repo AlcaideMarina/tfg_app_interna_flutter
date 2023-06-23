@@ -3,15 +3,24 @@ import 'package:hueveria_nieto_interna/data/models/boxes_and_cartons_resources_m
 import 'package:hueveria_nieto_interna/data/models/local/db_boxes_and_cartons_order_field_data.dart';
 
 class MaterialUtils {
-
   String getBCOrderSummary(DBBoxesAndCartonsOrderFieldData data) {
     List<String> list = [];
-    
-    if(data.box != null && data.box != 0) list.add(data.box.toString() + " cajas");
-    if(data.xlCarton != null && data.xlCarton != 0) list.add(data.xlCarton.toString() + " cartones XL");
-    if(data.lCarton != null && data.lCarton != 0) list.add(data.lCarton.toString() + " cartones L");
-    if(data.mCarton != null && data.mCarton != 0) list.add(data.mCarton.toString() + " cartones M");
-    if(data.sCarton != null && data.sCarton != 0) list.add(data.sCarton.toString() + " cartones S");
+
+    if (data.box != null && data.box != 0) {
+      list.add(data.box.toString() + " cajas");
+    }
+    if (data.xlCarton != null && data.xlCarton != 0) {
+      list.add(data.xlCarton.toString() + " cartones XL");
+    }
+    if (data.lCarton != null && data.lCarton != 0) {
+      list.add(data.lCarton.toString() + " cartones L");
+    }
+    if (data.mCarton != null && data.mCarton != 0) {
+      list.add(data.mCarton.toString() + " cartones M");
+    }
+    if (data.sCarton != null && data.sCarton != 0) {
+      list.add(data.sCarton.toString() + " cartones S");
+    }
 
     String summary = "";
     for (String item in list) {
@@ -22,7 +31,8 @@ class MaterialUtils {
     return summary;
   }
 
-  DBBoxesAndCartonsOrderFieldData bcOrderToDBBoxesAndCartonsOrderModel(BoxesAndCartonsResourcesModel bcData) {
+  DBBoxesAndCartonsOrderFieldData bcOrderToDBBoxesAndCartonsOrderModel(
+      BoxesAndCartonsResourcesModel bcData) {
     Map<String, dynamic> order = bcData.order;
     DBBoxesAndCartonsOrderFieldData data = DBBoxesAndCartonsOrderFieldData();
 
@@ -44,5 +54,4 @@ class MaterialUtils {
 
     return data;
   }
-
 }

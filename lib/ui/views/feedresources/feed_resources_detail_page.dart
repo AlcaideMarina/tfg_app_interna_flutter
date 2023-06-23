@@ -12,13 +12,15 @@ import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class FeedResourcesDetailPage extends StatefulWidget {
-  const FeedResourcesDetailPage(this.currentUser, this.feedModel,  {Key? key}) : super(key: key);
+  const FeedResourcesDetailPage(this.currentUser, this.feedModel, {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
   final FeedResourcesModel feedModel;
 
   @override
-  State<FeedResourcesDetailPage> createState() => _FeedResourcesDetailPageState();
+  State<FeedResourcesDetailPage> createState() =>
+      _FeedResourcesDetailPageState();
 }
 
 class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
@@ -28,7 +30,7 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
   @override
   void initState() {
     super.initState();
-    
+
     currentUser = widget.currentUser;
     feedResourcesModel = widget.feedModel;
   }
@@ -40,9 +42,8 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Pienso - Detalle',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Detalle registro pienso',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -53,12 +54,12 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getComponentTableFormWithoutLable(getCells(), 
-                        columnWidhts: {
-                          0: const IntrinsicColumnWidth(),
-                        }),
+                      getComponentTableFormWithoutLable(getCells(),
+                          columnWidhts: {
+                            0: const IntrinsicColumnWidth(),
+                          }),
                       const SizedBox(
-                        height: 16,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -86,149 +87,150 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
 
   List<TableRow> getCells() {
     return [
-      TableRow(
-        children: [
-          Container(
-            child: Text("Fecha:"),
-            margin: const EdgeInsets.only(right: 16),
+      TableRow(children: [
+        Container(
+          child: const Text("Fecha:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, bottom: 6),
+        ),
+        Container(
+          child: Text(Utils()
+                  .parseTimestmpToString(feedResourcesModel.expenseDatetime) ??
+              "", style: const TextStyle(fontSize: 16)),
+          margin: const EdgeInsets.only(left: 16, bottom: 4),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Cantidad (kg):", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            isEnabled: false,
+            labelText: feedResourcesModel.kilos.toString(),
           ),
-          Container(
-            child: Text(Utils().parseTimestmpToString(feedResourcesModel.expenseDatetime) ?? ""),
-            margin: const EdgeInsets.only(left: 16),
-          ),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Cantidad (kg):"),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: false,
-                labelText: feedResourcesModel.kilos.toString(),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Precio total:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: Row(
+            children: [
+              Flexible(
+                child: HNComponentTextInput(
+                  contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  textInputType: const TextInputType.numberWithOptions(),
+                  isEnabled: false,
+                  labelText: feedResourcesModel.totalPrice.toString(),
+                ),
               ),
-            ),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Precio total:"),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: false,
-                labelText: feedResourcesModel.totalPrice.toString(),
+              const SizedBox(
+                width: 16,
               ),
-            ),
-        ]
-      ),
-      
+              const Text("€", style: TextStyle(fontSize: 16)),
+              const SizedBox(
+                width: 8,
+              ),
+            ],
+          ),
+        ),
+      ]),
     ];
   }
 
   Widget getButtonsComponent() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        children: [
-          HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, navigateToModifyFeedResource, null),
+    return Column(children: [
+          HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
+              'Modificar', null, null, navigateToModifyFeedResource, null),
           const SizedBox(
             height: 8,
           ),
-          HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton(
-                'Eliminar', 
-                null, 
-                null, 
-                warningDeleteFeedResource, 
-                null, 
-              ),
-        ])
-    );
+          HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
+            'Eliminar',
+            null,
+            null,
+            warningDeleteFeedResource,
+            null,
+          ),
+        ]);
   }
 
   warningDeleteFeedResource() {
     FocusManager.instance.primaryFocus?.unfocus();
     showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-            title: const Text('Aviso importante'),
-            content: Text(
-                'Esta acción es irreversible. Va a eliminar este ticket, y puede conllevar consecuencias para la empresa. ¿Está seguro de que quiere continuar?'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(this.context).pop();
-                }, 
-                child: const Text("Atrás")
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(this.context).pop();
-                  deleteFeedResource();
-                }, 
-                child: const Text("Continuar")
-              ),
-            ],
-          ));
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text('Aviso importante'),
+              content: Text(
+                  'Esta acción es irreversible. Va a eliminar este ticket, y puede conllevar consecuencias para la empresa. ¿Está seguro de que quiere continuar?'),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(this.context).pop();
+                    },
+                    child: const Text("Atrás")),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(this.context).pop();
+                      deleteFeedResource();
+                    },
+                    child: const Text("Continuar")),
+              ],
+            ));
   }
 
   deleteFeedResource() async {
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
-    bool conf = await FirebaseUtils.instance.deleteDocument("material_feed", feedResourcesModel.documentId!);
-    
+    bool conf = await FirebaseUtils.instance
+        .deleteDocument("material_feed", feedResourcesModel.documentId!);
+
     Navigator.pop(context);
-    if(conf) {
+    if (conf) {
       showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-              title: const Text('Recurso eliminado'),
-              content: const Text(
-                  'El recurso ha sido eliminado correctamente.'),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('De acuerdo.'),
-                  onPressed: () {
-                    Navigator.of(context)
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Recurso eliminado'),
+                content:
+                    const Text('El recurso ha sido eliminado correctamente.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context)
                         ..pop()
                         ..pop();
-                  },
-                )
-              ],
-            ));
+                    },
+                  )
+                ],
+              ));
     } else {
       showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-              title: const Text('Error'),
-              content: const Text(
-                  'Se ha producido un error al eliminar el recurso. Por favor, inténtelo de nuevo.'),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('De acuerdo.'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            ));
-    
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Error'),
+                content: const Text(
+                    'Se ha producido un error al eliminar el recurso. Por favor, inténtelo de nuevo.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('De acuerdo.'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
     }
   }
 
@@ -246,14 +248,14 @@ class _FeedResourcesDetailPageState extends State<FeedResourcesDetailPage> {
 
   navigateToModifyFeedResource() async {
     final result = await Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => ModifyFeedResourcesPage(currentUser, feedResourcesModel)));
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                ModifyFeedResourcesPage(currentUser, feedResourcesModel)));
 
     if (result != null) {
       feedResourcesModel = result;
       setState(() {});
     }
   }
-
 }

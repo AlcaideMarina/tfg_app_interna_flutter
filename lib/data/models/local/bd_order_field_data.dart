@@ -1,5 +1,4 @@
-
-class DBOrderFieldData{
+class DBOrderFieldData {
   double? xlBoxPrice;
   int? xlBoxQuantity;
   double? xlDozenPrice;
@@ -17,28 +16,25 @@ class DBOrderFieldData{
   double? sDozenPrice;
   int? sDozenQuantity;
 
-  DBOrderFieldData({
-    this.xlBoxPrice, 
-    this.xlBoxQuantity, 
-    this.xlDozenPrice, 
-    this.xlDozenQuantity, 
-    this.lBoxPrice, 
-    this.lBoxQuantity, 
-    this.lDozenPrice, 
-    this.lDozenQuantity, 
-    this.mBoxPrice, 
-    this.mBoxQuantity, 
-    this.mDozenPrice, 
-    this.mDozenQuantity, 
-    this.sBoxPrice, 
-    this.sBoxQuantity, 
-    this.sDozenPrice, 
-    this.sDozenQuantity
-    }
-  );
+  DBOrderFieldData(
+      {this.xlBoxPrice,
+      this.xlBoxQuantity,
+      this.xlDozenPrice,
+      this.xlDozenQuantity,
+      this.lBoxPrice,
+      this.lBoxQuantity,
+      this.lDozenPrice,
+      this.lDozenQuantity,
+      this.mBoxPrice,
+      this.mBoxQuantity,
+      this.mDozenPrice,
+      this.mDozenQuantity,
+      this.sBoxPrice,
+      this.sBoxQuantity,
+      this.sDozenPrice,
+      this.sDozenQuantity});
 
   Map<String, Map<String, num?>> toMap() {
-    
     Map<String, Map<String, num?>> map = {};
 
     if (xlDozenQuantity != null && xlDozenQuantity != 0) {
@@ -70,7 +66,6 @@ class DBOrderFieldData{
   }
 
   factory DBOrderFieldData.fromMap(Map<String, Map<String, num?>> json) {
-
     int? xlBoxQuantityMap;
     double? xlBoxPriceMap;
     int? xlDozenQuantityMap;
@@ -148,5 +143,4 @@ class DBOrderFieldData{
       sDozenQuantity: sDozenQuantityMap,
     );
   }
-  
 }

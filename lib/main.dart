@@ -9,9 +9,7 @@ import 'package:provider/provider.dart';
 
 import 'services/id_service.dart';
 
-
 Future<void> main() async {
-  // TODO: Check internet connection
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -20,31 +18,25 @@ Future<void> main() async {
 }
 
 class AppState extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => IDService())
-      ],
-      child: MyApp(),
+      providers: [ChangeNotifierProvider(create: (_) => IDService())],
+      child: const MyApp(),
     );
   }
-
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // TODO: poner el tema claro u oscuro en función de la configuración por defecto del dispositivo
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: StringsTranslation.of(context)?.translate("hueveria_nieto") ?? "Huevería Nieto",
+      title: StringsTranslation.of(context)?.translate("hueveria_nieto") ??
+          "Huevería Nieto",
       theme: AppTheme.ligthTheme,
-
       home: const LoginPage(),
     );
   }

@@ -8,7 +8,6 @@ import '../../../custom/custom_sizes.dart';
 import '../../../flutterfire/firebase_utils.dart';
 import '../../components/component_panel.dart';
 import '../../components/component_worker.dart';
-import '../../components/constants/hn_button.dart';
 
 class PendingWorkersResourcesPage extends StatefulWidget {
   const PendingWorkersResourcesPage(this.currentUser, this.pendingWorkersList,
@@ -44,8 +43,7 @@ class _PendingWorkersResourcesPageState
             toolbarHeight: 56.0,
             title: const Text(
               "Salarios pendientes",
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: Column(
             children: [
@@ -70,9 +68,12 @@ class _PendingWorkersResourcesPageState
                                   if (!internalUser.deleted) {
                                     if (internalUser.salary == null) {
                                       list.add(internalUser);
-                                      return Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 32, vertical: 8),
+                                      double top = 8;
+                                      double bottom = 0;
+                                      if (list.length == 1) top = 24;
+                                      if (i == userList.length - 1) bottom = 16;
+                                        return Container(
+                                          margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                         child: HNComponentWorker(
                                             internalUser.id,
                                             internalUser.name,
@@ -89,7 +90,7 @@ class _PendingWorkersResourcesPageState
                                           child: const HNComponentPanel(
                                             title: 'No hay usuarios',
                                             text:
-                                                "No hay registro de usuarios internos activos en la base de datos.",
+                                                "No hay registro de usuarios internos activos en la base de datos que estén pendientes de asignar el salario.",
                                           ));
                                       } else {
                                         return Container();
@@ -102,7 +103,7 @@ class _PendingWorkersResourcesPageState
                                         child: const HNComponentPanel(
                                           title: 'No hay usuarios',
                                           text:
-                                              "No hay registro de usuarios internos activos en la base de datos.",
+                                              "No hay registro de usuarios internos activos en la base de datos que estén pendientes de asignar el salario.",
                                         ));
                                     } else {
                                       return Container();
@@ -115,7 +116,7 @@ class _PendingWorkersResourcesPageState
                             child: const HNComponentPanel(
                               title: 'No hay usuarios',
                               text:
-                                  "No hay registro de usuarios internos activos en la base de datos.",
+                                  "No hay registro de usuarios internos activos en la base de datos que estén pendientes de asignar el salario.",
                             ));
                       }
                     } else if (snapshot.hasError) {
@@ -132,7 +133,7 @@ class _PendingWorkersResourcesPageState
                           child: const HNComponentPanel(
                             title: 'No hay usuarios',
                             text:
-                                "No hay registro de usuarios internos activos en la base de datos.",
+                                "No hay registro de usuarios internos activos en la base de datos que estén pendientes de asignar el salario.",
                           ));
                     }
                   }

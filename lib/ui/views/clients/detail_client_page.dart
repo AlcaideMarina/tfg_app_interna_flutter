@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_cell_table_form.dart';
-import 'package:hueveria_nieto_interna/ui/components/component_container_border_check_title.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_container_border_text.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_simple_form.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_table_form.dart';
@@ -14,8 +13,6 @@ import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'package:hueveria_nieto_interna/ui/views/allorders/client_all_orders_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/clients/modify_client_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
-import 'package:provider/provider.dart';
-import 'dart:developer' as developer;
 
 import '../../../data/models/order_model.dart';
 import '../../../flutterfire/firebase_utils.dart';
@@ -25,9 +22,6 @@ import '../../../utils/order_utils.dart';
 import '../../components/component_order.dart';
 import '../../components/component_panel.dart';
 import '../allorders/order_detail_page.dart';
-
-// TODO: Cuidado - todo esta clase está hardcodeada
-// TODO: Intentar reducir código
 
 class ClientDetailPage extends StatefulWidget {
   const ClientDetailPage(this.currentUser, this.client, {Key? key})
@@ -125,67 +119,82 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Información del cliente',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Detalle de cliente',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           child: StreamBuilder(
-                    stream: FirebaseUtils.instance
-                        .getClientWithDocId(client.documentId!),
-                    builder:
-                        (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.active) {
-                        if (snapshot.hasData) {
-                          DocumentSnapshot data = snapshot.data;
-                          Map<String, dynamic> map =
-                              data.data() as Map<String, dynamic>;
-                          client = ClientModel.fromMap(map, data.id);
-                          return Container(
-                            child: SingleChildScrollView(
-                              child: Container(
-                                margin:
-                                  const EdgeInsets.fromLTRB(24, 8, 24, 32),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    getAllFormElements(),
-                                    getOrderElement(),
-                                    const SizedBox(
-                                      height: 32,
-                                    ),
-                                    getButtonsComponent(),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                  ],
-                                ),
+              stream:
+                  FirebaseUtils.instance.getClientWithDocId(client.documentId!),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  if (snapshot.hasData) {
+                    DocumentSnapshot data = snapshot.data;
+                    Map<String, dynamic> map =
+                        data.data() as Map<String, dynamic>;
+                    client = ClientModel.fromMap(map, data.id);
+                    return Container(
+                      child: SingleChildScrollView(
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 16),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 24),
+                                child: getAllFormElements(),
                               ),
-                            ),
-                          );
-                        } else {
-                          return Container(
-                              margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                              child: const HNComponentPanel(
-                                title: 'Ha ocurrido un error',
-                                text:
-                                    "Se ha producido un error en la carga de datos del cliente. Por favor, inténtelo de nuevo.",
-                              ));
-                        }
-                      } else {
-                        return const Center(
-                            child: CircularProgressIndicator(
-                              color: CustomColors.redPrimaryColor,
-                            ),
-                          
-                        );
-                      }
-                    }),
-        )
-        
-    );
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: 1,
+                                color: CustomColors.redGraySecondaryColor,
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              getOrderElement(),
+                              const SizedBox(
+                                height: 32,
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: 1,
+                                color: CustomColors.redGraySecondaryColor,
+                              ),
+                              const SizedBox(
+                                height: 32,
+                              ),
+                              getButtonsComponent(),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Container(
+                        margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                        child: const HNComponentPanel(
+                          title: 'Ha ocurrido un error',
+                          text:
+                              "Se ha producido un error al cargar los datos del cliente. Por favor, inténtelo de nuevo.",
+                        ));
+                  }
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: CustomColors.redPrimaryColor,
+                    ),
+                  );
+                }
+              }),
+        ));
   }
 
   Widget getAllFormElements() {
@@ -221,6 +230,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
           email = value;
         }, textCapitalization: TextCapitalization.none),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
+        const SizedBox(height: 8,),
         getClientUserContainerComponent(),
       ],
     );
@@ -229,7 +239,9 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
   Widget getOrderElement() {
     return Flexible(
       fit: FlexFit.loose,
-      child: StreamBuilder(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 24),
+        child: StreamBuilder(
           stream: FirebaseUtils.instance.getUserOrders(client.documentId!),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
@@ -237,10 +249,11 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
                 final data = snapshot.data;
                 final List orders = data.docs;
                 if (orders.isNotEmpty) {
-                  
                   List<dynamic>? orderModelList = orders
-                    .map((e) => OrderModel.fromMap(e.data() as Map<String, dynamic>,e.id)).toList();
-                  
+                      .map((e) => OrderModel.fromMap(
+                          e.data() as Map<String, dynamic>, e.id))
+                      .toList();
+      
                   List<OrderModel> list = [];
                   for (OrderModel item in orderModelList) {
                     if (item.status != Constants().orderStatus["Cancelado"]) {
@@ -252,53 +265,50 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
                   });
                   if (list.isNotEmpty) {
                     return Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(
-                          height: 32,
+                          height: 16,
                         ),
                         const Text(
                           'Últimos pedidos:',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(
-                          height: 16,
+                          height: 8,
                         ),
                         ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: orders.length > 3 ? 3 : orders.length,
-                            itemBuilder: ((context, index) {
-                              final OrderModel orderModel = list[index];
-                              return Container(
-                                  margin: const EdgeInsets.symmetric(
-                                    horizontal: 32, vertical: 8),
-                                  child: HNComponentOrders(
-                                    orderModel.orderDatetime,
-                                    orderModel.orderId!,
-                                    orderModel.company,
-                                    OrderUtils().getOrderSummary(OrderUtils().orderDataToBDOrderModel(orderModel)),        // TODO
-                                    orderModel.totalPrice,
-                                    orderModel.status,
-                                    orderModel.deliveryDni,
-                                    onTap: () async {
-                                      navigateToOrderDetail(orderModel);
-                                    }
-                                  ),
-                                );
-                            }
-                          ),
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemCount: orders.length > 3 ? 3 : orders.length,
+                          itemBuilder: ((context, index) {
+                            final OrderModel orderModel = list[index];
+                            return Container(
+                                  margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                              child: HNComponentOrders(
+                                  orderModel.orderDatetime,
+                                  orderModel.orderId!,
+                                  orderModel.clientId.toString() + " - " + orderModel.company,
+                                  OrderUtils().getOrderSummary(OrderUtils()
+                                      .orderDataToBDOrderModel(
+                                          orderModel)),
+                                  orderModel.totalPrice,
+                                  orderModel.status,
+                                  orderModel.deliveryDni, onTap: () async {
+                                navigateToOrderDetail(orderModel);
+                              }),
+                            );
+                          }),
                         ),
                         const SizedBox(
-                          height: 16,
+                          height: 24,
                         ),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 8),
-                          child: HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
-                            'Ver todos', null, null, navigateToClientAllOrders, () {}),
+                          child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
+                              .getTypedButton('Ver todos', null, null,
+                                  navigateToClientAllOrders, () {}),
                         ),
                       ],
                     );
@@ -314,18 +324,19 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
             } else {
               return const Center(
                 child: CircularProgressIndicator(
-                      color: CustomColors.redPrimaryColor,
+                  color: CustomColors.redPrimaryColor,
                 ),
               );
             }
           },
+        ),
       ),
     );
   }
 
   Widget getButtonsComponent() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         children: [
           HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
@@ -333,8 +344,8 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
           const SizedBox(
             height: 8,
           ),
-          HNButton(ButtonTypes.blackRedBoldRoundedButton)
-              .getTypedButton('Eliminar cliente', null, null, deleteWarningUser, () {}),
+          HNButton(ButtonTypes.blackRedBoldRoundedButton).getTypedButton(
+              'Eliminar cliente', null, null, deleteWarningUser, () {}),
         ],
       ),
     );
@@ -357,22 +368,23 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     contCompany++;
 
     return HNComponentSimpleForm(
-        label + ':',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
-        componentTextInput: HNComponentTextInput(
-          textCapitalization: textCapitalization,
-          labelText: initialValue,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          textInputType: textInputType,
-          onChange: onChange,
-          isEnabled: false,
-          backgroundColor: CustomColors.backgroundTextFieldDisabled,
-          textColor: CustomColors.darkGrayColor,
-        ),);
+      label + ':',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
+        textCapitalization: textCapitalization,
+        labelText: initialValue,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textInputType: textInputType,
+        onChange: onChange,
+        isEnabled: false,
+        backgroundColor: CustomColors.backgroundTextFieldDisabled,
+        textColor: CustomColors.darkGrayColor,
+      ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    );
   }
 
   Widget getComponentTableForm(String label, List<TableRow> children,
@@ -387,12 +399,13 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     contCompany++;
 
     return HNComponentTableForm(
-      label,
+      label + ":",
       8,
       TableCellVerticalAlignment.middle,
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -400,8 +413,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     return [
       TableRow(children: [
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8, bottom: 8),
+            40, const EdgeInsets.only(left: 16, right: 8, bottom: 8),
             componentTextInput: HNComponentTextInput(
               labelText: phone1.toString(),
               textInputType: TextInputType.number,
@@ -415,8 +427,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
               textColor: CustomColors.darkGrayColor,
             )),
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16, bottom: 8),
+            40, const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             componentTextInput: HNComponentTextInput(
               labelText: namePhone1,
               textCapitalization: TextCapitalization.words,
@@ -431,9 +442,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
             )),
       ]),
       TableRow(children: [
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8),
+        HNComponentCellTableForm(40, const EdgeInsets.only(left: 16, right: 8),
             componentTextInput: HNComponentTextInput(
               labelText: phone2.toString(),
               textInputType: TextInputType.number,
@@ -446,9 +455,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
               backgroundColor: CustomColors.backgroundTextFieldDisabled,
               textColor: CustomColors.darkGrayColor,
             )),
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16),
+        HNComponentCellTableForm(40, const EdgeInsets.only(left: 8, right: 16),
             componentTextInput: HNComponentTextInput(
               labelText: namePhone2,
               textCapitalization: TextCapitalization.words,
@@ -485,6 +492,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
       leftPosition: 24,
       rightPosition: 50,
       topPosition: 10,
+      titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -521,57 +529,59 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
 
   deleteWarningUser() {
     showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-                title: const Text('Aviso impoertante'),
-                content: const Text('Esta acción es irreversible. ¿Está seguro de que quiere eliminar el cliente?'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Cancelar'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  TextButton(
-                    child: const Text('Continuar'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      deleteUser();
-                    },
-                  )
-                ],
-              ));
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text('Aviso impoertante'),
+              content: const Text(
+                  'Esta acción es irreversible. ¿Está seguro de que quiere eliminar el cliente?'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancelar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Continuar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    deleteUser();
+                  },
+                )
+              ],
+            ));
   }
 
   deleteUser() async {
-      FocusManager.instance.primaryFocus?.unfocus();
-      showAlertDialog(context);
-      bool conf = await FirebaseUtils.instance.deleteDocument("client_info", client.documentId!);
+    FocusManager.instance.primaryFocus?.unfocus();
+    showAlertDialog(context);
+    bool conf = await FirebaseUtils.instance
+        .deleteDocument("client_info", client.documentId!);
 
-      Navigator.pop(context);
-      if(conf) {
-        showDialog(
+    Navigator.pop(context);
+    if (conf) {
+      showDialog(
           context: context,
           builder: (_) => AlertDialog(
                 title: const Text('Usuario eliminado'),
-                content: const Text(
-                    'El usuario ha sido eliminado correctamente.'),
+                content:
+                    const Text('El usuario ha sido eliminado correctamente.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),
                     onPressed: () {
                       Navigator.of(context)
-                          ..pop()
-                          ..pop();
+                        ..pop()
+                        ..pop();
                     },
                   )
                 ],
               ));
-      } else {
-        showDialog(
+    } else {
+      showDialog(
           context: context,
           builder: (_) => AlertDialog(
-                title: const Text('Vaya...'),
+                title: const Text('Error'),
                 content: const Text(
                     'Parece que ha habido un error. Por favor, inténtelo de nuevo.'),
                 actions: <Widget>[
@@ -579,13 +589,13 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
                     child: const Text('De acuerdo.'),
                     onPressed: () {
                       Navigator.of(context)
-                          ..pop()
-                          ..pop();
+                        ..pop()
+                        ..pop();
                     },
                   )
                 ],
               ));
-      }
+    }
   }
 
   navigateToModifyClient() async {
@@ -614,23 +624,25 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
   }
 
   navigateToOrderDetail(OrderModel orderModel) async {
-
     InternalUserModel? deliveryPerson;
-    
-    if(orderModel.deliveryPerson != null) {
-      var futureDeliveryPerson = await FirebaseUtils.instance.getInternalUserWithDocumentId(orderModel.deliveryPerson!);
-      if(futureDeliveryPerson.exists && futureDeliveryPerson.data() != null) {
-        deliveryPerson = InternalUserModel.fromMap(futureDeliveryPerson.data()!, futureDeliveryPerson.id);
+
+    if (orderModel.deliveryPerson != null) {
+      var futureDeliveryPerson = await FirebaseUtils.instance
+          .getInternalUserWithDocumentId(orderModel.deliveryPerson!);
+      if (futureDeliveryPerson.exists && futureDeliveryPerson.data() != null) {
+        deliveryPerson = InternalUserModel.fromMap(
+            futureDeliveryPerson.data()!, futureDeliveryPerson.id);
       }
     }
-    if (context.mounted){
+    if (context.mounted) {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => OrderDetailPage(currentUser, client, orderModel, deliveryPerson),
+            builder: (context) => OrderDetailPage(
+                currentUser, client, orderModel, deliveryPerson),
           ));
     }
-  } 
+  }
 
   navigateToClientAllOrders() async {
     Navigator.push(
@@ -639,6 +651,4 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
           builder: (context) => ClientAllOrdersPage(currentUser, client),
         ));
   }
-    
-  
 }

@@ -58,7 +58,6 @@ class ClientModel {
       }
     });
 
-    // TODO: Investigar - ¿Deberíamos meter documentId?
     return ClientModel(
         json['cif'],
         json['city'],

@@ -14,16 +14,20 @@ import '../../components/component_text_input_multiline.dart';
 import '../../components/constants/hn_button.dart';
 
 class ModifyElectricityWaterGasResourcesPage extends StatefulWidget {
-  const ModifyElectricityWaterGasResourcesPage(this.currentUser, this.ewgModel, {Key? key}) : super(key: key);
+  const ModifyElectricityWaterGasResourcesPage(this.currentUser, this.ewgModel,
+      {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
   final ElectricityWaterGasResourcesModel ewgModel;
 
   @override
-  State<ModifyElectricityWaterGasResourcesPage> createState() => _ModifyElectricityWaterGasResourcesPageState();
+  State<ModifyElectricityWaterGasResourcesPage> createState() =>
+      _ModifyElectricityWaterGasResourcesPageState();
 }
 
-class _ModifyElectricityWaterGasResourcesPageState extends State<ModifyElectricityWaterGasResourcesPage> {
+class _ModifyElectricityWaterGasResourcesPageState
+    extends State<ModifyElectricityWaterGasResourcesPage> {
   late InternalUserModel currentUser;
   late ElectricityWaterGasResourcesModel ewgModel;
   late int type;
@@ -34,7 +38,7 @@ class _ModifyElectricityWaterGasResourcesPageState extends State<ModifyElectrici
   @override
   void initState() {
     super.initState();
-    
+
     currentUser = widget.currentUser;
     ewgModel = widget.ewgModel;
 
@@ -48,7 +52,6 @@ class _ModifyElectricityWaterGasResourcesPageState extends State<ModifyElectrici
 
   @override
   Widget build(BuildContext context) {
-
     if (typeItems.isEmpty) {
       for (String key in Constants().ewgTypes.keys) {
         typeItems.add(key);
@@ -60,9 +63,8 @@ class _ModifyElectricityWaterGasResourcesPageState extends State<ModifyElectrici
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Elec., luz, agua - Modificar',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Modificar luz, agua, gas',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -73,12 +75,12 @@ class _ModifyElectricityWaterGasResourcesPageState extends State<ModifyElectrici
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getComponentTableFormWithoutLable(getCells(), 
-                        columnWidhts: {
-                          0: const IntrinsicColumnWidth(),
-                        }),
+                      getComponentTableFormWithoutLable(getCells(),
+                          columnWidhts: {
+                            0: const IntrinsicColumnWidth(),
+                          }),
                       const SizedBox(
-                        height: 16,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -106,114 +108,113 @@ class _ModifyElectricityWaterGasResourcesPageState extends State<ModifyElectrici
 
   List<TableRow> getCells() {
     return [
-      TableRow(
-        children: [
-          Container(
-            child: Text("Fecha:"),
-            margin: const EdgeInsets.only(right: 16),
+      TableRow(children: [
+        Container(
+          child: const Text("Fecha:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16),
+        ),
+        Container(
+          child: Text(
+              Utils().parseTimestmpToString(ewgModel.expenseDatetime) ?? "", style: const TextStyle(fontSize: 16)),
+          margin: const EdgeInsets.only(left: 16),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Tipo:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: HNComponentDropdown(
+            typeItems,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: TextInputType.text,
+            isEnabled: false,
+            initialValue: Utils().getKey(Constants().ewgTypes, ewgModel.type),
+            onChange: (dynamic value) => {typeStr = value!},
           ),
-          Container(
-            child: Text(Utils().parseTimestmpToString(ewgModel.expenseDatetime) ?? ""),
-            margin: const EdgeInsets.only(left: 16),
-          ),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Tipo:"),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentDropdown(
-                typeItems,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: TextInputType.text,
-                isEnabled: false,
-                initialValue: Utils().getKey(Constants().ewgTypes, ewgModel.type),
-                onChange: (dynamic value) => {
-                  typeStr = value!
-                },
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Precio total:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: Row(
+            children: [
+              Flexible(
+                child: HNComponentTextInput(
+                  contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  textInputType: const TextInputType.numberWithOptions(),
+                  isEnabled: true,
+                  initialValue: ewgModel.totalPrice.toString(),
+                  onChange: (value) {
+                    totalPrice = double.tryParse(value);
+                  },
+                ),
               ),
-            ),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Precio total:"),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                isEnabled: true,
-                initialValue: ewgModel.totalPrice.toString(),
-                onChange: (value) {
-                  totalPrice = double.tryParse(value);
-                },
+              const SizedBox(
+                width: 16,
               ),
-            ),
-        ]
-      ),
-      TableRow(
-        children: [
-          TableCell(
-            verticalAlignment: TableCellVerticalAlignment.top,
-            child: Container(
-              child: Text("Notas:"),
-              margin: const EdgeInsets.only(right: 16, top: 16),
-            ),
-          ),
-          Container(
-              margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
-              child: HNComponentTextInputMultiline(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                textInputType: TextInputType.multiline,
-                isEnabled: true,
-                initialValue: ewgModel.notes,
-                maxLines: 5,
-                minLines: 5,
-                textAlignVertical: TextAlignVertical.top,
-                alignLabelWithHint: true,
-                onChange: (value) {
-                  notes = value;
-                },
+              const Text("€", style: TextStyle(fontSize: 16)),
+              const SizedBox(
+                width: 8,
               ),
-            ),
-        ]
-      ),
+            ],
+          ),
+        ),
+      ]),
+      TableRow(children: [
+        TableCell(
+          verticalAlignment: TableCellVerticalAlignment.top,
+          child: Container(
+            child: const Text("Notas:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            margin: const EdgeInsets.only(right: 16, top: 16),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(left: 8, bottom: 0, top: 4),
+          child: HNComponentTextInputMultiline(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            textInputType: TextInputType.multiline,
+            isEnabled: true,
+            initialValue: ewgModel.notes,
+            maxLines: 5,
+            minLines: 5,
+            textAlignVertical: TextAlignVertical.top,
+            alignLabelWithHint: true,
+            onChange: (value) {
+              notes = value;
+            },
+          ),
+        ),
+      ]),
     ];
   }
 
   Widget getButtonsComponent() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        children: [
-          HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Guardar', null, null, warningUpdateEWGResource, null),
+    return Column(children: [
+          HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
+              'Guardar', null, null, warningUpdateEWGResource, null),
           const SizedBox(
             height: 8,
           ),
-          HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-              .getTypedButton(
-                'Cancelar', 
-                null, 
-                null, 
-                goBack, 
-                null, 
-              ),
-        ])
-    );
+          HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
+            'Cancelar',
+            null,
+            null,
+            goBack,
+            null,
+          ),
+        ]);
   }
 
   goBack() {
@@ -224,80 +225,84 @@ class _ModifyElectricityWaterGasResourcesPageState extends State<ModifyElectrici
   warningUpdateEWGResource() {
     FocusManager.instance.primaryFocus?.unfocus();
     showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-          title: const Text('Aviso'),
-          content: const Text(
-              'Va a modificar este ticket. ¿Quiere continuar con el proceso?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancelar'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            TextButton(
-              child: const Text('Continuar'),
-              onPressed: () {
-                Navigator.pop(context);
-                updateEWGResource();
-              },
-            )
-          ],
-        ));
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text('Aviso'),
+              content: const Text(
+                  'Va a modificar este ticket. ¿Quiere continuar con el proceso?'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancelar'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                TextButton(
+                  child: const Text('Continuar'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    updateEWGResource();
+                  },
+                )
+              ],
+            ));
   }
 
   updateEWGResource() async {
     FocusManager.instance.primaryFocus?.unfocus();
     showAlertDialog(context);
 
-    if (Constants().ewgTypes.keys.contains(typeStr) && totalPrice! > 0 && totalPrice! > 0) {
-      ElectricityWaterGasResourcesModel updateEWGModel = ElectricityWaterGasResourcesModel(
-        ewgModel.createdBy, 
-        ewgModel.creationDatetime, 
-        ewgModel.deleted, 
-        ewgModel.expenseDatetime, 
-        notes ?? "",
-        totalPrice!, 
-        Constants().ewgTypes[typeStr]!, 
-        ewgModel.documentId);
-      bool firestoreConf = await FirebaseUtils.instance.updateDocument("material_electricity_water_gas", ewgModel.documentId!, updateEWGModel.toMap());
+    if (Constants().ewgTypes.keys.contains(typeStr) &&
+        totalPrice! > 0 &&
+        totalPrice! > 0) {
+      ElectricityWaterGasResourcesModel updateEWGModel =
+          ElectricityWaterGasResourcesModel(
+              ewgModel.createdBy,
+              ewgModel.creationDatetime,
+              ewgModel.deleted,
+              ewgModel.expenseDatetime,
+              notes ?? "",
+              totalPrice!,
+              Constants().ewgTypes[typeStr]!,
+              ewgModel.documentId);
+      bool firestoreConf = await FirebaseUtils.instance.updateDocument(
+          "material_electricity_water_gas",
+          ewgModel.documentId!,
+          updateEWGModel.toMap());
       if (firestoreConf) {
-          Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Recurso actualizado'),
-                    content: Text(
-                        'La información sobre la luz, agua y gas ha sido actualizada correctamente en la base de datos.'),
-                    actions: <Widget>[
-                      TextButton(
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Recurso actualizado'),
+                  content: Text(
+                      'La información sobre el recurso ha sido actualizada correctamente en la base de datos.'),
+                  actions: <Widget>[
+                    TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                           Navigator.pop(context, updateEWGModel);
-                        }, 
-                        child: const Text("De acuerdo")
-                      ),
-                    ],
-                  ));
-        } else {
-          Navigator.of(context).pop();
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: const Text('Error'),
-                    content: Text(
-                        'Se ha producido un error al actualizar el recurso. Por favor, revise los datos e inténtelo de nuevo.'),
-                    actions: <Widget>[
-                      TextButton(
+                        },
+                        child: const Text("De acuerdo")),
+                  ],
+                ));
+      } else {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text('Error'),
+                  content: Text(
+                      'Se ha producido un error al actualizar el recurso. Por favor, revise los datos e inténtelo de nuevo.'),
+                  actions: <Widget>[
+                    TextButton(
                         onPressed: () {
                           Navigator.of(this.context).pop();
-                        }, 
-                        child: const Text("De acuerdo")
-                      ),
-                    ],
-                  ));
-        }
+                        },
+                        child: const Text("De acuerdo")),
+                  ],
+                ));
+      }
     } else {
       Navigator.of(context).pop();
       showDialog(
@@ -308,11 +313,10 @@ class _ModifyElectricityWaterGasResourcesPageState extends State<ModifyElectrici
                     'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
                 actions: <Widget>[
                   TextButton(
-                    onPressed: () {
-                      Navigator.of(this.context).pop();
-                    }, 
-                    child: const Text("De acuerdo")
-                  ),
+                      onPressed: () {
+                        Navigator.of(this.context).pop();
+                      },
+                      child: const Text("De acuerdo")),
                 ],
               ));
     }
@@ -329,5 +333,4 @@ class _ModifyElectricityWaterGasResourcesPageState extends State<ModifyElectrici
       },
     );
   }
-
 }

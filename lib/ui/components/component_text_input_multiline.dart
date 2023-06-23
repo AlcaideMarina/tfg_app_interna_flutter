@@ -14,7 +14,6 @@ class HNComponentTextInputMultiline extends StatelessWidget {
   final bool obscureText;
   final Function(String)? onChange;
   final Future Function()? onTap;
-  // validator
   final AutovalidateMode? autovalidateMode;
   final String? hintText;
   final String? labelText;
@@ -41,7 +40,6 @@ class HNComponentTextInputMultiline extends StatelessWidget {
       this.textAlignVertical,
       this.onChange,
       this.onTap,
-      // this.validator,
       this.autovalidateMode,
       this.hintText,
       this.labelText,
@@ -50,7 +48,7 @@ class HNComponentTextInputMultiline extends StatelessWidget {
       this.icon,
       this.isDense,
       this.isEnabled,
-      this.contentPadding, 
+      this.contentPadding,
       this.textEditingController,
       this.backgroundColor,
       this.textColor,

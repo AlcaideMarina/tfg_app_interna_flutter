@@ -12,10 +12,10 @@ import '../../components/component_panel.dart';
 import '../../components/constants/hn_button.dart';
 
 class AllWorkersResources extends StatefulWidget {
-  AllWorkersResources(this.currentUser, {Key? key}) : super(key: key);
+  const AllWorkersResources(this.currentUser, {Key? key}) : super(key: key);
 
   final InternalUserModel currentUser;
-  
+
   @override
   State<AllWorkersResources> createState() => _AllWorkersResourcesState();
 }
@@ -34,11 +34,10 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
 
   @override
   Widget build(BuildContext context) {
-    
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     workerList = [];
     pendingWorkersList = [];
-    
+
     return Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
@@ -46,19 +45,20 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
             toolbarHeight: 56.0,
             title: const Text(
               "Trabajadores y salarios",
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: Column(
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
+              margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
               child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-                  .getTypedButton(
-                      "Sueldos pendientes", null, null, navigateToPendingWorkers, () {}),
+                  .getTypedButton("Sueldos pendientes", null, null,
+                      navigateToPendingWorkers, () {}),
             ),
-            const SizedBox(
-              height: 16,
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: CustomColors.redGraySecondaryColor,
             ),
             StreamBuilder(
                 stream: FirebaseUtils.instance.getInternalUsers(),
@@ -76,46 +76,54 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
                                 itemCount: userList.length,
                                 itemBuilder: (context, i) {
                                   final InternalUserModel internalUser =
-                                      InternalUserModel.fromMap(userList[i].data()
-                                          as Map<String, dynamic>, userList[i].id);
+                                      InternalUserModel.fromMap(
+                                          userList[i].data()
+                                              as Map<String, dynamic>,
+                                          userList[i].id);
                                   if (!internalUser.deleted) {
                                     if (internalUser.salary != null) {
                                       workerList.add(internalUser);
-                                      return Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 32, vertical: 8),
+                                      double top = 8;
+                                      double bottom = 0;
+                                      if (workerList.length == 1) top = 24;
+                                      if (i == userList.length - 1) bottom = 16;
+                                        return Container(
+                                          margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                         child: HNComponentWorker(
                                             internalUser.id,
                                             internalUser.name,
                                             internalUser.surname,
-                                            internalUser.salary,
-                                            onTap: () {
-                                              navigateToWorkerDetail(internalUser);
-                                            }),
+                                            internalUser.salary, onTap: () {
+                                          navigateToWorkerDetail(internalUser);
+                                        }),
                                       );
                                     } else {
                                       pendingWorkersList.add(internalUser);
-                                      if (i == (userList.length - 1) && workerList.isEmpty) {
+                                      if (i == (userList.length - 1) &&
+                                          workerList.isEmpty) {
                                         return Container(
-                                          margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                                          child: const HNComponentPanel(
-                                            title: 'No hay usuarios',
-                                            text:
-                                                "No hay registro de usuarios internos activos en la base de datos.",
-                                          ));
+                                            margin: const EdgeInsets.fromLTRB(
+                                                32, 56, 32, 8),
+                                            child: const HNComponentPanel(
+                                              title: 'No hay usuarios',
+                                              text:
+                                                  "No hay registro de usuarios internos activos en la base de datos.",
+                                            ));
                                       } else {
                                         return Container();
                                       }
                                     }
                                   } else {
-                                    if (i == (userList.length - 1) && workerList.isEmpty) {
+                                    if (i == (userList.length - 1) &&
+                                        workerList.isEmpty) {
                                       return Container(
-                                        margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                                        child: const HNComponentPanel(
-                                          title: 'No hay usuarios',
-                                          text:
-                                              "No hay registro de usuarios internos activos en la base de datos.",
-                                        ));
+                                          margin: const EdgeInsets.fromLTRB(
+                                              32, 56, 32, 8),
+                                          child: const HNComponentPanel(
+                                            title: 'No hay usuarios',
+                                            text:
+                                                "No hay registro de usuarios internos activos en la base de datos.",
+                                          ));
                                     } else {
                                       return Container();
                                     }
@@ -164,7 +172,8 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => PendingWorkersResourcesPage(currentUser, pendingWorkersList),
+          builder: (context) =>
+              PendingWorkersResourcesPage(currentUser, pendingWorkersList),
         ));
   }
 

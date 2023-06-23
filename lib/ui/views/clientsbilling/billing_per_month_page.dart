@@ -3,10 +3,8 @@ import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/data/models/local/billing_data.dart';
 import 'package:hueveria_nieto_interna/data/models/local/billing_per_month_data.dart';
-import 'package:hueveria_nieto_interna/data/models/order_model.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_billing_per_month.dart';
 import 'package:hueveria_nieto_interna/ui/views/clientsbilling/montly_billing_detail_page.dart';
-import 'package:hueveria_nieto_interna/utils/constants.dart';
 import 'package:hueveria_nieto_interna/utils/order_utils.dart';
 
 import '../../../custom/app_theme.dart';
@@ -17,7 +15,8 @@ import '../../../flutterfire/firebase_utils.dart';
 import '../../components/component_panel.dart';
 
 class BillingPerMonthPage extends StatefulWidget {
-  const BillingPerMonthPage(this.currentUser, this.clientModel, {Key? key}) : super(key: key);
+  const BillingPerMonthPage(this.currentUser, this.clientModel, {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
   final ClientModel clientModel;
@@ -46,22 +45,25 @@ class _BillingPerMonthPageState extends State<BillingPerMonthPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              "Ver clientes",
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              "Facturación de clientes",
+              style: TextStyle(fontSize: 18),
             )),
         body: Column(
           children: [
             StreamBuilder(
-                stream: FirebaseUtils.instance.getUserOrders(clientModel.documentId!),
+                stream: FirebaseUtils.instance
+                    .getUserOrders(clientModel.documentId!),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
                     if (snapshot.hasData) {
                       final data = snapshot.data;
                       final List orderList = data.docs;
-                      final List<OrderBillingData> orderBillingDataList = OrderUtils().getOrderBillingData(orderList);
-                      final List<BillingPerMonthData> list = OrderUtils().getBillingContainerFromOrderModel(orderBillingDataList);
+                      final List<OrderBillingData> orderBillingDataList =
+                          OrderUtils().getOrderBillingData(orderList);
+                      final List<BillingPerMonthData> list = OrderUtils()
+                          .getBillingContainerFromOrderModel(
+                              orderBillingDataList);
                       if (orderList.isNotEmpty) {
                         return Expanded(
                             child: ListView.builder(
@@ -70,25 +72,33 @@ class _BillingPerMonthPageState extends State<BillingPerMonthPage> {
                                 itemCount: list.length,
                                 itemBuilder: (context, i) {
                                   BillingPerMonthData data = list[i];
+                                  double top = 8;
+                                  double bottom = 0;
+                                  if (i == 0) top = 16;
+                                  if (i == list.length - 1) bottom = 16;
                                   return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 32, vertical: 8),
+                                    margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                     child: HNComponentBillingPerMonth(
-                                      BillingPerMonthData(data.initDate, data.endDate, data.billingData),
-                                      onTap: () {
-                                        int dataMonth = data.initDate.toDate().month;
-                                        int thisMonth = DateTime.now().month;
-                                        navigateToMonthlyBillingDetail(data.billingData!, dataMonth == thisMonth);
-                                      }),
-                                    );
+                                        BillingPerMonthData(
+                                            data.initDate,
+                                            data.endDate,
+                                            data.billingData), onTap: () {
+                                      int dataMonth =
+                                          data.initDate.toDate().month;
+                                      int thisMonth = DateTime.now().month;
+                                      navigateToMonthlyBillingDetail(
+                                          data.billingData!,
+                                          dataMonth == thisMonth);
+                                    }),
+                                  );
                                 }));
                       } else {
                         return Container(
                             margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                            child: const HNComponentPanel(
-                              title: 'No hay clientes',
+                            child: HNComponentPanel(
+                              title: 'No hay registros',
                               text:
-                                  "No hay registro de clientes activos en la base de datos.",
+                                  "Aún no hay registros de facturación para el cliente seleccionado (${clientModel.id} - ${clientModel.company})",
                             ));
                       }
                     } else if (snapshot.hasError) {
@@ -102,10 +112,10 @@ class _BillingPerMonthPageState extends State<BillingPerMonthPage> {
                     } else {
                       return Container(
                           margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                          child: const HNComponentPanel(
-                            title: 'No hay clientes',
+                          child: HNComponentPanel(
+                            title: 'No hay registros',
                             text:
-                                "No hay registro de clientes activos en la base de datos.",
+                                "Aún no hay registros de facturación para el cliente seleccionado (${clientModel.id} - ${clientModel.company})",
                           ));
                     }
                   }
@@ -125,6 +135,7 @@ class _BillingPerMonthPageState extends State<BillingPerMonthPage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => MonthlyBillingDetailPage(currentUser, billingData, isThisMonth)));
+            builder: (context) => MonthlyBillingDetailPage(
+                currentUser, billingData, isThisMonth)));
   }
 }

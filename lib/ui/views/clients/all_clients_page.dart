@@ -35,17 +35,10 @@ class _AllClientsPageState extends State<AllClientsPage> {
 
   @override
   Widget build(BuildContext context) {
-    Firebase
-        .initializeApp(); // TODO: Investigar si esto se puede quitar o poner de forma global
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
 
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-    if (StringsTranslation.of(context) == null) {
-      print("NULO");
-    } else {
-      print("NO NULO");
-    }
 
     return Scaffold(
         key: _scaffoldKey,
@@ -54,22 +47,15 @@ class _AllClientsPageState extends State<AllClientsPage> {
             toolbarHeight: 56.0,
             title: const Text(
               "Ver clientes",
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: Column(
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
+              margin: const EdgeInsets.all(24),
               child: Column(
                 children: [
-                  HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-                      .getTypedButton(
-                          "Nuevo", null, null, navigateToNewClientPage, () {}),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  HNButton(ButtonTypes.grayBlackRoundedButton).getTypedButton(
+                  HNButton(ButtonTypes.blackRedRoundedButton).getTypedButton(
                       "Clientes eliminadas",
                       null,
                       null,
@@ -78,8 +64,10 @@ class _AllClientsPageState extends State<AllClientsPage> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 16,
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: CustomColors.redGraySecondaryColor,
             ),
             StreamBuilder(
                 stream: FirebaseUtils.instance.getClients(),
@@ -90,6 +78,7 @@ class _AllClientsPageState extends State<AllClientsPage> {
                       final data = snapshot.data;
                       final List clientList = data.docs;
                       if (clientList.isNotEmpty) {
+                        List<ClientModel> list = [];
                         return Expanded(
                             child: ListView.builder(
                                 shrinkWrap: true,
@@ -102,9 +91,13 @@ class _AllClientsPageState extends State<AllClientsPage> {
                                               as Map<String, dynamic>,
                                           clientList[i].id);
                                   if (!client.deleted) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 32, vertical: 8),
+                                    list.add(client);
+                                  double top = 8;
+                                  double bottom = 0;
+                                  if (list.length == 1) top = 24;
+                                  if (i == clientList.length - 1) bottom = 16;
+                                  return Container(
+                                    margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                       child: HNComponentClients(
                                         client.id.toString(),
                                         client.company,
@@ -153,7 +146,12 @@ class _AllClientsPageState extends State<AllClientsPage> {
                   );
                 }),
           ],
-        ));
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: CustomColors.redPrimaryColor,
+          child: const Icon(Icons.add_rounded),
+          onPressed: navigateToNewClientPage),
+    );
   }
 
   navigateToNewClientPage() {

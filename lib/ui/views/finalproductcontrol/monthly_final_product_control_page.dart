@@ -14,17 +14,20 @@ import '../../components/component_panel.dart';
 import 'new_final_product_control_page.dart';
 
 class MonthlyFinalProductControlPage extends StatefulWidget {
-  const MonthlyFinalProductControlPage(this.currentUser, {Key? key}) : super(key: key);
+  const MonthlyFinalProductControlPage(this.currentUser, {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
 
   @override
-  State<MonthlyFinalProductControlPage> createState() => _MonthlyFinalProductControlPageState();
+  State<MonthlyFinalProductControlPage> createState() =>
+      _MonthlyFinalProductControlPageState();
 }
 
-class _MonthlyFinalProductControlPageState extends State<MonthlyFinalProductControlPage> {
+class _MonthlyFinalProductControlPageState
+    extends State<MonthlyFinalProductControlPage> {
   late InternalUserModel currentUser;
-  
+
   @override
   void initState() {
     super.initState();
@@ -36,84 +39,84 @@ class _MonthlyFinalProductControlPageState extends State<MonthlyFinalProductCont
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-            toolbarHeight: 56.0,
-            title: const Text(
-              "Todos los pedidos",
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
-            )),
-        body: Column(
-          children: [
-            StreamBuilder(
-                stream: FirebaseUtils.instance.getAllDocumentsFromCollection("final_product_control"),
-                builder:
-                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.active) {
-                    if (snapshot.hasData) {
-                      final data = snapshot.data;
-                      final List list = data.docs;
-                      final List<FPCModel> fpcList = FarmUtils().getFPCModel(list);
-                      final List<MonthlyFPCContainerData> monthlyFPCContainerDataList = FarmUtils().getMonthlyFPCModelFromFPCModelList(fpcList);
+      key: _scaffoldKey,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+          toolbarHeight: 56.0,
+          title: const Text(
+            "Control prod. final - Mensual",
+            style: TextStyle(fontSize: 18),
+          )),
+      body: Column(
+        children: [
+          StreamBuilder(
+              stream: FirebaseUtils.instance
+                  .getAllDocumentsFromCollection("final_product_control"),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  if (snapshot.hasData) {
+                    final data = snapshot.data;
+                    final List list = data.docs;
+                    final List<FPCModel> fpcList =
+                        FarmUtils().getFPCModel(list);
+                    final List<MonthlyFPCContainerData>
+                        monthlyFPCContainerDataList =
+                        FarmUtils().getMonthlyFPCModelFromFPCModelList(fpcList);
 
-                      if(monthlyFPCContainerDataList.isNotEmpty) {
-                        return Expanded(
+                    if (monthlyFPCContainerDataList.isNotEmpty) {
+                      return Expanded(
                           child: ListView.builder(
-                            shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemCount: monthlyFPCContainerDataList.length,
-                                itemBuilder: (context, i) {
-                                  MonthlyFPCContainerData data = monthlyFPCContainerDataList[i];
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 32, vertical: 8),
-                                    child: HNComponentFPCMonthlyContainerItem(
-                                      data,
-                                      onTap: () {
-                                        navigateToDailyFPC(data);
-                                      }),
-                                    );
-                                }
-                            )
-                        );
-                      }
-
-                    } else if (snapshot.hasError) {
-                      return Container(
-                          margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                          child: const HNComponentPanel(
-                            title: 'Ha ocurrido un error',
-                            text:
-                                "Lo sentimos, pero ha habido un error al intentar recuperar los datos. Por favor, inténtelo de nuevo más tarde.",
-                          ));
-                    } else {
-                      return Container(
-                          margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
-                          child: const HNComponentPanel(
-                            title: 'No hay clientes',
-                            text:
-                                "No hay registro de clientes activos en la base de datos.",
-                          ));
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: monthlyFPCContainerDataList.length,
+                              itemBuilder: (context, i) {
+                                MonthlyFPCContainerData data =
+                                    monthlyFPCContainerDataList[i];
+                                double top = 8;
+                                double bottom = 0;
+                                if (i == 0) top = 16;
+                                if (i == list.length - 1) bottom = 16;
+                                return Container(
+                                    margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
+                                  child: HNComponentFPCMonthlyContainerItem(
+                                      data, onTap: () {
+                                    navigateToDailyFPC(data);
+                                  }),
+                                );
+                              }));
                     }
+                  } else if (snapshot.hasError) {
+                    return Container(
+                        margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                        child: const HNComponentPanel(
+                          title: 'Ha ocurrido un error',
+                          text:
+                              "Lo sentimos, pero ha habido un error al intentar recuperar los datos. Por favor, inténtelo de nuevo más tarde.",
+                        ));
+                  } else {
+                    return Container(
+                        margin: const EdgeInsets.fromLTRB(32, 56, 32, 8),
+                        child: const HNComponentPanel(
+                          title: 'No hay registros',
+                          text: "No hay registros en la base de datos.",
+                        ));
                   }
-                  return const Expanded(
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: CustomColors.redPrimaryColor,
-                      ),
+                }
+                return const Expanded(
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: CustomColors.redPrimaryColor,
                     ),
-                  );
-                }),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
+                  ),
+                );
+              }),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
           backgroundColor: CustomColors.redPrimaryColor,
           child: const Icon(Icons.add_rounded),
-          onPressed: navigateToNewFPC
-        ),
-      );
+          onPressed: navigateToNewFPC),
+    );
   }
 
   navigateToDailyFPC(MonthlyFPCContainerData data) {
@@ -133,7 +136,8 @@ class _MonthlyFinalProductControlPageState extends State<MonthlyFinalProductCont
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => NewFinalProductControlPage(currentUser, nextLot),
+          builder: (context) =>
+              NewFinalProductControlPage(currentUser, nextLot),
         ));
-  }  
+  }
 }

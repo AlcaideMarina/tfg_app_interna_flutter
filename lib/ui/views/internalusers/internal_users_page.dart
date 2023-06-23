@@ -1,23 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hueveria_nieto_interna/ui/components/component_clients.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_internal_users.dart';
 import 'package:hueveria_nieto_interna/ui/components/constants/hn_button.dart';
 import 'package:hueveria_nieto_interna/custom/app_theme.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
 import 'package:hueveria_nieto_interna/custom/custom_sizes.dart';
 import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
-import 'package:hueveria_nieto_interna/data/models/client_model.dart';
 import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/ui/views/internalusers/deleted_internal_users_page.dart';
-import 'package:hueveria_nieto_interna/ui/views/clients/detail_client_page.dart';
-import 'package:hueveria_nieto_interna/ui/views/clients/new_client_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/internalusers/internal_user_detail_page.dart';
 import 'package:hueveria_nieto_interna/ui/views/internalusers/new_internal_user_page.dart';
 import 'package:hueveria_nieto_interna/values/strings_translation.dart';
 
 import '../../components/component_panel.dart';
-import '../clients/deleted_clients_page.dart';
 
 class InternalUsersPage extends StatefulWidget {
   const InternalUsersPage(this.currentUser, {Key? key}) : super(key: key);
@@ -39,17 +34,10 @@ class _InternalUsersPageState extends State<InternalUsersPage> {
 
   @override
   Widget build(BuildContext context) {
-    Firebase
-        .initializeApp(); // TODO: Investigar si esto se puede quitar o poner de forma global
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
 
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-    if (StringsTranslation.of(context) == null) {
-      print("NULO");
-    } else {
-      print("NO NULO");
-    }
 
     return Scaffold(
         key: _scaffoldKey,
@@ -58,22 +46,15 @@ class _InternalUsersPageState extends State<InternalUsersPage> {
             toolbarHeight: 56.0,
             title: const Text(
               "Ver usuarios internos",
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: Column(
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
+              margin: const EdgeInsets.all(24),
               child: Column(
                 children: [
-                  HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-                      .getTypedButton(
-                          "Nuevo", null, null, navigateToNewInternalUserPage, () {}),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  HNButton(ButtonTypes.grayBlackRoundedButton).getTypedButton(
+                  HNButton(ButtonTypes.blackRedRoundedButton).getTypedButton(
                       "Cuentas eliminadas",
                       null,
                       null,
@@ -82,8 +63,10 @@ class _InternalUsersPageState extends State<InternalUsersPage> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 16,
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: CustomColors.redGraySecondaryColor,
             ),
             StreamBuilder(
                 stream: FirebaseUtils.instance.getInternalUsers(),
@@ -94,6 +77,7 @@ class _InternalUsersPageState extends State<InternalUsersPage> {
                       final data = snapshot.data;
                       final List userList = data.docs;
                       if (userList.isNotEmpty) {
+                        List<InternalUserModel> list = [];
                         return Expanded(
                             child: ListView.builder(
                                 shrinkWrap: true,
@@ -101,18 +85,28 @@ class _InternalUsersPageState extends State<InternalUsersPage> {
                                 itemCount: userList.length,
                                 itemBuilder: (context, i) {
                                   final InternalUserModel internalUser =
-                                      InternalUserModel.fromMap(userList[i].data()
-                                          as Map<String, dynamic>, userList[i].id);
+                                      InternalUserModel.fromMap(
+                                          userList[i].data()
+                                              as Map<String, dynamic>,
+                                          userList[i].id);
                                   if (!internalUser.deleted) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 32, vertical: 8),
+                                    list.add(internalUser);
+                                  double top = 8;
+                                  double bottom = 0;
+                                  if (list.length == 1) top = 24;
+                                  if (i == userList.length - 1) bottom = 16;
+                                  return Container(
+                                    margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                       child: HNComponentInternalUsers(
                                           internalUser.id.toString(),
-                                          internalUser.name + ' ' + internalUser.surname,
+                                          internalUser.name +
+                                              ' ' +
+                                              internalUser.surname,
                                           internalUser.dni,
                                           internalUser.position,
-                                          onTap: () => navigateToInternalUserDetail(internalUser)),
+                                          onTap: () =>
+                                              navigateToInternalUserDetail(
+                                                  internalUser)),
                                     );
                                   } else {
                                     return Container();
@@ -154,7 +148,11 @@ class _InternalUsersPageState extends State<InternalUsersPage> {
                   );
                 }),
           ],
-        ));
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: CustomColors.redPrimaryColor,
+          child: const Icon(Icons.add_rounded),
+          onPressed: navigateToNewInternalUserPage),);
   }
 
   navigateToDeletedInternalUsersPage() {
@@ -177,8 +175,8 @@ class _InternalUsersPageState extends State<InternalUsersPage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => InternalUserDetailPage(currentUser, internalUserModel),
+          builder: (context) =>
+              InternalUserDetailPage(currentUser, internalUserModel),
         ));
   }
-
 }

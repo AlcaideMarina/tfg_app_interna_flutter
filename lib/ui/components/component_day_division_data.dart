@@ -6,7 +6,9 @@ import '../../utils/Utils.dart';
 import '../../values/image_routes.dart';
 
 class HNComponentDayDivisionData extends StatelessWidget {
-  const HNComponentDayDivisionData(this.dayOfWeek, this.timestamp, {Key? key, this.onTap}) : super(key: key);
+  const HNComponentDayDivisionData(this.dayOfWeek, this.timestamp,
+      {Key? key, this.onTap})
+      : super(key: key);
 
   final String dayOfWeek;
   final Timestamp timestamp;
@@ -28,26 +30,31 @@ class HNComponentDayDivisionData extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(dayOfWeek + " - " + (Utils().parseTimestmpToString(timestamp, dateFormat: "dd, MMMM, yyyy") ?? "?")),
+                      Text(dayOfWeek +
+                          "  -  " +
+                          (Utils().parseTimestmpToString(timestamp,
+                                  dateFormat: "dd, MMMM, yyyy") ??
+                              "?"),
+                          style: const TextStyle(fontSize: 16),),
                     ],
                   ),
                 ),
               ),
-              onTap != null ? Image.asset(
-                ImageRoutes.getRoute('ic_next_arrow'), 
-                width: 16,
-                height: 24,)
-              : Container()
+              onTap != null
+                  ? Image.asset(
+                      ImageRoutes.getRoute('ic_next_arrow'),
+                      width: 16,
+                      height: 24,
+                    )
+                  : Container()
             ],
           ),
           decoration: BoxDecoration(
-            color: CustomColors.redGraySecondaryColor,
-            border: Border.all(
               color: CustomColors.redGraySecondaryColor,
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(20))
-          ),
-        )
-    );
+              border: Border.all(
+                color: CustomColors.redGraySecondaryColor,
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(20))),
+        ));
   }
 }

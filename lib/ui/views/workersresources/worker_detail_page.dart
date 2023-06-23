@@ -11,7 +11,8 @@ import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class WorkerDetailPage extends StatefulWidget {
-  const WorkerDetailPage(this.currentUser, this.workerUser, {Key? key}) : super(key: key);
+  const WorkerDetailPage(this.currentUser, this.workerUser, {Key? key})
+      : super(key: key);
 
   final InternalUserModel currentUser;
   final InternalUserModel workerUser;
@@ -41,8 +42,7 @@ class _WorkerDetailPageState extends State<WorkerDetailPage> {
             toolbarHeight: 56.0,
             title: const Text(
               'Detalle de trabajador',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -53,19 +53,19 @@ class _WorkerDetailPageState extends State<WorkerDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getComponentTableFormWithoutLable(getCells(), 
-                        columnWidhts: {
-                          0: const IntrinsicColumnWidth(),
-                        }),
+                      getComponentTableFormWithoutLable(getCells(),
+                          columnWidhts: {
+                            0: const IntrinsicColumnWidth(),
+                          }),
                       const SizedBox(
                         height: 16,
                       ),
                       getComponentTableForm("Sueldo", getSalaryCells(),
-                        columnWidhts: {
-                          1: const IntrinsicColumnWidth(),
-                        }),
+                          columnWidhts: {
+                            1: const IntrinsicColumnWidth(),
+                          }),
                       const SizedBox(
-                        height: 32,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -84,35 +84,34 @@ class _WorkerDetailPageState extends State<WorkerDetailPage> {
     double bottomMargin = 4;
 
     return HNComponentTableForm(
-      label,
+      label + ":",
       8,
       TableCellVerticalAlignment.middle,
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
     );
   }
 
   List<TableRow> getSalaryCells() {
     return [
-      TableRow(
-        children: [
-          Container(
-              height: 40,
-              margin: const EdgeInsets.only(left: 8, bottom: 0),
-              child: HNComponentTextInput(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                textInputType: const TextInputType.numberWithOptions(),
-                labelText: (salary ?? 0.0).toString(),
-                isEnabled: false,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 24, right: 16),
-              child: Text("€")),
-        ]
-      )
+      TableRow(children: [
+        Container(
+          height: 40,
+          margin: const EdgeInsets.only(left: 8, bottom: 0),
+          child: HNComponentTextInput(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            textInputType: const TextInputType.numberWithOptions(),
+            labelText: (salary ?? 0.0).toString(),
+            isEnabled: false,
+          ),
+        ),
+        Container(
+            margin: const EdgeInsets.only(left: 24, right: 16),
+            child: const Text("€", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+      ])
     ];
   }
 
@@ -131,86 +130,72 @@ class _WorkerDetailPageState extends State<WorkerDetailPage> {
 
   List<TableRow> getCells() {
     return [
-      TableRow(
-        children: [
-          Container(
-            child: Text("ID:"),
-            margin: const EdgeInsets.only(right: 16),
-          ),
-          Container(
-            child: Text(workerUser.id.toString()),
-            margin: const EdgeInsets.only(right: 16),
-          ),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Nombre:"),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-          Container(
-            child: Text(workerUser.name),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Apellidos:"),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-          Container(
-            child: Text(workerUser.surname),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("DNI:"),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-          Container(
-            child: Text(workerUser.dni),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Cuenta:"),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-          Container(
-            child: Text(workerUser.bankAccount),
-            margin: const EdgeInsets.only(right: 16, top: 4),
-          ),
-        ]
-      ),
-      TableRow(
-        children: [
-          Container(
-            child: Text("Puesto:"),
-            margin: const EdgeInsets.only(right: 16, top: 32),
-          ),
-          Container(
-            child: Text(Utils().rolesIntToString(workerUser.position).toString()),
-            margin: const EdgeInsets.only(right: 16, top: 32),
-          ),
-        ]
-      ),
+      TableRow(children: [
+        Container(
+          child: const Text("ID:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16),
+        ),
+        Container(
+          child: Text(workerUser.id.toString(), style: const TextStyle(fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Nombre:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+        Container(
+          child: Text(workerUser.name, style: const TextStyle(fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Apellidos:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+        Container(
+          child: Text(workerUser.surname, style: const TextStyle(fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("DNI:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+        Container(
+          child: Text(workerUser.dni, style: const TextStyle(fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Cuenta:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+        Container(
+          child: Text(workerUser.bankAccount, style: const TextStyle(fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 4),
+        ),
+      ]),
+      TableRow(children: [
+        Container(
+          child: const Text("Puesto:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 32),
+        ),
+        Container(
+          child: Text(Utils().rolesIntToString(workerUser.position).toString(), style: const TextStyle(fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, top: 32),
+        ),
+      ]),
     ];
   }
 
   Widget getButtonsComponent() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: HNButton(ButtonTypes.blackWhiteBoldRoundedButton)
-              .getTypedButton('Modificar', null, null, navigateToModifyWorker, null),
+    return HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
+          'Modificar', null, null, navigateToModifyWorker, null,
     );
   }
 
@@ -230,5 +215,4 @@ class _WorkerDetailPageState extends State<WorkerDetailPage> {
       });
     }
   }
-
 }

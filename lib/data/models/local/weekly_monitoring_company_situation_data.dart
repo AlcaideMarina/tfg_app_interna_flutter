@@ -1,13 +1,17 @@
 class WeeklyMonitoringCompanySituationData {
-  
-  final double averageNumberHensWeek;
+  final int hensLosses;
   final int weeklyLaying;
-  final double weeklyLayingRate;
+  final int xlEggs;
+  final int lEggs;
+  final int mEggs;
+  final int sEggs;
 
   WeeklyMonitoringCompanySituationData(
-    this.averageNumberHensWeek, 
-    this.weeklyLaying, 
-    this.weeklyLayingRate
+    this.hensLosses,
+    this.weeklyLaying,
+    this.xlEggs,
+    this.lEggs,
+    this.mEggs,
+    this.sEggs,
   );
-
 }

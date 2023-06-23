@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/custom/custom_colors.dart';
@@ -5,7 +7,7 @@ import 'package:hueveria_nieto_interna/data/models/internal_user_model.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_week_division_data.dart';
 import 'package:hueveria_nieto_interna/ui/components/component_year_month_alert_dialog.dart';
 import 'package:hueveria_nieto_interna/ui/views/monitoringcompanysituation/weekly_monitoring_company_situation_page.dart';
-import 'package:intl/intl.dart';
+import 'package:hueveria_nieto_interna/values/image_routes.dart';
 
 import '../../../custom/app_theme.dart';
 import '../../../custom/custom_sizes.dart';
@@ -38,14 +40,15 @@ class _MonthlyMonitoringCompanySituationPageState
     while (y.length < 4) {
       y = '0' + y;
     }
-    initFilterDatetime = Utils().parseStringToTimestamp('01/' + m + "/" + y).toDate();
+    initFilterDatetime =
+        Utils().parseStringToTimestamp('01/' + m + "/" + y).toDate();
     endFilterDatetime = Utils().addToDate(initFilterDatetime, monthsToAdd: 1);
   }
 
   DateTime now = DateTime.now();
   DateTime initFilterDatetime = DateTime.now();
   DateTime endFilterDatetime = DateTime.now();
-  
+
   List<HNComponentWeekDivisionData> list = [];
 
   @override
@@ -56,35 +59,35 @@ class _MonthlyMonitoringCompanySituationPageState
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Seg. sit. de la empresa',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Seguimiento sit. empresa',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
           child: SingleChildScrollView(
             child: Container(
-              //margin: const EdgeInsets.fromLTRB(24, 16, 24, 32),
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 24,
-                  ),
                   getFilterComponent(),
-                  const SizedBox(
-                    height: 24,
+                  Container(
+                    width: double.infinity,
+                    height: 1,
+                    color: CustomColors.redGrayLightSecondaryColor,
                   ),
+                  const SizedBox(height: 8,),
                   ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: list.length,
-                    itemBuilder: (context, i) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-                        child: list[i]
-                      );
-                    }
-                  )
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: list.length,
+                      itemBuilder: (context, i) {
+                          double top = 8;
+                          double bottom = 0;
+                          if (i == 0) top = 16;
+                          if (i == list.length - 1) bottom = 16;
+                          return Container(
+                            margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
+                            child: list[i]);
+                      })
                 ],
               ),
             ),
@@ -117,52 +120,72 @@ class _MonthlyMonitoringCompanySituationPageState
               while (y.length < 4) {
                 y = '0' + y;
               }
-              initFilterDatetime = Utils().parseStringToTimestamp('01/' + m + "/" + y).toDate();
-              endFilterDatetime = Utils().addToDate(initFilterDatetime, monthsToAdd: 1);
+              initFilterDatetime =
+                  Utils().parseStringToTimestamp('01/' + m + "/" + y).toDate();
+              endFilterDatetime =
+                  Utils().addToDate(initFilterDatetime, monthsToAdd: 1);
               getList();
             });
           }
         },
-        child: Align(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 64),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(Utils().parseTimestmpToString(Timestamp.fromDate(initFilterDatetime), dateFormat: "MMMM, yyyy") ?? ""),
-              ],
-            ),
-            decoration: BoxDecoration(
-                color: CustomColors.redGrayLightSecondaryColor,
-                border: Border.all(
-                  color: CustomColors.redPrimaryColor,
+        child: Container(
+          margin: const EdgeInsets.all(24),
+          child: Row(
+            children: [
+              const Text("Filtro:", style: TextStyle(fontSize: 16),),
+              const SizedBox(width: 24,),
+              Flexible(
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(Utils().parseTimestmpToString(
+                                Timestamp.fromDate(initFilterDatetime),
+                                dateFormat: "MMMM, yyyy") ??
+                            "", style: const TextStyle(fontSize: 16, fontStyle: FontStyle.italic),),
+                      ),
+                      Transform.rotate(
+                        angle: 90 * pi/180,
+                        child: Image.asset(ImageRoutes.getRoute('ic_next_arrow'), width: 24, height: 24,))
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                      color: CustomColors.redGrayLightSecondaryColor,
+                      border: Border.all(
+                        color: CustomColors.redPrimaryColor,
+                      ),
+                      borderRadius: const BorderRadius.all(Radius.circular(16))),
                 ),
-                borderRadius: const BorderRadius.all(Radius.circular(8))),
+              ),
+            ],
           ),
         ));
   }
 
   getList() {
     int initDayOfWeek = initFilterDatetime.weekday;
-    DateTime initDate = Utils().addToDate(initFilterDatetime, daysToAdd: 1 - initDayOfWeek);
+    DateTime initDate =
+        Utils().addToDate(initFilterDatetime, daysToAdd: 1 - initDayOfWeek);
 
     int endDayOfWeek = endFilterDatetime.weekday;
-    DateTime endDate = Utils().addToDate(endFilterDatetime, daysToAdd: 7 - endDayOfWeek);
+    DateTime endDate =
+        Utils().addToDate(endFilterDatetime, daysToAdd: 7 - endDayOfWeek);
 
     list = [];
 
     while (initDate.isBefore(endDate)) {
       Timestamp init = Timestamp.fromDate(initDate);
-      Timestamp end = Timestamp.fromDate(Utils().addToDate(initDate, daysToAdd: 6));
-      list.add(
-        HNComponentWeekDivisionData(
-          init, 
-          end,
-          onTap: () {
-            navigateToDailyMCS(init,end);
-          },
-        )
-      );
+      Timestamp end =
+          Timestamp.fromDate(Utils().addToDate(initDate, daysToAdd: 6));
+      list.add(HNComponentWeekDivisionData(
+        init,
+        end,
+        onTap: () {
+          navigateToDailyMCS(init, end);
+        },
+      ));
       initDate = Utils().addToDate(initDate, daysToAdd: 7);
     }
   }
@@ -171,8 +194,8 @@ class _MonthlyMonitoringCompanySituationPageState
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => WeeklyMonitoringCompanySituationPage(currentUser, initTimestamp, endTimestamp),
+          builder: (context) => WeeklyMonitoringCompanySituationPage(
+              currentUser, initTimestamp, endTimestamp),
         ));
   }
-
 }

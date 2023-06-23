@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hueveria_nieto_interna/flutterfire/firebase_utils.dart';
 
@@ -9,14 +8,13 @@ import '../../../data/models/client_model.dart';
 import '../../../data/models/internal_user_model.dart';
 import '../../components/component_cell_table_form.dart';
 import '../../components/component_container_border_check_title.dart';
-import '../../components/component_container_border_text.dart';
 import '../../components/component_simple_form.dart';
 import '../../components/component_table_form.dart';
 import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class ModifyClientPage extends StatefulWidget {
-  ModifyClientPage(this.currentUserData, this.clientData, {Key? key})
+  const ModifyClientPage(this.currentUserData, this.clientData, {Key? key})
       : super(key: key);
 
   final InternalUserModel currentUserData;
@@ -98,9 +96,8 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Información del cliente',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Modificar cliente',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -169,7 +166,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
             'Correo', clientData.email, null, TextInputType.emailAddress,
             (value) {
           email = value;
-        }, textCapitalization: TextCapitalization.none),
+        }, textCapitalization: TextCapitalization.none, isEnabled: false),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
         clientData.hasAccount ? Container() : getClientUserContainerComponent(),
       ],
@@ -199,7 +196,8 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
       String? labelInputText,
       TextInputType textInputType,
       Function(String)? onChange,
-      {TextCapitalization textCapitalization = TextCapitalization.sentences}) {
+      {TextCapitalization textCapitalization = TextCapitalization.sentences,
+      bool isEnabled = true}) {
     double topMargin = 4;
     double bottomMargin = 4;
     if (contCompany == 0) {
@@ -210,22 +208,26 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
     contCompany++;
 
     return HNComponentSimpleForm(
-        label + ':',
-        8,
-        40,
-        const EdgeInsets.symmetric(horizontal: 16),
-        EdgeInsets.only(top: topMargin, bottom: bottomMargin),
-        componentTextInput: HNComponentTextInput(
-          textCapitalization: textCapitalization,
-          labelText: labelInputText,
-          initialValue: initialValue,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          textInputType: textInputType,
-          onChange: onChange,
-          isEnabled: true,
-          textColor: CustomColors.darkGrayColor,
-        ),);
+      label + ':',
+      8,
+      40,
+      const EdgeInsets.symmetric(horizontal: 16),
+      EdgeInsets.only(top: topMargin, bottom: bottomMargin),
+      componentTextInput: HNComponentTextInput(
+        textCapitalization: textCapitalization,
+        labelText: labelInputText,
+        initialValue: initialValue,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textInputType: textInputType,
+        onChange: onChange,
+        isEnabled: isEnabled,
+        textColor: CustomColors.darkGrayColor,
+        backgroundColor: isEnabled
+            ? CustomColors.whiteColor
+            : CustomColors.backgroundTextFieldDisabled,
+      ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    );
   }
 
   Widget getComponentTableForm(String label, List<TableRow> children,
@@ -240,12 +242,13 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
     contCompany++;
 
     return HNComponentTableForm(
-      label,
+      label + ":",
       8,
       TableCellVerticalAlignment.middle,
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -253,10 +256,8 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
     return [
       TableRow(children: [
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8, bottom: 8),
+            40, const EdgeInsets.only(left: 16, right: 8, bottom: 8),
             componentTextInput: HNComponentTextInput(
-              labelText: 'Teléfono',
               initialValue: phone1.toString(),
               textInputType: TextInputType.number,
               contentPadding:
@@ -268,10 +269,8 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
               textColor: CustomColors.darkGrayColor,
             )),
         HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16, bottom: 8),
+            40, const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             componentTextInput: HNComponentTextInput(
-              labelText: 'Nombre contacto',
               initialValue: namePhone1,
               textCapitalization: TextCapitalization.words,
               contentPadding:
@@ -284,9 +283,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
             )),
       ]),
       TableRow(children: [
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 16, right: 8),
+        HNComponentCellTableForm(40, const EdgeInsets.only(left: 16, right: 8),
             componentTextInput: HNComponentTextInput(
               labelText: 'Teléfono',
               initialValue: phone2.toString(),
@@ -299,9 +296,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
               isEnabled: true,
               textColor: CustomColors.darkGrayColor,
             )),
-        HNComponentCellTableForm(
-            40,
-            const EdgeInsets.only(left: 8, right: 16),
+        HNComponentCellTableForm(40, const EdgeInsets.only(left: 8, right: 16),
             componentTextInput: HNComponentTextInput(
               labelText: 'Nombre contacto',
               initialValue: namePhone2,
@@ -468,7 +463,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
               builder: (_) => AlertDialog(
                     title: const Text('Cliente guardado'),
                     content: const Text(
-                        'La información del cliente se ha guardado correctamente'),
+                        'La información del cliente se ha actualizado correctamente'),
                     actions: <Widget>[
                       TextButton(
                         child: const Text('De acuerdo.'),
@@ -505,7 +500,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
           builder: (_) => AlertDialog(
                 title: const Text('Formulario incompleto'),
                 content: const Text(
-                    'Por favor, revise los datos e inténtelo de nuevo.'),
+                    'Debe rellenar todos los campos del formulario. Por favor revise los datos e inténtelo de nuevo.'),
                 actions: <Widget>[
                   TextButton(
                     child: const Text('De acuerdo.'),
