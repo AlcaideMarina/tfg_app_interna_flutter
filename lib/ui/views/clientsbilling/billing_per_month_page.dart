@@ -98,7 +98,7 @@ class _BillingPerMonthPageState extends State<BillingPerMonthPage> {
                             child: HNComponentPanel(
                               title: 'No hay registros',
                               text:
-                                  "Aún no hay registros de facturación para el cliente seleccionado (${clientModel.id} - {${clientModel.company})",
+                                  "Aún no hay registros de facturación para el cliente seleccionado (${clientModel.id} - ${clientModel.company})",
                             ));
                       }
                     } else if (snapshot.hasError) {
@@ -115,7 +115,7 @@ class _BillingPerMonthPageState extends State<BillingPerMonthPage> {
                           child: HNComponentPanel(
                             title: 'No hay registros',
                             text:
-                                "Aún no hay registros de facturación para el cliente seleccionado (${clientModel.id} - {${clientModel.company})",
+                                "Aún no hay registros de facturación para el cliente seleccionado (${clientModel.id} - ${clientModel.company})",
                           ));
                     }
                   }

@@ -323,7 +323,7 @@ class OrderUtils {
 
       // Ordernamos la lista pro fecha de pedido en desc.
       orderBillingDataList
-          .sort((a, b) => a.orderDatetime.compareTo(b.orderDatetime));
+          .sort((a, b) => b.orderDatetime.compareTo(a.orderDatetime));
 
       // Cogemos la primera posición -> Es la más reciente -> Último mes
       OrderBillingData firstOrder = orderBillingDataList[0];
@@ -331,20 +331,21 @@ class OrderUtils {
 
       String m = firstDate.month.toString();
       while (m.length < 2) {
-        m = '0' + m;
+        m = "0$m";
       }
       String y = firstDate.year.toString();
       while (y.length < 4) {
-        y = '0' + y;
+        y = "0$y";
       }
 
-      // Creamos fecha inicial y final
-      Timestamp initDateTimestamp = Utils().parseStringToTimestamp('01/$m/$y');
-      Timestamp endDateTimestamp = Timestamp.fromDate(
-          Utils().addToDate(initDateTimestamp.toDate(), monthsToAdd: 1));
+      Timestamp initDateTimestamp = Timestamp.fromDate(DateTime.parse("$y-$m-01"));
+      Timestamp endDateTimestamp = Timestamp.fromDate(DateTime(
+          initDateTimestamp.toDate().year,
+          initDateTimestamp.toDate().month + 1,
+          initDateTimestamp.toDate().day));
 
-      for (OrderBillingData item in orderBillingDataList) {
-        if (initDateTimestamp.compareTo(item.orderDatetime) > 1) {
+      for (var item in orderBillingDataList) {
+        if (item.orderDatetime.compareTo(initDateTimestamp) < 0) {
           // Añadimos el elemento a la list a de retorno
           BillingData billingData = BillingData(paymentByCash, paymentByReceipt,
               paymentByTransfer, paid, toBePaid, totalPrice);
