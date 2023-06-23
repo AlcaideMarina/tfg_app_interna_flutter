@@ -45,19 +45,20 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
             toolbarHeight: 56.0,
             title: const Text(
               "Trabajadores y salarios",
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: Column(
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 56, vertical: 8),
+              margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
               child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
                   .getTypedButton("Sueldos pendientes", null, null,
                       navigateToPendingWorkers, () {}),
             ),
-            const SizedBox(
-              height: 16,
+            Container(
+              height: 1,
+              width: double.infinity,
+              color: CustomColors.redGraySecondaryColor,
             ),
             StreamBuilder(
                 stream: FirebaseUtils.instance.getInternalUsers(),
@@ -82,9 +83,12 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
                                   if (!internalUser.deleted) {
                                     if (internalUser.salary != null) {
                                       workerList.add(internalUser);
-                                      return Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 32, vertical: 8),
+                                      double top = 8;
+                                      double bottom = 0;
+                                      if (i == 0) top = 24;
+                                      if (i == userList.length - 1) bottom = 16;
+                                        return Container(
+                                          margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                         child: HNComponentWorker(
                                             internalUser.id,
                                             internalUser.name,

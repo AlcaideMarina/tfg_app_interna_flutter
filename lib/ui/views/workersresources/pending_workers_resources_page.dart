@@ -43,11 +43,11 @@ class _PendingWorkersResourcesPageState
             toolbarHeight: 56.0,
             title: const Text(
               "Salarios pendientes",
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: Column(
             children: [
+              const SizedBox(height: 16,),
               StreamBuilder(
                 stream: FirebaseUtils.instance.getInternalUsers(),
                 builder:
@@ -69,9 +69,12 @@ class _PendingWorkersResourcesPageState
                                   if (!internalUser.deleted) {
                                     if (internalUser.salary == null) {
                                       list.add(internalUser);
-                                      return Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 32, vertical: 8),
+                                      double top = 8;
+                                      double bottom = 0;
+                                      if (i == 0) top = 240;
+                                      if (i == userList.length - 1) bottom = 16;
+                                        return Container(
+                                          margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                         child: HNComponentWorker(
                                             internalUser.id,
                                             internalUser.name,

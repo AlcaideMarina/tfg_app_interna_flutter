@@ -22,22 +22,35 @@ class HNComponentWorker extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(16),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('ID: ' + id.toString()),
-                  Text(name + " " + surname),
-                ],
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Text('ID:', style: TextStyle(fontWeight: FontWeight.bold),),
+                        const SizedBox(width: 8,),
+                        Text(id.toString()),
+                      ],
+                    ),
+                    Text(name + " " + surname, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ),
+              Container(
+                height: 30,
+                width: 1,
+                color: CustomColors.redGrayLightSecondaryColor,
               ),
               Row(
                 children: [
                   const SizedBox(
                     width: 16,
                   ),
-                  Text((salary ?? "-").toString() + " €"),
+                  Text((salary ?? "-").toString() + " €", style: const TextStyle(fontWeight: FontWeight.bold)),
                   const SizedBox(
                     width: 16,
                   ),
