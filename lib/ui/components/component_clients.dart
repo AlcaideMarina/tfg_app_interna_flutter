@@ -27,9 +27,28 @@ class HNComponentClients extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('ID: ' + id),
-                  Text(name),
-                  Text("CIF: " + cif),
+                  Row(
+                    children: [
+                      const Text('ID:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                      const SizedBox(width: 8,),
+                      Text(id, style: const TextStyle(fontSize: 16)),
+                    ],
+                  ),
+                  const SizedBox(height: 8,),
+                  Container(
+                    width: 220, 
+                    height: 1, 
+                    color: CustomColors.redGrayLightSecondaryColor,
+                  ),
+                  const SizedBox(height: 8,),
+                  Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  Row(
+                    children: [
+                      const Text("CIF:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      const SizedBox(width: 8,),
+                      Text(cif, style: const TextStyle(fontSize: 16)),
+                    ],
+                  ),
                 ],
               ),
               onTap != null

@@ -44,8 +44,7 @@ class _DeletedClientsPageState extends State<DeletedClientsPage> {
             toolbarHeight: 56.0,
             title: const Text(
               "Clientes eliminados",
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: Column(
           children: [
@@ -58,6 +57,7 @@ class _DeletedClientsPageState extends State<DeletedClientsPage> {
                       final data = snapshot.data;
                       final List clientList = data.docs;
                       if (clientList.isNotEmpty) {
+                        List<ClientModel> list = [];
                         return Expanded(
                             child: ListView.builder(
                                 shrinkWrap: true,
@@ -70,9 +70,13 @@ class _DeletedClientsPageState extends State<DeletedClientsPage> {
                                               as Map<String, dynamic>,
                                           clientList[i].id);
                                   if (client.deleted) {
-                                    return Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 32, vertical: 8),
+                                  list.add(client);
+                                  double top = 8;
+                                  double bottom = 0;
+                                  if (list.length == 1) top = 24;
+                                  if (i == clientList.length - 1) bottom = 16;
+                                  return Container(
+                                    margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                         child: HNComponentClients(
                                           client.id.toString(),
                                           client.company,

@@ -14,7 +14,7 @@ import '../../components/component_text_input.dart';
 import '../../components/constants/hn_button.dart';
 
 class ModifyClientPage extends StatefulWidget {
-  ModifyClientPage(this.currentUserData, this.clientData, {Key? key})
+  const ModifyClientPage(this.currentUserData, this.clientData, {Key? key})
       : super(key: key);
 
   final InternalUserModel currentUserData;
@@ -96,9 +96,8 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Información del cliente',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Modificar cliente',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -227,6 +226,7 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
             ? CustomColors.whiteColor
             : CustomColors.backgroundTextFieldDisabled,
       ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -242,12 +242,13 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
     contCompany++;
 
     return HNComponentTableForm(
-      label,
+      label + ":",
       8,
       TableCellVerticalAlignment.middle,
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -257,7 +258,6 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
         HNComponentCellTableForm(
             40, const EdgeInsets.only(left: 16, right: 8, bottom: 8),
             componentTextInput: HNComponentTextInput(
-              labelText: 'Teléfono',
               initialValue: phone1.toString(),
               textInputType: TextInputType.number,
               contentPadding:
@@ -271,7 +271,6 @@ class _ModifyClientPageState extends State<ModifyClientPage> {
         HNComponentCellTableForm(
             40, const EdgeInsets.only(left: 8, right: 16, bottom: 8),
             componentTextInput: HNComponentTextInput(
-              labelText: 'Nombre contacto',
               initialValue: namePhone1,
               textCapitalization: TextCapitalization.words,
               contentPadding:

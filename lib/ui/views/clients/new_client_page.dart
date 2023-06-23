@@ -78,11 +78,6 @@ class _NewClientPageState extends State<NewClientPage> {
     final double _height = MediaQuery.of(context).size.height;
 
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-    if (StringsTranslation.of(context) == null) {
-      print('NULO');
-    } else {
-      print('NO NULO');
-    }
     contCompany = 0;
     contUser = 0;
 
@@ -92,8 +87,7 @@ class _NewClientPageState extends State<NewClientPage> {
             toolbarHeight: 56.0,
             title: const Text(
               'Nuevo cliente',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -151,6 +145,7 @@ class _NewClientPageState extends State<NewClientPage> {
           email = value;
         }, textCapitalization: TextCapitalization.none),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
+        const SizedBox(height: 16,),
         getClientUserContainerComponent(),
       ],
     );
@@ -198,6 +193,7 @@ class _NewClientPageState extends State<NewClientPage> {
         textInputType: textInputType,
         onChange: onChange,
       ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -213,12 +209,13 @@ class _NewClientPageState extends State<NewClientPage> {
     contCompany++;
 
     return HNComponentTableForm(
-      label,
+      label + ":",
       8,
       TableCellVerticalAlignment.middle,
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 

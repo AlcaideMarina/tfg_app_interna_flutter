@@ -119,9 +119,8 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Información del cliente',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Detalle de cliente',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           child: StreamBuilder(
@@ -137,13 +136,35 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
                     return Container(
                       child: SingleChildScrollView(
                         child: Container(
-                          margin: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+                          margin: const EdgeInsets.symmetric(vertical: 16),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              getAllFormElements(),
+                              Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 24),
+                                child: getAllFormElements(),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: 1,
+                                color: CustomColors.redGraySecondaryColor,
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
                               getOrderElement(),
+                              const SizedBox(
+                                height: 32,
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: 1,
+                                color: CustomColors.redGraySecondaryColor,
+                              ),
                               const SizedBox(
                                 height: 32,
                               ),
@@ -209,6 +230,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
           email = value;
         }, textCapitalization: TextCapitalization.none),
         getComponentTableForm('Teléfono', getTelephoneTableRow()),
+        const SizedBox(height: 8,),
         getClientUserContainerComponent(),
       ],
     );
@@ -217,78 +239,82 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
   Widget getOrderElement() {
     return Flexible(
       fit: FlexFit.loose,
-      child: StreamBuilder(
-        stream: FirebaseUtils.instance.getUserOrders(client.documentId!),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.connectionState == ConnectionState.active) {
-            if (snapshot.hasData) {
-              final data = snapshot.data;
-              final List orders = data.docs;
-              if (orders.isNotEmpty) {
-                List<dynamic>? orderModelList = orders
-                    .map((e) => OrderModel.fromMap(
-                        e.data() as Map<String, dynamic>, e.id))
-                    .toList();
-
-                List<OrderModel> list = [];
-                for (OrderModel item in orderModelList) {
-                  if (item.status != Constants().orderStatus["Cancelado"]) {
-                    list.add(item);
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 24),
+        child: StreamBuilder(
+          stream: FirebaseUtils.instance.getUserOrders(client.documentId!),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasData) {
+                final data = snapshot.data;
+                final List orders = data.docs;
+                if (orders.isNotEmpty) {
+                  List<dynamic>? orderModelList = orders
+                      .map((e) => OrderModel.fromMap(
+                          e.data() as Map<String, dynamic>, e.id))
+                      .toList();
+      
+                  List<OrderModel> list = [];
+                  for (OrderModel item in orderModelList) {
+                    if (item.status != Constants().orderStatus["Cancelado"]) {
+                      list.add(item);
+                    }
                   }
-                }
-                list.sort((a, b) {
-                  return b.orderDatetime.compareTo(a.orderDatetime);
-                });
-                if (list.isNotEmpty) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      const Text(
-                        'Últimos pedidos:',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: orders.length > 3 ? 3 : orders.length,
-                        itemBuilder: ((context, index) {
-                          final OrderModel orderModel = list[index];
-                          return Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 32, vertical: 8),
-                            child: HNComponentOrders(
-                                orderModel.orderDatetime,
-                                orderModel.orderId!,
-                                orderModel.clientId.toString() + " - " + orderModel.company,
-                                OrderUtils().getOrderSummary(OrderUtils()
-                                    .orderDataToBDOrderModel(
-                                        orderModel)),
-                                orderModel.totalPrice,
-                                orderModel.status,
-                                orderModel.deliveryDni, onTap: () async {
-                              navigateToOrderDetail(orderModel);
-                            }),
-                          );
-                        }),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
-                            .getTypedButton('Ver todos', null, null,
-                                navigateToClientAllOrders, () {}),
-                      ),
-                    ],
-                  );
+                  list.sort((a, b) {
+                    return b.orderDatetime.compareTo(a.orderDatetime);
+                  });
+                  if (list.isNotEmpty) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        const Text(
+                          'Últimos pedidos:',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemCount: orders.length > 3 ? 3 : orders.length,
+                          itemBuilder: ((context, index) {
+                            final OrderModel orderModel = list[index];
+                            return Container(
+                                  margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                              child: HNComponentOrders(
+                                  orderModel.orderDatetime,
+                                  orderModel.orderId!,
+                                  orderModel.clientId.toString() + " - " + orderModel.company,
+                                  OrderUtils().getOrderSummary(OrderUtils()
+                                      .orderDataToBDOrderModel(
+                                          orderModel)),
+                                  orderModel.totalPrice,
+                                  orderModel.status,
+                                  orderModel.deliveryDni, onTap: () async {
+                                navigateToOrderDetail(orderModel);
+                              }),
+                            );
+                          }),
+                        ),
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          child: HNButton(ButtonTypes.redWhiteBoldRoundedButton)
+                              .getTypedButton('Ver todos', null, null,
+                                  navigateToClientAllOrders, () {}),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Container();
+                  }
                 } else {
                   return Container();
                 }
@@ -296,23 +322,21 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
                 return Container();
               }
             } else {
-              return Container();
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: CustomColors.redPrimaryColor,
+                ),
+              );
             }
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: CustomColors.redPrimaryColor,
-              ),
-            );
-          }
-        },
+          },
+        ),
       ),
     );
   }
 
   Widget getButtonsComponent() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         children: [
           HNButton(ButtonTypes.redWhiteBoldRoundedButton).getTypedButton(
@@ -359,6 +383,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
         backgroundColor: CustomColors.backgroundTextFieldDisabled,
         textColor: CustomColors.darkGrayColor,
       ),
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -374,12 +399,13 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
     contCompany++;
 
     return HNComponentTableForm(
-      label,
+      label + ":",
       8,
       TableCellVerticalAlignment.middle,
       children,
       EdgeInsets.only(top: topMargin, bottom: bottomMargin),
       columnWidths: columnWidhts,
+      textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -466,6 +492,7 @@ class _ClientDetailPageState extends State<ClientDetailPage> {
       leftPosition: 24,
       rightPosition: 50,
       topPosition: 10,
+      titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
