@@ -43,9 +43,8 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Gallinas - Detalle',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Detalle registro gallinas',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -61,7 +60,7 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
                             0: const IntrinsicColumnWidth(),
                           }),
                       const SizedBox(
-                        height: 16,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -91,19 +90,19 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
     return [
       TableRow(children: [
         Container(
-          child: Text("Fecha:"),
-          margin: const EdgeInsets.only(right: 16),
+          child: const Text("Fecha:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          margin: const EdgeInsets.only(right: 16, bottom: 10),
         ),
         Container(
           child: Text(Utils()
                   .parseTimestmpToString(hensResourcesModel.expenseDatetime) ??
-              ""),
-          margin: const EdgeInsets.only(left: 16),
+              "", style: const TextStyle(fontSize: 16)),
+          margin: const EdgeInsets.only(left: 16, bottom: 8),
         ),
       ]),
       TableRow(children: [
         Container(
-          child: Text("Cantidad:"),
+          child: const Text("Cantidad:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16, top: 4),
         ),
         Container(
@@ -120,7 +119,7 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
       ]),
       TableRow(children: [
         Container(
-          child: Text("Precio total:"),
+          child: const Text("Precio total:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
           margin: const EdgeInsets.only(right: 16, top: 4),
         ),
         Container(
@@ -140,7 +139,7 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
               const SizedBox(
                 width: 16,
               ),
-              const Text("€"),
+              const Text("€", style: TextStyle(fontSize: 16),),
               const SizedBox(
                 width: 8,
               ),
@@ -152,9 +151,7 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
   }
 
   Widget getButtonsComponent() {
-    return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(children: [
+    return Column(children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
               'Modificar', null, null, navigateToModifyHensResource, null),
           const SizedBox(
@@ -167,7 +164,7 @@ class _HensResourcesStateDetailPage extends State<HensResourcesDetailPage> {
             warningDeleteHensResource,
             null,
           ),
-        ]));
+        ]);
   }
 
   warningDeleteHensResource() {

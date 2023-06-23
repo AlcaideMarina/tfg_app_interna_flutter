@@ -47,7 +47,6 @@ class _PendingWorkersResourcesPageState
             )),
         body: Column(
             children: [
-              const SizedBox(height: 16,),
               StreamBuilder(
                 stream: FirebaseUtils.instance.getInternalUsers(),
                 builder:
@@ -71,7 +70,7 @@ class _PendingWorkersResourcesPageState
                                       list.add(internalUser);
                                       double top = 8;
                                       double bottom = 0;
-                                      if (i == 0) top = 240;
+                                      if (list.length == 1) top = 24;
                                       if (i == userList.length - 1) bottom = 16;
                                         return Container(
                                           margin: EdgeInsets.fromLTRB(24, top, 24, bottom),

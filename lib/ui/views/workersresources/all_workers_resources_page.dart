@@ -85,7 +85,7 @@ class _AllWorkersResourcesState extends State<AllWorkersResources> {
                                       workerList.add(internalUser);
                                       double top = 8;
                                       double bottom = 0;
-                                      if (i == 0) top = 24;
+                                      if (workerList.length == 1) top = 24;
                                       if (i == userList.length - 1) bottom = 16;
                                         return Container(
                                           margin: EdgeInsets.fromLTRB(24, top, 24, bottom),

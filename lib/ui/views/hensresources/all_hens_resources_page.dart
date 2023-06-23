@@ -39,9 +39,8 @@ class _AllHensResourcesPageState extends State<AllHensResourcesPage> {
       appBar: AppBar(
           toolbarHeight: 56.0,
           title: const Text(
-            "Gallinas",
-            style: TextStyle(
-                color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+            "Registro gallinas",
+            style: TextStyle(fontSize: 18),
           )),
       body: Column(
         children: [
@@ -67,9 +66,12 @@ class _AllHensResourcesPageState extends State<AllHensResourcesPage> {
                                         hensList[i].id);
                                 if (!hensModel.deleted) {
                                   list.add(hensModel);
+                                  double top = 8;
+                                  double bottom = 0;
+                                  if (list.length == 1) top = 24;
+                                  if (i == hensList.length - 1) bottom = 16;
                                   return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 32, vertical: 8),
+                                    margin: EdgeInsets.fromLTRB(24, top, 24, bottom),
                                     child: HNComponentTicket(
                                         hensModel.expenseDatetime,
                                         hensModel.hensNumber.toString(),

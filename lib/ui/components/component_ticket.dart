@@ -22,15 +22,15 @@ class HNComponentTicket extends StatelessWidget {
     if (units != null && units != "") {
       element = Row(
         children: [
-          Text(quantity),
+          Text(quantity, style: const TextStyle(fontWeight: FontWeight.bold),),
           const SizedBox(
-            width: 16,
+            width: 12,
           ),
-          Text(units ?? ""),
+          Text(units ?? "", style: const TextStyle(fontWeight: FontWeight.bold)),
         ],
       );
     } else {
-      element = Text(quantity);
+      element = Text(quantity, style: const TextStyle(fontWeight: FontWeight.bold));
     }
 
     return GestureDetector(
@@ -39,7 +39,7 @@ class HNComponentTicket extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Flexible(
                 child: Column(
@@ -47,20 +47,25 @@ class HNComponentTicket extends StatelessWidget {
                   children: [
                     Text(
                       Utils().parseTimestmpToString(expenseDate) ?? "",
-                      style: const TextStyle(fontSize: 10),
+                      style: const TextStyle(fontSize: 11),
                     ),
                     element
                   ],
                 ),
+              ),
+              Container(
+                height: 35,
+                width: 1,
+                color: CustomColors.redGrayLightSecondaryColor,
               ),
               Row(
                 children: [
                   const SizedBox(
                     width: 16,
                   ),
-                  Text(price.toString() + " €"),
+                  Text(price.toString() + " €", style: const TextStyle(fontWeight: FontWeight.bold)),
                   const SizedBox(
-                    width: 16,
+                    width: 24,
                   ),
                   onTap != null
                       ? Image.asset(
