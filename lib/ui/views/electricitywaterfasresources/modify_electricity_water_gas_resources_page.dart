@@ -63,9 +63,8 @@ class _ModifyElectricityWaterGasResourcesPageState
         appBar: AppBar(
             toolbarHeight: 56.0,
             title: const Text(
-              'Elec., luz, agua - Modificar',
-              style: TextStyle(
-                  color: AppTheme.primary, fontSize: CustomSizes.textSize24),
+              'Modificar luz, agua, gas',
+              style: TextStyle(fontSize: 18),
             )),
         body: SafeArea(
           top: false,
@@ -81,7 +80,7 @@ class _ModifyElectricityWaterGasResourcesPageState
                             0: const IntrinsicColumnWidth(),
                           }),
                       const SizedBox(
-                        height: 16,
+                        height: 40,
                       ),
                       getButtonsComponent(),
                       const SizedBox(
@@ -111,18 +110,18 @@ class _ModifyElectricityWaterGasResourcesPageState
     return [
       TableRow(children: [
         Container(
-          child: Text("Fecha:"),
+          child: const Text("Fecha:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16),
         ),
         Container(
           child: Text(
-              Utils().parseTimestmpToString(ewgModel.expenseDatetime) ?? ""),
+              Utils().parseTimestmpToString(ewgModel.expenseDatetime) ?? "", style: const TextStyle(fontSize: 16)),
           margin: const EdgeInsets.only(left: 16),
         ),
       ]),
       TableRow(children: [
         Container(
-          child: Text("Tipo:"),
+          child: const Text("Tipo:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16, top: 4),
         ),
         Container(
@@ -141,7 +140,7 @@ class _ModifyElectricityWaterGasResourcesPageState
       ]),
       TableRow(children: [
         Container(
-          child: Text("Precio total:"),
+          child: const Text("Precio total:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           margin: const EdgeInsets.only(right: 16, top: 4),
         ),
         Container(
@@ -164,7 +163,7 @@ class _ModifyElectricityWaterGasResourcesPageState
               const SizedBox(
                 width: 16,
               ),
-              const Text("€"),
+              const Text("€", style: TextStyle(fontSize: 16)),
               const SizedBox(
                 width: 8,
               ),
@@ -176,7 +175,7 @@ class _ModifyElectricityWaterGasResourcesPageState
         TableCell(
           verticalAlignment: TableCellVerticalAlignment.top,
           child: Container(
-            child: Text("Notas:"),
+            child: const Text("Notas:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             margin: const EdgeInsets.only(right: 16, top: 16),
           ),
         ),
@@ -202,9 +201,7 @@ class _ModifyElectricityWaterGasResourcesPageState
   }
 
   Widget getButtonsComponent() {
-    return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(children: [
+    return Column(children: [
           HNButton(ButtonTypes.blackWhiteBoldRoundedButton).getTypedButton(
               'Guardar', null, null, warningUpdateEWGResource, null),
           const SizedBox(
@@ -217,7 +214,7 @@ class _ModifyElectricityWaterGasResourcesPageState
             goBack,
             null,
           ),
-        ]));
+        ]);
   }
 
   goBack() {
